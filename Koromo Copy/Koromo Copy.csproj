@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6C1BEF18-2409-4796-BEC3-A97339516F2D}</ProjectGuid>
+    <ProjectGuid>{41065EA7-BD36-4D4D-848E-D35F5A34CCAD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Koromo_Copy</RootNamespace>
     <AssemblyName>Koromo Copy</AssemblyName>
