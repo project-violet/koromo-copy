@@ -110,27 +110,25 @@ namespace Koromo_Copy
             log.Add(Tuple.Create(DateTime.Now, obj.ToString(), false));
             log.Add(Tuple.Create(DateTime.Now, SerializeObject(obj), true));
         }
-
-        Lazy<MonitorControl> monitor_control = new Lazy<MonitorControl>();
-
+        
         private void Monitor_Notify(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (controlEnable)
             {
                 if (log.Last().Item3)
-                    monitor_control.Value.Post(() => monitor_control.Value.Push(log[log.Count - 2].Item1, log[log.Count - 2].Item2));
-                monitor_control.Value.Post(() => monitor_control.Value.Push(log.Last().Item1, log.Last().Item2));
+                    Console.Console.Instance.Push(log[log.Count - 2].Item1, log[log.Count - 2].Item2);
+                Console.Console.Instance.Push(log.Last().Item1, log.Last().Item2);
             }
         }
 
         private void showMonitorControl()
         {
-            monitor_control.Value.Show();
+            Console.Console.Instance.Show();
         }
 
         private void hideMonitorControl()
         {
-            monitor_control.Value.Hide();
+            Console.Console.Instance.Hide();
         }
     }
 }
