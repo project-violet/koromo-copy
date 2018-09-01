@@ -8,8 +8,12 @@
 
 using Koromo_Copy.Interface;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 
 namespace Koromo_Copy.Console
@@ -66,6 +70,15 @@ namespace Koromo_Copy.Console
         const int SW_HIDE = 0;
         const int SW_SHOW = 5;
 
+        private const int MF_BYCOMMAND = 0x00000000;
+        public const int SC_CLOSE = 0xF060;
+
+        [DllImport("user32.dll")]
+        public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        
         public Console()
         {
             // https://stackoverflow.com/questions/4362111/how-do-i-show-a-console-output-window-in-a-forms-application
@@ -73,6 +86,32 @@ namespace Koromo_Copy.Console
             // https://stackoverflow.com/questions/15578540/allocconsole-not-printing-when-in-visual-studio
             OverrideRedirection();
 
+            DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
+
+            System.Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
+
+            System.Console.Out.WriteLine($"Koromo Copy {Version.Text}");
+            System.Console.Out.WriteLine("Copyright (C) 2018. Koromo Copy Developer");
+            System.Console.Out.WriteLine("E-Mail: koromo.software@gmail.com");
+            System.Console.Out.WriteLine("Source-code : https://github.com/dc-koromo/koromo-copy");
+            System.Console.Out.WriteLine("");
+        }
+
+        /// <summary>
+        /// Control + C로 강제 종료되는 것을 막기위해 추가하였습니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+        {
+            if (e.SpecialKey == ConsoleSpecialKey.ControlC)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        public void Start()
+        {
             Thread thread = new Thread(Loop);
             thread.Start();
         }
@@ -88,19 +127,56 @@ namespace Koromo_Copy.Console
             var handle = GetConsoleWindow();
             ShowWindow(handle, SW_SHOW);
         }
+
+        /// <summary>
+        /// 커맨드 라인을 분석합니다.
+        /// 가령, 커맨드 라인에 "~"가 포함된 경우, ~에 공백이 포함여부에 상관없이 하나의 원소로 취급됩니다.
+        /// </summary>
+        /// <param name="cl"></param>
+        /// <returns></returns>
+        public static string[] ParseArgument(string cl)
+        {
+            List<string> argv = new List<string>();
+
+            for (int i = 0; i < cl.Length; i++)
+            {
+                // trim
+                for (; char.IsWhiteSpace(cl[i]); i++) ;
+                if (i >= cl.Length) break;
+
+                bool path = false;
+                if (cl[i] == '"') { i++; path = true; }
+
+                StringBuilder builder = new StringBuilder();
+                for (; i < cl.Length && ((!path && !char.IsWhiteSpace(cl[i])) || (path && cl[i] != '"')); i++)
+                    builder.Append(cl[i]);
+
+                argv.Add(builder.ToString());
+            }
+
+            return argv.ToArray();
+        }
         
+        /// <summary>
+        /// 콘솔 스레드의 메인 루프입니다.
+        /// </summary>
         public void Loop()
         {
-            System.Console.Out.WriteLine($"Koromo Copy {Version.Text}");
-            System.Console.Out.WriteLine("Copyright (C) 2018. Koromo Copy Developer");
-            System.Console.Out.WriteLine("E-Mail: koromo.software@gmail.com");
-            System.Console.Out.WriteLine("Source-code : https://github.com/dc-koromo/koromo-copy");
+            var redirections = new Dictionary<string, IConsole>()
+            {
+                {"hitomi", new HitomiConsole()}
+            };
+
             System.Console.Out.WriteLine("");
 
             while (true)
             {
                 System.Console.ForegroundColor = ConsoleColor.Green;
-                System.Console.Out.Write("dc-koromo@hitomi-copy");
+                System.Console.Out.Write("dc-koromo");
+                System.Console.ResetColor();
+                System.Console.Out.Write("@");
+                System.Console.ForegroundColor = ConsoleColor.Cyan;
+                System.Console.Out.Write("koromo-copy");
                 System.Console.ResetColor();
                 System.Console.Out.Write(":");
                 System.Console.ForegroundColor = ConsoleColor.Blue;
@@ -108,13 +184,60 @@ namespace Koromo_Copy.Console
                 System.Console.ResetColor();
                 System.Console.Out.Write("$ ");
 
-                string command = System.Console.In.ReadLine();
+                try
+                {
+                    string[] command = ParseArgument(System.Console.In.ReadLine());
+                    if (command.Length == 0) continue;
+                    if (command[0] == "help")
+                    {
+                        PrintHelp();
+                    }
+                    else if (redirections.ContainsKey(command[0]))
+                    {
+                        if (command.Length == 1)
+                        {
+                            redirections[command[0]].Redirect(Array.Empty<string>());
+                        }
+                        else
+                        {
+                            var list = command.ToList();
+                            list.RemoveAt(0);
+                            redirections[command[0]].Redirect(list.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        System.Console.Out.WriteLine($"{command[0]}: command not found");
+                        System.Console.Out.WriteLine($"try 'help' command!");
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Console.Out.WriteLine($"Error occurred on processing!");
+                    System.Console.Out.WriteLine($"Message: {e.Message}");
+                    System.Console.Out.WriteLine($"StackTrace: {e.StackTrace}");
+                }
             }
+        }
+
+        public void PrintHelp()
+        {
+
         }
 
         public void Push(DateTime dt, string contents)
         {
+            System.Console.ForegroundColor = ConsoleColor.Yellow;
+            //System.Console.Out.WriteLine("");
+            CultureInfo en = new CultureInfo("en-US");
+            System.Console.Out.Write($"[{DateTime.Now.ToString(en)}]");
+            System.Console.ResetColor();
+            System.Console.Out.WriteLine($" {contents}");
+        }
 
+        public void WriteLine(string contents)
+        {
+            System.Console.WriteLine(contents);
         }
     }
 }
