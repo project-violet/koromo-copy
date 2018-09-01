@@ -36,6 +36,8 @@ namespace Koromo_Copy
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+
+            Environment.Exit(0);
         }
         
         private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
