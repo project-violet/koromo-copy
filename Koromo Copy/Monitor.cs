@@ -61,6 +61,14 @@ namespace Koromo_Copy
         public Monitor()
         {
             log.CollectionChanged += Monitor_Notify;
+
+            if (controlEnable)
+                showMonitorControl();
+        }
+
+        public void Start()
+        {
+            Console.Console.Instance.Start();
         }
 
         /// <summary>
@@ -96,9 +104,9 @@ namespace Koromo_Copy
         /// 문자열을 로그에 Push합니다.
         /// </summary>
         /// <param name="str"></param>
-        public void Push(Func<string> str)
+        public void Push(string str)
         {
-            log.Add(Tuple.Create(DateTime.Now, str(), false));
+            log.Add(Tuple.Create(DateTime.Now, str, false));
         }
 
         /// <summary>
@@ -115,8 +123,6 @@ namespace Koromo_Copy
         {
             if (controlEnable)
             {
-                if (log.Last().Item3)
-                    Console.Console.Instance.Push(log[log.Count - 2].Item1, log[log.Count - 2].Item2);
                 Console.Console.Instance.Push(log.Last().Item1, log.Last().Item2);
             }
         }
