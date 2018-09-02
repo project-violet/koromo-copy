@@ -28,5 +28,6 @@ namespace Koromo_Copy.Interface
     {
         public bool Error;
         public string ErrorMessage;
+        public string HelpMessage;
     }
 }

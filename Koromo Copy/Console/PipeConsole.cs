@@ -57,6 +57,8 @@ namespace Koromo_Copy.Console
             if (option.Error)
             {
                 Console.Instance.WriteLine(option.ErrorMessage);
+                if (option.HelpMessage != null)
+                    Console.Instance.WriteLine(option.HelpMessage);
             }
             else if (option.Help)
             {

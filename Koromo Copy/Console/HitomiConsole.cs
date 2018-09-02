@@ -21,10 +21,10 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-article", CommandType.ARGUMENTS)]
+        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Hitomi Number>")]
         public string[] Article;
 
-        [CommandLine("-image", CommandType.ARGUMENTS)]
+        [CommandLine("-image", CommandType.ARGUMENTS, Help = "use -image <Hitomi Number> [-type=small | big]")]
         public string[] ImageLink;
 
         [CommandLine("-type", CommandType.EQUAL)]
@@ -46,6 +46,8 @@ namespace Koromo_Copy.Console
             if (option.Error)
             {
                 Console.Instance.WriteLine(option.ErrorMessage);
+                if (option.HelpMessage != null)
+                    Console.Instance.WriteLine(option.HelpMessage);
                 return false;
             }
             else if (option.Help)

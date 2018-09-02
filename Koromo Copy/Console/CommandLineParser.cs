@@ -30,6 +30,11 @@ namespace Koromo_Copy.Console
         public string Option { get; private set; }
 
         /// <summary>
+        /// 명령 구문이 틀렸을때 보여줄 메세지 입니다.
+        /// </summary>
+        public string Help { get; set; }
+
+        /// <summary>
         /// 아무것도 입력되지 않을 시 이 값이 true로 설정됩니다.
         /// </summary>
         public bool Default { get; set; } = false;
@@ -106,6 +111,7 @@ namespace Koromo_Copy.Console
                             {
                                 typeof(T).GetField("Error").SetValue(result, true);
                                 typeof(T).GetField("ErrorMessage").SetValue(result, $"'{argv[i]}' require {cl.Item2.ArgumentsCount-j+1} more sub arguments.");
+                                typeof(T).GetField("HelpMessage").SetValue(result, cl.Item2.Help);
                                 return result;
                             }
 
@@ -124,6 +130,7 @@ namespace Koromo_Copy.Console
                         {
                             typeof(T).GetField("Error").SetValue(result, true);
                             typeof(T).GetField("ErrorMessage").SetValue(result, $"'{split[0]}' must have equal delimiter.");
+                            typeof(T).GetField("HelpMessage").SetValue(result, cl.Item2.Help);
                             return result;
                         }
 
