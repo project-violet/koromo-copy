@@ -34,6 +34,8 @@ namespace Koromo_Copy.Console
         [CommandLine("-loadmetadata", CommandType.OPTION)]
         public bool LoadMetadata;
 
+        [CommandLine("-all", CommandType.OPTION)]
+        public bool ShowAllSearchList;
         [CommandLine("-search", CommandType.ARGUMENTS)]
         public string[] Search;
         [CommandLine("-setsearch", CommandType.ARGUMENTS)]
@@ -83,7 +85,7 @@ namespace Koromo_Copy.Console
             }
             else if (option.Search != null)
             {
-                ProcessSearch(option.Search);
+                ProcessSearch(option.Search, option.ShowAllSearchList);
             }
             else if (option.SetSearchToken != null)
             {
@@ -175,7 +177,7 @@ namespace Koromo_Copy.Console
         /// <summary>
         /// 작품을 검색합니다.
         /// </summary>
-        static void ProcessSearch(string[] args)
+        static void ProcessSearch(string[] args, bool show_all)
         {
             if (HitomiData.Instance.metadata_collection == null)
             {
@@ -192,12 +194,27 @@ namespace Koromo_Copy.Console
                     Console.Instance.WriteLine("No results were found for your search.");
                     return;
                 }
-                Console.Instance.WriteLine($"Found {result.Count} results.");
                 foreach (var metadata in result)
                 {
-                    string artist = metadata.Artists != null ? metadata.Artists[0] : "N/A";
-                    Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artist.PadLeft(15)} | {metadata.Name}");
+                    if (show_all)
+                    {
+                        string artists = metadata.Artists != null ? string.Join(", ", metadata.Artists) : "N/A";
+                        string tags = metadata.Tags != null ? string.Join(", ", metadata.Tags) : "";
+                        string series = metadata.Parodies != null ? string.Join(", ", metadata.Parodies) : "";
+                        string character = metadata.Characters != null ? string.Join(", ", metadata.Characters) : "";
+                        string group = metadata.Groups != null ? string.Join(", ", metadata.Groups) : "";
+                        string lang = metadata.Language != null ? metadata.Language : "";
+                        string type = metadata.Type != null ? metadata.Type : "";
+
+                        Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artists} | {metadata.Name} | {lang} | {type} | {series} | {character} | {group} | {tags}");
+                    }
+                    else
+                    {
+                        string artist = metadata.Artists != null ? metadata.Artists[0] : "N/A";
+                        Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artist.PadLeft(15)} | {metadata.Name}");
+                    }
                 }
+                Console.Instance.WriteLine($"Found {result.Count} results.");
             });
         }
     }
