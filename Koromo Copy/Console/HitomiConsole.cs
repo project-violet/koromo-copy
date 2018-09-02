@@ -9,7 +9,6 @@
 using Koromo_Copy.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,28 +24,29 @@ namespace Koromo_Copy.Console
 
         [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Hitomi Number>")]
         public string[] Article;
-
         [CommandLine("-image", CommandType.ARGUMENTS, Help = "use -image <Hitomi Number> [-type=small | big]")]
         public string[] ImageLink;
-
         [CommandLine("-type", CommandType.EQUAL)]
         public string Type;
 
         [CommandLine("-downloadmetadata", CommandType.OPTION)]
         public bool DownloadMetadata;
-
         [CommandLine("-loadmetadata", CommandType.OPTION)]
         public bool LoadMetadata;
 
         [CommandLine("-search", CommandType.ARGUMENTS)]
         public string[] Search;
+        [CommandLine("-setsearch", CommandType.ARGUMENTS)]
+        public string[] SetSearchToken;
     }
 
     /// <summary>
     /// 코로모 카피에 구현된 모든 히토미 도구를 사용할 수 있는 콘솔 명령 집합입니다.
     /// </summary>
-    public class HitomiConsole : IConsole
+    public class HitomiConsole : ILazy<HitomiConsole>, IConsole
     {
+        public string setter = "";
+
         /// <summary>
         /// 히토미 콘솔 리다이렉트
         /// </summary>
@@ -84,6 +84,10 @@ namespace Koromo_Copy.Console
             else if (option.Search != null)
             {
                 ProcessSearch(option.Search);
+            }
+            else if (option.SetSearchToken != null)
+            {
+                Instance.setter = option.SetSearchToken[0];
             }
 
             return true;
@@ -181,9 +185,14 @@ namespace Koromo_Copy.Console
 
             Console.Instance.GlobalTask = Task.Run(async () =>
             {
-                var result = await HitomiDataParser.SearchAsync(args[0]);
+                var result = await HitomiDataParser.SearchAsync(args[0] + " " + Instance.setter);
                 result.Reverse();
-                Console.Instance.WriteLine($"Found '{result.Count}' results.");
+                if (result.Count == 0)
+                {
+                    Console.Instance.WriteLine("No results were found for your search.");
+                    return;
+                }
+                Console.Instance.WriteLine($"Found {result.Count} results.");
                 foreach (var metadata in result)
                 {
                     string artist = metadata.Artists != null ? metadata.Artists[0] : "N/A";

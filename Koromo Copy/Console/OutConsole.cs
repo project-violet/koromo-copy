@@ -67,7 +67,7 @@ namespace Koromo_Copy.Console
         {
             Console.Instance.WriteLine(
                 "Out Console Pipeline\r\n" +
-                "This command must used with pipe.\r\n" +
+                "This command must be used with pipe.\r\n" +
                 "\r\n" +
                 " -o (<pipe>|<address>): Set output file address.\r\n" +
                 " -i : overwrite"
