@@ -22,7 +22,7 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Hitomi Number>")]
+        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Exhentai address>")]
         public string[] Article;
 
         [CommandLine("-addr", CommandType.ARGUMENTS, Help = "use -addr <Hitomi Article>", Pipe = true)]
@@ -74,8 +74,7 @@ namespace Koromo_Copy.Console
             Console.Instance.WriteLine(
                 "Ex-Hentai Console Core\r\n" +
                 "\r\n" +
-                " -article <Hitomi Number> : Show article info.\r\n" +
-                " -image <Hitomi Number> [-type=small | big]: Get Image Link."
+                " -article <Exhentai address> : Show article info."
                 );
         }
 
