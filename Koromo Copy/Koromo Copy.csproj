@@ -83,6 +83,9 @@
     <Compile Include="Hitomi\HitomiCommon.cs" />
     <Compile Include="Hitomi\HitomiData.cs" />
     <Compile Include="Hitomi\HitomiDataModel.cs" />
+    <Compile Include="Hitomi\HitomiDataParser.cs" />
+    <Compile Include="Hitomi\HitomiDataQuery.cs" />
+    <Compile Include="Hitomi\HitomiDataSearch.cs" />
     <Compile Include="Hitomi\HitomiLegalize.cs" />
     <Compile Include="Hitomi\HitomiParser.cs" />
     <Compile Include="Hitomi\Translate\KoreanSeries.cs" />

@@ -11,6 +11,7 @@ using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Koromo_Copy.Console
 {
@@ -36,6 +37,9 @@ namespace Koromo_Copy.Console
 
         [CommandLine("-loadmetadata", CommandType.OPTION)]
         public bool LoadMetadata;
+
+        [CommandLine("-search", CommandType.ARGUMENTS)]
+        public string[] Search;
     }
 
     /// <summary>
@@ -76,6 +80,10 @@ namespace Koromo_Copy.Console
             else if (option.LoadMetadata)
             {
                 ProcessLoadMetadata();
+            }
+            else if (option.Search != null)
+            {
+                ProcessSearch(option.Search);
             }
 
             return true;
@@ -152,12 +160,36 @@ namespace Koromo_Copy.Console
             
             if (HitomiData.Instance.metadata_collection != null)
             {
-                Console.Instance.WriteLine($"Load metadata: {HitomiData.Instance.metadata_collection.Count.ToString("#,#")} articles");
+                Console.Instance.WriteLine($"Load metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
             }
             else
             {
                 Console.Instance.WriteErrorLine("'metadata.json' file does not exist or is a incorrect file.");
             }
+        }
+        
+        /// <summary>
+        /// 작품을 검색합니다.
+        /// </summary>
+        static void ProcessSearch(string[] args)
+        {
+            if (HitomiData.Instance.metadata_collection == null)
+            {
+                Console.Instance.WriteErrorLine($"Please load metadatas before searching!.");
+                return;
+            }
+
+            Console.Instance.GlobalTask = Task.Run(async () =>
+            {
+                var result = await HitomiDataParser.SearchAsync(args[0]);
+                result.Reverse();
+                Console.Instance.WriteLine($"Found '{result.Count}' results.");
+                foreach (var metadata in result)
+                {
+                    string artist = metadata.Artists != null ? metadata.Artists[0] : "N/A";
+                    Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artist.PadLeft(15)} | {metadata.Name}");
+                }
+            });
         }
     }
 }
