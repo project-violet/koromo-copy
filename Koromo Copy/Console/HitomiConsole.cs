@@ -206,7 +206,7 @@ namespace Koromo_Copy.Console
                         string lang = metadata.Language != null ? metadata.Language : "";
                         string type = metadata.Type != null ? metadata.Type : "";
 
-                        Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artists} | {metadata.Name} | {lang} | {type} | {series} | {character} | {group} | {tags}");
+                        Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artists.PadLeft(15)} | {metadata.Name} | {lang} | {type} | {series} | {character} | {group} | {tags}");
                     }
                     else
                     {
