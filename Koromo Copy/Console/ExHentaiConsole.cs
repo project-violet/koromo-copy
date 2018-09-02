@@ -96,13 +96,19 @@ namespace Koromo_Copy.Console
         /// <param name="args"></param>
         static void ProcessAddress(string[] args)
         {
-            HitomiArticle article = JsonConvert.DeserializeObject<HitomiArticle>(args[0]);
+            HitomiArticle article = null;
+            try { article = JsonConvert.DeserializeObject<HitomiArticle>(args[0]); } catch { }
             if (article == null)
             {
-                Console.Instance.WriteErrorLine("Not valid 'HitomiArticle' objects. Check your pipe.");
+                Console.Instance.WriteErrorLine("Not valid 'HitomiArticle' objects. Check your pipe or arguments.");
                 return;
             }
-            Console.Instance.WriteLine(ExHentaiTool.GetAddressFromMagicTitle(article.Magic, article.Title));
+
+            string result = ExHentaiTool.GetAddressFromMagicTitle(article.Magic, article.Title);
+            if (result != "")
+                Console.Instance.WriteLine(result);
+            else
+                Console.Instance.WriteLine("Not found.");
         }
     }
 }
