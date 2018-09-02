@@ -72,12 +72,25 @@ namespace Koromo_Copy.Console
 
         private const int MF_BYCOMMAND = 0x00000000;
         public const int SC_CLOSE = 0xF060;
+        internal const UInt32 MF_GRAYED = 0x00000001;
 
         [DllImport("user32.dll")]
         public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        [DllImport("User32.dll")]
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        [DllImport("User32.dll")]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        private const int WS_EX_APPWINDOW = 0x40000;
+        private const int GWL_EXSTYLE = -0x14;
+        private const int WS_EX_TOOLWINDOW = 0x0080;
         
         public Console()
         {
@@ -87,9 +100,14 @@ namespace Koromo_Copy.Console
             OverrideRedirection();
 
             DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
-
             System.Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 
+            var Handle = GetConsoleWindow();
+            ShowWindow(Handle, SW_HIDE);
+            SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW);
+            ShowWindow(Handle, SW_SHOW);
+
+            System.Console.Title = "Koromo Copy Console";
             System.Console.Out.WriteLine($"Koromo Copy {Version.Text}");
             System.Console.Out.WriteLine("Copyright (C) 2018. Koromo Copy Developer");
             System.Console.Out.WriteLine("E-Mail: koromo.software@gmail.com");
