@@ -242,17 +242,19 @@ namespace Koromo_Copy.Console
                     //
                     //  파이프 후처리
                     //
-                    if (success && Pipe)
+                    if (Pipe)
                     {
                         Pipe = false;
-                        PipeConsole.Redirect(pipe_command, PipeContents.ToString());
+                        if (success)
+                        {
+                            PipeConsole.Redirect(pipe_command, PipeContents.ToString());
+                        }
+                        else
+                        {
+                            System.Console.Out.WriteLine(PipeContents.ToString());
+                        }
+                        PipeContents.Clear();
                     }
-                    else if (Pipe)
-                    {
-                        Pipe = false;
-                        System.Console.Out.WriteLine(PipeContents.ToString());
-                    }
-                    PipeContents.Clear();
                 }
                 catch (Exception e)
                 {
