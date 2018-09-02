@@ -222,7 +222,7 @@ namespace Koromo_Copy.Console
                     while (command.Length > 0)
                     {
                         string[] command_argument = command;
-                        string pipe_contents = PipeContents?.ToString();
+                        string pipe_contents = PipeContents.ToString();
                         PipeContents.Clear();
                         
                         //
@@ -235,20 +235,6 @@ namespace Koromo_Copy.Console
                             int meet_pipe = Array.FindIndex(command, w => w == ">");
                             command_argument = command.Take(meet_pipe).ToArray();
                             command = SliceArray(command, meet_pipe + 1, command.Length);
-
-                            //
-                            //  옵션은 뒤로 빼고 나머지는 그대로
-                            //
-                            List<string> arrages = new List<string>();
-                            List<string> options = new List<string>();
-
-                            foreach (var arg in command_argument)
-                                if (arg.StartsWith("-"))
-                                    arrages.Add(arg);
-                                else
-                                    arrages.Add(arg);
-
-                            command_argument = arrages.Concat(options).ToArray();
                         }
                         else
                         {
@@ -276,7 +262,7 @@ namespace Koromo_Copy.Console
                                 success = redirections[command_argument[0]].Redirect(list.ToArray(), pipe_contents);
                             }
                         }
-                        else if (pipe_contents != null)
+                        else if (pipe_contents != "")
                         {
                             success = redirections["pipe"].Redirect(command_argument, pipe_contents);
                         }
@@ -311,7 +297,13 @@ namespace Koromo_Copy.Console
 
         public void PrintHelp()
         {
-
+            System.Console.Out.WriteLine($"Koromo Copy Console");
+            System.Console.Out.WriteLine($"Copyright (C) 2018. Koromo Copy Developer");
+            System.Console.Out.WriteLine($"");
+            System.Console.Out.Write($"For more information, please check ");
+            System.Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.Out.WriteLine("https://github.com/dc-koromo/koromo-copy/blob/master/Document/Development.md");
+            System.Console.ResetColor();
         }
 
         public void Push(DateTime dt, string contents)
