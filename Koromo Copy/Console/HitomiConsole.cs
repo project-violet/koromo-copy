@@ -29,6 +29,9 @@ namespace Koromo_Copy.Console
 
         [CommandLine("-type", CommandType.EQUAL)]
         public string Type;
+
+        [CommandLine("-downloadmetadata", CommandType.OPTION)]
+        public bool DownloadMetadata;
     }
 
     /// <summary>
@@ -61,6 +64,10 @@ namespace Koromo_Copy.Console
             else if (option.ImageLink != null)
             {
                 ProcessImage(option.ImageLink, option.Type);
+            }
+            else if (option.DownloadMetadata)
+            {
+                ProcessDownloadMetadataAsync();
             }
 
             return true;
@@ -118,6 +125,14 @@ namespace Koromo_Copy.Console
             {
                 Console.Instance.WriteErrorLine($"'{type}' is not correct type. Please input 'small' or 'big'.");
             }
+        }
+
+        /// <summary>
+        /// 메타데이터를 다운로드합니다.
+        /// </summary>
+        static void ProcessDownloadMetadataAsync()
+        {
+            Console.Instance.GlobalTask = HitomiData.Instance.DownloadMetadata();
         }
     }
 }

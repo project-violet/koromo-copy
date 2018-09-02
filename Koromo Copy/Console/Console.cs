@@ -15,6 +15,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Koromo_Copy.Console
 {
@@ -182,11 +183,13 @@ namespace Koromo_Copy.Console
                 result.Add(array[i]);
             return result.ToArray();
         }
+
+        public Task GlobalTask;
         
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
         /// </summary>
-        public void Loop()
+        public async void Loop()
         {
             var redirections = new Dictionary<string, IConsole>()
             {
@@ -292,6 +295,8 @@ namespace Koromo_Copy.Console
                     System.Console.Out.WriteLine($"Message: {e.Message}");
                     System.Console.Out.WriteLine($"StackTrace: {e.StackTrace}");
                 }
+
+                await GlobalTask;
             }
         }
 
