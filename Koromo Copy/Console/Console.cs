@@ -191,6 +191,7 @@ namespace Koromo_Copy.Console
             var redirections = new Dictionary<string, IConsole>()
             {
                 {"hitomi", new HitomiConsole()},
+                {"exh", new ExHentaiConsole()},
             };
             
             System.Console.Out.WriteLine("");

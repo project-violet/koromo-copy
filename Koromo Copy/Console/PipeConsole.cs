@@ -21,7 +21,7 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
         
-        [CommandLine("out", CommandType.ARGUMENTS)]
+        [CommandLine("out", CommandType.ARGUMENTS, Help = "use out <text file> [-i]")]
         public string[] Out;
 
         [CommandLine("-i", CommandType.OPTION)]

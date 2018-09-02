@@ -54,6 +54,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,8 +71,11 @@
   <ItemGroup>
     <Compile Include="Console\CommandLineParser.cs" />
     <Compile Include="Console\Console.cs" />
+    <Compile Include="Console\ExHentaiConsole.cs" />
     <Compile Include="Console\HitomiConsole.cs" />
     <Compile Include="Console\PipeConsole.cs" />
+    <Compile Include="EH\EHentaiArticle.cs" />
+    <Compile Include="EH\ExHentaiParser.cs" />
     <Compile Include="Extends.cs" />
     <Compile Include="Hitomi\HitomiArticle.cs" />
     <Compile Include="Hitomi\HitomiCommon.cs" />
@@ -125,7 +129,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EXH\" />
     <Folder Include="MM\" />
     <Folder Include="Selenium\" />
   </ItemGroup>
