@@ -102,6 +102,7 @@ namespace Koromo_Copy.Console
 
             for (int i = 0; i < lines.Length; i++)
             {
+                if (lines[i] == "") continue;
                 string match_string = pattern;
                 if (using_regex)
                 {
@@ -115,7 +116,12 @@ namespace Koromo_Copy.Console
                     if (ignore_case && !(lines[i]?.IndexOf(pattern, StringComparison.OrdinalIgnoreCase) >= 0)) continue;
                 }
 
-                int offset = lines[i].IndexOf(match_string);
+                int offset;
+                if (!ignore_case)
+                    offset = lines[i].IndexOf(match_string);
+                else
+                    offset = lines[i].IndexOf(match_string, StringComparison.OrdinalIgnoreCase);
+
                 string p1 = lines[i].Remove(offset);
                 string p2 = match_string;
                 string p3 = lines[i].Substring(offset + match_string.Length);
