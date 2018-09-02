@@ -184,6 +184,10 @@ namespace Koromo_Copy.Console
             return result.ToArray();
         }
 
+        /// <summary>
+        /// 비동기로 실행되고 있는 태스크를 등록합니다.
+        /// 이 태스크가 끝나야 Loop가 진행됩니다.
+        /// </summary>
         public Task GlobalTask;
         
         /// <summary>
@@ -296,7 +300,11 @@ namespace Koromo_Copy.Console
                     System.Console.Out.WriteLine($"StackTrace: {e.StackTrace}");
                 }
 
-                await GlobalTask;
+                if (GlobalTask != null)
+                {
+                    await GlobalTask;
+                    GlobalTask = null;
+                }
             }
         }
 
