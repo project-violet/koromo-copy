@@ -72,6 +72,7 @@
     <Compile Include="Console\CommandLineParser.cs" />
     <Compile Include="Console\Console.cs" />
     <Compile Include="Console\ExHentaiConsole.cs" />
+    <Compile Include="Console\GrepConsole.cs" />
     <Compile Include="Console\HitomiConsole.cs" />
     <Compile Include="Console\InConsole.cs" />
     <Compile Include="Console\OutConsole.cs" />
