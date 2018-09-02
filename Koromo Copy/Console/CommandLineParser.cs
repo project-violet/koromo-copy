@@ -9,6 +9,7 @@
 using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Koromo_Copy.Console
@@ -28,6 +29,16 @@ namespace Koromo_Copy.Console
     {
         public CommandType CType { get; private set; }
         public string Option { get; private set; }
+
+        /// <summary>
+        /// 인자 규칙이 맞지 않을 경우에 삽입할 기본 인자입니다.
+        /// </summary>
+        public bool DefaultArgument { get; set; }
+
+        /// <summary>
+        /// 파이프를 사용할 변수임을 나타냅니다.
+        /// </summary>
+        public bool Pipe { get; set; }
 
         /// <summary>
         /// 명령 구문이 틀렸을때 보여줄 메세지 입니다.
@@ -57,18 +68,113 @@ namespace Koromo_Copy.Console
     }
 
     /// <summary>
+    /// 커맨드 라인을 정리하는 도구 모음입니다.
+    /// </summary>
+    public class CommandLineUtil
+    {
+        /// <summary>
+        /// 인자배열에 옵션이 있는지 없는지 검사합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static bool AnyOption(string[] args)
+        {
+            return args.ToList().Any(x => x[0] == '-');
+        }
+
+        /// <summary>
+        /// 특정 옵션을 맨 앞에 넣습니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        public static string[] PushFront(string[] args, string option)
+        {
+            var list = args.ToList();
+            list.Insert(0, option);
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// 특정 옵션을 특정 위치에 넣습니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        public static string[] Insert(string[] args, string option, int index)
+        {
+            var list = args.ToList();
+            list.Insert(index, option);
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// 형식에 어긋난 인자가 있다면 그것을 가져옵니다.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="argv"></param>
+        /// <returns></returns>
+        public static List<int> GetWeirdArguments<T>(string[] argv)
+            where T: IConsoleOption, new()
+        {
+            var field = CommandLineParser<T>.GetFields();
+            List<int> result = new List<int>();
+
+            for (int i = 0; i < argv.Length; i++)
+            {
+                string token = argv[i].Split('=')[0];
+                if (field.ContainsKey(token))
+                {
+                    var cl = field[token];
+                    if (cl.Item2.CType == CommandType.ARGUMENTS)
+                        i += cl.Item2.ArgumentsCount;
+                }
+                else
+                {
+                    result.Add(i);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 기본 인자를 삽입합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="pipe"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        public static string[] InsertWeirdArguments<T>(string[] args, bool pipe, string option)
+            where T : IConsoleOption, new()
+        {
+            var weird = GetWeirdArguments<T>(args);
+
+            if (weird.Count > 0 && pipe)
+                args = Insert(args, option, weird[0]);
+
+            return args;
+        }
+
+    }
+
+    /// <summary>
     /// 커맨드 라인 구문분석 도구입니다.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class CommandLineParser<T>
         where T: IConsoleOption, new()
     {
-        public static T Parse(string[] argv)
+        /// <summary>
+        /// Attribute 정보가 들어있는 필드 정보를 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, Tuple<string, CommandLine>> GetFields()
         {
             Type type = typeof(T);
             FieldInfo[] fields = type.GetFields();
-            Dictionary<string, Tuple<string, CommandLine>> field = new Dictionary<string, Tuple<string, CommandLine>>();
-            
+            var field = new Dictionary<string, Tuple<string, CommandLine>>();
+
             foreach (FieldInfo m in fields)
             {
                 object[] attrs = m.GetCustomAttributes(false);
@@ -80,7 +186,19 @@ namespace Koromo_Copy.Console
                         field.Add(clcast.Option, Tuple.Create(m.Name, clcast));
                 }
             }
-            
+
+            return field;
+        }
+
+        /// <summary>
+        /// Attribute를 기반으로 커맨드라인을 분석합니다.
+        /// </summary>
+        /// <param name="argv"></param>
+        /// <param name="pipe"></param>
+        /// <returns></returns>
+        public static T Parse(string[] argv, bool pipe = false, string contents = "")
+        {
+            var field = GetFields();
             T result = new T();
 
             //
@@ -104,13 +222,21 @@ namespace Koromo_Copy.Console
                     else if (cl.Item2.CType == CommandType.ARGUMENTS)
                     {
                         List<string> sub_args = new List<string>();
+
+                        int arguments_count = cl.Item2.ArgumentsCount;
+
+                        if (cl.Item2.Pipe == true && pipe == true)
+                        {
+                            arguments_count--;
+                            sub_args.Add(contents);
+                        }
                         
-                        for (int j = 1; j <= cl.Item2.ArgumentsCount; j++)
+                        for (int j = 1; j <= arguments_count; j++)
                         {
                             if (i + j == argv.Length)
                             {
                                 typeof(T).GetField("Error").SetValue(result, true);
-                                typeof(T).GetField("ErrorMessage").SetValue(result, $"'{argv[i]}' require {cl.Item2.ArgumentsCount-j+1} more sub arguments.");
+                                typeof(T).GetField("ErrorMessage").SetValue(result, $"'{argv[i]}' require {arguments_count - j + 1} more sub arguments.");
                                 typeof(T).GetField("HelpMessage").SetValue(result, cl.Item2.Help);
                                 return result;
                             }

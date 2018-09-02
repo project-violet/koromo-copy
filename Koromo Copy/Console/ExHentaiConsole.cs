@@ -7,8 +7,10 @@
 ***/
 
 using Koromo_Copy.EH;
+using Koromo_Copy.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
+using Newtonsoft.Json;
 
 namespace Koromo_Copy.Console
 {
@@ -22,6 +24,9 @@ namespace Koromo_Copy.Console
 
         [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Hitomi Number>")]
         public string[] Article;
+
+        [CommandLine("-addr", CommandType.ARGUMENTS, Help = "use -addr <Hitomi Article>", Pipe = true)]
+        public string[] Address;
     }
 
     /// <summary>
@@ -32,9 +37,9 @@ namespace Koromo_Copy.Console
         /// <summary>
         /// 익헨 콘솔 리다이렉트
         /// </summary>
-        static bool Redirect(string[] arguments)
+        static bool Redirect(string[] arguments, string contents)
         {
-            HitomiConsoleOption option = CommandLineParser<HitomiConsoleOption>.Parse(arguments);
+            ExHentaiConsoleOption option = CommandLineParser<ExHentaiConsoleOption>.Parse(arguments, contents != "", contents);
 
             if (option.Error)
             {
@@ -51,13 +56,17 @@ namespace Koromo_Copy.Console
             {
                 ProcessArticle(option.Article);
             }
-
+            else if (option.Address != null)
+            {
+                ProcessAddress(option.Address);
+            }
+            
             return true;
         }
 
-        bool IConsole.Redirect(string[] arguments)
+        bool IConsole.Redirect(string[] arguments, string contents)
         {
-            return Redirect(arguments);
+            return Redirect(arguments, contents);
         }
 
         static void PrintHelp()
@@ -79,6 +88,21 @@ namespace Koromo_Copy.Console
             string html_source = NetCommon.DownloadExHentaiString(args[0]);
             EHentaiArticle article = ExHentaiParser.ParseArticleData(html_source);
             Console.Instance.WriteLine(article);
+        }
+
+        /// <summary>
+        /// 히토미아티클을 이용해 익헨 주소를 가져옵니다.
+        /// </summary>
+        /// <param name="args"></param>
+        static void ProcessAddress(string[] args)
+        {
+            HitomiArticle article = JsonConvert.DeserializeObject<HitomiArticle>(args[0]);
+            if (article == null)
+            {
+                Console.Instance.WriteErrorLine("Not valid 'HitomiArticle' objects. Check your pipe.");
+                return;
+            }
+            Console.Instance.WriteLine(ExHentaiTool.GetAddressFromMagicTitle(article.Magic, article.Title));
         }
     }
 }

@@ -190,8 +190,12 @@ namespace Koromo_Copy.Console
         {
             var redirections = new Dictionary<string, IConsole>()
             {
+                // normal command
                 {"hitomi", new HitomiConsole()},
                 {"exh", new ExHentaiConsole()},
+
+                // pipeline command
+                {"out", new OutConsole()}
             };
             
             System.Console.Out.WriteLine("");
@@ -214,65 +218,86 @@ namespace Koromo_Copy.Console
                 try
                 {
                     string[] command = ParseArgument(System.Console.In.ReadLine());
-                    string[] pipe_command = null;
 
-                    if (command.Length == 0) continue;
-
-                    //
-                    //  파이프 전처리
-                    //
-                    if (command.Contains(">"))
+                    while (command.Length > 0)
                     {
-                        Pipe = true;
-                        PipeContents = new StringBuilder();
-
-                        int meet_pipe = Array.FindIndex(command, w => w == ">");
-                        pipe_command = SliceArray(command, meet_pipe + 1, command.Length);
-                        command = command.Take(meet_pipe).ToArray();
-                    }
-
-                    //
-                    //  커맨드 처리
-                    //
-                    bool success = false;
-                    if (command[0] == "help")
-                    {
-                        PrintHelp();
-                    }
-                    else if (redirections.ContainsKey(command[0]))
-                    {
-                        if (command.Length == 1)
-                        {
-                            success = redirections[command[0]].Redirect(Array.Empty<string>());
-                        }
-                        else
-                        {
-                            var list = command.ToList();
-                            list.RemoveAt(0);
-                            success = redirections[command[0]].Redirect(list.ToArray());
-                        }
-                    }
-                    else
-                    {
-                        System.Console.Out.WriteLine($"{command[0]}: command not found");
-                        System.Console.Out.WriteLine($"try 'help' command!");
-                    }
-
-                    //
-                    //  파이프 후처리
-                    //
-                    if (Pipe)
-                    {
-                        Pipe = false;
-                        if (success)
-                        {
-                            PipeConsole.Redirect(pipe_command, PipeContents.ToString());
-                        }
-                        else
-                        {
-                            System.Console.Out.WriteLine(PipeContents.ToString());
-                        }
+                        string[] command_argument = command;
+                        string pipe_contents = PipeContents?.ToString();
                         PipeContents.Clear();
+                        
+                        //
+                        //  파이프 전처리
+                        //
+                        if (command.Contains(">"))
+                        {
+                            Pipe = true;
+
+                            int meet_pipe = Array.FindIndex(command, w => w == ">");
+                            command_argument = command.Take(meet_pipe).ToArray();
+                            command = SliceArray(command, meet_pipe + 1, command.Length);
+
+                            //
+                            //  옵션은 뒤로 빼고 나머지는 그대로
+                            //
+                            List<string> arrages = new List<string>();
+                            List<string> options = new List<string>();
+
+                            foreach (var arg in command_argument)
+                                if (arg.StartsWith("-"))
+                                    arrages.Add(arg);
+                                else
+                                    arrages.Add(arg);
+
+                            command_argument = arrages.Concat(options).ToArray();
+                        }
+                        else
+                        {
+                            command = Array.Empty<string>();
+                        }
+
+                        //
+                        //  커맨드 처리
+                        //
+                        bool success = false;
+                        if (command_argument[0] == "help")
+                        {
+                            PrintHelp();
+                        }
+                        else if (redirections.ContainsKey(command_argument[0]))
+                        {
+                            if (command_argument.Length == 1)
+                            {
+                                success = redirections[command_argument[0]].Redirect(Array.Empty<string>(), pipe_contents);
+                            }
+                            else
+                            {
+                                var list = command_argument.ToList();
+                                list.RemoveAt(0);
+                                success = redirections[command_argument[0]].Redirect(list.ToArray(), pipe_contents);
+                            }
+                        }
+                        else if (pipe_contents != null)
+                        {
+                            success = redirections["pipe"].Redirect(command_argument, pipe_contents);
+                        }
+                        else
+                        {
+                            System.Console.Out.WriteLine($"{command_argument[0]}: command not found");
+                            System.Console.Out.WriteLine($"try 'help' command!");
+                        }
+
+                        //
+                        //  파이프 후처리
+                        //
+                        if (!success)
+                        {
+                            if (Pipe)
+                            {
+                                System.Console.Out.WriteLine(PipeContents.ToString());
+                            }
+                            command = Array.Empty<string>();
+                        }
+                        Pipe = false;
                     }
                 }
                 catch (Exception e)
@@ -300,7 +325,7 @@ namespace Koromo_Copy.Console
         }
 
         public bool Pipe = false;
-        public StringBuilder PipeContents;
+        public StringBuilder PipeContents = new StringBuilder();
 
         public void WriteLine(string contents)
         {
@@ -315,5 +340,13 @@ namespace Koromo_Copy.Console
             WriteLine(Monitor.SerializeObject(contents));
         }
 
+        public void WriteErrorLine(string contents)
+        {
+            System.Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.Out.Write("error");
+            System.Console.ResetColor();
+            System.Console.Out.Write(": ");
+            System.Console.Out.WriteLine(contents);
+        }
     }
 }

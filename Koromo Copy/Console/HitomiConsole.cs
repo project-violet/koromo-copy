@@ -39,7 +39,7 @@ namespace Koromo_Copy.Console
         /// <summary>
         /// 히토미 콘솔 리다이렉트
         /// </summary>
-        static bool Redirect(string[] arguments)
+        static bool Redirect(string[] arguments, string contents)
         {
             HitomiConsoleOption option = CommandLineParser<HitomiConsoleOption>.Parse(arguments);
 
@@ -66,9 +66,9 @@ namespace Koromo_Copy.Console
             return true;
         }
 
-        bool IConsole.Redirect(string[] arguments)
+        bool IConsole.Redirect(string[] arguments, string contents)
         {
-            return Redirect(arguments);
+            return Redirect(arguments, contents);
         }
 
         static void PrintHelp()

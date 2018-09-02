@@ -73,8 +73,10 @@
     <Compile Include="Console\Console.cs" />
     <Compile Include="Console\ExHentaiConsole.cs" />
     <Compile Include="Console\HitomiConsole.cs" />
-    <Compile Include="Console\PipeConsole.cs" />
+    <Compile Include="Console\InConsole.cs" />
+    <Compile Include="Console\OutConsole.cs" />
     <Compile Include="EH\EHentaiArticle.cs" />
+    <Compile Include="EH\ExHentaiTool.cs" />
     <Compile Include="EH\ExHentaiParser.cs" />
     <Compile Include="Extends.cs" />
     <Compile Include="Hitomi\HitomiArticle.cs" />

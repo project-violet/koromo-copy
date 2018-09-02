@@ -7,78 +7,73 @@
 ***/
 
 using Koromo_Copy.Interface;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Koromo_Copy.Console
 {
     /// <summary>
-    /// 파이프 콘솔 옵션입니다.
+    /// Out 콘솔 옵션입니다.
     /// </summary>
-    public class PipeConsoleOption : IConsoleOption
+    public class OutConsoleOption : IConsoleOption
     {
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
-        
-        [CommandLine("out", CommandType.ARGUMENTS, Help = "use out <text file> [-i]")]
-        public string[] Out;
+
+        [CommandLine("-o", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true)]
+        public string[] Output;
 
         [CommandLine("-i", CommandType.OPTION)]
-        public bool Ignore;
+        public bool Overwrite;
     }
 
     /// <summary>
-    /// 파이프 처리를 총괄하는 클래스입니다.
+    /// 파일 쓰기에 관여하는 콘솔 클래스입니다.
     /// </summary>
-    public class PipeConsole
+    public class OutConsole : IConsole
     {
         /// <summary>
-        /// 파이프 콘솔 리다이렉트
+        /// Out 콘솔 리다이렉트
         /// </summary>
-        public static void Redirect(string[] arguments, string contents)
+        static bool Redirect(string[] arguments, string contents)
         {
-            //
-            //  옵션은 뒤로 빼고 나머지는 그대로
-            //
-            List<string> arrages = new List<string>();
-            List<string> options = new List<string>();
-
-            foreach (var arg in arguments)
-                if (arg.StartsWith("-"))
-                    arrages.Add(arg);
-                else
-                    arrages.Add(arg);
-
-            arguments = arrages.Concat(options).ToArray();
-
-            PipeConsoleOption option = CommandLineParser<PipeConsoleOption>.Parse(arguments);
+            arguments = CommandLineUtil.InsertWeirdArguments<OutConsoleOption>(arguments, contents != "", "-o");
+            OutConsoleOption option = CommandLineParser<OutConsoleOption>.Parse(arguments);
 
             if (option.Error)
             {
                 Console.Instance.WriteLine(option.ErrorMessage);
                 if (option.HelpMessage != null)
                     Console.Instance.WriteLine(option.HelpMessage);
+                return false;
             }
             else if (option.Help)
             {
                 PrintHelp();
             }
-            else if (option.Out != null)
+            else if (option.Output != null)
             {
-                ProcessOut(option.Out, contents, option.Ignore);
+                ProcessOut(option.Output, contents, option.Overwrite);
             }
+
+            return true;
+        }
+
+        bool IConsole.Redirect(string[] arguments, string contents)
+        {
+            return Redirect(arguments, contents);
         }
 
         static void PrintHelp()
         {
             Console.Instance.WriteLine(
-                "Pipe\r\n" +
+                "Out Console Pipeline\r\n" +
+                "This command must used with pipe.\r\n" +
                 "\r\n" +
-                " out <text file> [-i]: Write contents to text file.\r\n"
+                " -o (<pipe>|<address>): Set output file address.\r\n" +
+                " -i : overwrite"
                 );
         }
-        
+
         /// <summary>
         /// 콘텐츠를 파일에 씁니다.
         /// </summary>
@@ -86,6 +81,13 @@ namespace Koromo_Copy.Console
         /// <param name="contents"></param>
         static void ProcessOut(string[] args, string contents, bool overwrite = false)
         {
+            if (contents == "")
+            {
+                Console.Instance.WriteErrorLine(
+                    $"Pipe is null or empty.");
+                return;
+            }
+
             if (!overwrite && File.Exists(args[0]))
             {
                 Console.Instance.WriteLine(
@@ -96,6 +98,5 @@ namespace Koromo_Copy.Console
             Monitor.Instance.Push($"Write file: {args[0]}");
             File.WriteAllText(args[0], contents);
         }
-
     }
 }

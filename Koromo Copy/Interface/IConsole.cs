@@ -18,9 +18,9 @@ namespace Koromo_Copy.Interface
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns>리다이렉트가 성공적으로 수행되었는지의 여부입니다.</returns>
-        bool Redirect(string[] arguments);
+        bool Redirect(string[] arguments, string contents);
     }
-
+    
     /// <summary>
     /// 반드시 포함되어야하는 콘솔 옵션입니다.
     /// </summary>
