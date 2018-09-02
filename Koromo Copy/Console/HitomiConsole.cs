@@ -114,6 +114,10 @@ namespace Koromo_Copy.Console
             {
                 Console.Instance.WriteLine(image_link.Select(x => $"{HitomiCommon.HitomiThumbnailBig}{args[0]}/{x}.jpg"));
             }
+            else
+            {
+                Console.Instance.WriteErrorLine($"'{type}' is not correct type. Please input 'small' or 'big'.");
+            }
         }
     }
 }
