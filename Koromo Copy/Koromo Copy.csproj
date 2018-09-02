@@ -71,6 +71,7 @@
     <Compile Include="Console\CommandLineParser.cs" />
     <Compile Include="Console\Console.cs" />
     <Compile Include="Console\HitomiConsole.cs" />
+    <Compile Include="Console\PipeConsole.cs" />
     <Compile Include="Extends.cs" />
     <Compile Include="Hitomi\HitomiArticle.cs" />
     <Compile Include="Hitomi\HitomiCommon.cs" />
@@ -124,6 +125,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="EXH\" />
+    <Folder Include="MM\" />
     <Folder Include="Selenium\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

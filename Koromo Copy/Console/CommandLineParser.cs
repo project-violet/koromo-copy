@@ -17,6 +17,7 @@ namespace Koromo_Copy.Console
     {
         OPTION,
         ARGUMENTS,
+        EQUAL,
     }
 
     /// <summary>
@@ -84,9 +85,10 @@ namespace Koromo_Copy.Console
 
             for (int i = 0; i < argv.Length; i++)
             {
-                if (field.ContainsKey(argv[i]))
+                string token = argv[i].Split('=')[0];
+                if (field.ContainsKey(token))
                 {
-                    var cl = field[argv[i]];
+                    var cl = field[token];
                     if (cl.Item2.CType == CommandType.OPTION)
                     {
                         //
@@ -103,7 +105,7 @@ namespace Koromo_Copy.Console
                             if (i + j == argv.Length)
                             {
                                 typeof(T).GetField("Error").SetValue(result, true);
-                                typeof(T).GetField("ErrorMessage").SetValue(result, $"'{argv[i]}' require one sub arguments.");
+                                typeof(T).GetField("ErrorMessage").SetValue(result, $"'{argv[i]}' require {cl.Item2.ArgumentsCount-j+1} more sub arguments.");
                                 return result;
                             }
 
@@ -113,6 +115,19 @@ namespace Koromo_Copy.Console
                         i += cl.Item2.ArgumentsCount;
                         
                         typeof(T).GetField(cl.Item1).SetValue(result, sub_args.ToArray());
+                    }
+                    else if (cl.Item2.CType == CommandType.EQUAL)
+                    {
+                        string[] split = argv[i].Split('=');
+
+                        if (split.Length == 1)
+                        {
+                            typeof(T).GetField("Error").SetValue(result, true);
+                            typeof(T).GetField("ErrorMessage").SetValue(result, $"'{split[0]}' must have equal delimiter.");
+                            return result;
+                        }
+
+                        typeof(T).GetField(cl.Item1).SetValue(result, split[1]);
                     }
                     any_option = false;
                 }

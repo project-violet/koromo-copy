@@ -156,6 +156,14 @@ namespace Koromo_Copy.Console
 
             return argv.ToArray();
         }
+
+        public static string[] SliceArray(string[] array, int starts, int ends)
+        {
+            List<string> result = new List<string>();
+            for (int i = starts; i < ends; i++)
+                result.Add(array[i]);
+            return result.ToArray();
+        }
         
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
@@ -164,9 +172,9 @@ namespace Koromo_Copy.Console
         {
             var redirections = new Dictionary<string, IConsole>()
             {
-                {"hitomi", new HitomiConsole()}
+                {"hitomi", new HitomiConsole()},
             };
-
+            
             System.Console.Out.WriteLine("");
 
             while (true)
@@ -187,7 +195,27 @@ namespace Koromo_Copy.Console
                 try
                 {
                     string[] command = ParseArgument(System.Console.In.ReadLine());
+                    string[] pipe_command = null;
+
                     if (command.Length == 0) continue;
+
+                    //
+                    //  파이프 전처리
+                    //
+                    if (command.Contains(">"))
+                    {
+                        Pipe = true;
+                        PipeContents = new StringBuilder();
+
+                        int meet_pipe = Array.FindIndex(command, w => w == ">");
+                        pipe_command = SliceArray(command, meet_pipe + 1, command.Length);
+                        command = command.Take(meet_pipe).ToArray();
+                    }
+
+                    //
+                    //  커맨드 처리
+                    //
+                    bool success = false;
                     if (command[0] == "help")
                     {
                         PrintHelp();
@@ -196,13 +224,13 @@ namespace Koromo_Copy.Console
                     {
                         if (command.Length == 1)
                         {
-                            redirections[command[0]].Redirect(Array.Empty<string>());
+                            success = redirections[command[0]].Redirect(Array.Empty<string>());
                         }
                         else
                         {
                             var list = command.ToList();
                             list.RemoveAt(0);
-                            redirections[command[0]].Redirect(list.ToArray());
+                            success = redirections[command[0]].Redirect(list.ToArray());
                         }
                     }
                     else
@@ -210,6 +238,21 @@ namespace Koromo_Copy.Console
                         System.Console.Out.WriteLine($"{command[0]}: command not found");
                         System.Console.Out.WriteLine($"try 'help' command!");
                     }
+
+                    //
+                    //  파이프 후처리
+                    //
+                    if (success && Pipe)
+                    {
+                        Pipe = false;
+                        PipeConsole.Redirect(pipe_command, PipeContents.ToString());
+                    }
+                    else if (Pipe)
+                    {
+                        Pipe = false;
+                        System.Console.Out.WriteLine(PipeContents.ToString());
+                    }
+                    PipeContents.Clear();
                 }
                 catch (Exception e)
                 {
@@ -235,9 +278,21 @@ namespace Koromo_Copy.Console
             System.Console.Out.WriteLine($" {contents}");
         }
 
+        public bool Pipe = false;
+        public StringBuilder PipeContents;
+
         public void WriteLine(string contents)
         {
-            System.Console.WriteLine(contents);
+            if (Pipe == true)
+                PipeContents.Append(contents);
+            else
+                System.Console.WriteLine(contents);
         }
+
+        public void WriteLine(object contents)
+        {
+            WriteLine(Monitor.SerializeObject(contents));
+        }
+
     }
 }
