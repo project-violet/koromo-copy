@@ -9,6 +9,7 @@
 using Koromo_Copy.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
+using System;
 using System.Linq;
 
 namespace Koromo_Copy.Console
@@ -32,6 +33,9 @@ namespace Koromo_Copy.Console
 
         [CommandLine("-downloadmetadata", CommandType.OPTION)]
         public bool DownloadMetadata;
+
+        [CommandLine("-loadmetadata", CommandType.OPTION)]
+        public bool LoadMetadata;
     }
 
     /// <summary>
@@ -67,7 +71,11 @@ namespace Koromo_Copy.Console
             }
             else if (option.DownloadMetadata)
             {
-                ProcessDownloadMetadataAsync();
+                ProcessDownloadMetadata();
+            }
+            else if (option.LoadMetadata)
+            {
+                ProcessLoadMetadata();
             }
 
             return true;
@@ -130,9 +138,26 @@ namespace Koromo_Copy.Console
         /// <summary>
         /// 메타데이터를 다운로드합니다.
         /// </summary>
-        static void ProcessDownloadMetadataAsync()
+        static void ProcessDownloadMetadata()
         {
             Console.Instance.GlobalTask = HitomiData.Instance.DownloadMetadata();
+        }
+
+        /// <summary>
+        /// 메타데이터를 로드합니다..
+        /// </summary>
+        static void ProcessLoadMetadata()
+        {
+            HitomiData.Instance.LoadMetadataJson();
+            
+            if (HitomiData.Instance.metadata_collection != null)
+            {
+                Console.Instance.WriteLine($"Load metadata: {HitomiData.Instance.metadata_collection.Count.ToString("#,#")} articles");
+            }
+            else
+            {
+                Console.Instance.WriteErrorLine("'metadata.json' file does not exist or is a incorrect file.");
+            }
         }
     }
 }

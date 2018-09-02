@@ -305,6 +305,8 @@ namespace Koromo_Copy.Console
                     await GlobalTask;
                     GlobalTask = null;
                 }
+
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             }
         }
 

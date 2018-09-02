@@ -85,6 +85,22 @@ namespace Koromo_Copy.Hitomi
                 Monitor.Instance.Push($"Download complete: [{downloadCount.ToString("00")}/{number_of_gallery_jsons}] {gallerie_json_uri(no)}");
             }
         }
+        
+        public void LoadMetadataJson()
+        {
+            if (CheckMetadataExist())
+                metadata_collection = JsonConvert.DeserializeObject<List<HitomiMetadata>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadata.json")));
+        }
+
+        public bool CheckMetadataExist()
+        {
+            return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadata.json"));
+        }
+
+        public bool CheckHiddendataExist()
+        {
+            return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json"));
+        }
         #endregion
 
     }
