@@ -200,6 +200,7 @@ namespace Koromo_Copy.Console
                 // normal command
                 {"hitomi", new HitomiConsole()},
                 {"exh", new ExHentaiConsole()},
+                {"grep", new GrepConsole()},
 
                 // pipeline command
                 {"out", new OutConsole()}
@@ -280,6 +281,15 @@ namespace Koromo_Copy.Console
                         }
 
                         //
+                        //  모든 태스크가 끝날때까지 기다림
+                        //
+                        if (GlobalTask != null)
+                        {
+                            await GlobalTask;
+                            GlobalTask = null;
+                        }
+
+                        //
                         //  파이프 후처리
                         //
                         if (!success)
@@ -291,6 +301,7 @@ namespace Koromo_Copy.Console
                             command = Array.Empty<string>();
                         }
                         Pipe = false;
+
                     }
                 }
                 catch (Exception e)
@@ -298,12 +309,6 @@ namespace Koromo_Copy.Console
                     System.Console.Out.WriteLine($"Error occurred on processing!");
                     System.Console.Out.WriteLine($"Message: {e.Message}");
                     System.Console.Out.WriteLine($"StackTrace: {e.StackTrace}");
-                }
-
-                if (GlobalTask != null)
-                {
-                    await GlobalTask;
-                    GlobalTask = null;
                 }
 
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
@@ -334,17 +339,30 @@ namespace Koromo_Copy.Console
         public bool Pipe = false;
         public StringBuilder PipeContents = new StringBuilder();
 
-        public void WriteLine(string contents)
+        public void WriteLine(string contents, bool crlf = true)
         {
             if (Pipe == true)
-                PipeContents.Append(contents);
+            {
+                if (crlf)
+                    PipeContents.Append(contents + "\r\n");
+                else
+                    PipeContents.Append(contents);
+            }
             else
                 System.Console.WriteLine(contents);
         }
 
+        public void Write(string contents)
+        {
+            if (Pipe == true)
+                PipeContents.Append(contents);
+            else
+                System.Console.Write(contents);
+        }
+
         public void WriteLine(object contents)
         {
-            WriteLine(Monitor.SerializeObject(contents));
+            WriteLine(Monitor.SerializeObject(contents), false);
         }
 
         public void WriteErrorLine(string contents)
