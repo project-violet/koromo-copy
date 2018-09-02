@@ -156,6 +156,28 @@ namespace Koromo_Copy.Console
             return args;
         }
 
+        /// <summary>
+        /// 합쳐진 인자를 분리합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static string[] SplitCombinedOptions(string[] args)
+        {
+            List<string> result = new List<string>();
+            foreach (var arg in args)
+            {
+                if (arg.StartsWith("-") && !arg.Contains("="))
+                {
+                    for (int i = 1; i < arg.Length; i++)
+                        result.Add($"-{arg[i]}");
+                }
+                else
+                {
+                    result.Add(arg);
+                }
+            }
+            return result.ToArray();
+        }
     }
 
     /// <summary>
