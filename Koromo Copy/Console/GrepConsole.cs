@@ -112,7 +112,7 @@ namespace Koromo_Copy.Console
                 }
                 else
                 {
-                    if (!ignore_case && !lines[i].Contains(pattern)) continue;
+                    if (!ignore_case && !(lines[i]?.IndexOf(pattern) >= 0)) continue;
                     if (ignore_case && !(lines[i]?.IndexOf(pattern, StringComparison.OrdinalIgnoreCase) >= 0)) continue;
                 }
 
@@ -123,7 +123,7 @@ namespace Koromo_Copy.Console
                     offset = lines[i].IndexOf(match_string, StringComparison.OrdinalIgnoreCase);
 
                 string p1 = lines[i].Remove(offset);
-                string p2 = match_string;
+                string p2 = lines[i].Substring(offset, match_string.Length);
                 string p3 = lines[i].Substring(offset + match_string.Length);
 
                 if (show_number)
