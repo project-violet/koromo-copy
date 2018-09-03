@@ -76,6 +76,8 @@
     <Compile Include="Console\HitomiConsole.cs" />
     <Compile Include="Console\InConsole.cs" />
     <Compile Include="Console\OutConsole.cs" />
+    <Compile Include="Console\Utility\EnumConsole.cs" />
+    <Compile Include="Console\Utility\SeleniumConsole.cs" />
     <Compile Include="EH\EHentaiArticle.cs" />
     <Compile Include="EH\ExHentaiTool.cs" />
     <Compile Include="EH\ExHentaiParser.cs" />
