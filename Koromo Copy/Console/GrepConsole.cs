@@ -20,10 +20,10 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-input", CommandType.ARGUMENTS, Pipe = true)]
+        [CommandLine("--input", CommandType.ARGUMENTS, Pipe = true)]
         public string[] Input;
 
-        [CommandLine("-p", CommandType.ARGUMENTS, DefaultArgument = true)]
+        [CommandLine("--p", CommandType.ARGUMENTS, DefaultArgument = true)]
         public string[] Pattern;
 
         [CommandLine("-i", CommandType.OPTION)]
