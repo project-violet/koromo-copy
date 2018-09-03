@@ -166,7 +166,7 @@ namespace Koromo_Copy.Console
             List<string> result = new List<string>();
             foreach (var arg in args)
             {
-                if (arg.StartsWith("-") && !arg.Contains("="))
+                if (arg.Length > 1 && arg.StartsWith("-") && !arg.StartsWith("--") && !arg.Contains("="))
                 {
                     for (int i = 1; i < arg.Length; i++)
                         result.Add($"-{arg[i]}");
