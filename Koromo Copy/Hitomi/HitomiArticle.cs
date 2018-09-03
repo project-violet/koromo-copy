@@ -42,7 +42,7 @@ namespace Koromo_Copy.Hitomi
         public string Type { get { return type; } set { type = value; } }
         public bool ManualPathOrdering { get; set; }
         public string ManualAdditionalPath { get; set; }
-        public DateTime DateTime { get; set; }
+        public string DateTime { get; set; }
 
         public string Thumbnail { get { return thumbnail; } set { thumbnail = value; } }
         public string Magic { get { return magic_number; } set { magic_number = value; } }

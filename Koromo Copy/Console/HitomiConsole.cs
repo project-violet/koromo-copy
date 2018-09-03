@@ -34,6 +34,11 @@ namespace Koromo_Copy.Console
         [CommandLine("-loadmetadata", CommandType.OPTION)]
         public bool LoadMetadata;
 
+        [CommandLine("-downloadhidden", CommandType.OPTION)]
+        public bool DownloadHidden;
+        [CommandLine("-loadhidden", CommandType.OPTION)]
+        public bool LoadHidden;
+
         [CommandLine("-all", CommandType.OPTION)]
         public bool ShowAllSearchList;
         [CommandLine("-search", CommandType.ARGUMENTS)]
@@ -75,6 +80,7 @@ namespace Koromo_Copy.Console
             {
                 ProcessImage(option.ImageLink, option.Type);
             }
+
             else if (option.DownloadMetadata)
             {
                 ProcessDownloadMetadata();
@@ -83,6 +89,15 @@ namespace Koromo_Copy.Console
             {
                 ProcessLoadMetadata();
             }
+            else if (option.DownloadHidden)
+            {
+                ProcessDownloadHidden();
+            }
+            else if (option.LoadHidden)
+            {
+                ProcessLoadHidden();
+            }
+
             else if (option.Search != null)
             {
                 ProcessSearch(option.Search, option.ShowAllSearchList);
@@ -173,7 +188,32 @@ namespace Koromo_Copy.Console
                 Console.Instance.WriteErrorLine("'metadata.json' file does not exist or is a incorrect file.");
             }
         }
-        
+
+        /// <summary>
+        /// 히든데이터를 다운로드합니다.
+        /// </summary>
+        static void ProcessDownloadHidden()
+        {
+            Console.Instance.GlobalTask = HitomiData.Instance.DownloadHiddendata();
+        }
+
+        /// <summary>
+        /// 히든데이터를 로드합니다..
+        /// </summary>
+        static void ProcessLoadHidden()
+        {
+            HitomiData.Instance.LoadHiddendataJson();
+
+            if (HitomiData.Instance.metadata_collection != null)
+            {
+                Console.Instance.WriteLine($"Load metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+            }
+            else
+            {
+                Console.Instance.WriteErrorLine("'hidden.json' file does not exist or is a incorrect file.");
+            }
+        }
+
         /// <summary>
         /// 작품을 검색합니다.
         /// </summary>

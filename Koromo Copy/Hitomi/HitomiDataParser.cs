@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace Koromo_Copy.Hitomi
 {
+    /// <summary>
+    /// 콘솔용 검색 도구입니다.
+    /// </summary>
     public class HitomiDataParser
     {
         public static async Task<List<HitomiMetadata>> SearchAsync(string search)
@@ -30,7 +33,6 @@ namespace Koromo_Copy.Hitomi
             search.Trim().Split(' ').ToList().ForEach((a) => { if (a.StartsWith("/")) start_element = Convert.ToInt32(a.Substring(1)); });
             search.Trim().Split(' ').ToList().ForEach((a) => { if (a.StartsWith("?")) count_element = Convert.ToInt32(a.Substring(1)); });
             search.Trim().Split(' ').ToList().ForEach((a) => { if (!a.Contains(":") && !a.StartsWith("/") && !a.StartsWith("?")) positive_data.Add(a.Trim()); });
-            //tbExcludeTag.Text.Trim().Split(' ').ToList().ForEach((a) => negative_data.Add(Regex.Replace(a.Trim(), ",", "")));
             query.Common = positive_data;
             query.Common.Add("");
             query.TagExclude = negative_data;
@@ -104,15 +106,12 @@ namespace Koromo_Copy.Hitomi
                     catch
                     {
                         Console.Console.Instance.WriteErrorLine($"'{elem}' is incorrect rule.");
-                        //MetroMessageBox.Show(this, $"recent 규칙 오류입니다. \"{elem}\"", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return null;
                     }
-                    //tbSearch.Text = "recent:" + (recent_start + recent_count) + "-" + recent_count;
                 }
                 else
                 {
                     Console.Console.Instance.WriteErrorLine($"Unknown rule '{elem}'.");
-                    //MetroMessageBox.Show(this, $"알 수 없는 규칙입니다. \"{elem}\"", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return null;
                 }
             }
@@ -126,6 +125,7 @@ namespace Koromo_Copy.Hitomi
             {
                 query_result = (await HitomiDataSearch.Search3(query));
             }
+
             return query_result;
         }
     }

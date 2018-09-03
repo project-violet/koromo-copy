@@ -42,7 +42,7 @@ namespace Koromo_Copy.Hitomi
             article.Language = HitomiLegalize.LegalizeLanguage(contents.SelectSingleNode("./tr[3]/td[2]/a").InnerText);
             article.Tags = contents.SelectNodes("./tr[4]/td[2]/ul/li").Select(node => HitomiLegalize.LegalizeTag(node.SelectSingleNode(".//a").InnerText)).ToArray();
 
-            article.DateTime = DateTime.Parse(nodes.SelectSingleNode("./div[2]/p").InnerText);
+            article.DateTime = nodes.SelectSingleNode("./div[2]/p").InnerText;
 
             return article;
         }
