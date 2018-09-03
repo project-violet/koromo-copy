@@ -200,9 +200,9 @@ namespace Koromo_Copy.Console
                 // normal command
                 {"hitomi", new HitomiConsole()},
                 {"exh", new ExHentaiConsole()},
-                {"grep", new GrepConsole()},
 
                 // pipeline command
+                {"grep", new GrepConsole()},
                 {"out", new OutConsole()}
             };
             
