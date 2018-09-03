@@ -88,7 +88,7 @@ namespace Koromo_Copy.Console.Utility
         /// <param name="with_files"></param>
         static void ProcessDirectory(string[] args, bool recursive, bool with_files)
         {
-            Console.Instance.GlobalTask = Task.Run(async () =>
+            Console.Instance.GlobalTask.Add(Task.Run(async () =>
             {
                 if (!Directory.Exists(args[0]))
                 {
@@ -124,7 +124,7 @@ namespace Koromo_Copy.Console.Utility
                             Console.Instance.WriteLine(f.FullName);
                     }
                 }
-            });
+            }));
         }
 
         static void internal_listing(FileIndexorNode node, bool with_files)

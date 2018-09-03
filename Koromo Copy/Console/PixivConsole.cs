@@ -98,7 +98,7 @@ namespace Koromo_Copy.Console
                 return;
             }
 
-            Console.Instance.GlobalTask = Task.Run(async () => {
+            Console.Instance.GlobalTask.Add(Task.Run(async () => {
                 try
                 {
                     await PixivTool.Instance.Login(args[0], args[1]);
@@ -109,7 +109,7 @@ namespace Koromo_Copy.Console
                 {
                     Console.Instance.WriteErrorLine("Login error!");
                 }
-            });
+            }));
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Koromo_Copy.Console
                 return;
             }
 
-            Console.Instance.GlobalTask = Task.Run(async () => {
+            Console.Instance.GlobalTask.Add(Task.Run(async () => {
                 try
                 {
                     Console.Instance.WriteLine(await PixivTool.Instance.GetUserAsync(args[0]));
@@ -133,7 +133,7 @@ namespace Koromo_Copy.Console
                 {
                     Console.Instance.WriteErrorLine("User not found!");
                 }
-            });
+            }));
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Koromo_Copy.Console
                 return;
             }
 
-            Console.Instance.GlobalTask = Task.Run(async () => {
+            Console.Instance.GlobalTask.Add(Task.Run(async () => {
                 try
                 {
                     Console.Instance.WriteLine(Monitor.SerializeObject(await PixivTool.Instance.GetDownloadUrlsAsync(args[0])));
@@ -157,7 +157,7 @@ namespace Koromo_Copy.Console
                 {
                     Console.Instance.WriteErrorLine("User not found!");
                 }
-            });
+            }));
         }
     }
 }

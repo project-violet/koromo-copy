@@ -188,7 +188,7 @@ namespace Koromo_Copy.Console
         /// 비동기로 실행되고 있는 태스크를 등록합니다.
         /// 이 태스크가 끝나야 Loop가 진행됩니다.
         /// </summary>
-        public Task GlobalTask;
+        public List<Task> GlobalTask = new List<Task>();
         
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
@@ -289,7 +289,7 @@ namespace Koromo_Copy.Console
                         //
                         if (GlobalTask != null)
                         {
-                            await GlobalTask;
+                            await Task.WhenAll(GlobalTask);
                             GlobalTask = null;
                         }
 

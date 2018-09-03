@@ -183,7 +183,7 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessDownloadMetadata()
         {
-            Console.Instance.GlobalTask = HitomiData.Instance.DownloadMetadata();
+            Console.Instance.GlobalTask.Add(HitomiData.Instance.DownloadMetadata());
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessDownloadHidden()
         {
-            Console.Instance.GlobalTask = HitomiData.Instance.DownloadHiddendata();
+            Console.Instance.GlobalTask.Add(HitomiData.Instance.DownloadHiddendata());
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessSync()
         {
-            Console.Instance.GlobalTask = HitomiData.Instance.Synchronization();
+            Console.Instance.GlobalTask.Add(HitomiData.Instance.Synchronization());
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace Koromo_Copy.Console
                 return;
             }
 
-            Console.Instance.GlobalTask = Task.Run(async () =>
+            Console.Instance.GlobalTask.Add(Task.Run(async () =>
             {
                 var result = await HitomiDataParser.SearchAsync(args[0] + " " + Instance.setter);
                 result.Reverse();
@@ -286,7 +286,7 @@ namespace Koromo_Copy.Console
                     }
                 }
                 Console.Instance.WriteLine($"Found {result.Count} results.");
-            });
+            }));
         }
     }
 }
