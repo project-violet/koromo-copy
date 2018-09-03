@@ -201,6 +201,9 @@ namespace Koromo_Copy.Console
                 {"hitomi", new HitomiConsole()},
                 {"exh", new ExHentaiConsole()},
 
+                // utility command
+                {"scan", new Utility.ScanConsole()},
+
                 // pipeline command
                 {"grep", new GrepConsole()},
                 {"out", new OutConsole()}
