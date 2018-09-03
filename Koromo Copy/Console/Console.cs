@@ -200,6 +200,7 @@ namespace Koromo_Copy.Console
                 // normal command
                 {"hitomi", new HitomiConsole()},
                 {"exh", new ExHentaiConsole()},
+                {"pixiv", new PixivConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
