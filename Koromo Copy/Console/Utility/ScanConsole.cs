@@ -11,7 +11,7 @@ namespace Koromo_Copy.Console.Utility
     /// <summary>
     /// 파일시스템 열거자입니다.
     /// </summary>
-    public class EnumConsole
+    public class ScanConsole
     {
     }
 }
