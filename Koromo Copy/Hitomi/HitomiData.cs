@@ -289,10 +289,11 @@ namespace Koromo_Copy.Hitomi
         public async Task Synchronization()
         {
             Monitor.Instance.Push("Start Synchronization...");
-            metadata_collection.Clear();
-            thumbnail_collection.Clear();
+            metadata_collection?.Clear();
+            thumbnail_collection?.Clear();
             await Task.Run(() => DownloadMetadata());
             await Task.Run(() => DownloadHiddendata());
+            await Task.Run(() => RebuildTagData());
             await Task.Run(() => SortTagdata());
             if (Settings.Instance.Hitomi.UsingOptimization)
                 await Task.Run(() => OptimizeMetadata());
