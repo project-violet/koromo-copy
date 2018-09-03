@@ -39,6 +39,11 @@ namespace Koromo_Copy.Console
         [CommandLine("-loadhidden", CommandType.OPTION)]
         public bool LoadHidden;
 
+        [CommandLine("-sync", CommandType.OPTION)]
+        public bool Sync;
+        [CommandLine("-load", CommandType.OPTION)]
+        public bool Load;
+
         [CommandLine("-all", CommandType.OPTION)]
         public bool ShowAllSearchList;
         [CommandLine("-search", CommandType.ARGUMENTS)]
@@ -96,6 +101,15 @@ namespace Koromo_Copy.Console
             else if (option.LoadHidden)
             {
                 ProcessLoadHidden();
+            }
+            
+            else if (option.Sync)
+            {
+                ProcessSync();
+            }
+            else if (option.Load)
+            {
+                ProcessLoad();
             }
 
             else if (option.Search != null)
@@ -181,7 +195,7 @@ namespace Koromo_Copy.Console
             
             if (HitomiData.Instance.metadata_collection != null)
             {
-                Console.Instance.WriteLine($"Load metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+                Console.Instance.WriteLine($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
             }
             else
             {
@@ -206,12 +220,29 @@ namespace Koromo_Copy.Console
 
             if (HitomiData.Instance.metadata_collection != null)
             {
-                Console.Instance.WriteLine($"Load metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+                Console.Instance.WriteLine($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
             }
             else
             {
                 Console.Instance.WriteErrorLine("'hidden.json' file does not exist or is a incorrect file.");
             }
+        }
+
+        /// <summary>
+        /// 데이터를 동기화합니다.
+        /// </summary>
+        static void ProcessSync()
+        {
+            Console.Instance.GlobalTask = HitomiData.Instance.Synchronization();
+        }
+
+        /// <summary>
+        /// 데이터를 로드합니다.
+        /// </summary>
+        static void ProcessLoad()
+        {
+            ProcessLoadMetadata();
+            ProcessLoadHidden();
         }
 
         /// <summary>
