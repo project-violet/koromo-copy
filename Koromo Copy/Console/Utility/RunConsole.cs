@@ -1,0 +1,93 @@
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Interface;
+using Koromo_Copy.Utility;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace Koromo_Copy.Console.Utility
+{
+    /// <summary>
+    /// Run 콘솔 옵션입니다.
+    /// </summary>
+    public class RunConsoleOption : IConsoleOption
+    {
+        [CommandLine("--help", CommandType.OPTION, Default = true)]
+        public bool Help;
+
+        [CommandLine("--name", CommandType.ARGUMENTS, DefaultArgument = true, 
+            Help = "--name <Utility>|<Program> : Set sepecific program to run.")]
+        public string[] RunProgramName;
+    }
+    
+    /// <summary>
+    /// 특정 유틸리티나 프로그램을 실행하는 콘솔 명령집합입니다.
+    /// </summary>
+    class RunConsole : IConsole
+    {
+        /// <summary>
+        /// Run 콘솔 리다이렉트
+        /// </summary>
+        static bool Redirect(string[] arguments, string contents)
+        {
+            arguments = CommandLineUtil.SplitCombinedOptions(arguments);
+            arguments = CommandLineUtil.InsertWeirdArguments<RunConsoleOption>(arguments, true, "--name");
+            RunConsoleOption option = CommandLineParser<RunConsoleOption>.Parse(arguments);
+
+            if (option.Error)
+            {
+                Console.Instance.WriteLine(option.ErrorMessage);
+                if (option.HelpMessage != null)
+                    Console.Instance.WriteLine(option.HelpMessage);
+                return false;
+            }
+            else if (option.Help)
+            {
+                PrintHelp();
+            }
+            else if (option.RunProgramName != null)
+            {
+                ProcessRun(option.RunProgramName);
+            }
+
+            return true;
+        }
+
+        bool IConsole.Redirect(string[] arguments, string contents)
+        {
+            return Redirect(arguments, contents);
+        }
+
+        static void PrintHelp()
+        {
+            Console.Instance.WriteLine(
+                "Run Console\r\n"
+                );
+        }
+
+        static Dictionary<string, Form> run_dic = new Dictionary<string, Form>() {
+            { "fsenum", new FsEnumerator() }
+        };
+
+        /// <summary>
+        /// 특정 유틸리니타 프로그램을 실행합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        static void ProcessRun(string[] args)
+        {
+            if (!run_dic.ContainsKey(args[0]))
+            {
+                Console.Instance.WriteErrorLine($"'{args[0]}' program not found.");
+                return;
+            }
+
+            Application.OpenForms[0].Post(() => run_dic[args[0]].Show());
+        }
+    }
+}

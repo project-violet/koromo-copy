@@ -204,6 +204,7 @@ namespace Koromo_Copy.Console
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
+                {"run", new Utility.RunConsole() },
 
                 // pipeline command
                 {"grep", new GrepConsole()},

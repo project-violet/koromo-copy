@@ -21,13 +21,13 @@ namespace Koromo_Copy.Console.Utility
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("--dir", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true)]
+        [CommandLine("--dir", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true, Help = "--dir <directory> : Target directory")]
         public string[] Directory;
 
-        [CommandLine("-r", CommandType.OPTION)]
+        [CommandLine("-r", CommandType.OPTION, Help = "-r : Recursive")]
         public bool Recursive;
 
-        [CommandLine("-f", CommandType.OPTION)]
+        [CommandLine("-f", CommandType.OPTION, Help = "-f : Scan with files")]
         public bool WithFiles;
     }
 
