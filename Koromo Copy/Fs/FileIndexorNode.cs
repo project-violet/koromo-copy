@@ -20,8 +20,10 @@ namespace Koromo_Copy.Fs
     public class FileIndexorNode
     {
         string now_path;
+        bool totalsize_process;
         UInt64 size;
         UInt64 this_size;
+        UInt64 total_size;
         List<FileIndexorNode> nodes = new List<FileIndexorNode>();
         List<FileInfo> files;
 
@@ -74,9 +76,12 @@ namespace Koromo_Copy.Fs
         /// <returns></returns>
         public UInt64 GetTotalSize()
         {
+            if (totalsize_process)
+                return total_size;
             UInt64 v = this_size;
             foreach (FileIndexorNode fin in nodes)
                 v += fin.GetTotalSize();
+            total_size = v;
             return v;
         }
 

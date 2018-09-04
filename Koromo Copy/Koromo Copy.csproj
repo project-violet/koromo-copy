@@ -78,8 +78,12 @@
     <Compile Include="Console\InConsole.cs" />
     <Compile Include="Console\OutConsole.cs" />
     <Compile Include="Console\PixivConsole.cs" />
+    <Compile Include="Console\Utility\RunConsole.cs" />
     <Compile Include="Console\Utility\ScanConsole.cs" />
     <Compile Include="Console\Utility\SeleniumConsole.cs" />
+    <Compile Include="Controls\NativeTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="EH\EHentaiArticle.cs" />
     <Compile Include="EH\ExHentaiTool.cs" />
     <Compile Include="EH\ExHentaiParser.cs" />

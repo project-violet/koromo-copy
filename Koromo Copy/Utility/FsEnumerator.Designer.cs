@@ -48,6 +48,8 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tvFs = new Koromo_Copy.Controls.NativeTreeView();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.bStart = new System.Windows.Forms.Button();
@@ -56,6 +58,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -98,6 +101,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 58);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -225,6 +229,31 @@
             this.columnHeader10.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader10.Width = 75;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.tvFs);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1242, 452);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "트리사이즈";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tvFs
+            // 
+            this.tvFs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvFs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
+            this.tvFs.FullRowSelect = true;
+            this.tvFs.Location = new System.Drawing.Point(6, 6);
+            this.tvFs.Name = "tvFs";
+            this.tvFs.ShowLines = false;
+            this.tvFs.Size = new System.Drawing.Size(1230, 440);
+            this.tvFs.TabIndex = 0;
+            this.tvFs.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvFs_DrawNode);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -289,6 +318,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -319,5 +349,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button bStart;
         private System.Windows.Forms.TextBox tbPath;
+        private System.Windows.Forms.TabPage tabPage3;
+        private Controls.NativeTreeView tvFs;
     }
 }

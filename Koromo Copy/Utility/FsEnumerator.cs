@@ -10,8 +10,7 @@ using Koromo_Copy.Fs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -67,6 +66,7 @@ namespace Koromo_Copy.Utility
                         ((double)n.Size * 100/ indexor.GetTotalSize()).ToString("0.0") + "%"})));
             }
             this.Post(() => SetStatusMessage(StatusMessage.EndIndexing));
+            Task.Run(() => ProcessingTreeView());
         }
 
         private string CapacityFormat(UInt64 i)
@@ -78,8 +78,52 @@ namespace Koromo_Copy.Utility
             return capacity;
         }
 
-        #endregion
+        private void ProcessingTreeView()
+        {
+            FileIndexorNode node = indexor.GetRootNode();
+            UInt64 total_size = indexor.GetTotalSize();
+            var list = node.Nodes;
+            
+            list.Sort((a, b) => b.GetTotalSize().CompareTo(a.GetTotalSize()));
+            List<TreeNode> nodes = new List<TreeNode>();
+            TreeNode root = new TreeNode($"[100.0%] {indexor.GetRootNode().Path}");
+            foreach (FileIndexorNode n in list)
+            {
+                make_node(root.Nodes, $"[{((double)n.GetTotalSize() * 100 / total_size).ToString("0.0") + "%"}] {Path.GetFileName(n.Path.Remove(n.Path.Length - 1))}");
+                make_tree(n, root.Nodes[root.Nodes.Count - 1], total_size);
+            }
+            //foreach (FileInfo f in new DirectoryInfo(node.Path).GetFiles())
+            //    make_node(root.Nodes, f.Name);
+            this.Post(() => tvFs.Nodes.Add(root));
+        }
         
+        private void make_tree(FileIndexorNode fn, TreeNode tn, UInt64 total_size)
+        {
+            var list = fn.Nodes;
+            list.Sort((a, b) => b.GetTotalSize().CompareTo(a.GetTotalSize()));
+            foreach (FileIndexorNode n in list)
+            {
+                make_node(tn.Nodes, $"[{((double)n.GetTotalSize() * 100 / total_size).ToString("0.0") + "%"}] {Path.GetFileName(n.Path.Remove(n.Path.Length - 1))}");
+                make_tree(n, tn.Nodes[tn.Nodes.Count - 1], total_size);
+            }
+            //foreach (FileInfo f in new DirectoryInfo(fn.Path).GetFiles())
+            //    make_node(tn.Nodes, f.Name);
+        }
+        
+        private void make_node(List<TreeNode> tnc, string path)
+        {
+            TreeNode tn = new TreeNode(path);
+            tnc.Add(tn);
+        }
+
+        private void make_node(TreeNodeCollection tnc, string path)
+        {
+            TreeNode tn = new TreeNode(path);
+            tnc.Add(tn);
+        }
+
+        #endregion
+
         #region 폴더 클릭
 
         string now_path;
@@ -165,6 +209,12 @@ namespace Koromo_Copy.Utility
             {
                 Process.Start("explorer.exe", lv.SelectedItems[0].SubItems[1].Text);
             }
+        }
+
+        private void tvFs_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            //e.Graphics.DrawString(e.Node.Text, Font, Brushes.Black, e.Bounds.Location + new Size(3 + e.Node.Level * 20, 3));
+            e.DrawDefault = true;
         }
     }
 }
