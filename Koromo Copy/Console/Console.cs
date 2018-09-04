@@ -240,13 +240,18 @@ namespace Koromo_Copy.Console
                         //
                         //  파이프 전처리
                         //
-                        if (command.Contains(">"))
+                        if (command.Contains(">") || command.Contains("|>"))
                         {
                             Pipe = true;
 
                             int meet_pipe = Array.FindIndex(command, w => w == ">");
                             command_argument = command.Take(meet_pipe).ToArray();
                             command = SliceArray(command, meet_pipe + 1, command.Length);
+
+                            if (command.Contains("|>"))
+                            {
+                                LoopPipe = true;
+                            }
                         }
                         else
                         {
@@ -290,7 +295,6 @@ namespace Koromo_Copy.Console
                         if (GlobalTask != null)
                         {
                             await Task.WhenAll(GlobalTask);
-                            GlobalTask = null;
                         }
 
                         //
@@ -341,6 +345,7 @@ namespace Koromo_Copy.Console
         }
 
         public bool Pipe = false;
+        public bool LoopPipe = false;
         public StringBuilder PipeContents = new StringBuilder();
 
         public void WriteLine(string contents, bool crlf = true)
