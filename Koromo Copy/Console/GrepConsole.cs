@@ -45,7 +45,7 @@ namespace Koromo_Copy.Console
         static bool Redirect(string[] arguments, string contents)
         {
             arguments = CommandLineUtil.SplitCombinedOptions(arguments);
-            arguments = CommandLineUtil.InsertWeirdArguments<GrepConsoleOption>(arguments, contents != "", "-p");
+            arguments = CommandLineUtil.InsertWeirdArguments<GrepConsoleOption>(arguments, contents != "", "--p");
             GrepConsoleOption option = CommandLineParser<GrepConsoleOption>.Parse(arguments, contents != "", contents);
 
             if (option.Input == null)
