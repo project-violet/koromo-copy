@@ -204,5 +204,31 @@ namespace Koromo_Copy.Fs
             directory_list.ForEach(n => result.Add(n.Item1));
             return result;
         }
+
+        /// <summary>
+        /// 하위폴더를 제외한 순수 폴더 사이즈를 기준으로 오름차순으로 정렬한 리스트를 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public List<Tuple<string, UInt64>> GetListSortWithNativeSize()
+        {
+            List<Tuple<string, UInt64>> r = new List<Tuple<string, UInt64>>(directory_list);
+            r.Sort((n1, n2) => {
+                try
+                {
+                    return n2.Item2.CompareTo(n1.Item2);
+                }
+                catch { return 1; }
+            });
+            return r;
+        }
+
+        /// <summary>
+        /// 루트 폴더의 크기를 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public UInt64 GetTotalSize()
+        {
+            return node.Nodes[0].Size;
+        }
     }
 }
