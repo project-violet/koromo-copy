@@ -33,18 +33,13 @@ namespace Koromo_Copy.Fs
         public List<FileIndexorNode> Nodes { get { return nodes; } }
         public List<FileInfo> Files { get { return files; } }
 
-        public FileIndexorNode(string path, UInt64 size, bool listing_files = false)
+        public FileIndexorNode(string path, UInt64 size, FileInfo[] file_info)
         {
             now_path = path;
             this.this_size = this.size = size;
-            if (listing_files)
+            if (file_info != null)
             {
-                files = new List<FileInfo>();
-                Task.Run(() =>
-                {
-                    foreach (FileInfo f in new DirectoryInfo(path).GetFiles())
-                        files.Add(f);
-                });
+                files = file_info.ToList();
             }
         }
 

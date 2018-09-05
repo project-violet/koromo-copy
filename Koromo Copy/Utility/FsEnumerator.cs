@@ -6,11 +6,14 @@
 
 ***/
 
+using Etier.IconHelper;
 using Koromo_Copy.Fs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,19 +21,50 @@ namespace Koromo_Copy.Utility
 {
     public partial class FsEnumerator : Form
     {
+        ImageList smallImageList = new ImageList();
+        ImageList largeImageList = new ImageList();
+        IconListManager iconListManager;
+
         public FsEnumerator()
         {
             InitializeComponent();
+
+            smallImageList.ColorDepth = ColorDepth.Depth32Bit;
+            largeImageList.ColorDepth = ColorDepth.Depth32Bit;
+
+            smallImageList.ImageSize = new System.Drawing.Size(16, 16);
+            largeImageList.ImageSize = new System.Drawing.Size(32, 32);
+
+            smallImageList.Images.Add(Fs.FileIcon.FolderIcon.GetFolderIcon(
+                Fs.FileIcon.FolderIcon.IconSize.Small,
+                Fs.FileIcon.FolderIcon.FolderType.Closed));
+
+            iconListManager = new IconListManager(smallImageList, largeImageList);
         }
-        
+
         private async void bStart_ClickAsync(object sender, EventArgs e)
         {
+            if (cbIcon.Checked)
+            {
+                tvFs.ImageList = smallImageList;
+            }
+            else
+            {
+                tvFs.ImageList = null;
+            }
+
+            pbIndexing.Value = 0;
+            listView1.Items.Clear();
+            listView2.Items.Clear();
+            tvFs.Nodes.Clear();
             tbPath.Enabled = false;
             bStart.Enabled = false;
             SetStatusMessage(StatusMessage.StartIndexing);
             indexor = new FileIndexor();
-            await indexor.ListingDirectoryWithFilesAsync(tbPath.Text);
+            await indexor.ListingDirectoryAsync(tbPath.Text);
             SetStatusMessage(StatusMessage.Enumerating);
+            tbPath.Enabled = true;
+            bStart.Enabled = true;
             await Task.Run(() => Processing());
         }
 
@@ -78,48 +112,83 @@ namespace Koromo_Copy.Utility
             return capacity;
         }
 
+        bool filesize = false;
+
         private void ProcessingTreeView()
         {
             FileIndexorNode node = indexor.GetRootNode();
             UInt64 total_size = indexor.GetTotalSize();
             var list = node.Nodes;
-            
             list.Sort((a, b) => b.GetTotalSize().CompareTo(a.GetTotalSize()));
-            List<TreeNode> nodes = new List<TreeNode>();
-            TreeNode root = new TreeNode($"[100.0%] {indexor.GetRootNode().Path}");
+
+            string root_path = indexor.GetRootNode().Path;
+            TreeNode root = new TreeNode($"[100.0%] {root_path}");
+            root.Tag = root_path;
+
             foreach (FileIndexorNode n in list)
             {
-                make_node(root.Nodes, $"[{((double)n.GetTotalSize() * 100 / total_size).ToString("0.0") + "%"}] {Path.GetFileName(n.Path.Remove(n.Path.Length - 1))}");
-                make_tree(n, root.Nodes[root.Nodes.Count - 1], total_size);
+                string tag = Path.GetFileName(n.Path.Remove(n.Path.Length - 1));
+                string full_path = Path.Combine(root_path, n.Path);
+                if (!filesize)
+                    make_node(root.Nodes, $"[{((double)n.GetTotalSize() * 100 / total_size).ToString("0.0") + "%"}] {tag}", full_path);
+                else
+                    make_node(root.Nodes, $"[{CapacityFormat(n.GetTotalSize())}] {tag}", full_path);
+                make_tree(n, root.Nodes[root.Nodes.Count - 1], total_size, full_path);
             }
-            //foreach (FileInfo f in new DirectoryInfo(node.Path).GetFiles())
-            //    make_node(root.Nodes, f.Name);
+
+            if (cbFileIndexing.Checked)
+            {
+                var file_list = node.Files; //new DirectoryInfo(fn.Path).GetFiles().ToList();
+                file_list.Sort((a, b) => b.Length.CompareTo(a.Length));
+                foreach (FileInfo f in file_list)
+                    make_node(root.Nodes, $"[{((double)f.Length * 100 / total_size).ToString("0.0") + "%"}] {f.Name}", Path.Combine(root_path, f.Name), true);
+            }
+
             this.Post(() => tvFs.Nodes.Add(root));
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
         
-        private void make_tree(FileIndexorNode fn, TreeNode tn, UInt64 total_size)
+        private void make_tree(FileIndexorNode fn, TreeNode tn, UInt64 total_size, string root_path)
         {
             var list = fn.Nodes;
             list.Sort((a, b) => b.GetTotalSize().CompareTo(a.GetTotalSize()));
+
             foreach (FileIndexorNode n in list)
             {
-                make_node(tn.Nodes, $"[{((double)n.GetTotalSize() * 100 / total_size).ToString("0.0") + "%"}] {Path.GetFileName(n.Path.Remove(n.Path.Length - 1))}");
-                make_tree(n, tn.Nodes[tn.Nodes.Count - 1], total_size);
+                string tag = Path.GetFileName(n.Path.Remove(n.Path.Length - 1));
+                string full_path = Path.Combine(root_path, n.Path);
+                if (!filesize)
+                    make_node(tn.Nodes, $"[{((double)n.GetTotalSize() * 100 / total_size).ToString("0.0") + "%"}] {tag}", full_path);
+                else
+                    make_node(tn.Nodes, $"[{CapacityFormat(n.GetTotalSize())}] {tag}", full_path);
+                make_tree(n, tn.Nodes[tn.Nodes.Count - 1], total_size, Path.Combine(root_path, n.Path));
             }
-            //foreach (FileInfo f in new DirectoryInfo(fn.Path).GetFiles())
-            //    make_node(tn.Nodes, f.Name);
-        }
-        
-        private void make_node(List<TreeNode> tnc, string path)
-        {
-            TreeNode tn = new TreeNode(path);
-            tnc.Add(tn);
+
+            if (cbFileIndexing.Checked)
+            {
+                var file_list = fn.Files; //new DirectoryInfo(fn.Path).GetFiles().ToList();
+                file_list.Sort((a, b) => b.Length.CompareTo(a.Length));
+                foreach (FileInfo f in file_list)
+                    make_node(tn.Nodes, $"[{((double)f.Length * 100 / total_size).ToString("0.0") + "%"}] {f.Name}", Path.Combine(root_path, f.Name), true);
+            }
         }
 
-        private void make_node(TreeNodeCollection tnc, string path)
+        private void make_node(TreeNodeCollection tnc, string path, string full_path, bool file = false)
         {
             TreeNode tn = new TreeNode(path);
+            tn.Tag = full_path;
             tnc.Add(tn);
+
+            if (file && cbIcon.Checked)
+            {
+                this.Post(() =>
+                {
+                    int index = 0;
+                    try { index = iconListManager.AddFileIcon(full_path); } catch { };
+                    tn.ImageIndex = index;
+                    tn.SelectedImageIndex = index;
+                });
+            }
         }
 
         #endregion
@@ -216,5 +285,75 @@ namespace Koromo_Copy.Utility
             //e.Graphics.DrawString(e.Node.Text, Font, Brushes.Black, e.Bounds.Location + new Size(3 + e.Node.Level * 20, 3));
             e.DrawDefault = true;
         }
+
+        #region 트리 사이즈 기능
+
+        private void 열기OToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tvFs.SelectedNode != null)
+            {
+                string path = tvFs.SelectedNode.Tag as string;
+                //TreeNode ppp = tvFs.SelectedNode.Parent;
+                //for (; ppp != null; ppp = ppp.Parent)
+                //    path = Path.Combine(ppp.Tag as string, path);
+                Process.Start("explorer.exe", path);
+            }
+        }
+
+        // https://stackoverflow.com/questions/1936682/how-do-i-display-a-files-properties-dialog-from-c
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+        static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct SHELLEXECUTEINFO
+        {
+            public int cbSize;
+            public uint fMask;
+            public IntPtr hwnd;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpVerb;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpFile;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpParameters;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpDirectory;
+            public int nShow;
+            public IntPtr hInstApp;
+            public IntPtr lpIDList;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpClass;
+            public IntPtr hkeyClass;
+            public uint dwHotKey;
+            public IntPtr hIcon;
+            public IntPtr hProcess;
+        }
+
+        private const int SW_SHOW = 5;
+        private const uint SEE_MASK_INVOKEIDLIST = 12;
+        public static bool ShowFileProperties(string Filename)
+        {
+            SHELLEXECUTEINFO info = new SHELLEXECUTEINFO();
+            info.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(info);
+            info.lpVerb = "properties";
+            info.lpFile = Filename;
+            info.nShow = SW_SHOW;
+            info.fMask = SEE_MASK_INVOKEIDLIST;
+            return ShellExecuteEx(ref info);
+        }
+
+        private void 속성RToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tvFs.SelectedNode != null)
+            {
+                string path = tvFs.SelectedNode.Tag as string;
+                //TreeNode ppp = tvFs.SelectedNode.Parent;
+                //for (; ppp != null; ppp = ppp.Parent)
+                //    path = Path.Combine(ppp.Tag as string, path);
+                ShowFileProperties(path);
+            }
+        }
+        #endregion
+
     }
 }

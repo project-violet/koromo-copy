@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FsEnumerator));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -49,16 +50,23 @@
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tvFs = new Koromo_Copy.Controls.NativeTreeView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.열기OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.속성RToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.bStart = new System.Windows.Forms.Button();
             this.tbPath = new System.Windows.Forms.TextBox();
+            this.cbFileIndexing = new System.Windows.Forms.CheckBox();
+            this.cbIcon = new System.Windows.Forms.CheckBox();
+            this.tvFs = new Koromo_Copy.Controls.NativeTreeView();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -134,7 +142,7 @@
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1230, 440);
+            this.listView1.Size = new System.Drawing.Size(1230, 432);
             this.listView1.TabIndex = 7;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -240,19 +248,35 @@
             this.tabPage3.Text = "트리사이즈";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // tvFs
+            // contextMenuStrip1
             // 
-            this.tvFs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvFs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
-            this.tvFs.FullRowSelect = true;
-            this.tvFs.Location = new System.Drawing.Point(6, 6);
-            this.tvFs.Name = "tvFs";
-            this.tvFs.ShowLines = false;
-            this.tvFs.Size = new System.Drawing.Size(1230, 440);
-            this.tvFs.TabIndex = 0;
-            this.tvFs.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvFs_DrawNode);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.열기OToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.속성RToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 76);
+            // 
+            // 열기OToolStripMenuItem
+            // 
+            this.열기OToolStripMenuItem.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.열기OToolStripMenuItem.Name = "열기OToolStripMenuItem";
+            this.열기OToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.열기OToolStripMenuItem.Text = "열기(&O)";
+            this.열기OToolStripMenuItem.Click += new System.EventHandler(this.열기OToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // 속성RToolStripMenuItem
+            // 
+            this.속성RToolStripMenuItem.Name = "속성RToolStripMenuItem";
+            this.속성RToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.속성RToolStripMenuItem.Text = "속성(&R)";
+            this.속성RToolStripMenuItem.Click += new System.EventHandler(this.속성RToolStripMenuItem_Click);
             // 
             // label2
             // 
@@ -294,12 +318,49 @@
             this.tbPath.TabIndex = 13;
             this.tbPath.Text = "C:\\";
             // 
+            // cbFileIndexing
+            // 
+            this.cbFileIndexing.AutoSize = true;
+            this.cbFileIndexing.Location = new System.Drawing.Point(972, 40);
+            this.cbFileIndexing.Name = "cbFileIndexing";
+            this.cbFileIndexing.Size = new System.Drawing.Size(78, 19);
+            this.cbFileIndexing.TabIndex = 18;
+            this.cbFileIndexing.Text = "파일 목록";
+            this.cbFileIndexing.UseVisualStyleBackColor = true;
+            // 
+            // cbIcon
+            // 
+            this.cbIcon.AutoSize = true;
+            this.cbIcon.Location = new System.Drawing.Point(1056, 40);
+            this.cbIcon.Name = "cbIcon";
+            this.cbIcon.Size = new System.Drawing.Size(90, 19);
+            this.cbIcon.TabIndex = 19;
+            this.cbIcon.Text = "아이콘 표시";
+            this.cbIcon.UseVisualStyleBackColor = true;
+            // 
+            // tvFs
+            // 
+            this.tvFs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvFs.ContextMenuStrip = this.contextMenuStrip1;
+            this.tvFs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
+            this.tvFs.FullRowSelect = true;
+            this.tvFs.Location = new System.Drawing.Point(6, 6);
+            this.tvFs.Name = "tvFs";
+            this.tvFs.ShowLines = false;
+            this.tvFs.Size = new System.Drawing.Size(1230, 440);
+            this.tvFs.TabIndex = 0;
+            this.tvFs.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvFs_DrawNode);
+            // 
             // FsEnumerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1274, 572);
+            this.Controls.Add(this.cbIcon);
+            this.Controls.Add(this.cbFileIndexing);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -319,6 +380,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -351,5 +413,11 @@
         private System.Windows.Forms.TextBox tbPath;
         private System.Windows.Forms.TabPage tabPage3;
         private Controls.NativeTreeView tvFs;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 열기OToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem 속성RToolStripMenuItem;
+        private System.Windows.Forms.CheckBox cbFileIndexing;
+        private System.Windows.Forms.CheckBox cbIcon;
     }
 }

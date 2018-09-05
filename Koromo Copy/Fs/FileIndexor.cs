@@ -19,7 +19,7 @@ namespace Koromo_Copy.Fs
     public class FileIndexor
     {
         FileIndexorNode node;
-        List<Tuple<string, UInt64>> directory_list = new List<Tuple<string, UInt64>>();
+        List<Tuple<string, UInt64, FileInfo[]>> directory_list = new List<Tuple<string, UInt64, FileInfo[]>>();
         List<Tuple<string, string>> error_list = new List<Tuple<string, string>>();
         string root_directory;
 
@@ -50,21 +50,10 @@ namespace Koromo_Copy.Fs
             root_directory = target_directory;
             await Task.Run(() => prelistingFolder(target_directory));
             directory_list.Sort();
-            node = new FileIndexorNode(target_directory, 0);
+            node = new FileIndexorNode(target_directory, 0, null);
             await Task.Run(() => createNodes());
         }
-
-        /// <summary>
-        /// 모든 파일과 폴더를 나열합니다.
-        /// </summary>
-        /// <param name="target_directory"></param>
-        /// <returns></returns>
-        public async Task ListingDirectoryWithFilesAsync(string target_directory)
-        {
-            listing_files = true;
-            await ListingDirectoryAsync(target_directory);
-        }
-
+        
         #region [--- Listing ---]
 
         /// <summary>
@@ -77,15 +66,19 @@ namespace Koromo_Copy.Fs
             {
                 UInt64 folder_size = 0;
 
+                FileInfo[] file_info = null;
                 if (!OnlyListing)
-                    foreach (FileInfo f in new DirectoryInfo(path).GetFiles())
+                {
+                    file_info = new DirectoryInfo(path).GetFiles();
+                    foreach (FileInfo f in file_info)
                         folder_size += (UInt64)f.Length;
+                }
 
                 if (!path.EndsWith("\\")) path = path + "\\";
 
                 lock (directory_list)
                 {
-                    directory_list.Add(new Tuple<string, UInt64>(path, folder_size));
+                    directory_list.Add(new Tuple<string, UInt64, FileInfo[]>(path, folder_size, file_info));
                 }
 
                 Parallel.ForEach(Directory.GetDirectories(path), n => listingFolder(n));
@@ -102,13 +95,17 @@ namespace Koromo_Copy.Fs
             {
                 UInt64 folder_size = 0;
 
+                FileInfo[] file_info = null;
                 if (!OnlyListing)
-                    foreach (FileInfo f in new DirectoryInfo(path).GetFiles())
+                {
+                    file_info = new DirectoryInfo(path).GetFiles();
+                    foreach (FileInfo f in file_info)
                         folder_size += (UInt64)f.Length;
+                }
 
                 lock (directory_list)
                 {
-                    directory_list.Add(new Tuple<string, UInt64>(path + "\\", folder_size));
+                    directory_list.Add(new Tuple<string, UInt64, FileInfo[]>(path + "\\", folder_size, file_info));
                 }
 
                 Parallel.ForEach(Directory.GetDirectories(path), n => listingFolder(n));
@@ -128,7 +125,7 @@ namespace Koromo_Copy.Fs
         {
             for (; index < directory_list.Count - 1; index++)
             {
-                FileIndexorNode _node = new FileIndexorNode(directory_list[index].Item1, directory_list[index].Item2, listing_files);
+                FileIndexorNode _node = new FileIndexorNode(directory_list[index].Item1, directory_list[index].Item2, directory_list[index].Item3);
                 if (directory_list[index + 1].Item1.Contains(directory_list[index].Item1))
                 {
                     node.AddItem(_node);
@@ -145,7 +142,7 @@ namespace Koromo_Copy.Fs
             {
                 if (directory_list[index].Item1.Contains(parent_node.Path))
                 {
-                    FileIndexorNode m = new FileIndexorNode(directory_list[index].Item1, directory_list[index].Item2, listing_files);
+                    FileIndexorNode m = new FileIndexorNode(directory_list[index].Item1, directory_list[index].Item2, directory_list[index].Item3);
                     parent_node.AddItem(m);
                     if (index < directory_list.Count - 1 &&
                         directory_list[index + 1].Item1.Contains(directory_list[index].Item1))
@@ -209,9 +206,9 @@ namespace Koromo_Copy.Fs
         /// 하위폴더를 제외한 순수 폴더 사이즈를 기준으로 오름차순으로 정렬한 리스트를 가져옵니다.
         /// </summary>
         /// <returns></returns>
-        public List<Tuple<string, UInt64>> GetListSortWithNativeSize()
+        public List<Tuple<string, UInt64, FileInfo[]>> GetListSortWithNativeSize()
         {
-            List<Tuple<string, UInt64>> r = new List<Tuple<string, UInt64>>(directory_list);
+            List<Tuple<string, UInt64, FileInfo[]>> r = new List<Tuple<string, UInt64, FileInfo[]>>(directory_list);
             r.Sort((n1, n2) => {
                 try
                 {
