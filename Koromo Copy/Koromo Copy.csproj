@@ -78,6 +78,7 @@
     <Compile Include="Console\InConsole.cs" />
     <Compile Include="Console\OutConsole.cs" />
     <Compile Include="Console\PixivConsole.cs" />
+    <Compile Include="Console\Utility\DownloadConsole.cs" />
     <Compile Include="Console\Utility\RunConsole.cs" />
     <Compile Include="Console\Utility\ScanConsole.cs" />
     <Compile Include="Console\Utility\SeleniumConsole.cs" />
@@ -138,6 +139,12 @@
     <Compile Include="Utility\FsEnumerator.Designer.cs">
       <DependentUpon>FsEnumerator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\StringTools.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\StringTools.Designer.cs">
+      <DependentUpon>StringTools.cs</DependentUpon>
+    </Compile>
     <Compile Include="Version.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -153,6 +160,9 @@
     </Compile>
     <EmbeddedResource Include="Utility\FsEnumerator.resx">
       <DependentUpon>FsEnumerator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\StringTools.resx">
+      <DependentUpon>StringTools.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

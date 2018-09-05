@@ -189,6 +189,11 @@ namespace Koromo_Copy.Console
         /// 이 태스크가 끝나야 Loop가 진행됩니다.
         /// </summary>
         public List<Task> GlobalTask = new List<Task>();
+
+        /// <summary>
+        /// 명령 히스토리 입니다.
+        /// </summary>
+        public List<string> History = new List<string>();
         
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
@@ -230,7 +235,9 @@ namespace Koromo_Copy.Console
 
                 try
                 {
-                    string[] command = ParseArgument(System.Console.In.ReadLine());
+                    string commandLine = System.Console.In.ReadLine();
+                    History.Add(commandLine);
+                    string[] command = ParseArgument(commandLine);
 
                     while (command.Length > 0)
                     {
@@ -241,18 +248,22 @@ namespace Koromo_Copy.Console
                         //
                         //  파이프 전처리
                         //
-                        if (command.Contains(">") || command.Contains("|>"))
+                        if (command.Contains(">"))
                         {
                             Pipe = true;
 
                             int meet_pipe = Array.FindIndex(command, w => w == ">");
                             command_argument = command.Take(meet_pipe).ToArray();
                             command = SliceArray(command, meet_pipe + 1, command.Length);
+                        }
+                        else if (command.Contains("|>"))
+                        {
+                            Pipe = true;
+                            LoopPipe = true;
 
-                            if (command.Contains("|>"))
-                            {
-                                LoopPipe = true;
-                            }
+                            int meet_pipe = Array.FindIndex(command, w => w == "|>");
+                            command_argument = command.Take(meet_pipe).ToArray();
+                            command = SliceArray(command, meet_pipe + 1, command.Length);
                         }
                         else
                         {
@@ -266,6 +277,10 @@ namespace Koromo_Copy.Console
                         if (command_argument[0] == "help")
                         {
                             PrintHelp();
+                        }
+                        else if (command_argument[0] == "history")
+                        {
+                            PrintHistory();
                         }
                         else if (redirections.ContainsKey(command_argument[0]))
                         {
@@ -293,8 +308,9 @@ namespace Koromo_Copy.Console
                         //
                         //  모든 태스크가 끝날때까지 기다림
                         //
-                        if (GlobalTask != null)
+                        if (GlobalTask.Count != 0)
                         {
+                            GlobalTask.ForEach(x => { if (x.Status == TaskStatus.Running) x.Wait(); });
                             await Task.WhenAll(GlobalTask);
                         }
 
@@ -310,7 +326,6 @@ namespace Koromo_Copy.Console
                             command = Array.Empty<string>();
                         }
                         Pipe = false;
-
                     }
                 }
                 catch (Exception e)
@@ -324,6 +339,8 @@ namespace Koromo_Copy.Console
             }
         }
 
+        #region 출력부 - 기본 텍스트 출력
+
         public void PrintHelp()
         {
             System.Console.Out.WriteLine($"Koromo Copy Console");
@@ -333,6 +350,14 @@ namespace Koromo_Copy.Console
             System.Console.ForegroundColor = ConsoleColor.Yellow;
             System.Console.Out.WriteLine("https://github.com/dc-koromo/koromo-copy/blob/master/Document/Development.md");
             System.Console.ResetColor();
+        }
+
+        public void PrintHistory()
+        {
+            for (int i = 0; i < History.Count; i++)
+            {
+                WriteLine($"{i}: {History[i]}");
+            }
         }
 
         public void Push(DateTime dt, string contents)
@@ -383,5 +408,7 @@ namespace Koromo_Copy.Console
             System.Console.Out.Write(": ");
             System.Console.Out.WriteLine(contents);
         }
+
+        #endregion
     }
 }

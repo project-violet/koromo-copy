@@ -50,6 +50,7 @@
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tvFs = new Koromo_Copy.Controls.NativeTreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.열기OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -60,7 +61,6 @@
             this.tbPath = new System.Windows.Forms.TextBox();
             this.cbFileIndexing = new System.Windows.Forms.CheckBox();
             this.cbIcon = new System.Windows.Forms.CheckBox();
-            this.tvFs = new Koromo_Copy.Controls.NativeTreeView();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -248,6 +248,21 @@
             this.tabPage3.Text = "트리사이즈";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // tvFs
+            // 
+            this.tvFs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvFs.ContextMenuStrip = this.contextMenuStrip1;
+            this.tvFs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
+            this.tvFs.FullRowSelect = true;
+            this.tvFs.Location = new System.Drawing.Point(6, 6);
+            this.tvFs.Name = "tvFs";
+            this.tvFs.ShowLines = false;
+            this.tvFs.Size = new System.Drawing.Size(1230, 440);
+            this.tvFs.TabIndex = 0;
+            this.tvFs.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvFs_DrawNode);
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -256,25 +271,25 @@
             this.속성RToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 76);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(116, 54);
             // 
             // 열기OToolStripMenuItem
             // 
             this.열기OToolStripMenuItem.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.열기OToolStripMenuItem.Name = "열기OToolStripMenuItem";
-            this.열기OToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.열기OToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.열기OToolStripMenuItem.Text = "열기(&O)";
             this.열기OToolStripMenuItem.Click += new System.EventHandler(this.열기OToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(112, 6);
             // 
             // 속성RToolStripMenuItem
             // 
             this.속성RToolStripMenuItem.Name = "속성RToolStripMenuItem";
-            this.속성RToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.속성RToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.속성RToolStripMenuItem.Text = "속성(&R)";
             this.속성RToolStripMenuItem.Click += new System.EventHandler(this.속성RToolStripMenuItem_Click);
             // 
@@ -338,21 +353,6 @@
             this.cbIcon.Text = "아이콘 표시";
             this.cbIcon.UseVisualStyleBackColor = true;
             // 
-            // tvFs
-            // 
-            this.tvFs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvFs.ContextMenuStrip = this.contextMenuStrip1;
-            this.tvFs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
-            this.tvFs.FullRowSelect = true;
-            this.tvFs.Location = new System.Drawing.Point(6, 6);
-            this.tvFs.Name = "tvFs";
-            this.tvFs.ShowLines = false;
-            this.tvFs.Size = new System.Drawing.Size(1230, 440);
-            this.tvFs.TabIndex = 0;
-            this.tvFs.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvFs_DrawNode);
-            // 
             // FsEnumerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -373,7 +373,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MinimumSize = new System.Drawing.Size(1290, 611);
             this.Name = "FsEnumerator";
-            this.Text = "FileSystem Enumerator";
+            this.Text = "Koromo Copy - FileSystem Enumerator";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
