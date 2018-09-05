@@ -88,6 +88,9 @@
     <Compile Include="EH\ExHentaiTool.cs" />
     <Compile Include="EH\ExHentaiParser.cs" />
     <Compile Include="Extends.cs" />
+    <Compile Include="Fs\FileIcon\FolderIcon.cs" />
+    <Compile Include="Fs\FileIcon\IconHelper.cs" />
+    <Compile Include="Fs\FileIcon\IconListManager.cs" />
     <Compile Include="Fs\FileIndexor.cs" />
     <Compile Include="Fs\FileIndexorNode.cs" />
     <Compile Include="Hitomi\HitomiArticle.cs" />
