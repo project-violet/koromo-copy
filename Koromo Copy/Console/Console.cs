@@ -206,6 +206,7 @@ namespace Koromo_Copy.Console
                 {"hitomi", new HitomiConsole()},
                 {"exh", new ExHentaiConsole()},
                 {"pixiv", new PixivConsole()},
+                {"in", new InConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
