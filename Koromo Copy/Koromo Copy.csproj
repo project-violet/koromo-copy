@@ -182,6 +182,12 @@
     <Folder Include="MM\" />
     <Folder Include="Selenium\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />
+    <Content Include="phantomjs-license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
