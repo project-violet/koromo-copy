@@ -17,6 +17,8 @@ namespace Koromo_Copy
     {
         [JsonProperty]
         public HitomiSetting Hitomi;
+        [JsonProperty]
+        public int Thread;
     }
 
     public class Settings : ILazy<Settings>
