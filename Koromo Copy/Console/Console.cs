@@ -210,7 +210,8 @@ namespace Koromo_Copy.Console
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
-                {"run", new Utility.RunConsole() },
+                {"run", new Utility.RunConsole()},
+                {"selenium", new Utility.SeleniumConsole()},
 
                 // pipeline command
                 {"grep", new GrepConsole()},
