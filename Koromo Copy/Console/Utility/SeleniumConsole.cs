@@ -28,12 +28,12 @@ namespace Koromo_Copy.Console.Utility
         [CommandLine("--closesession", CommandType.ARGUMENTS, Help = "Close session.")]
         public string[] CloseSession;
 
-        [CommandLine("--navigate", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "--navigate <session> <url>")]
+        [CommandLine("--navigate", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use '--navigate <session> <url>'")]
         public string[] Navigate;
         [CommandLine("--wait", CommandType.ARGUMENTS)]
         public string[] Wait;
 
-        [CommandLine("--printhtml", CommandType.ARGUMENTS, Help = "--printhtml <session>")]
+        [CommandLine("--printhtml", CommandType.ARGUMENTS, Help = "use '--printhtml <session>'")]
         public string[] PrintHtml;
 
         [CommandLine("--tablist", CommandType.ARGUMENTS)]
