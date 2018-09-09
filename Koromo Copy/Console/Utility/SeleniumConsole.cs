@@ -22,19 +22,19 @@ namespace Koromo_Copy.Console.Utility
     {
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
-
-        [CommandLine("--newsession", CommandType.ARGUMENTS, Help = "Create new session using chrome driver.")]
-        public string[] Session;
-        [CommandLine("--closesession", CommandType.ARGUMENTS, Help = "Close session.")]
-        public string[] CloseSession;
-
-        [CommandLine("--navigate", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use '--navigate <session> <url>'")]
+        
+        [CommandLine("--navigate", CommandType.ARGUMENTS, Help = "use '--navigate <url>'")]
         public string[] Navigate;
         [CommandLine("--wait", CommandType.ARGUMENTS)]
         public string[] Wait;
 
-        [CommandLine("--printhtml", CommandType.ARGUMENTS, Help = "use '--printhtml <session>'")]
+        [CommandLine("--printhtml", CommandType.OPTION, Help = "use '--printhtml'")]
         public string[] PrintHtml;
+
+        [CommandLine("--send", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use '--send <name> <contents>'")]
+        public string[] Send;
+        [CommandLine("--click", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use '--send <id>'")]
+        public string[] Click;
 
         [CommandLine("--tablist", CommandType.ARGUMENTS)]
         public string[] TabLists;
@@ -45,7 +45,7 @@ namespace Koromo_Copy.Console.Utility
     /// </summary>
     public class SeleniumConsole : ILazy<SeleniumConsole>, IConsole
     {
-        Dictionary<string, IWebDriver> drivers = new Dictionary<string, IWebDriver>();
+        IWebDriver driver;
 
         /// <summary>
         /// Selenium 콘솔 리다이렉트
@@ -64,14 +64,6 @@ namespace Koromo_Copy.Console.Utility
             else if (option.Help)
             {
                 PrintHelp();
-            }
-            else if (option.Session != null)
-            {
-                ProcessNewSession(option.Session);
-            }
-            else if (option.CloseSession != null)
-            {
-                ProcessCloseSession(option.CloseSession);
             }
             else if (option.Navigate != null)
             {
@@ -101,50 +93,23 @@ namespace Koromo_Copy.Console.Utility
                 );
         }
 
-        /// <summary>
-        /// 새로운 세션을 만듭니다.
-        /// </summary>
-        /// <param name="args"></param>
-        static void ProcessNewSession(string[] args)
+        static void CreateDriver()
         {
-            if (Instance.drivers.ContainsKey(args[0]))
+            if (Instance.driver == null)
             {
-                Console.Instance.WriteErrorLine($"'{args[0]}' session already exists.");
-                return;
+                var chromeDriverService = ChromeDriverService.CreateDefaultService($"{Directory.GetCurrentDirectory()}");
+                chromeDriverService.HideCommandPromptWindow = true;
+                Instance.driver = new ChromeDriver(chromeDriverService, new ChromeOptions());
             }
-            
-            var chromeDriverService = ChromeDriverService.CreateDefaultService($"{Directory.GetCurrentDirectory()}");
-            chromeDriverService.HideCommandPromptWindow = true;
-            Instance.drivers.Add(args[0], new ChromeDriver(chromeDriverService, new ChromeOptions()));
         }
-
-        /// <summary>
-        /// 세션을 닫습니다.
-        /// </summary>
-        /// <param name="args"></param>
-        static void ProcessCloseSession(string[] args)
-        {
-            if (!Instance.drivers.ContainsKey(args[0]))
-            {
-                Console.Instance.WriteErrorLine($"'{args[0]}' session not found.");
-                return;
-            }
-
-            Instance.drivers[args[0]].Quit();
-            Instance.drivers.Remove(args[0]);
-        }
-
+        
         /// <summary>
         /// 특정 Url로 이동합니다.
         /// </summary>
         /// <param name="args"></param>
         static void ProcessNavigate(string[] args, string[] wait)
         {
-            if (!Instance.drivers.ContainsKey(args[0]))
-            {
-                Console.Instance.WriteErrorLine($"'{args[0]}' session not found.");
-                return;
-            }
+            CreateDriver();
 
             int _wait = 3;
             if (wait != null)
@@ -156,8 +121,8 @@ namespace Koromo_Copy.Console.Utility
                 }
             }
 
-            Instance.drivers[args[0]].Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(_wait);
-            Instance.drivers[args[0]].Url = args[1];
+            Instance.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(_wait);
+            Instance.driver.Url = args[0];
         }
 
         /// <summary>
@@ -166,13 +131,13 @@ namespace Koromo_Copy.Console.Utility
         /// <param name="args"></param>
         static void ProcessPrintHtml(string[] args)
         {
-            if (!Instance.drivers.ContainsKey(args[0]))
+            if (Instance.driver == null)
             {
-                Console.Instance.WriteErrorLine($"'{args[0]}' session not found.");
+                Console.Instance.WriteErrorLine($"Navigate before processing.");
                 return;
             }
 
-            Console.Instance.Write(Instance.drivers[args[0]].PageSource);
+            Console.Instance.Write(Instance.driver.PageSource);
         }
 
         /// <summary>
@@ -181,16 +146,16 @@ namespace Koromo_Copy.Console.Utility
         /// <param name="args"></param>
         static void ProcessTabLists(string[] args)
         {
-            if (!Instance.drivers.ContainsKey(args[0]))
+            if (Instance.driver == null)
             {
-                Console.Instance.WriteErrorLine($"'{args[0]}' session not found.");
+                Console.Instance.WriteErrorLine($"Navigate before processing.");
                 return;
             }
 
-            foreach (var wh in Instance.drivers[args[0]].WindowHandles)
+            foreach (var wh in Instance.driver.WindowHandles)
             {
-                Instance.drivers[args[0]].SwitchTo().Window(wh);
-                Console.Instance.WriteLine(Instance.drivers[args[0]].Url);
+                Instance.driver.SwitchTo().Window(wh);
+                Console.Instance.WriteLine(Instance.driver.Url);
             }
         }
     }
