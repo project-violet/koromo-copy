@@ -115,8 +115,13 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Console\MMConsole.cs" />
+    <Compile Include="MM\MMArticle.cs" />
+    <Compile Include="MM\MMParser.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="Net\DownloadQueue.cs" />
+    <Compile Include="Net\Driver\PhantomJSWrapper.cs" />
+    <Compile Include="Net\Driver\SeleniumWrapper.cs" />
     <Compile Include="Net\ISemaphore.cs" />
     <Compile Include="Net\NetCommon.cs" />
     <Compile Include="Pixiv\Pixeez\Objects\Authorize.cs" />
@@ -179,7 +184,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MM\" />
     <Folder Include="Selenium\" />
   </ItemGroup>
   <ItemGroup>

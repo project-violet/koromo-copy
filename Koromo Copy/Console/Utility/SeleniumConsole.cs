@@ -30,12 +30,7 @@ namespace Koromo_Copy.Console.Utility
 
         [CommandLine("--printhtml", CommandType.OPTION, Help = "use '--printhtml'")]
         public string[] PrintHtml;
-
-        [CommandLine("--send", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use '--send <name> <contents>'")]
-        public string[] Send;
-        [CommandLine("--click", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use '--send <id>'")]
-        public string[] Click;
-
+        
         [CommandLine("--tablist", CommandType.ARGUMENTS)]
         public string[] TabLists;
     }
