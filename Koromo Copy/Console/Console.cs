@@ -194,7 +194,32 @@ namespace Koromo_Copy.Console
         /// 명령 히스토리 입니다.
         /// </summary>
         public List<string> History = new List<string>();
-        
+
+        /// <summary>
+        /// 프롬프트입니다.
+        /// </summary>
+        /// <returns></returns>
+        public void Prompt()
+        {
+            System.Console.ForegroundColor = ConsoleColor.Green;
+            System.Console.Out.Write("dc-koromo");
+            System.Console.ResetColor();
+            System.Console.Out.Write("@");
+            System.Console.ForegroundColor = ConsoleColor.Cyan;
+            System.Console.Out.Write("koromo-copy");
+            System.Console.ResetColor();
+            System.Console.Out.Write(":");
+            System.Console.ForegroundColor = ConsoleColor.Blue;
+            System.Console.Out.Write("~");
+            System.Console.ResetColor();
+            System.Console.Out.Write("$ ");
+
+            commandLine = System.Console.In.ReadLine();
+        }
+
+        public string commandLine;
+        public Task PromptTask;
+
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
         /// </summary>
@@ -207,6 +232,7 @@ namespace Koromo_Copy.Console
                 {"exh", new ExHentaiConsole()},
                 {"pixiv", new PixivConsole()},
                 {"in", new InConsole()},
+                {"mm", new MMConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
@@ -222,22 +248,11 @@ namespace Koromo_Copy.Console
 
             while (true)
             {
-                System.Console.ForegroundColor = ConsoleColor.Green;
-                System.Console.Out.Write("dc-koromo");
-                System.Console.ResetColor();
-                System.Console.Out.Write("@");
-                System.Console.ForegroundColor = ConsoleColor.Cyan;
-                System.Console.Out.Write("koromo-copy");
-                System.Console.ResetColor();
-                System.Console.Out.Write(":");
-                System.Console.ForegroundColor = ConsoleColor.Blue;
-                System.Console.Out.Write("~");
-                System.Console.ResetColor();
-                System.Console.Out.Write("$ ");
+                PromptTask = Task.Run(() => Prompt());
+                PromptTask.Wait();
 
                 try
                 {
-                    string commandLine = System.Console.In.ReadLine();
                     History.Add(commandLine);
                     string[] command = ParseArgument(commandLine);
 
