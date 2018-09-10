@@ -17,18 +17,28 @@ namespace Koromo_Copy
         {
             InitializeComponent();
 
+        }
+
+        private void MainForm_Load(object sender, System.EventArgs e)
+        {
+            Show();
+            Monitor.Instance.ControlEnable = true;
             Monitor.Instance.Push("Hello!");
-            Monitor.Instance.Start();
+            //if (Monitor.Instance.ControlEnable)
+                Monitor.Instance.Start();
         }
 
         private void metroButton1_Click(object sender, System.EventArgs e)
         {
-            WebClient wc = new WebClient();
-            wc.Encoding = Encoding.UTF8;
-            string gb = wc.DownloadString("https://ltn.hitomi.la/galleryblock/1217169.html");
-            var a = Hitomi.HitomiParser.ParseGalleryBlock(gb);
-
+            //WebClient wc = new WebClient();
+            //wc.Encoding = Encoding.UTF8;
+            //string gb = wc.DownloadString("https://ltn.hitomi.la/galleryblock/1217169.html");
+            //var a = Hitomi.HitomiParser.ParseGalleryBlock(gb);
         }
 
+        private void metroButton2_Click(object sender, System.EventArgs e)
+        {
+            (new Utility.FsEnumerator()).Show();
+        }
     }
 }
