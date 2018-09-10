@@ -40,7 +40,7 @@ namespace Koromo_Copy.Hitomi
             try { article.Series = contents.SelectNodes("./tr[1]/td[2]/ul/li").Select(node => node.SelectSingleNode(".//a").InnerText).ToArray(); } catch { }
             article.Type = contents.SelectSingleNode("./tr[2]/td[2]/a").InnerText;
             article.Language = HitomiLegalize.LegalizeLanguage(contents.SelectSingleNode("./tr[3]/td[2]/a").InnerText);
-            article.Tags = contents.SelectNodes("./tr[4]/td[2]/ul/li").Select(node => HitomiLegalize.LegalizeTag(node.SelectSingleNode(".//a").InnerText)).ToArray();
+            try { article.Tags = contents.SelectNodes("./tr[4]/td[2]/ul/li").Select(node => HitomiLegalize.LegalizeTag(node.SelectSingleNode(".//a").InnerText)).ToArray(); } catch { }
 
             article.DateTime = nodes.SelectSingleNode("./div[2]/p").InnerText;
 
