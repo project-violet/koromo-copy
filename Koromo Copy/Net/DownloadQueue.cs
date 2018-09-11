@@ -22,6 +22,7 @@ namespace Koromo_Copy.Net
         public List<Tuple<string, string, object, SemaphoreCallBack, SemaphoreExtends>> queue = new List<Tuple<string, string, object, SemaphoreCallBack, SemaphoreExtends>>();
         public List<Tuple<string, HttpWebRequest>> requests = new List<Tuple<string, HttpWebRequest>>();
         public List<string> aborted = new List<string>();
+        public List<Task> tasks = new List<Task>();
         public IWebProxy proxy { get; set; }
 
         public delegate void DownloadSizeCallBack(string uri, long size);
@@ -126,6 +127,8 @@ namespace Koromo_Copy.Net
         public void Add(string url, string path, object obj, SemaphoreCallBack callback, SemaphoreExtends se = null)
         {
             queue.Add(new Tuple<string, string, object, SemaphoreCallBack, SemaphoreExtends>(url, path, obj, callback, se));
+            if (Wait())
+                Notify();
         }
 
         private bool Wait()
@@ -145,7 +148,8 @@ namespace Koromo_Copy.Net
                 object s3 = queue[i].Item3;
                 SemaphoreCallBack s4 = queue[i].Item4;
                 SemaphoreExtends s5 = queue[i].Item5;
-                Task.Run(() => DownloadRemoteImageFile(s1, s2, s3, s4, s5));
+                tasks.Add(Task.Run(() => DownloadRemoteImageFile(s1, s2, s3, s4, s5)).ContinueWith(
+                    x => Task.Run(() => { tasks.RemoveAll(y => y.IsCompleted); })));
                 lock (int_lock) mtx++;
             }
         }

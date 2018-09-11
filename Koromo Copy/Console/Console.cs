@@ -223,7 +223,7 @@ namespace Koromo_Copy.Console
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
         /// </summary>
-        public async void Loop()
+        public void Loop()
         {
             var redirections = new Dictionary<string, IConsole>()
             {
@@ -238,6 +238,7 @@ namespace Koromo_Copy.Console
                 {"scan", new Utility.ScanConsole()},
                 {"run", new Utility.RunConsole()},
                 {"selenium", new Utility.SeleniumConsole()},
+                {"down", new Utility.DownloadConsole()},
 
                 // pipeline command
                 {"grep", new GrepConsole()},
@@ -327,8 +328,10 @@ namespace Koromo_Copy.Console
                         //
                         if (GlobalTask.Count != 0)
                         {
-                            GlobalTask.ForEach(x => { if (x.Status == TaskStatus.Running) x.Wait(); });
-                            await Task.WhenAll(GlobalTask);
+                            GlobalTask.ForEach(x => {
+                                if (x.Status != TaskStatus.RanToCompletion)
+                                    x.Wait();
+                            });
                         }
 
                         //
