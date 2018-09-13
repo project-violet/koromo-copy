@@ -44,6 +44,7 @@ namespace Koromo_Copy.Hitomi
 
         public async Task DownloadMetadata()
         {
+            Monitor.Instance.Push("Download Metadata...");
             ServicePointManager.DefaultConnectionLimit = 999999999;
             metadata_collection = new List<HitomiMetadata>();
             downloadCount = 0;
@@ -67,6 +68,7 @@ namespace Koromo_Copy.Hitomi
 
         public async Task DownloadHiddendata()
         {
+            Monitor.Instance.Push("Download Hiddendata...");
             thumbnail_collection = new Dictionary<string, string>();
             HttpClient client = new HttpClient();
             client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);

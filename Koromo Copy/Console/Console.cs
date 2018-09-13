@@ -328,10 +328,12 @@ namespace Koromo_Copy.Console
                         //
                         if (GlobalTask.Count != 0)
                         {
-                            GlobalTask.ForEach(x => {
-                                if (x.Status != TaskStatus.RanToCompletion)
-                                    x.Wait();
-                            });
+                            for (int i = 0; i < GlobalTask.Count; i++)
+                            {
+                                Task task = GlobalTask[i];
+                                if (task != null && task.Status != TaskStatus.RanToCompletion)
+                                    task.Wait();
+                            }
                         }
 
                         //
