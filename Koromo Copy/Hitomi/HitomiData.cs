@@ -64,6 +64,7 @@ namespace Koromo_Copy.Hitomi
                     serializer.Serialize(writer, metadata_collection);
                 }
             }
+            return;
         }
 
         public async Task DownloadHiddendata()
@@ -99,6 +100,7 @@ namespace Koromo_Copy.Hitomi
                     thumbnail_collection.Add(article.Magic, article.Thumbnail);
             }
             SortMetadata();
+            return;
         }
 
         public void SortMetadata()
@@ -108,20 +110,39 @@ namespace Koromo_Copy.Hitomi
 
         private async Task downloadMetadata(int no)
         {
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
-            var data = await client.GetStringAsync(gallerie_json_uri(no));
-            if (data.Trim() == "")
+            int retry = 0;
+        RETRYL:
+            if (retry > 10)
             {
-                Monitor.Instance.Push($"Error: '{gallerie_json_uri(no)}' is empty database!");
+                Monitor.Instance.Push("Maximum number(10) of retries has been exceeded.");
+                Monitor.Instance.Push("Sorry");
                 return;
             }
-            lock (metadata_collection)
-                metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiMetadata>>(data));
-            lock (lock_count)
+            try
             {
-                downloadCount++;
-                Monitor.Instance.Push($"Download complete: [{downloadCount.ToString("00")}/{number_of_gallery_jsons}] {gallerie_json_uri(no)}");
+                HttpClient client = new HttpClient();
+                client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
+                var data = await client.GetStringAsync(gallerie_json_uri(no));
+                if (data.Trim() == "")
+                {
+                    Monitor.Instance.Push($"Error: '{gallerie_json_uri(no)}' is empty database!");
+                    return;
+                }
+                lock (metadata_collection)
+                    metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiMetadata>>(data));
+                lock (lock_count)
+                {
+                    downloadCount++;
+                    Monitor.Instance.Push($"Download complete: [{downloadCount.ToString("00")}/{number_of_gallery_jsons}] {gallerie_json_uri(no)}");
+                }
+            }
+            catch (Exception e)
+            {
+                Monitor.Instance.Push($"Error: " + e.Message);
+                Monitor.Instance.Push($"Retrying download ... [{no}|{retry}]");
+                retry++;
+                Thread.Sleep(1000);
+                goto RETRYL;
             }
         }
         
