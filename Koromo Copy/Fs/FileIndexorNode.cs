@@ -77,6 +77,7 @@ namespace Koromo_Copy.Fs
             foreach (FileIndexorNode fin in nodes)
                 v += fin.GetTotalSize();
             total_size = v;
+            totalsize_process = true;
             return v;
         }
 
