@@ -46,8 +46,8 @@ namespace Koromo_Copy.Hitomi
             {
                 string lang = v.Language;
                 if (v.Language == null) lang = "N/A";
-                //if (HitomiSetting.Instance.GetModel().Language != "ALL" &&
-                //    HitomiSetting.Instance.GetModel().Language != lang) continue;
+                if (Settings.Instance.Hitomi.Language != "ALL" &&
+                    Settings.Instance.Hitomi.Language != lang) continue;
                 if (v.Tags != null)
                 {
                     int intersec_count = 0;
@@ -111,8 +111,8 @@ namespace Koromo_Copy.Hitomi
                 }
                 string lang = v.Language;
                 if (v.Language == null) lang = "N/A";
-                //if (HitomiSetting.Instance.GetModel().Language != "ALL" &&
-                //    HitomiSetting.Instance.GetModel().Language != lang) continue;
+                if (Settings.Instance.Hitomi.Language != "ALL" &&
+                    Settings.Instance.Hitomi.Language != lang) continue;
                 if (query.Language != null &&
                     query.Language != lang) continue;
                 if (query.TagExclude != null)

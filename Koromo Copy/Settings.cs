@@ -9,6 +9,7 @@
 using Koromo_Copy.Hitomi;
 using Koromo_Copy.Interface;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace Koromo_Copy
@@ -17,6 +18,11 @@ namespace Koromo_Copy
     {
         [JsonProperty]
         public HitomiSetting Hitomi;
+
+        /// <summary>
+        /// 이미지 다운로드에 사용할 쓰레드 수를 지정합니다.
+        /// 기본으로 논리 코어수 * 3 만큼 설정됩니다.
+        /// </summary>
         [JsonProperty]
         public int Thread;
     }
@@ -32,6 +38,7 @@ namespace Koromo_Copy
             if (model == null)
             {
                 model = new SettingModel();
+                model.Thread = Environment.ProcessorCount * 3;
                 model.Hitomi = new HitomiSetting();
                 model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";
                 model.Hitomi.Language = "korean";

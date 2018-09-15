@@ -323,6 +323,5 @@ namespace Koromo_Copy.Hitomi
             Monitor.Instance.Push("End Synchronization");
             Monitor.Instance.Push($"Sync Report : {metadata_collection.Count} {tagdata_collection.female.Count}");
         }
-
     }
 }
