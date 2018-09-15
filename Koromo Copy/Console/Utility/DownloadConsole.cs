@@ -25,11 +25,7 @@ namespace Koromo_Copy.Console.Utility
         [CommandLine("--url", CommandType.ARGUMENTS, DefaultArgument = true,
             Help = "--url <image url> : Download image.")]
         public string[] Url;
-
-        [CommandLine("--urls", CommandType.ARGUMENTS, Pipe = true, PipeDefault = true,
-            Help = "--urls <images list> : Download images.")]
-        public string[] Urls;
-
+        
         [CommandLine("--out", CommandType.ARGUMENTS,
             Help = "--out <out pattern> : Download images file name.")]
         public string[] Out;
@@ -46,7 +42,7 @@ namespace Koromo_Copy.Console.Utility
         static bool Redirect(string[] arguments, string contents)
         {
             arguments = CommandLineUtil.InsertWeirdArguments<DownloadConsoleOption>(arguments, contents == "", "--url");
-            DownloadConsoleOption option = CommandLineParser<DownloadConsoleOption>.Parse(arguments, true, contents);
+            DownloadConsoleOption option = CommandLineParser<DownloadConsoleOption>.Parse(arguments);
 
             if (option.Error)
             {
@@ -63,9 +59,9 @@ namespace Koromo_Copy.Console.Utility
             {
                 ProcessUrl(option.Url, option.Out);
             }
-            else if (option.Urls != null)
+            else if (contents != "")
             {
-                ProcessUrls(option.Urls, option.Out);
+                ProcessUrls(contents, option.Out);
             }
 
             return true;
@@ -119,9 +115,9 @@ namespace Koromo_Copy.Console.Utility
         /// 특정 이미지 url들을 다운로드 큐에 넣습니다.
         /// </summary>
         /// <param name="args"></param>
-        static void ProcessUrls(string[] args, string[] outs)
+        static void ProcessUrls(string args, string[] outs)
         {
-            var list = JsonConvert.DeserializeObject<string[]>(args[0]).ToList();
+            var list = JsonConvert.DeserializeObject<string[]>(args).ToList();
 
             if (outs == null)
             {
