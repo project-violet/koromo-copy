@@ -33,5 +33,11 @@ namespace Koromo_Copy.Hitomi
         /// </summary>
         [JsonProperty]
         public bool UsingOptimization;
+
+        /// <summary>
+        /// 퍼지 알고리즘을 이용해 Auto complete 목록을 가져올지의 여부를 설정합니다.
+        /// </summary>
+        [JsonProperty]
+        public bool UsingFuzzy;
     }
 }
