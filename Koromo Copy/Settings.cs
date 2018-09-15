@@ -19,6 +19,9 @@ namespace Koromo_Copy
         [JsonProperty]
         public HitomiSetting Hitomi;
 
+        [JsonProperty]
+        public HitomiAnaylsisSetting HitomiAnalysis;
+
         /// <summary>
         /// 이미지 다운로드에 사용할 쓰레드 수를 지정합니다.
         /// 기본으로 논리 코어수 * 3 만큼 설정됩니다.
@@ -57,5 +60,6 @@ namespace Koromo_Copy
 
         public ref SettingModel Model { get { return ref model; } }
         public ref HitomiSetting Hitomi { get { return ref model.Hitomi; } }
+        public ref HitomiAnaylsisSetting HitomiAnalysis { get { return ref model.HitomiAnalysis; } }
     }
 }

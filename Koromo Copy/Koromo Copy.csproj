@@ -94,6 +94,15 @@
     <Compile Include="Fs\FileIcon\IconListManager.cs" />
     <Compile Include="Fs\FileIndexor.cs" />
     <Compile Include="Fs\FileIndexorNode.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiAnalysis.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiAnalysisArtist.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiAnalysisArtistCount.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiAnalysisDateTime.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiAnalysisGallery.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiAnalysisRelatedTags.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiAnalysisTagCount.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiAnalysisTrend.cs" />
+    <Compile Include="Hitomi\Analysis\HitomiPortableAnalysis.cs" />
     <Compile Include="Hitomi\HitomiArticle.cs" />
     <Compile Include="Hitomi\HitomiCommon.cs" />
     <Compile Include="Hitomi\HitomiData.cs" />
@@ -103,6 +112,7 @@
     <Compile Include="Hitomi\HitomiDataQuery.cs" />
     <Compile Include="Hitomi\HitomiDataSearch.cs" />
     <Compile Include="Hitomi\HitomiLegalize.cs" />
+    <Compile Include="Hitomi\HitomiLog.cs" />
     <Compile Include="Hitomi\HitomiParser.cs" />
     <Compile Include="Hitomi\HitomiSetting.cs" />
     <Compile Include="Hitomi\Translate\KoreanSeries.cs" />

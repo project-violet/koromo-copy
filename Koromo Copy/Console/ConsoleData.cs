@@ -25,5 +25,15 @@ namespace Koromo_Copy.Console
         {
             data_dictionary.Add("grep_hitomi", @"(?<=\\)\[\d+\][^\\]+$");
         }
+
+        /// <summary>
+        /// 데이터 존재여부를 확인합니다.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool Exists(string key)
+        {
+            return data_dictionary.ContainsKey(key);
+        }
     }
 }

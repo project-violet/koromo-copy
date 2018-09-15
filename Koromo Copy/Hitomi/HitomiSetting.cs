@@ -40,4 +40,23 @@ namespace Koromo_Copy.Hitomi
         [JsonProperty]
         public bool UsingFuzzy;
     }
+
+    /// <summary>
+    /// 히토미 분석에 관한 설정입니다.
+    /// </summary>
+    public class HitomiAnaylsisSetting
+    {
+        [JsonProperty]
+        public bool UsingOnlyFMTagsOnAnalysis;
+        [JsonProperty]
+        public bool UsingXiAanlysis;
+        [JsonProperty]
+        public bool UsingRMSAanlysis;
+        [JsonProperty]
+        public bool UsingCosineAnalysis;
+        [JsonProperty]
+        public bool RecommendNMultipleWithLength;
+        [JsonProperty]
+        public bool RecommendLanguageALL;
+    }
 }
