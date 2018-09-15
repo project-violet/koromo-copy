@@ -106,6 +106,9 @@ hitomi -search "artist:hisasi lang:korean" -all
 9. 특정 검색 토큰을 고정시키고 싶을 경우
 hitomi -setsearch "lang:korean"
 hitomi -search "artist:hisasi" -all
+
+10. 특정 작품을 다운로드하고 싶을 경우
+hitomi -image 1234 > down --out "C:\Hitomi" --urls
 ```
 
 ## exh 명령 예제
