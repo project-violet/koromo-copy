@@ -46,6 +46,11 @@ namespace Koromo_Copy.Console
         public string Help { get; set; }
 
         /// <summary>
+        /// 파이프에서 아무것도 입력되지 않을 시 이 값이 true로 설정됩니다.
+        /// </summary>
+        public bool PipeDefault { get; set; } = false;
+
+        /// <summary>
         /// 아무것도 입력되지 않을 시 이 값이 true로 설정됩니다.
         /// </summary>
         public bool Default { get; set; } = false;
@@ -301,9 +306,14 @@ namespace Koromo_Copy.Console
                 //
                 foreach (var kv in field)
                 {
-                    if (kv.Value.Item2.Default)
+                    if (!pipe && kv.Value.Item2.Default)
                     {
                         typeof(T).GetField(kv.Value.Item1).SetValue(result, true);
+                        break;
+                    }
+                    else if (pipe && kv.Value.Item2.PipeDefault)
+                    {
+                        typeof(T).GetField(kv.Value.Item1).SetValue(result, new[] { contents });
                         break;
                     }
                 }

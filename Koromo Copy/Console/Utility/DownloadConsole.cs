@@ -8,6 +8,10 @@
 
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
+using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Koromo_Copy.Console.Utility
 {
@@ -23,7 +27,7 @@ namespace Koromo_Copy.Console.Utility
             Help = "--url <image url> : Download image.")]
         public string[] Url;
 
-        [CommandLine("--urls", CommandType.ARGUMENTS, Pipe = true,
+        [CommandLine("--urls", CommandType.ARGUMENTS, Pipe = true, PipeDefault = true,
             Help = "--urls <images list> : Download images.")]
         public string[] Urls;
 
@@ -59,6 +63,10 @@ namespace Koromo_Copy.Console.Utility
             else if (option.Url != null)
             {
                 ProcessUrl(option.Url, option.Out);
+            }
+            else if (option.Urls != null)
+            {
+                ProcessUrls(option.Urls, option.Out);
             }
 
             return true;
@@ -105,6 +113,26 @@ namespace Koromo_Copy.Console.Utility
             AllocQueue();
 
             Instance.queue.Add(args[0], outs[0], null, ResultCallback, new SemaphoreExtends());
+            Console.Instance.GlobalTask = Instance.queue.tasks;
+        }
+
+        /// <summary>
+        /// 특정 이미지 url들을 다운로드 큐에 넣습니다.
+        /// </summary>
+        /// <param name="args"></param>
+        static void ProcessUrls(string[] args, string[] outs)
+        {
+            var list = JsonConvert.DeserializeObject<string[]>(args[0]).ToList();
+
+            if (outs == null)
+            {
+                Console.Instance.WriteErrorLine("Write output filename.");
+                return;
+            }
+
+            AllocQueue();
+
+            list.ForEach(x => Instance.queue.Add(x, Path.Combine(outs[0], x.Split('/').Last()), null, ResultCallback, new SemaphoreExtends()));
             Console.Instance.GlobalTask = Instance.queue.tasks;
         }
     }

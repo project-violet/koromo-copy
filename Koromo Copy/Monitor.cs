@@ -123,7 +123,10 @@ namespace Koromo_Copy
         {
             if (controlEnable)
             {
-                Console.Console.Instance.Push(log.Last().Item1, log.Last().Item2);
+                lock (log)
+                {
+                    Console.Console.Instance.Push(log.Last().Item1, log.Last().Item2);
+                }
             }
         }
 
