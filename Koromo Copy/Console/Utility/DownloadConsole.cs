@@ -11,7 +11,6 @@ using Koromo_Copy.Net;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Koromo_Copy.Console.Utility
 {

@@ -125,6 +125,8 @@ namespace Koromo_Copy.Console
         {
             if (e.SpecialKey == ConsoleSpecialKey.ControlC)
             {
+                Instance.PromptToken?.Cancel();
+                Instance.ConsoleToken?.Cancel();
                 e.Cancel = true;
             }
         }
@@ -219,6 +221,9 @@ namespace Koromo_Copy.Console
 
         public string commandLine;
         public Task PromptTask;
+        public CancellationTokenSource PromptToken;
+        public Task ConsoleTask;
+        public CancellationTokenSource ConsoleToken;
 
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
@@ -249,116 +254,128 @@ namespace Koromo_Copy.Console
 
             while (true)
             {
-                PromptTask = Task.Run(() => Prompt());
+                PromptToken = new CancellationTokenSource();
+                PromptTask = Task.Factory.StartNew(() => Prompt(), PromptToken.Token);
                 PromptTask.Wait();
 
-                try
+                ConsoleToken = new CancellationTokenSource();
+                ConsoleTask = Task.Factory.StartNew(() =>
                 {
-                    History.Add(commandLine);
-                    string[] command = ParseArgument(commandLine);
-
-                    while (command.Length > 0)
+                    if (commandLine == null)
                     {
-                        string[] command_argument = command;
-                        string pipe_contents = PipeContents.ToString();
-                        PipeContents.Clear();
-                        
-                        //
-                        //  파이프 전처리
-                        //
-                        if (command.Contains(">"))
-                        {
-                            Pipe = true;
+                        System.Console.Out.WriteLine("");
+                        return;
+                    }
 
-                            int meet_pipe = Array.FindIndex(command, w => w == ">");
-                            command_argument = command.Take(meet_pipe).ToArray();
-                            command = SliceArray(command, meet_pipe + 1, command.Length);
-                        }
-                        else if (command.Contains("|>"))
-                        {
-                            Pipe = true;
-                            LoopPipe = true;
+                    try
+                    {
+                        History.Add(commandLine);
+                        string[] command = ParseArgument(commandLine);
 
-                            int meet_pipe = Array.FindIndex(command, w => w == "|>");
-                            command_argument = command.Take(meet_pipe).ToArray();
-                            command = SliceArray(command, meet_pipe + 1, command.Length);
-                        }
-                        else
+                        while (command.Length > 0)
                         {
-                            command = Array.Empty<string>();
-                        }
+                            string[] command_argument = command;
+                            string pipe_contents = PipeContents.ToString();
+                            PipeContents.Clear();
 
-                        //
-                        //  커맨드 처리
-                        //
-                        bool success = false;
-                        if (command_argument[0] == "help")
-                        {
-                            PrintHelp();
-                        }
-                        else if (command_argument[0] == "history")
-                        {
-                            PrintHistory();
-                        }
-                        else if (redirections.ContainsKey(command_argument[0]))
-                        {
-                            if (command_argument.Length == 1)
+                            //
+                            //  파이프 전처리
+                            //
+                            if (command.Contains(">"))
                             {
-                                success = redirections[command_argument[0]].Redirect(Array.Empty<string>(), pipe_contents);
+                                Pipe = true;
+
+                                int meet_pipe = Array.FindIndex(command, w => w == ">");
+                                command_argument = command.Take(meet_pipe).ToArray();
+                                command = SliceArray(command, meet_pipe + 1, command.Length);
+                            }
+                            else if (command.Contains("|>"))
+                            {
+                                Pipe = true;
+                                LoopPipe = true;
+
+                                int meet_pipe = Array.FindIndex(command, w => w == "|>");
+                                command_argument = command.Take(meet_pipe).ToArray();
+                                command = SliceArray(command, meet_pipe + 1, command.Length);
                             }
                             else
                             {
-                                var list = command_argument.ToList();
-                                list.RemoveAt(0);
-                                success = redirections[command_argument[0]].Redirect(list.ToArray(), pipe_contents);
+                                command = Array.Empty<string>();
                             }
-                        }
-                        else if (pipe_contents != "")
-                        {
-                            success = redirections["pipe"].Redirect(command_argument, pipe_contents);
-                        }
-                        else
-                        {
-                            System.Console.Out.WriteLine($"{command_argument[0]}: command not found");
-                            System.Console.Out.WriteLine($"try 'help' command!");
-                        }
 
-                        //
-                        //  모든 태스크가 끝날때까지 기다림
-                        //
-                        if (GlobalTask.Count != 0)
-                        {
-                            while (GlobalTask.Count > 0)
+                            //
+                            //  커맨드 처리
+                            //
+                            bool success = false;
+                            if (command_argument[0] == "help")
                             {
-                                for (int i = 0; i < GlobalTask.Count; i++)
+                                PrintHelp();
+                            }
+                            else if (command_argument[0] == "history")
+                            {
+                                PrintHistory();
+                            }
+                            else if (redirections.ContainsKey(command_argument[0]))
+                            {
+                                if (command_argument.Length == 1)
                                 {
-                                    Task task = GlobalTask[i];
-                                    if (task != null && task.Status != TaskStatus.RanToCompletion)
-                                        task.Wait();
+                                    success = redirections[command_argument[0]].Redirect(Array.Empty<string>(), pipe_contents);
+                                }
+                                else
+                                {
+                                    var list = command_argument.ToList();
+                                    list.RemoveAt(0);
+                                    success = redirections[command_argument[0]].Redirect(list.ToArray(), pipe_contents);
                                 }
                             }
-                        }
-
-                        //
-                        //  파이프 후처리
-                        //
-                        if (!success)
-                        {
-                            if (Pipe)
+                            else if (pipe_contents != "")
                             {
-                                System.Console.Out.WriteLine(PipeContents.ToString());
+                                success = redirections["pipe"].Redirect(command_argument, pipe_contents);
                             }
-                            command = Array.Empty<string>();
+                            else
+                            {
+                                System.Console.Out.WriteLine($"{command_argument[0]}: command not found");
+                                System.Console.Out.WriteLine($"try 'help' command!");
+                            }
+
+                            //
+                            //  모든 태스크가 끝날때까지 기다림
+                            //
+                            if (GlobalTask.Count != 0)
+                            {
+                                while (GlobalTask.Count > 0)
+                                {
+                                    for (int i = 0; i < GlobalTask.Count; i++)
+                                    {
+                                        Task task = GlobalTask[i];
+                                        if (task != null && task.Status != TaskStatus.RanToCompletion)
+                                            task.Wait();
+                                    }
+                                }
+                            }
+
+                            //
+                            //  파이프 후처리
+                            //
+                            if (!success)
+                            {
+                                if (Pipe)
+                                {
+                                    System.Console.Out.WriteLine(PipeContents.ToString());
+                                }
+                                command = Array.Empty<string>();
+                            }
+                            Pipe = false;
                         }
-                        Pipe = false;
                     }
-                }
-                catch (Exception e)
-                {
-                    System.Console.Out.WriteLine($"Error occurred on processing!");
-                    System.Console.Out.WriteLine($"Message: {e.Message}");
-                    System.Console.Out.WriteLine($"StackTrace: {e.StackTrace}");
-                }
+                    catch (Exception e)
+                    {
+                        System.Console.Out.WriteLine($"Error occurred on processing!");
+                        System.Console.Out.WriteLine($"Message: {e.Message}");
+                        System.Console.Out.WriteLine($"StackTrace: {e.StackTrace}");
+                    }
+                }, ConsoleToken.Token);
+                ConsoleTask.Wait();
 
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             }
