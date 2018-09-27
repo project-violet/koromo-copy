@@ -96,7 +96,7 @@ namespace Koromo_Copy.Console
         /// 아티클(아카이브) 정보를 가져옵니다.
         /// </summary>
         /// <param name="args"></param>
-        static async void ProcessArticles(string[] args)
+        static void ProcessArticles(string[] args)
         {
             string html = Net.NetCommon.DownloadString(args[0]);
 
