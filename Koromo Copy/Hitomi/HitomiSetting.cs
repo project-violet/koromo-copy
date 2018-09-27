@@ -44,7 +44,7 @@ namespace Koromo_Copy.Hitomi
     /// <summary>
     /// 히토미 분석에 관한 설정입니다.
     /// </summary>
-    public class HitomiAnaylsisSetting
+    public class HitomiAnalysisSetting
     {
         /// <summary>
         /// 작가추천 시 female:, male: 태그만 사용합니다.

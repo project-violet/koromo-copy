@@ -20,7 +20,7 @@ namespace Koromo_Copy
         public HitomiSetting Hitomi;
 
         [JsonProperty]
-        public HitomiAnaylsisSetting HitomiAnalysis;
+        public HitomiAnalysisSetting HitomiAnalysis;
 
         /// <summary>
         /// 이미지 다운로드에 사용할 쓰레드 수를 지정합니다.
@@ -42,9 +42,12 @@ namespace Koromo_Copy
             {
                 model = new SettingModel();
                 model.Thread = Environment.ProcessorCount * 3;
+
                 model.Hitomi = new HitomiSetting();
                 model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";
                 model.Hitomi.Language = "korean";
+
+                model.HitomiAnalysis = new HitomiAnalysisSetting();
             }
             Save();
         }
@@ -60,6 +63,6 @@ namespace Koromo_Copy
 
         public ref SettingModel Model { get { return ref model; } }
         public ref HitomiSetting Hitomi { get { return ref model.Hitomi; } }
-        public ref HitomiAnaylsisSetting HitomiAnalysis { get { return ref model.HitomiAnalysis; } }
+        public ref HitomiAnalysisSetting HitomiAnalysis { get { return ref model.HitomiAnalysis; } }
     }
 }
