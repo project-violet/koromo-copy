@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Koromo_Copy.Console
 {
@@ -314,6 +315,10 @@ namespace Koromo_Copy.Console
                             else if (command_argument[0] == "history")
                             {
                                 PrintHistory();
+                            }
+                            else if (command_argument[0] == "exit")
+                            {
+                                Environment.Exit(0);
                             }
                             else if (redirections.ContainsKey(command_argument[0]))
                             {
