@@ -85,7 +85,9 @@ namespace Koromo_Copy.Console
             {
                 ProcessImage(option.ImageLink, option.Type);
             }
-
+            //
+            //  다운로드 관련
+            //
             else if (option.DownloadMetadata)
             {
                 ProcessDownloadMetadata();
@@ -102,7 +104,9 @@ namespace Koromo_Copy.Console
             {
                 ProcessLoadHidden();
             }
-            
+            //
+            //  로드 및 동기화
+            //
             else if (option.Sync)
             {
                 ProcessSync();
@@ -111,7 +115,9 @@ namespace Koromo_Copy.Console
             {
                 ProcessLoad();
             }
-
+            //
+            //  검색
+            //
             else if (option.Search != null)
             {
                 ProcessSearch(option.Search, option.ShowAllSearchList);
