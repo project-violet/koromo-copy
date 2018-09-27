@@ -86,6 +86,7 @@ namespace Koromo_Copy.Fs
             catch (Exception ex)
             {
                 error_list.Add(new Tuple<string, string>(path, ex.ToString()));
+                Monitor.Instance.Push($"{path} {ex.Message}");
             }
         }
 
@@ -113,6 +114,7 @@ namespace Koromo_Copy.Fs
             catch (Exception ex)
             {
                 error_list.Add(new Tuple<string, string>(path, ex.ToString()));
+                Monitor.Instance.Push($"{path} {ex.Message}");
             }
         }
 
