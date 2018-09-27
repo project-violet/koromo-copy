@@ -34,6 +34,7 @@ namespace Koromo_Copy
             //wc.Encoding = Encoding.UTF8;
             //string gb = wc.DownloadString("https://ltn.hitomi.la/galleryblock/1217169.html");
             //var a = Hitomi.HitomiParser.ParseGalleryBlock(gb);
+            (new Utility.MetadataDownloader()).Show();
         }
 
         private void metroButton2_Click(object sender, System.EventArgs e)

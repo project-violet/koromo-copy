@@ -156,6 +156,12 @@
     <Compile Include="Utility\FsEnumerator.Designer.cs">
       <DependentUpon>FsEnumerator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\MetadataDownloader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\MetadataDownloader.Designer.cs">
+      <DependentUpon>MetadataDownloader.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\StringTools.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,6 +183,9 @@
     </Compile>
     <EmbeddedResource Include="Utility\FsEnumerator.resx">
       <DependentUpon>FsEnumerator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\MetadataDownloader.resx">
+      <DependentUpon>MetadataDownloader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\StringTools.resx">
       <DependentUpon>StringTools.cs</DependentUpon>
