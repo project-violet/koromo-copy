@@ -46,16 +46,31 @@ namespace Koromo_Copy.Hitomi
     /// </summary>
     public class HitomiAnaylsisSetting
     {
+        /// <summary>
+        /// 작가추천 시 female:, male: 태그만 사용합니다.
+        /// </summary>
         [JsonProperty]
         public bool UsingOnlyFMTagsOnAnalysis;
+
         [JsonProperty]
         public bool UsingXiAanlysis;
+
         [JsonProperty]
         public bool UsingRMSAanlysis;
+        
         [JsonProperty]
         public bool UsingCosineAnalysis;
+
+        /// <summary>
+        /// 작가추천 목록 생성시 해당 작가의 Article 수를 곱하지 않습니다.
+        /// 이 설정은 단순한 작가추천 결과를 제공합니다.
+        /// </summary>
         [JsonProperty]
         public bool RecommendNMultipleWithLength;
+
+        /// <summary>
+        /// 작가추천시 모든 언어를 기반으로 목록을 생성합니다.
+        /// </summary>
         [JsonProperty]
         public bool RecommendLanguageALL;
     }
