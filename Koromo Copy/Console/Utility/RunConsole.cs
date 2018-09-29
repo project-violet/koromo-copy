@@ -73,7 +73,8 @@ namespace Koromo_Copy.Console.Utility
 
         static Dictionary<string, Form> run_dic = new Dictionary<string, Form>() {
             { "fsenum", new FsEnumerator() },
-            { "mddown", new MetadataDownloader() }
+            { "mddown", new MetadataDownloader() },
+            { "strings", new StringTools() }
         };
 
         /// <summary>
