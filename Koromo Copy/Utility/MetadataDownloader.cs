@@ -136,10 +136,10 @@ namespace Koromo_Copy.Utility
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 lock(post_status_lock) PostStatusM(read);
-                Monitor.Instance.Push($"Retry: {++retry_count}th {url}");
+                Monitor.Instance.Push($"Retry: {++retry_count}th {url} :\r\nMessage: {e.Message}\r\nStackTrace: {e.StackTrace}");
                 read = 0;
                 retry = true;
                 goto RETRY_LABEL;
