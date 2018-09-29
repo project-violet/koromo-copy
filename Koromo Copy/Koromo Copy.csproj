@@ -150,6 +150,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Strings.cs" />
+    <Compile Include="Utility\Explorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\Explorer.Designer.cs">
+      <DependentUpon>Explorer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\FsEnumerator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +187,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Utility\Explorer.resx">
+      <DependentUpon>Explorer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Utility\FsEnumerator.resx">
       <DependentUpon>FsEnumerator.cs</DependentUpon>
     </EmbeddedResource>
@@ -206,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Selenium\" />
+    <Folder Include="Utility\Develop\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />

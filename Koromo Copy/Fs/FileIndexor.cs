@@ -229,5 +229,34 @@ namespace Koromo_Copy.Fs
         {
             return node.Nodes[0].Size;
         }
+
+        #region [--- Recursion ---]
+
+        public delegate void EnumeratorDelegate(string path, List<FileInfo> files);
+
+        /// <summary>
+        /// 모든 노드를 재귀적으로 탐색합니다.
+        /// </summary>
+        /// <param name="func"></param>
+        public void Enumerate(EnumeratorDelegate func, bool subdir = true)
+        {
+            foreach (FileIndexorNode node in GetRootNode().Nodes)
+            {
+                func(node.Path, node.Files);
+                if (subdir == true)
+                    enumerate(func, node);
+            }
+        }
+
+        private void enumerate(EnumeratorDelegate func, FileIndexorNode parent)
+        {
+            foreach (FileIndexorNode node in parent.Nodes)
+            {
+                enumerate(func, node);
+                func(node.Path, node.Files);
+            }
+        }
+        
+        #endregion
     }
 }
