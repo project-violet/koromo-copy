@@ -34,6 +34,7 @@ namespace Koromo_Copy.Utility
 
         private async void button1_ClickAsync(object sender, EventArgs e)
         {
+            button1.Enabled = false;
             ServicePointManager.DefaultConnectionLimit = 999999999;
 
             Thread thread = new Thread(WaitThread);
@@ -52,6 +53,7 @@ namespace Koromo_Copy.Utility
             {
                 serializer.Serialize(writer, metadata_collection);
             }
+            button1.Enabled = true;
         }
 
         public static int number_of_gallery_jsons = 20;
