@@ -16,7 +16,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Koromo_Copy.Console
 {
@@ -245,6 +244,7 @@ namespace Koromo_Copy.Console
                 {"run", new Utility.RunConsole()},
                 {"selenium", new Utility.SeleniumConsole()},
                 {"down", new Utility.DownloadConsole()},
+                {"test", new Utility.TestConsole()},
 
                 // pipeline command
                 {"grep", new GrepConsole()},

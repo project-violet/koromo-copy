@@ -21,7 +21,12 @@ namespace Koromo_Copy.Utility
             InitializeComponent();
         }
 
+        #region 정렬
+
+        #endregion
+
         #region 파일 목록
+
         private async void tbPath_KeyDownAsync(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -51,6 +56,7 @@ namespace Koromo_Copy.Utility
                 tbFileIndexing.Text = builder.ToString();
             }
         }
+
         #endregion
     }
 }
