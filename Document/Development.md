@@ -108,7 +108,7 @@ hitomi -setsearch "lang:korean"
 hitomi -search "artist:hisasi" -all
 
 10. 특정 작품을 다운로드하고 싶을 경우
-hitomi -image 1234 > down --out "C:\Hitomi" --urls
+hitomi -image 1234 > down --out "C:\Hitomi"
 ```
 
 ## exh 명령 예제
