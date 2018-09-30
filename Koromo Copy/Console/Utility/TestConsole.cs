@@ -7,8 +7,9 @@
 ***/
 
 using Koromo_Copy.Interface;
-using Koromo_Copy.Utility;
-using System.Collections.Generic;
+using Koromo_Copy.Utility.Develop;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Koromo_Copy.Console.Utility
 {
@@ -72,6 +73,13 @@ namespace Koromo_Copy.Console.Utility
             {
                 case "version":
                     Version.ExportVersion();
+                    break;
+
+                case "manage":
+                    var t = new Thread(() => {
+                        Application.Run(new Manage());
+                    });
+                    t.Start();
                     break;
             }
         }

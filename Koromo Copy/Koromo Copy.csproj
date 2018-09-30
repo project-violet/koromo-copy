@@ -151,11 +151,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Strings.cs" />
-    <Compile Include="Utility\Develop\NotificationMaker.cs">
+    <Compile Include="Utility\Develop\Manage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Utility\Develop\NotificationMaker.Designer.cs">
-      <DependentUpon>NotificationMaker.cs</DependentUpon>
+    <Compile Include="Utility\Develop\Manage.Designer.cs">
+      <DependentUpon>Manage.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\Explorer.cs">
       <SubType>Form</SubType>
@@ -193,7 +193,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Utility\Develop\Manage.resx">
+      <DependentUpon>Manage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Utility\Explorer.resx">
       <DependentUpon>Explorer.cs</DependentUpon>
     </EmbeddedResource>
