@@ -7,13 +7,14 @@
 ***/
 
 using System;
+using System.Text;
 
 namespace Koromo_Copy
 {
     /// <summary>
     /// 문자열 분석에 관한 메서드를 제공합니다.
     /// </summary>
-    public class Strings
+    public static class Strings
     {
         /// <summary>
         /// 두 문자열에 대한 Levenshtein Distance를 가져옵니다.
@@ -21,7 +22,7 @@ namespace Koromo_Copy
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static int ComputeLevenshteinDistance(string a, string b)
+        public static int ComputeLevenshteinDistance(this string a, string b)
         {
             int x = a.Length;
             int y = b.Length;
@@ -48,7 +49,7 @@ namespace Koromo_Copy
         /// <param name="src">배열에 들어갈 문자열입니다.</param>
         /// <param name="tar">비교할 문자열입니다.</param>
         /// <returns></returns>
-        public static int[] GetLevenshteinDistance(string src, string tar)
+        public static int[] GetLevenshteinDistance(this string src, string tar)
         {
             int[,] dist = new int[src.Length + 1, tar.Length + 1];
             for (int i = 1; i <= src.Length; i++) dist[i, 0] = i;
@@ -85,5 +86,52 @@ namespace Koromo_Copy
             }
             return route;
         }
+
+        #region BASE64 Encoding
+
+        // https://stackoverflow.com/questions/11743160/how-do-i-encode-and-decode-a-base64-string
+        public static string ToBase64(this string text)
+        {
+            return ToBase64(text, Encoding.UTF8);
+        }
+
+        public static string ToBase64(this string text, Encoding encoding)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            byte[] textAsBytes = encoding.GetBytes(text);
+            return Convert.ToBase64String(textAsBytes);
+        }
+        
+        public static bool TryParseBase64(this string text, out string decodedText)
+        {
+            return TryParseBase64(text, Encoding.UTF8, out decodedText);
+        }
+
+        public static bool TryParseBase64(this string text, Encoding encoding, out string decodedText)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                decodedText = text;
+                return false;
+            }
+
+            try
+            {
+                byte[] textAsBytes = Convert.FromBase64String(text);
+                decodedText = encoding.GetString(textAsBytes);
+                return true;
+            }
+            catch (Exception)
+            {
+                decodedText = null;
+                return false;
+            }
+        }
+
+        #endregion
     }
 }
