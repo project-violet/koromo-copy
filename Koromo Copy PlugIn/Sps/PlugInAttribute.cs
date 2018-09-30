@@ -12,14 +12,20 @@ namespace Hik.Sps
         /// Name of the PlugIn.
         /// </summary>
         public string Name { get; set; }
+        
+        /// <summary>
+        /// Name of the PlugIn.
+        /// </summary>
+        public string Version { get; set; }
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name">Name of the PlugIn</param>
-        public PlugInAttribute(string name)
+        public PlugInAttribute(string name, string version)
         {
             Name = name;
+            Version = version;
         }
     }
 }

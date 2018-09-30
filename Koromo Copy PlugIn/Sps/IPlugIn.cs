@@ -10,5 +10,10 @@
         /// Name of the plugin.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Version of the plugin.
+        /// </summary>
+        string Version { get; }
     }
 }

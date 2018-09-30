@@ -16,6 +16,12 @@ namespace Koromo_Copy.Plugin
     /// </summary>
     public interface KoromoCopyPlugInBasedApplication : IPlugInBasedApplication
     {
+        /// <summary>
+        /// 코로모 카피로 메세지를 보냅니다.
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <param name="message"></param>
+        /// <param name="err"></param>
         void Send(KoromoCopyPlugIn plugin, string message, bool err = true);
     }
 
@@ -97,13 +103,24 @@ namespace Koromo_Copy.Plugin
         /// <param name="user_input"></param>
         void Send(string user_input);
 
+        /// <summary>
+        /// 유틸리티 창을 보여줍니다.
+        /// </summary>
         void Show();
 
-        void Hide();
-
+        /// <summary>
+        /// 유틸리티 창을 다이얼로그로 보여줍니다.
+        /// </summary>
         void ShowDialog();
 
+        /// <summary>
+        /// 유틸리티 창을 숨깁니다.
+        /// </summary>
+        void Hide();
+
+        /// <summary>
+        /// 유틸리티를 닫습니다.
+        /// </summary>
         void Close();
     }
-    
 }

@@ -10,6 +10,7 @@ using Hik.Sps;
 using Koromo_Copy.Interface;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Koromo_Copy.Plugin
@@ -42,12 +43,13 @@ namespace Koromo_Copy.Plugin
             model = new PlugInModel();
             model.PlugInFolder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "plugin");
             model.LoadPlugIns();
+            model.PlugIns.Select(x=> x.PlugInProxy).OfType<INonePlugin>().ToList().ForEach(x => x.Send(Version.Text));
         }
 
         public List<string> GetLoadedPlugins()
         {
             List<string> result = new List<string>();
-            model.PlugIns.ForEach(x => result.Add(x.Name));
+            model.PlugIns.ForEach(x => result.Add($"{x.PlugInProxy.Name} {x.PlugInProxy.Version}"));
             return result;
         }
 

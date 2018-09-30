@@ -21,6 +21,11 @@ namespace Hik.Sps
         public string Name { get; private set; }
 
         /// <summary>
+        /// Gets the version of this plugin.
+        /// </summary>
+        public string Version { get; private set; }
+
+        /// <summary>
         /// Constructor.
         /// </summary>
         protected PlugIn()
@@ -31,6 +36,7 @@ namespace Hik.Sps
             var thisPlugInType = GetType();
             var plugInAttribute = SpsHelper.GetAttribute<PlugInAttribute>(thisPlugInType);
             Name = plugInAttribute == null ? thisPlugInType.Name : plugInAttribute.Name;
+            Version = plugInAttribute.Version;
         }
     }
 }
