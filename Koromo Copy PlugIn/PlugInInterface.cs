@@ -7,6 +7,7 @@
 ***/
 
 using Hik.Sps;
+using Koromo_Copy.Interface;
 
 namespace Koromo_Copy.Plugin
 {
@@ -67,13 +68,13 @@ namespace Koromo_Copy.Plugin
         /// 작품 정보를 가져옵니다.
         /// </summary>
         /// <returns></returns>
-        //public abstract IArticle GetArticle();
+        public abstract IArticle GetArticle();
 
         /// <summary>
         /// 이미지 링크 정보가 포함된 작품 정보를 가져옵니다.
         /// </summary>
         /// <returns></returns>
-        //public abstract IArticle GetImageLink();
+        public abstract IArticle GetImageLink();
     }
 
     /*

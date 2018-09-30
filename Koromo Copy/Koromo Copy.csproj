@@ -118,9 +118,6 @@
     <Compile Include="Hitomi\HitomiSetting.cs" />
     <Compile Include="Hitomi\Translate\KoreanSeries.cs" />
     <Compile Include="Hitomi\Translate\KoreanTag.cs" />
-    <Compile Include="Interface\IArticle.cs" />
-    <Compile Include="Interface\IConsole.cs" />
-    <Compile Include="Interface\ILazy.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,12 +226,17 @@
     <Folder Include="Selenium\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Koromo Copy Base.csproj" />
     <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />
     <Content Include="phantomjs-license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Koromo Copy Base\Koromo Copy Base.csproj">
+      <Project>{34BBFAF4-C723-4E01-9BA2-4B90AE6ED3A7}</Project>
+      <Name>Koromo Copy Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Koromo Copy PlugIn\Koromo Copy PlugIn.csproj">
       <Project>{006C0A9E-0729-47C1-836B-E407FA973A2D}</Project>
       <Name>Koromo Copy PlugIn</Name>
