@@ -149,3 +149,7 @@ mm -articles https://...
 # 소스코드 구조
 
 ## 콘솔
+
+## 플러그인
+
+`Koromo Copy`에선 오픈소스 라이브러리인 `Sps` (https://www.codeproject.com/Articles/182970/A-Simple-Plug-In-Library-For-NET)를 사용하여 플러그인 시스템을 구현하였습니다. 플러그인의 유형은 `None`, `Download`, `Utility`, `Helper`로 총 네 가지 입니다.
