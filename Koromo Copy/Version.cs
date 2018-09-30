@@ -30,7 +30,7 @@ namespace Koromo_Copy
         public static string Text { get; } = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public const string UpdateCheckUrl = "";
-
+        
         public static bool UpdateRequired()
         {
             return true;

@@ -14,7 +14,7 @@ namespace Hik.Sps
         public string Name { get; set; }
         
         /// <summary>
-        /// Name of the PlugIn.
+        /// Version of the PlugIn.
         /// </summary>
         public string Version { get; set; }
 
