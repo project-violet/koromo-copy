@@ -80,6 +80,13 @@ namespace Koromo_Copy.Plugin
         void Send(string user_input);
 
         /// <summary>
+        /// URL의 형태가 다운로더가 제공하는 형태에 맞는지 확인합니다.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        bool SpecifyUrl(string url);
+
+        /// <summary>
         /// 작품 정보를 가져옵니다.
         /// </summary>
         /// <returns></returns>
@@ -122,5 +129,12 @@ namespace Koromo_Copy.Plugin
         /// 유틸리티를 닫습니다.
         /// </summary>
         void Close();
+    }
+
+    /// <summary>
+    /// 헬퍼 플러그인을 만들때 구현해야 할 정보들입니다.
+    /// </summary>
+    public interface HelperPlugIn : KoromoCopyPlugIn
+    {
     }
 }
