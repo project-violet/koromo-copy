@@ -66,6 +66,9 @@ namespace Koromo_Copy
                 showMonitorControl();
         }
 
+        /// <summary>
+        /// 프롬프트를 초기화합니다.
+        /// </summary>
         public void Start()
         {
             Console.Console.Instance.Start();
