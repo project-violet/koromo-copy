@@ -147,24 +147,7 @@
     <Compile Include="Pixiv\Pixeez\Objects\Work.cs" />
     <Compile Include="Pixiv\Pixeez\Pixeez.cs" />
     <Compile Include="Pixiv\PixivTool.cs" />
-    <Compile Include="Plugin\PlugInInterface.cs" />
     <Compile Include="Plugin\PlugInManager.cs" />
-    <Compile Include="Plugin\Sps\ApplicationPlugIn.cs" />
-    <Compile Include="Plugin\Sps\IApplicationPlugIn.cs" />
-    <Compile Include="Plugin\Sps\IPluggable.cs" />
-    <Compile Include="Plugin\Sps\IPlugIn.cs" />
-    <Compile Include="Plugin\Sps\IPlugInApplication.cs" />
-    <Compile Include="Plugin\Sps\IPlugInBasedApplication.cs" />
-    <Compile Include="Plugin\Sps\PlugIn.cs" />
-    <Compile Include="Plugin\Sps\PlugInApplication.cs" />
-    <Compile Include="Plugin\Sps\PlugInApplicationAttribute.cs" />
-    <Compile Include="Plugin\Sps\PlugInAttribute.cs" />
-    <Compile Include="Plugin\Sps\PlugInBasedApplication.cs" />
-    <Compile Include="Plugin\Sps\Runnable\IRunnable.cs" />
-    <Compile Include="Plugin\Sps\Runnable\IRunnablePlugIn.cs" />
-    <Compile Include="Plugin\Sps\Runnable\RunnablePlugIn.cs" />
-    <Compile Include="Plugin\Sps\Runnable\RunnablePlugInBasedApplication.cs" />
-    <Compile Include="Plugin\Sps\SpsHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
@@ -250,6 +233,12 @@
     <Content Include="phantomjs-license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Koromo Copy PlugIn\Koromo Copy PlugIn.csproj">
+      <Project>{006C0A9E-0729-47C1-836B-E407FA973A2D}</Project>
+      <Name>Koromo Copy PlugIn</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
