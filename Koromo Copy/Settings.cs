@@ -23,6 +23,18 @@ namespace Koromo_Copy
         public HitomiAnalysisSetting HitomiAnalysis;
 
         /// <summary>
+        /// 세밀한 버전 확인을 제공합니다.
+        /// </summary>
+        [JsonProperty]
+        public bool SensitiveUpdateCheck;
+
+        /// <summary>
+        /// 가장 최근에 접근한 시간을 가져옵니다.
+        /// </summary>
+        [JsonProperty]
+        public DateTime LatestAccessTime;
+
+        /// <summary>
         /// 이미지 다운로드에 사용할 쓰레드 수를 지정합니다.
         /// 기본으로 논리 코어수 * 3 만큼 설정됩니다.
         /// </summary>
