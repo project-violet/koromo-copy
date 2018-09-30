@@ -19,7 +19,14 @@ namespace Koromo_Copy.Plugin
     {
         public void Send(string message, bool err)
         {
-            
+            if (err == true)
+            {
+                throw new System.Exception($"An error occurred in '{Name}' plugin. {message}");
+            }
+            else
+            {
+                Monitor.Instance.Push($"[{Name} Plugin] {message}");
+            }
         }
     }
 
@@ -34,6 +41,7 @@ namespace Koromo_Copy.Plugin
         {
             model = new PlugInModel();
             model.PlugInFolder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "plugin");
+            model.LoadPlugIns();
         }
 
         public List<string> GetLoadedPlugins()
