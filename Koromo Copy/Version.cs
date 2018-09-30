@@ -7,12 +7,10 @@
 ***/
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace Koromo_Copy
 {
@@ -52,15 +50,10 @@ namespace Koromo_Copy
             vm.RevisionVersion = revis;
             vm.UpdateTime = DateTime.Now;
             
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            Monitor.Instance.Push("Write file: version");
-            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "version")))
-            using (JsonWriter writer = new JsonTextWriter(sw))
+            string json = JsonConvert.SerializeObject(vm, Formatting.None);
+            using (var fs = new StreamWriter(new FileStream("version", FileMode.Create, FileAccess.Write)))
             {
-                serializer.Serialize(writer, vm);
+                fs.Write(json);
             }
         }
     }
