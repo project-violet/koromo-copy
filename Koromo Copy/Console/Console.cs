@@ -412,7 +412,7 @@ namespace Koromo_Copy.Console
             System.Console.ForegroundColor = ConsoleColor.Yellow;
             //System.Console.Out.WriteLine("");
             CultureInfo en = new CultureInfo("en-US");
-            System.Console.Out.Write($"[{DateTime.Now.ToString(en)}]");
+            System.Console.Out.Write($"[{dt.ToString(en)}]");
             System.Console.ResetColor();
             System.Console.Out.WriteLine($" {contents}");
         }

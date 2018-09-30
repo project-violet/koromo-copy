@@ -11,8 +11,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Koromo_Copy
@@ -120,6 +122,17 @@ namespace Koromo_Copy
         {
             log.Add(Tuple.Create(DateTime.Now, obj.ToString(), false));
             log.Add(Tuple.Create(DateTime.Now, SerializeObject(obj), true));
+        }
+
+        /// <summary>
+        /// 로그를 저장합니다.
+        /// </summary>
+        public void Save()
+        {
+            CultureInfo en = new CultureInfo("en-US");
+            StringBuilder build = new StringBuilder();
+            log.ToList().ForEach(x => build.Append($"[{x.Item1.ToString(en)}] {x.Item2}\r\n"));
+            File.WriteAllText("log.txt", build.ToString());
         }
         
         private void Monitor_Notify(object sender, NotifyCollectionChangedEventArgs e)
