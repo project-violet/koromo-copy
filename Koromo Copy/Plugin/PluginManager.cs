@@ -17,15 +17,15 @@ namespace Koromo_Copy.Plugin
     [PlugInApplication("Koromo Copy")]
     public class PlugInModel : PlugInBasedApplication<KoromoCopyPlugIn>, KoromoCopyPlugInBasedApplication
     {
-        public void Send(string message, bool err)
+        public void Send(KoromoCopyPlugIn plugin, string message, bool err)
         {
             if (err == true)
             {
-                throw new System.Exception($"An error occurred in '{Name}' plugin. {message}");
+                throw new System.Exception($"An error occurred in '{plugin.Name}' plugin. {message}");
             }
             else
             {
-                Monitor.Instance.Push($"[{Name} Plugin] {message}");
+                Monitor.Instance.Push($"[{plugin.Name} Plugin] {message}");
             }
         }
     }
@@ -51,6 +51,6 @@ namespace Koromo_Copy.Plugin
             return result;
         }
 
-        public PlugInModel Model { get; }
+        public PlugInModel Model { get => model; }
     }
 }

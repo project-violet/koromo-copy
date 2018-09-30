@@ -10,7 +10,6 @@ using Koromo_Copy.Interface;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Koromo_Copy.Console.Utility

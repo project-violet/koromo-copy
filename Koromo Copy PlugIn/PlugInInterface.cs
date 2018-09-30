@@ -16,7 +16,7 @@ namespace Koromo_Copy.Plugin
     /// </summary>
     public interface KoromoCopyPlugInBasedApplication : IPlugInBasedApplication
     {
-        void Send(string message, bool err = true);
+        void Send(KoromoCopyPlugIn plugin, string message, bool err = true);
     }
 
     public enum KoromoCopyPlugInType
@@ -51,61 +51,59 @@ namespace Koromo_Copy.Plugin
     }
 
     /// <summary>
+    /// 아무런 목적이 정해지지않은 빈 플러그인입니다.
+    /// </summary>
+    public interface INonePlugin : KoromoCopyPlugIn
+    {
+        /// <summary>
+        /// 초기화시 코로모 카피의 버전텍스트가 전달됩니다.
+        /// </summary>
+        /// <param name="user_input"></param>
+        void Send(string user_input);
+    }
+    
+    /// <summary>
     /// 다운로드 플러그인을 만들때 구현해야 할 정보들입니다.
     /// </summary>
-    public abstract class DownloadPlugIn : KoromoCopyPlugIn
+    public interface IDownloadPlugIn : KoromoCopyPlugIn
     {
-        public KoromoCopyPlugInType Type { get; } = KoromoCopyPlugInType.Download;
-        public abstract string Name { get; }
-
         /// <summary>
         /// 플러그인에게 전달할 정보입니다.
         /// </summary>
         /// <param name="user_input"></param>
-        public abstract void Send(string user_input);
+        void Send(string user_input);
 
         /// <summary>
         /// 작품 정보를 가져옵니다.
         /// </summary>
         /// <returns></returns>
-        public abstract IArticle GetArticle();
+        IArticle GetArticle();
 
         /// <summary>
         /// 이미지 링크 정보가 포함된 작품 정보를 가져옵니다.
         /// </summary>
         /// <returns></returns>
-        public abstract IArticle GetImageLink();
+        IArticle GetImageLink();
     }
-
-    /*
-    [PlugIn("Division")]
-    public class DivisionOperation : PlugIn<ICalculatorApplication>, ICalculatorOperationPlugIn
-    {
-        public string OperationSign
-        {
-            get { return "/"; }
-        }
-
-        public double DoOperation(double number1, double number2)
-        {
-            if (number2 == 0.0)
-            {
-                Application.ApplicationProxy.ShowMessage("Second number can not be zero in division!");
-                return 0.0;
-            }
-
-            return number1 / number2;
-        }
-    }
-    */
-
+    
     /// <summary>
     /// 유틸리티 플러그인을 만들때 구현해야 할 정보들입니다.
     /// </summary>
-    public abstract class UtilityPlugIn : KoromoCopyPlugIn
+    public interface UtilityPlugIn : KoromoCopyPlugIn
     {
-        public KoromoCopyPlugInType Type { get; } = KoromoCopyPlugInType.Utility;
-        public abstract string Name { get; }
+        /// <summary>
+        /// 플러그인에게 전달할 정보입니다.
+        /// </summary>
+        /// <param name="user_input"></param>
+        void Send(string user_input);
+
+        void Show();
+
+        void Hide();
+
+        void ShowDialog();
+
+        void Close();
     }
     
 }

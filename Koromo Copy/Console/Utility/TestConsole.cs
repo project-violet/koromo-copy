@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Interface;
+using Koromo_Copy.Plugin;
 using Koromo_Copy.Utility.Develop;
 using System.Threading;
 using System.Windows.Forms;
@@ -80,6 +81,10 @@ namespace Koromo_Copy.Console.Utility
                         Application.Run(new Manage());
                     });
                     t.Start();
+                    break;
+
+                case "plugin":
+                    PlugInManager.Instance.GetLoadedPlugins().ForEach(x => Console.Instance.WriteLine(x));
                     break;
             }
         }
