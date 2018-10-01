@@ -120,7 +120,7 @@ namespace Koromo_Copy.Console
         /// <param name="argv"></param>
         /// <returns></returns>
         public static List<int> GetWeirdArguments<T>(string[] argv)
-            where T: IConsoleOption, new()
+            where T : IConsoleOption, new()
         {
             var field = CommandLineParser<T>.GetFields();
             List<int> result = new List<int>();
@@ -190,7 +190,7 @@ namespace Koromo_Copy.Console
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class CommandLineParser<T>
-        where T: IConsoleOption, new()
+        where T : IConsoleOption, new()
     {
         /// <summary>
         /// Attribute 정보가 들어있는 필드 정보를 가져옵니다.
@@ -257,7 +257,7 @@ namespace Koromo_Copy.Console
                             arguments_count--;
                             sub_args.Add(contents);
                         }
-                        
+
                         for (int j = 1; j <= arguments_count; j++)
                         {
                             if (i + j == argv.Length)
@@ -272,7 +272,7 @@ namespace Koromo_Copy.Console
                         }
 
                         i += cl.Item2.ArgumentsCount;
-                        
+
                         typeof(T).GetField(cl.Item1).SetValue(result, sub_args.ToArray());
                     }
                     else if (cl.Item2.CType == CommandType.EQUAL)
@@ -318,9 +318,8 @@ namespace Koromo_Copy.Console
                     }
                 }
             }
-            
+
             return result;
         }
     }
-
 }

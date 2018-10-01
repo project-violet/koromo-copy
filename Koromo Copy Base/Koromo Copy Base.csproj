@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLineParser.cs" />
     <Compile Include="Crypto\Hash.cs" />
     <Compile Include="Interface\IArticle.cs" />
     <Compile Include="Interface\IConsole.cs" />
