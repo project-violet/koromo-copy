@@ -12,11 +12,9 @@ using Koromo_Copy.Plugin;
 namespace TestPlugin
 {
     [PlugIn("Test", "0.1.0")]
-    public class TestPlugin : PlugIn<KoromoCopyPlugInBasedApplication>, INonePlugin
+    public class TestPlugin : NonePlugin
     {
-        public KoromoCopyPlugInType Type => KoromoCopyPlugInType.None;
-        
-        public void Send(string user_input)
+        public override void Send(string user_input)
         {
             Application.ApplicationProxy.Send(this, $"Nothing happend! {Version} {user_input}", false);
         }

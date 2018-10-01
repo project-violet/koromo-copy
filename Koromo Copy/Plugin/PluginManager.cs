@@ -43,7 +43,7 @@ namespace Koromo_Copy.Plugin
             model = new PlugInModel();
             model.PlugInFolder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "plugin");
             model.LoadPlugIns();
-            model.PlugIns.Select(x=> x.PlugInProxy).OfType<INonePlugin>().ToList().ForEach(x => x.Send(Version.Text));
+            model.PlugIns.Select(x=> x.PlugInProxy).OfType<NonePlugin>().ToList().ForEach(x => x.Send(Version.Text));
         }
 
         public List<string> GetLoadedPlugins()
