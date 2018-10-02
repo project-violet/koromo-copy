@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Koromo_Copy.Utility
 {
-    public partial class Explorer : Form
+    public partial class HitomiExplorer : Form
     {
-        public Explorer()
+        public HitomiExplorer()
         {
             InitializeComponent();
         }
