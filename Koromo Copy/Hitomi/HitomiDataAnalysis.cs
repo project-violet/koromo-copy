@@ -22,7 +22,7 @@ namespace Koromo_Copy.Hitomi
             return HitomiData.Instance.tagdata_collection.language.Select(x => x.Tag).ToList();
         }
 
-        public List<HitomiTagdata> GetArtistList(string startswith, bool constains = false)
+        public static List<HitomiTagdata> GetArtistList(string startswith, bool constains = false)
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
@@ -40,7 +40,7 @@ namespace Koromo_Copy.Hitomi
             return result;
         }
 
-        public List<HitomiTagdata> GetTagList(string startswith, bool constains = false)
+        public static List<HitomiTagdata> GetTagList(string startswith, bool constains = false)
         {
             List<HitomiTagdata> target = new List<HitomiTagdata>();
             target.AddRange(HitomiData.Instance.tagdata_collection.female);
@@ -63,7 +63,7 @@ namespace Koromo_Copy.Hitomi
             return result;
         }
 
-        public List<HitomiTagdata> GetGroupList(string startswith, bool constains = false)
+        public static List<HitomiTagdata> GetGroupList(string startswith, bool constains = false)
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
@@ -81,7 +81,7 @@ namespace Koromo_Copy.Hitomi
             return result;
         }
 
-        public List<HitomiTagdata> GetSeriesList(string startswith, bool constains = false)
+        public static List<HitomiTagdata> GetSeriesList(string startswith, bool constains = false)
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
@@ -99,7 +99,7 @@ namespace Koromo_Copy.Hitomi
             return result;
         }
 
-        public List<HitomiTagdata> GetCharacterList(string startswith, bool constains = false)
+        public static List<HitomiTagdata> GetCharacterList(string startswith, bool constains = false)
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
@@ -117,7 +117,7 @@ namespace Koromo_Copy.Hitomi
             return result;
         }
 
-        public List<HitomiTagdata> GetTypeList(string startswith)
+        public static List<HitomiTagdata> GetTypeList(string startswith)
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             foreach (var tagdata in HitomiData.Instance.tagdata_collection.type)
@@ -126,7 +126,7 @@ namespace Koromo_Copy.Hitomi
             return result;
         }
 
-        public List<HitomiTagdata> GetTotalList(string contains)
+        public static List<HitomiTagdata> GetTotalList(string contains)
         {
             if (Settings.Instance.Hitomi.UsingFuzzy) return GetTotalListFuzzy(contains);
             List<HitomiTagdata> result = new List<HitomiTagdata>();
@@ -159,7 +159,7 @@ namespace Koromo_Copy.Hitomi
             return result;
         }
 
-        public List<HitomiTagdata> GetTotalListFuzzy(string search)
+        public static List<HitomiTagdata> GetTotalListFuzzy(string search)
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             List<HitomiTagdata> target = new List<HitomiTagdata>();
