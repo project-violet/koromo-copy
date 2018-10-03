@@ -75,6 +75,7 @@
     <Compile Include="Console\GrepConsole.cs" />
     <Compile Include="Console\HitomiConsole.cs" />
     <Compile Include="Console\InConsole.cs" />
+    <Compile Include="Console\InternalConsole.cs" />
     <Compile Include="Console\OutConsole.cs" />
     <Compile Include="Console\PixivConsole.cs" />
     <Compile Include="Console\Utility\DownloadConsole.cs" />
@@ -82,9 +83,12 @@
     <Compile Include="Console\Utility\ScanConsole.cs" />
     <Compile Include="Console\Utility\SeleniumConsole.cs" />
     <Compile Include="Console\Utility\TestConsole.cs" />
+    <Compile Include="Controls\ColumnSorter.cs" />
     <Compile Include="Controls\NativeTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Fs\Journal.cs" />
+    <Compile Include="Internal.cs" />
     <Compile Include="EH\EHentaiArticle.cs" />
     <Compile Include="EH\ExHentaiTool.cs" />
     <Compile Include="EH\ExHentaiParser.cs" />
@@ -154,11 +158,11 @@
     <Compile Include="Utility\Develop\Manage.Designer.cs">
       <DependentUpon>Manage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utility\Explorer.cs">
+    <Compile Include="Utility\HitomiExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Utility\Explorer.Designer.cs">
-      <DependentUpon>Explorer.cs</DependentUpon>
+    <Compile Include="Utility\HitomiExplorer.Designer.cs">
+      <DependentUpon>HitomiExplorer.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\FsEnumerator.cs">
       <SubType>Form</SubType>
@@ -195,8 +199,8 @@
     <EmbeddedResource Include="Utility\Develop\Manage.resx">
       <DependentUpon>Manage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Utility\Explorer.resx">
-      <DependentUpon>Explorer.cs</DependentUpon>
+    <EmbeddedResource Include="Utility\HitomiExplorer.resx">
+      <DependentUpon>HitomiExplorer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\FsEnumerator.resx">
       <DependentUpon>FsEnumerator.cs</DependentUpon>
@@ -225,7 +229,6 @@
     <Folder Include="Selenium\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Koromo Copy Base.csproj" />
     <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />
     <Content Include="phantomjs-license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

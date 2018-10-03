@@ -6,6 +6,7 @@
 
 ***/
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -202,6 +203,22 @@ namespace Koromo_Copy.Hitomi
             }
             result.Sort((a, b) => b.Count.CompareTo(a.Count));
             return result;
+        }
+        
+        public class CompareMetadata : IComparer<HitomiMetadata>
+        {
+            public int Compare(HitomiMetadata x, HitomiMetadata y)
+            {
+                return y.ID.CompareTo(x.ID);
+            }
+        }
+
+        public static HitomiMetadata? GetMetadataFromMagic(string magic)
+        {
+            HitomiMetadata tmp = new HitomiMetadata() { ID = Convert.ToInt32(magic) };
+            var pos = HitomiData.Instance.metadata_collection.BinarySearch(tmp, new CompareMetadata());
+            if (pos < 0) return null;
+            return HitomiData.Instance.metadata_collection[pos];
         }
     }
 }

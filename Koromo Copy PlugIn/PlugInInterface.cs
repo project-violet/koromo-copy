@@ -149,7 +149,18 @@ namespace Koromo_Copy.Plugin
     {
         public override KoromoCopyPlugInType Type { get; } = KoromoCopyPlugInType.Console;
 
+        /// <summary>
+        /// 콘솔 프롬프트에 명령을 등록합니다. 실패할경우 false를 반환합니다.
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        public abstract bool AssignCommand(string cmd);
 
+        /// <summary>
+        /// 콘솔의 리다이렉션을 반환합니다.
+        /// </summary>
+        /// <returns></returns>
+        public abstract IConsole GetRedirection();
     }
 
     /// <summary>

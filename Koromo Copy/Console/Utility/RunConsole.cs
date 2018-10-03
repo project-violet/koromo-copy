@@ -8,7 +8,9 @@
 
 using Koromo_Copy.Interface;
 using Koromo_Copy.Utility;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Koromo_Copy.Console.Utility
@@ -71,11 +73,11 @@ namespace Koromo_Copy.Console.Utility
                 );
         }
 
-        static Dictionary<string, Form> run_dic = new Dictionary<string, Form>() {
-            { "fsenum", new FsEnumerator() },
-            { "mddown", new MetadataDownloader() },
-            { "strings", new StringTools() },
-            { "explorer", new HitomiExplorer() }
+        static Dictionary<string, Type> run_dic = new Dictionary<string, Type>() {
+            { "fsenum", typeof(FsEnumerator) },
+            { "mddown", typeof(MetadataDownloader) },
+            { "strings", typeof(StringTools) },
+            { "explorer", typeof(HitomiExplorer) }
         };
 
         /// <summary>
@@ -90,7 +92,7 @@ namespace Koromo_Copy.Console.Utility
                 return;
             }
 
-            Application.OpenForms[0].Post(() => run_dic[args[0]].Show());
+            Application.OpenForms[0].Post(() => ((Form)Activator.CreateInstance(run_dic[args[0]])).Show());
         }
     }
 }

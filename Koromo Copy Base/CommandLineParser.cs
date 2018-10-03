@@ -88,6 +88,39 @@ namespace Koromo_Copy.Console
         }
 
         /// <summary>
+        /// 인자배열에 문자열이 있는지 없는지 검사합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static bool AnyStrings(string[] args)
+        {
+            return args.ToList().Any(x => x[0] != '-');
+        }
+
+        /// <summary>
+        /// 특정 인자가 포함되어있는지의 여부를 가져옵니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public static bool AnyArgument(string[] args, string arg)
+        {
+            return args.ToList().Any(x => x == arg);
+        }
+
+        /// <summary>
+        /// 특정 인자를 삭제합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="arg"></param>
+        public static string[] DeleteArgument(string[] args, string arg)
+        {
+            var list = args.ToList();
+            list.Remove(arg);
+            return list.ToArray();
+        }
+
+        /// <summary>
         /// 특정 옵션을 맨 앞에 넣습니다.
         /// </summary>
         /// <param name="args"></param>

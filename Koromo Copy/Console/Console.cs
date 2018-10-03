@@ -238,6 +238,7 @@ namespace Koromo_Copy.Console
                 {"pixiv", new PixivConsole()},
                 {"in", new InConsole()},
                 {"mm", new MMConsole()},
+                {"internal", new InternalConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
