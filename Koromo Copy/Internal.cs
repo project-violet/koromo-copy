@@ -69,16 +69,7 @@ namespace Koromo_Copy
             }
             return get_recursion(obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj), bb, ptr + 1);
         }
-
-        public static object get_property_recursion(object obj, string[] bb, int ptr)
-        {
-            if (bb.Length - 1 == ptr)
-            {
-                return obj.GetType().GetProperty(bb[ptr]).GetValue(obj, null);
-            }
-            return get_property_recursion(obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj), bb, ptr + 1);
-        }
-
+        
         public static void set_recurion(object obj, string[] bb, int ptr)
         {
             if (bb.Length - 2 == ptr)
