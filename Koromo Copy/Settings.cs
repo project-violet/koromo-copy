@@ -73,8 +73,8 @@ namespace Koromo_Copy
             }
         }
 
-        public ref SettingModel Model { get { return ref model; } }
-        public ref HitomiSetting Hitomi { get { return ref model.Hitomi; } }
-        public ref HitomiAnalysisSetting HitomiAnalysis { get { return ref model.HitomiAnalysis; } }
+        public SettingModel Model { get { return model; } }
+        public HitomiSetting Hitomi { get { return model.Hitomi; } }
+        public HitomiAnalysisSetting HitomiAnalysis { get { return model.HitomiAnalysis; } }
     }
 }

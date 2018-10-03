@@ -40,6 +40,9 @@ namespace Koromo_Copy.Console
 
         [CommandLine("--get", CommandType.ARGUMENTS, ArgumentsCount = 1, Help = "--get \"<path1>.<path2> ...\" ")]
         public string[] Get;
+        //[CommandLine("-P", CommandType.OPTION)]
+        //public bool GetWithProperty;
+
         [CommandLine("--set", CommandType.ARGUMENTS, ArgumentsCount = 2, Pipe = true)]
         public string[] Set;
 
@@ -87,7 +90,7 @@ namespace Koromo_Copy.Console
             }
             else if (option.Get != null)
             {
-                ProcessGet(option.Get, option.EnumerateWithForms, option.EnumerateWithInstances);
+                ProcessGet(option.Get, option.EnumerateWithForms, option.EnumerateWithInstances, option.EnumerateWithPrivate);
             }
             else if (option.Call != null)
             {
@@ -190,7 +193,7 @@ namespace Koromo_Copy.Console
         /// 특정 변수의 데이터를 가져옵니다.
         /// </summary>
         /// <param name="args"></param>
-        static void ProcessGet(string[] args, bool e_form, bool e_instance)
+        static void ProcessGet(string[] args, bool e_form, bool e_instance, bool e_property)
         {
             var split = args[0].Split('.');
 
@@ -202,14 +205,12 @@ namespace Koromo_Copy.Console
                     e_form = true;
             }
 
-            if (e_form)
-            {
-                Console.Instance.WriteLine(Monitor.SerializeObject(Internal.get_recursion(Application.OpenForms[split[0]], split, 1)));
-            }
-            else if (e_instance)
-            {
-                Console.Instance.WriteLine(Monitor.SerializeObject(Internal.get_recursion(instances[split[0]], split, 1)));
-            }
+            object target = e_form ? Application.OpenForms[split[0]] : instances[split[0]];
+            string result = null;
+            
+            result = Monitor.SerializeObject(Internal.get_recursion(target, split, 1));
+            
+            Console.Instance.WriteLine(result);
         }
 
         /// <summary>
