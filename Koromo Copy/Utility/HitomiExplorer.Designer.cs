@@ -33,7 +33,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.PathTree = new Koromo_Copy.Controls.NativeTreeView();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.AvailableList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -48,6 +47,7 @@
             this.tbPath = new System.Windows.Forms.TextBox();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.PathTree = new Koromo_Copy.Controls.NativeTreeView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -114,17 +114,9 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.AvailableList);
             this.splitContainer1.Panel2.Controls.Add(this.metroLabel5);
-            this.splitContainer1.Size = new System.Drawing.Size(1094, 383);
+            this.splitContainer1.Size = new System.Drawing.Size(1094, 376);
             this.splitContainer1.SplitterDistance = 318;
             this.splitContainer1.TabIndex = 16;
-            // 
-            // PathTree
-            // 
-            this.PathTree.Location = new System.Drawing.Point(3, 22);
-            this.PathTree.Name = "PathTree";
-            this.PathTree.ShowLines = false;
-            this.PathTree.Size = new System.Drawing.Size(312, 358);
-            this.PathTree.TabIndex = 15;
             // 
             // metroLabel4
             // 
@@ -150,7 +142,7 @@
             this.AvailableList.GridLines = true;
             this.AvailableList.Location = new System.Drawing.Point(3, 22);
             this.AvailableList.Name = "AvailableList";
-            this.AvailableList.Size = new System.Drawing.Size(768, 358);
+            this.AvailableList.Size = new System.Drawing.Size(768, 351);
             this.AvailableList.TabIndex = 13;
             this.AvailableList.UseCompatibleStateImageBehavior = false;
             this.AvailableList.View = System.Windows.Forms.View.Details;
@@ -256,6 +248,17 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "작업";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // PathTree
+            // 
+            this.PathTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PathTree.Location = new System.Drawing.Point(3, 22);
+            this.PathTree.Name = "PathTree";
+            this.PathTree.ShowLines = false;
+            this.PathTree.Size = new System.Drawing.Size(312, 351);
+            this.PathTree.TabIndex = 15;
             // 
             // HitomiExplorer
             // 

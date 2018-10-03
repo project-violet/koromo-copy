@@ -23,10 +23,7 @@ namespace Koromo_Copy.Console
     {
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
-
-        //[CommandLine("-e", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true)]
-        //public string[] Input;
-
+        
         [CommandLine("-e", CommandType.ARGUMENTS, ArgumentsCount = 1)]
         public string[] Enumerate;
 
@@ -41,11 +38,15 @@ namespace Koromo_Copy.Console
         [CommandLine("-E", CommandType.OPTION)]
         public bool EnumerateWithMethod;
 
-        [CommandLine("--get", CommandType.ARGUMENTS, ArgumentsCount = 1, Help = "--get \"<path1> <path2> ...\" ")]
+        [CommandLine("--get", CommandType.ARGUMENTS, ArgumentsCount = 1, Help = "--get \"<path1>.<path2> ...\" ")]
         public string[] Get;
+        [CommandLine("--set", CommandType.ARGUMENTS, ArgumentsCount = 2, Pipe = true)]
+        public string[] Set;
 
-        [CommandLine("--call", CommandType.ARGUMENTS, ArgumentsCount = 1)]
+        [CommandLine("--call", CommandType.ARGUMENTS, ArgumentsCount = 2, Pipe = true)]
         public string[] Call;
+        [CommandLine("-R", CommandType.OPTION)]
+        public bool CallWithReturn;
     }
 
     /// <summary>
@@ -88,6 +89,10 @@ namespace Koromo_Copy.Console
             {
                 ProcessGet(option.Get, option.EnumerateWithForms, option.EnumerateWithInstances);
             }
+            else if (option.Call != null)
+            {
+                ProcessCall(option.Call, option.EnumerateWithForms, option.EnumerateWithInstances, option.CallWithReturn);
+            }
 
             return true;
         }
@@ -122,13 +127,21 @@ namespace Koromo_Copy.Console
         /// <param name="e_static"></param>
         static void ProcessEnumerate(string[] args, bool e_form, bool e_private, bool e_instance, bool e_static, bool e_method)
         {
-            var split = args[0].Split(' ');
+            var split = args[0].Split('.');
 
             bool default_out = false;
 
             if (split[0] == "" && split.Length == 1)
             {
                 default_out = true;
+            }
+
+            if (!(e_form || e_instance))
+            {
+                if (instances.ContainsKey(split[0]))
+                    e_instance = true;
+                else
+                    e_form = true;
             }
 
             var list = new List<string>();
@@ -139,48 +152,33 @@ namespace Koromo_Copy.Console
             if (e_static)
                 option |= BindingFlags.Static;
 
-            if (default_out && e_form)
+            if (default_out)
             {
-                foreach (var f in Application.OpenForms)
+                if (e_form)
                 {
-                    list.Add(f.GetType().Name);
+                    foreach (var f in Application.OpenForms)
+                        list.Add(f.GetType().Name);
+                }
+                else if (e_instance)
+                {
+                    foreach (var pair in instances)
+                        list.Add(pair.Key);
                 }
             }
-            else if (e_form)
+            else
             {
-                if (!e_method)
-                {
-                    list.AddRange(
-                        Internal.enum_recursion(Application.OpenForms[split[0]], split, 1, option)
-                        .Select(x => $"{x.Name.PadRight(25)} [{x.FieldType.ToString()}]"));
-                }
-                else
-                {
-                    list.AddRange(
-                        Internal.enum_methods(Application.OpenForms[split[0]], split, 1, option)
-                        .Select(x => $"{x.Name.PadRight(25)} [return:({x.ReturnType.ToString()}), args:({string.Join(", ", x.GetParameters().Select(y => $"{y.Name}: {y.ParameterType.ToString()}"))})]"));
-                }
-            }
+                object target = e_form ? Application.OpenForms[split[0]] : instances[split[0]];
 
-            if (default_out && e_instance)
-            {
-                foreach (var pair in instances)
-                {
-                    list.Add(pair.Key);
-                }
-            }
-            else if (e_instance)
-            {
                 if (!e_method)
                 {
                     list.AddRange(
-                        Internal.enum_recursion(instances[split[0]], split, 1, option)
+                        Internal.enum_recursion(target, split, 1, option)
                         .Select(x => $"{x.Name.PadRight(25)} [{x.FieldType.ToString()}]"));
                 }
                 else
                 {
                     list.AddRange(
-                        Internal.enum_methods(instances[split[0]], split, 1, option)
+                        Internal.enum_methods(target, split, 1, option)
                         .Select(x => $"{x.Name.PadRight(25)} [return:({x.ReturnType.ToString()}), args:({string.Join(", ", x.GetParameters().Select(y => $"{y.Name}: {y.ParameterType.ToString()}"))})]"));
                 }
             }
@@ -194,8 +192,16 @@ namespace Koromo_Copy.Console
         /// <param name="args"></param>
         static void ProcessGet(string[] args, bool e_form, bool e_instance)
         {
-            var split = args[0].Split(' ');
-            
+            var split = args[0].Split('.');
+
+            if (!(e_form || e_instance))
+            {
+                if (instances.ContainsKey(split[0]))
+                    e_instance = true;
+                else
+                    e_form = true;
+            }
+
             if (e_form)
             {
                 Console.Instance.WriteLine(Monitor.SerializeObject(Internal.get_recursion(Application.OpenForms[split[0]], split, 1)));
@@ -204,7 +210,51 @@ namespace Koromo_Copy.Console
             {
                 Console.Instance.WriteLine(Monitor.SerializeObject(Internal.get_recursion(instances[split[0]], split, 1)));
             }
+        }
+
+        /// <summary>
+        /// 특정 변수에 데이터를 지정합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="e_form"></param>
+        /// <param name="e_instance"></param>
+        static void ProcessSet(string[] args, bool e_form, bool e_instance)
+        {
+
+        }
+
+        /// <summary>
+        /// 특정 함수를 호출합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="e_form"></param>
+        /// <param name="e_instance"></param>
+        static void ProcessCall(string[] args, bool e_form, bool e_instance, bool e_return)
+        {
+            var split = args[0].Split('.');
+
+            if (!(e_form || e_instance))
+            {
+                if (instances.ContainsKey(split[0]))
+                    e_instance = true;
+                else
+                    e_form = true;
+            }
+
+            object[] param = null;
+
+            if (args[1] != "")
+            {
+
+            }
             
+            object target = e_form ? Application.OpenForms[split[0]] : instances[split[0]];
+            var returns = Internal.call_method(target, split, 1, Internal.DefaultBinding, param);
+
+            if (e_return)
+            {
+                Console.Instance.WriteLine(Monitor.SerializeObject(returns));
+            }
         }
     }
 }

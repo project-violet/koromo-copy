@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Koromo_Copy
 {
@@ -94,10 +95,13 @@ namespace Koromo_Copy
         {
             if (bb.Length - 1 == ptr)
             {
-                return obj.GetType().GetMethods(option).Where(y => y.Name == bb[ptr]).ToList()[0].Invoke(obj, param);
+                if (obj is Control)
+                    return (obj as Control).Send(() => { return obj.GetType().GetMethods(option).Where(y => y.Name == bb[ptr]).ToList()[0].Invoke(obj, param); });
+                else
+                    return obj.GetType().GetMethods(option).Where(y => y.Name == bb[ptr]).ToList()[0].Invoke(obj, param);
             }
             var x = obj.GetType().GetField(bb[ptr], DefaultBinding);
-            return enum_methods(obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj), bb, ptr + 1, option);
+            return call_method(obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj), bb, ptr + 1, option, param);
         }
 
         #endregion
