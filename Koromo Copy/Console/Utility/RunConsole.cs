@@ -71,6 +71,9 @@ namespace Koromo_Copy.Console.Utility
             Console.Instance.WriteLine(
                 "Run Console\r\n"
                 );
+
+            foreach (var pair in run_dic)
+                Console.Instance.WriteLine($"{pair.Key.PadRight(12)} [{pair.Value.ToString()}]");
         }
 
         static Dictionary<string, Type> run_dic = new Dictionary<string, Type>() {
