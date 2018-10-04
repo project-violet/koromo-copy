@@ -174,10 +174,9 @@ namespace Koromo_Copy.Net
                     {
                         Monitor.Instance.Push($"404 Not Found {uri}");
                     }
-                    else if ((response.StatusCode == HttpStatusCode.OK ||
+                    else if (response.StatusCode == HttpStatusCode.OK ||
                         response.StatusCode == HttpStatusCode.Moved ||
-                        response.StatusCode == HttpStatusCode.Redirect) &&
-                        response.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
+                        response.StatusCode == HttpStatusCode.Redirect)
                     {
                         using (Stream inputStream = response.GetResponseStream())
                         using (Stream outputStream = File.OpenWrite(fileName))
