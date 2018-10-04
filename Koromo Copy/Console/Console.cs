@@ -225,12 +225,14 @@ namespace Koromo_Copy.Console
         public Task ConsoleTask;
         public CancellationTokenSource ConsoleToken;
 
+        public Dictionary<string, IConsole> redirections;
+
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
         /// </summary>
         public void Loop()
         {
-            var redirections = new Dictionary<string, IConsole>()
+            redirections = new Dictionary<string, IConsole>()
             {
                 // normal command
                 {"hitomi", new HitomiConsole()},
@@ -251,7 +253,7 @@ namespace Koromo_Copy.Console
                 {"grep", new GrepConsole()},
                 {"out", new OutConsole()}
             };
-            
+
             System.Console.Out.WriteLine("");
 
             while (true)
@@ -396,8 +398,11 @@ namespace Koromo_Copy.Console
             System.Console.Out.WriteLine($"");
             System.Console.Out.Write($"For more information, please check ");
             System.Console.ForegroundColor = ConsoleColor.Yellow;
-            System.Console.Out.WriteLine("https://github.com/dc-koromo/koromo-copy/blob/master/Document/Development.md");
+            System.Console.Out.WriteLine("https://github.com/dc-koromo/koromo-copy/blob/master/Document/Development.md\r\n");
             System.Console.ResetColor();
+
+            foreach (var pair in redirections)
+                System.Console.Out.WriteLine($"{pair.Key.PadRight(12)} [{pair.Value.ToString()}]");
         }
 
         public void PrintHistory()

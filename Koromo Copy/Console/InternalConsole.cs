@@ -9,6 +9,8 @@
 using Koromo_Copy.Fs;
 using Koromo_Copy.Hitomi;
 using Koromo_Copy.Interface;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -57,6 +59,8 @@ namespace Koromo_Copy.Console
     /// </summary>
     public class InternalConsole : IConsole
     {
+        static object latest_target = null;
+
         /// <summary>
         /// Internal 콘솔 리다이렉트
         /// </summary>
@@ -170,7 +174,7 @@ namespace Koromo_Copy.Console
             }
             else
             {
-                object target = e_form ? Application.OpenForms[split[0]] : instances[split[0]];
+                object target = split[0] == "<latest>" ? latest_target : e_form ? Application.OpenForms[split[0]] : instances[split[0]];
 
                 if (!e_method)
                 {
@@ -205,7 +209,7 @@ namespace Koromo_Copy.Console
                     e_form = true;
             }
 
-            object target = e_form ? Application.OpenForms[split[0]] : instances[split[0]];
+            object target = split[0] == "<latest>" ? latest_target : e_form ? Application.OpenForms[split[0]] : instances[split[0]];
             string result = null;
             
             result = Monitor.SerializeObject(Internal.get_recursion(target, split, 1));
@@ -242,19 +246,33 @@ namespace Koromo_Copy.Console
                     e_form = true;
             }
 
+            object target = split[0] == "<latest>" ? latest_target : e_form ? Application.OpenForms[split[0]] : instances[split[0]];
             object[] param = null;
 
             if (args[1] != "")
             {
+                var pis = Internal.get_method_paraminfo(target, split, 1, Internal.DefaultBinding);
+                var pst = args[1].Split(',');
 
+                param = new object[pis.Length];
+                for (int i = 0; i < pis.Length; i++)
+                {
+                    try
+                    {
+                        param[i] = Convert.ChangeType(pst[i], pis[i].ParameterType);
+                    }
+                    catch (Exception e)
+                    {
+                        param[i] = JsonConvert.DeserializeObject(pst[i], pis[i].ParameterType);
+                    }
+                }
             }
             
-            object target = e_form ? Application.OpenForms[split[0]] : instances[split[0]];
             var returns = Internal.call_method(target, split, 1, Internal.DefaultBinding, param);
 
             if (e_return)
             {
-                Console.Instance.WriteLine(Monitor.SerializeObject(returns));
+                Console.Instance.WriteLine(Monitor.SerializeObject(latest_target = returns));
             }
         }
     }

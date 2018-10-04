@@ -96,12 +96,22 @@ namespace Koromo_Copy
             if (bb.Length - 1 == ptr)
             {
                 if (obj is Control)
-                    return (obj as Control).Send(() => { return obj.GetType().GetMethods(option).Where(y => y.Name == bb[ptr]).ToList()[0].Invoke(obj, param); });
+                    return (obj as Control).Send(() => { return obj.GetType().GetMethods(option | BindingFlags.Static).Where(y => y.Name == bb[ptr]).ToList()[0].Invoke(obj, param); });
                 else
-                    return obj.GetType().GetMethods(option).Where(y => y.Name == bb[ptr]).ToList()[0].Invoke(obj, param);
+                    return obj.GetType().GetMethods(option | BindingFlags.Static).Where(y => y.Name == bb[ptr]).ToList()[0].Invoke(obj, param);
+            }
+            var x = obj.GetType().GetField(bb[ptr], DefaultBinding | BindingFlags.Static);
+            return call_method(obj.GetType().GetField(bb[ptr], DefaultBinding | BindingFlags.Static).GetValue(obj), bb, ptr + 1, option, param);
+        }
+
+        public static ParameterInfo[] get_method_paraminfo(object obj, string[] bb, int ptr, BindingFlags option)
+        {
+            if (bb.Length - 1 == ptr)
+            {
+                return obj.GetType().GetMethods(option).Where(y => y.Name == bb[ptr]).ToList()[0].GetParameters();
             }
             var x = obj.GetType().GetField(bb[ptr], DefaultBinding);
-            return call_method(obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj), bb, ptr + 1, option, param);
+            return get_method_paraminfo(obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj), bb, ptr + 1, option);
         }
 
         #endregion
