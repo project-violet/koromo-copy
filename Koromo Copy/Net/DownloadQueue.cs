@@ -32,8 +32,7 @@ namespace Koromo_Copy.Net
         DownloadSizeCallBack download_callback;
         DownloadStatusCallBack status_callback;
         RetryCallBack retry_callback;
-
-        object int_lock = new object();
+        
         object notify_lock = new object();
         object shutdown_lock = new object();
         
@@ -82,7 +81,7 @@ namespace Koromo_Copy.Net
                     if (queue[i].Item1 == url)
                     {
                         queue.RemoveAt(i);
-                        lock (int_lock) mtx--;
+                        Interlocked.Decrement(ref mtx);
                         lock (notify_lock) Notify();
                         break;
                     }
@@ -150,12 +149,13 @@ namespace Koromo_Copy.Net
                 SemaphoreExtends s5 = queue[i].Item5;
                 tasks.Add(Task.Run(() => DownloadRemoteImageFile(s1, s2, s3, s4, s5)).ContinueWith(
                     x => Task.Run(() => { tasks.RemoveAll(y => y.IsCompleted); })));
-                lock (int_lock) mtx++;
+                Interlocked.Increment(ref mtx);
             }
         }
 
         private void DownloadRemoteImageFile(string uri, string fileName, object obj, SemaphoreCallBack callback, SemaphoreExtends se)
         {
+            int retry_count = 0;
         RETRY:
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             se.RunPass(ref request);
@@ -203,13 +203,14 @@ namespace Koromo_Copy.Net
             }
             catch (Exception e)
             {
-                Monitor.Instance.Push(e.Message);
+                Monitor.Instance.Push($"[{retry_count}] {e.Message}");
                 lock (aborted)
                     if (!aborted.Contains(uri))
                     {
                         lock (retry_callback) retry_callback(uri);
                         request.Abort();
                         Thread.Sleep(1000);
+                        retry_count++;
                         goto RETRY;
                     }
                     else
@@ -231,7 +232,7 @@ namespace Koromo_Copy.Net
                 if (at != queue.Count) queue.RemoveAt(at);
             }
 
-            lock (int_lock) mtx--;
+            Interlocked.Decrement(ref mtx);
             lock (notify_lock) Notify();
         }
     }
