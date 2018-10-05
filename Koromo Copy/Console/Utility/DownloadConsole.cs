@@ -85,7 +85,7 @@ namespace Koromo_Copy.Console.Utility
         {
             if (Instance.queue == null)
             {
-                Instance.queue = new DownloadQueue((x, y) => { }, (x, y) => { }, (x) => { });
+                Instance.queue = new DownloadQueue((x, y, z) => { }, (x, y, z) => { }, (x, y) => { });
             }
         }
 

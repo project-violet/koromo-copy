@@ -61,6 +61,8 @@ Console입력 => 각 최상위 명령 클래스 => Command Line Parser(+ Option)
 |scan|파일 열거에 관련한 명령을 포함합니다.|
 |run|특정 유틸리티 실행 명령입니다.|
 |down|입력받은 Url이나, 배열의 모든 요소를 입력받은 경로 규칙에 맞게 다운로드합니다. (추가예정)|
+|internal|프로그램의 인스턴스를 제어할 수 있는 명령을 포함합니다.|
+|test|기능 테스트에 사용되는 명령집합입니다.|
 
 기본적으로 명령어의 규칙은 `옵션`, `인자`, `지정` 이렇게 세가지로 구성됩니다.
 
@@ -144,12 +146,56 @@ mm -series https://...
 mm -articles https://...
 ```
 
+## internal 명령 예제
+
+```
+1. 열린 창을 보고싶을 경우
+internal -e
+
+2. 모든 인스턴스를 보고싶을 경우
+internal -eI
+
+3. 어떤 인스턴스의 모든 함수를 열거하고 싶을 경우
+internal -eEP console
+
+4. 어떤 인스턴스의 어떤 함수를 호출하고 싶을 경우
+internal --call console.Write "asdf"
+```
+
 ---
 
 # 소스코드 구조
 
+## ILazy
+
+`Koromo Copy` 구현에 주로 쓰인 인스턴스 레이지(`ILazy`)는 상속된 클래스의 레이지 인스턴스를 생성합니다. 이렇게 생성된 레이지 인스턴스는 외부에서 쉽게 접근할 수 있습니다.
+
+## Internal
+
+`Internal` 클래스는 `Koromo Copy`에 구현된 `Memory Model`를 쉽게 다룰 수 있는 메서드 집합입니다. 변수의 상태, 함수 목록, 함수 호출, 반환값 수정 등 여러가지 기능이 구현되어있습니다.
+
+## Monitor
+
+`Hitomi Copy`에서 모든 동작을 기록하기 위해 만들었던 도구입니다. `Koromo Copy`에서 `Monitor`는 모든 동작을 기록하며, 콘솔을 제어합니다.
+
+## Version
+
+`Version` 클래스는 `Koromo Copy`의 버전관리 클래스입니다. 이 클래스는 최신 업데이트를 체크하며, 웹에 등록된 정보(공지사항 등)의 정보를 가져옵니다.
+
 ## 콘솔
+
+콘솔은 `Koromo Copy`의 모든 기능을 시험하고, 검사하기 위해 만들어진 도구입니다. `Monitor`에서 콘솔을 동적으로 로드할 수 있습니다.
 
 ## 플러그인
 
-`Koromo Copy`에선 오픈소스 라이브러리인 `Sps` (https://www.codeproject.com/Articles/182970/A-Simple-Plug-In-Library-For-NET)를 사용하여 플러그인 시스템을 구현하였습니다. 플러그인의 유형은 `None`, `Download`, `Utility`, `Helper`로 총 네 가지 입니다.
+`Koromo Copy`에선 오픈소스 라이브러리인 `Sps` (https://www.codeproject.com/Articles/182970/A-Simple-Plug-In-Library-For-NET)를 사용하여 플러그인 시스템을 구현하였습니다. 플러그인의 유형은 `None`, `Download`, `Utility`, `Console`, `Helper`로 총 다섯 가지 입니다.
+
+플러그인의 각 유형을 Prefix로하는 `XXXPlugin` 클래스가 있습니다. 이 클래스들은 `Koromo Copy`와 상호작용할 때 유용합니다. 메인 레포지토리의 `Plugins/`를 참고하여 새로운 플러그인을 제작해보세요.
+
+플러그인 개발자는 `Koromo Copy Base.dll` 및 `Koromo Copy Plugin.dll`를 참조하여 플러그인을 개발해야 합니다. 다만, 플러그인 배포시에는 참조한 파일은 같이 배포하지 않아도됩니다.
+
+## 다운로드
+
+`Net/DownloadQueue.cs` 코드가 파일다운로드를 총괄하는 클래스입니다. 이 클래스는 지정된 개수의 태스크를 생성해 다운로드를 진행합니다. 다운로드 큐는 일시적인 선점이 가능합니다. 선점 기능을 이용하면 일시적으로 모든 바이트블록 갱신을 멈추고 재활성화될 때까지 기다립니다.
+
+`Net/DownloadGroup.cs`는 일괄 다운로드 클래스입니다. `Net/DownloadQueue.cs`를 이용하여 구현되었습니다. 이 클래스를 이용하면 여러 파일을 그룹화하여 다운로드시킬 수 있습니다.
