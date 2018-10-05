@@ -91,7 +91,7 @@ namespace ZipViewer
 
         private void load_folder(string dir)
         {
-            Text += " - " + Path.GetFileName(dir);
+            Text = "ZipViewer by DC Koromo - " + Path.GetFileName(dir);
             flowLayoutPanel1.Controls.Clear();
             var list = Directory.GetFiles(dir).ToList();
             list.Sort((x, y) => ComparePath(y, x));
