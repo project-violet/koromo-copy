@@ -31,6 +31,8 @@ namespace Koromo_Copy.Net
             DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>> jobs;
 
         List<bool> completes;
+
+        public DownloadQueue Queue { get { return queue; } }
         
         public DownloadGroup()
         {
@@ -76,17 +78,52 @@ namespace Koromo_Copy.Net
                     Complete.Invoke(null, Tuple.Create(url, filename, obj));
             }
         }
+        
+        /// <summary>
+        /// 큐를 일시정지합니다.
+        /// </summary>
+        public void Preempt()
+        {
+            queue.Preempt();
+        }
+        
+        /// <summary>
+        /// 큐를 재활성화합니다.
+        /// </summary>
+        public void Reactivation()
+        {
+            queue.Reactivation();
+        }
+
+        /// <summary>
+        /// 모든 작업을 취소하고, 다운로드 중인 파일을 삭제합니다.
+        /// </summary>
+        public void Abort()
+        {
+            queue.Abort();
+        }
+
+        /// <summary>
+        /// 특정 작업을 취소합니다.
+        /// </summary>
+        public void Abort(string url)
+        {
+            queue.Abort(url);
+        }
 
         /// <summary>
         /// 새 작업을 추가합니다.
         /// </summary>
-        /// <param name="urls"></param>
-        /// <param name="paths"></param>
-        /// <param name="obj"></param>
-        /// <param name="callback"></param>
-        /// <param name="se"></param>
+        /// <param name="urls">다운로드할 파일의 URL입니다.</param>
+        /// <param name="paths">다운로드 경로를 지정합니다.</param>
+        /// <param name="obj">callback에서 전달될 객체입니다.</param>
+        /// <param name="callback">파일의 다운로드가 끝나면 이 함수가 호출됩니다.</param>
+        /// <param name="se">리퀘스트에 추가할 추가 옵션입니다.</param>
+        /// <param name="size_callback">리퀘스트 응답을 성공적으로 받을 시 파일의 크기가 전달됩니다.</param>
+        /// <param name="status_callback">파일의 바이트 블록(131,072 바이트)이나 맨 마지막 바이트 블록을 전달받으면 이 함수가 호출됩니다.</param>
+        /// <param name="retry_callback">리퀘스트 도중 응답이 끊기거나, 정의되지 않은 오류로인해 다운로드가 취소되어 파일을 재다운로드할 경우 이 함수가 호출됩니다.</param>
         public void Add(string[] urls, string[] paths, object obj, SemaphoreCallBack callback, SemaphoreExtends se = null, 
-            DownloadQueue.DownloadSizeCallBack size_callback = null, DownloadQueue.DownloadStatusCallBack statuc_callback = null, DownloadQueue.RetryCallBack retry_callback = null)
+            DownloadQueue.DownloadSizeCallBack size_callback = null, DownloadQueue.DownloadStatusCallBack status_callback = null, DownloadQueue.RetryCallBack retry_callback = null)
         {
             lock (add_lock)
             {
@@ -94,7 +131,7 @@ namespace Koromo_Copy.Net
                 {
                     jobs.Add(new Tuple<int, object, SemaphoreCallBack, DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>(
                         index_count, obj, callback,
-                        size_callback, statuc_callback, retry_callback));
+                        size_callback, status_callback, retry_callback));
                     completes.Add(false);
                 }
                 for (int i = 0; i < urls.Length; i++)
