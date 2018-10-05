@@ -12,6 +12,7 @@ using Hitomi_Copy_3;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Diagnostics;
+using Hitomi_Copy_2;
 
 namespace ZipViewer
 {
@@ -24,6 +25,7 @@ namespace ZipViewer
         Font Font { set; }
         PictureBox Picture { get; }
         string Path { get; set; }
+        HitomiJsonModel Log { get; set; }
         void SetImageFromAddress(string addr, int pannelw, int pannelh, bool title = true);
         void Invalidate();
     }
@@ -212,6 +214,8 @@ namespace ZipViewer
             }
         }
 
+        public HitomiJsonModel Log
+        { get; set; }
         public string Path
         { get; set; }
         public bool Selected

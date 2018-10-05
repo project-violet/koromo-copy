@@ -1,5 +1,8 @@
-﻿using Koromo_Copy;
+﻿using Hitomi_Copy;
+using Hitomi_Copy_2;
+using Koromo_Copy;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +31,7 @@ namespace ZipViewer
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ColumnSorter.InitListView(lvMyTagRank);
             var x = Environment.GetCommandLineArgs();
             
             if (x.Length > 1)
@@ -89,20 +93,41 @@ namespace ZipViewer
             return StrCmpLogicalW(addr1, addr2);
         }
 
-        private void load_folder(string dir)
+        private async void load_folder(string dir)
         {
             Text = "ZipViewer by DC Koromo - " + Path.GetFileName(dir);
             flowLayoutPanel1.Controls.Clear();
             var list = Directory.GetFiles(dir).ToList();
             list.Sort((x, y) => ComparePath(y, x));
+            tags = new Dictionary<string, int>();
+            lvMyTagRank.Items.Clear();
+            List<Task> tasks = new List<Task>();
             foreach (var files in list)
             {
                 if (!files.EndsWith(".zip"))
                     continue;
 
-                Task.Run(() => load_zip(files));
+                tasks.Add(Task.Run(() => load_zip(files)));
             }
+
+            await Task.WhenAll(tasks);
+
+            var result = tags.ToList();
+            result.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
+
+            List<ListViewItem> lvil = new List<ListViewItem>();
+            for (int i = 0; i < result.Count; i++)
+            {
+                lvil.Add(new ListViewItem(new string[]
+                {
+                            result[i].Key,
+                            result[i].Value.ToString()
+                }));
+            }
+            this.Post(() => lvMyTagRank.Items.AddRange(lvil.ToArray()));
         }
+
+        Dictionary<string, int> tags = new Dictionary<string, int>();
 
         private void load_zip(string files)
         {
@@ -119,6 +144,24 @@ namespace ZipViewer
                     zip.Entries[0].ExtractToFile(tmp, true);
                 else
                     zip.Entries[1].ExtractToFile(tmp, true);
+                try
+                {
+                    pe.Log = JsonConvert.DeserializeObject<HitomiJsonModel>(new StreamReader(zip.GetEntry("Info.json").Open()).ReadToEnd());
+                    if (pe.Log.Tags != null)
+                        lock (tags)
+                        {
+                            foreach (var tag in pe.Log.Tags)
+                            {
+                                if (tags.ContainsKey(tag))
+                                    tags[tag] += 1;
+                                else
+                                    tags.Add(tag, 1);
+                            }
+                        }
+                }
+                catch(Exception e)
+                {
+                }
                 pe.SetImageFromAddress(tmp, 150, 200);
             }
 
@@ -178,6 +221,31 @@ namespace ZipViewer
             else
             {
                 e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void lvMyTagRank_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvMyTagRank.SelectedItems.Count > 0)
+            {
+                string[] tags = lvMyTagRank.SelectedItems.OfType<ListViewItem>().Select(x => x.SubItems[0].Text).ToArray();
+                flowLayoutPanel1.SuspendLayout();
+                for (int i = 0; i < flowLayoutPanel1.Controls.Count; i++)
+                {
+                    PicElement pe = flowLayoutPanel1.Controls[i] as PicElement;
+                    if (tags.All(x => pe.Log.Tags != null && pe.Log.Tags.Contains(x)))
+                        pe.Selected = true;
+                    else
+                        pe.Selected = false;
+                }
+                flowLayoutPanel1.ResumeLayout();
+            }
+            else
+            {
+                for (int i = 0; i < flowLayoutPanel1.Controls.Count; i++)
+                {
+                    (flowLayoutPanel1.Controls[i] as PicElement).Selected = false;
+                }
             }
         }
     }
