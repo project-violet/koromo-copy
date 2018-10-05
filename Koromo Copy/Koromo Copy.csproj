@@ -131,6 +131,7 @@
     <Compile Include="MM\MMArticle.cs" />
     <Compile Include="MM\MMParser.cs" />
     <Compile Include="Monitor.cs" />
+    <Compile Include="Net\DownloadGroup.cs" />
     <Compile Include="Net\DownloadQueue.cs" />
     <Compile Include="Net\Driver\PhantomJSWrapper.cs" />
     <Compile Include="Net\Driver\SeleniumWrapper.cs" />

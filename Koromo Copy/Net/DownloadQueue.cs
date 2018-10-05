@@ -25,9 +25,9 @@ namespace Koromo_Copy.Net
         public List<Task> tasks = new List<Task>();
         public IWebProxy proxy { get; set; }
 
-        public delegate void DownloadSizeCallBack(string uri, long size);
-        public delegate void DownloadStatusCallBack(string uri, int size);
-        public delegate void RetryCallBack(string uri);
+        public delegate void DownloadSizeCallBack(string uri, long size, object obj);
+        public delegate void DownloadStatusCallBack(string uri, int size, object obj);
+        public delegate void RetryCallBack(string uri, object obj);
 
         DownloadSizeCallBack download_callback;
         DownloadStatusCallBack status_callback;
@@ -200,12 +200,12 @@ namespace Koromo_Copy.Net
                         {
                             byte[] buffer = new byte[131072];
                             int bytesRead;
-                            lock (download_callback) download_callback(uri, response.ContentLength);
+                            lock (download_callback) download_callback(uri, response.ContentLength, obj);
                             do
                             {
                                 bytesRead = inputStream.Read(buffer, 0, buffer.Length);
                                 outputStream.Write(buffer, 0, bytesRead);
-                                lock (status_callback) status_callback(uri, bytesRead);
+                                lock (status_callback) status_callback(uri, bytesRead, obj);
                                 lock (shutdown_lock) if (shutdown) break;
                                 if (preempt_take)
                                 {
@@ -231,7 +231,7 @@ namespace Koromo_Copy.Net
                 lock (aborted)
                     if (!aborted.Contains(uri))
                     {
-                        lock (retry_callback) retry_callback(uri);
+                        lock (retry_callback) retry_callback(uri, obj);
                         request.Abort();
                         Thread.Sleep(1000);
                         retry_count++;
