@@ -35,6 +35,7 @@ namespace Koromo_Copy.Net
         
         object notify_lock = new object();
         object shutdown_lock = new object();
+        volatile bool preempt_take = false;
         
         /// <summary>
         /// 다운로드 큐의 생성자 입니다.
@@ -130,6 +131,22 @@ namespace Koromo_Copy.Net
                 Notify();
         }
 
+        /// <summary>
+        /// 큐를 일시정지합니다.
+        /// </summary>
+        public void Preempt()
+        {
+            preempt_take = true;
+        }
+
+        /// <summary>
+        /// 큐를 재활성화합니다.
+        /// </summary>
+        public void Reactivation()
+        {
+            preempt_take = false;
+        }
+        
         private bool Wait()
         {
             if (mtx == capacity)
@@ -190,6 +207,13 @@ namespace Koromo_Copy.Net
                                 outputStream.Write(buffer, 0, bytesRead);
                                 lock (status_callback) status_callback(uri, bytesRead);
                                 lock (shutdown_lock) if (shutdown) break;
+                                if (preempt_take)
+                                {
+                                    Monitor.Instance.Push($"[Preempt Queue] {uri}");
+                                    while (preempt_take)
+                                        Thread.Sleep(500);
+                                    Monitor.Instance.Push($"[Exit Preempt] {uri}");
+                                }
                             } while (bytesRead != 0);
                         }
                         lock (shutdown_lock) if (shutdown)
