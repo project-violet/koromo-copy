@@ -76,6 +76,17 @@ namespace Koromo_Copy.Console
             arguments = CommandLineUtil.InsertWeirdArguments<InternalConsoleOption>(arguments, true, "-e");
             InternalConsoleOption option = CommandLineParser<InternalConsoleOption>.Parse(arguments);
 
+            if (instances == null)
+            {
+                instances = new Dictionary<string, object> {
+                    {"setting", Settings.Instance},
+                    {"data", HitomiData.Instance},
+                    {"monitor", Monitor.Instance},
+                    {"console", Console.Instance},
+                    {"journal", Journal.Instance},
+                };
+            }
+
             if (option.Error)
             {
                 Console.Instance.WriteLine(option.ErrorMessage);
@@ -118,13 +129,7 @@ namespace Koromo_Copy.Console
                 );
         }
 
-        static Dictionary<string, object> instances = new Dictionary<string, object> {
-            {"setting", Settings.Instance},
-            {"data", HitomiData.Instance},
-            {"monitor", Monitor.Instance},
-            {"console", Console.Instance},
-            {"journal", Journal.Instance},
-        };
+        static Dictionary<string, object> instances = null;
 
         /// <summary>
         /// 특정 클래스의 내용을 나열합니다.
@@ -225,7 +230,18 @@ namespace Koromo_Copy.Console
         /// <param name="e_instance"></param>
         static void ProcessSet(string[] args, bool e_form, bool e_instance)
         {
+            var split = args[0].Split('.');
 
+            if (!(e_form || e_instance))
+            {
+                if (instances.ContainsKey(split[0]))
+                    e_instance = true;
+                else
+                    e_form = true;
+            }
+
+            object target = e_form ? Application.OpenForms[split[0]] : instances[split[0]];
+            Internal.set_recursion(args[0], split, 1);
         }
 
         /// <summary>
