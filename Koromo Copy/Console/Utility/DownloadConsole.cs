@@ -79,7 +79,7 @@ namespace Koromo_Copy.Console.Utility
                 );
         }
 
-        DownloadQueue queue;
+        public DownloadQueue queue;
         
         static void AllocQueue()
         {

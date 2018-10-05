@@ -86,6 +86,14 @@ namespace Koromo_Copy.Console.Utility
                 case "plugin":
                     PlugInManager.Instance.GetLoadedPlugins().ForEach(x => Console.Instance.WriteLine(x));
                     break;
+
+                case "preempt_dq":
+                    DownloadConsole.Instance.queue.Preempt();
+                    break;
+
+                case "unpreempt_dq":
+                    DownloadConsole.Instance.queue.Reactivation();
+                    break;
             }
         }
     }
