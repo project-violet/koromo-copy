@@ -73,6 +73,12 @@ namespace Koromo_Copy.Net
                 Complete.Invoke(null, Tuple.Create(url, filename, obj));
             lock(job_lock)
             {
+                lock (add_lock)
+                {
+                    remain_contents--;
+                    if (remain_contents == 0)
+                        DownloadComplete.Invoke(null, null);
+                }
                 completes[(int)obj] = true;
                 if (completes.TrueForAll(x => x))
                     Complete.Invoke(null, Tuple.Create(url, filename, obj));
@@ -139,6 +145,7 @@ namespace Koromo_Copy.Net
                     queue.Add(urls[i], paths[i], index_count, downloadCallback, se);
                 }
                 index_count++;
+                remain_contents++;
             }
         }
     }
