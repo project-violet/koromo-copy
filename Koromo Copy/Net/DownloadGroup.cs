@@ -6,12 +6,13 @@
 
 ***/
 
+using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
 
 namespace Koromo_Copy.Net
 {
-    public class DownloadGroup
+    public class DownloadGroup : ILazy<DownloadGroup>
     {
         DownloadQueue queue;
         int remain_contents;
