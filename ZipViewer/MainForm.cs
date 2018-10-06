@@ -14,6 +14,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -95,19 +96,25 @@ namespace ZipViewer
 
         private async void load_folder(string dir)
         {
-            Text = "ZipViewer by DC Koromo - " + Path.GetFileName(dir);
+            prefix = Text = "ZipViewer by DC Koromo - " + Path.GetFileName(dir);
             flowLayoutPanel1.Controls.Clear();
             var list = Directory.GetFiles(dir).ToList();
             list.Sort((x, y) => ComparePath(y, x));
             tags = new Dictionary<string, int>();
             lvMyTagRank.Items.Clear();
+            count_load = max_load = 0;
+
             List<Task> tasks = new List<Task>();
+
+            //max_load = list.Where(x => x.EndsWith(".zip")).Count();
+
             foreach (var files in list)
             {
                 if (!files.EndsWith(".zip"))
                     continue;
 
                 tasks.Add(Task.Run(() => load_zip(files)));
+                Interlocked.Increment(ref max_load);
             }
 
             await Task.WhenAll(tasks);
@@ -120,14 +127,17 @@ namespace ZipViewer
             {
                 lvil.Add(new ListViewItem(new string[]
                 {
-                            result[i].Key,
-                            result[i].Value.ToString()
+                     result[i].Key,
+                     result[i].Value.ToString()
                 }));
             }
             this.Post(() => lvMyTagRank.Items.AddRange(lvil.ToArray()));
         }
 
         Dictionary<string, int> tags = new Dictionary<string, int>();
+        string prefix;
+        int count_load;
+        int max_load;
 
         private void load_zip(string files)
         {
@@ -166,6 +176,8 @@ namespace ZipViewer
             }
 
             pe.Font = this.Font;
+            Interlocked.Increment(ref count_load);
+            this.Post(() => Text = $"{prefix} [{count_load}/{max_load}]"); 
             this.Post(() => flowLayoutPanel1.Controls.Add(pe as Control));
             this.Post(() => SortThumbnail());
         }
