@@ -105,9 +105,7 @@ namespace ZipViewer
             count_load = max_load = 0;
 
             List<Task> tasks = new List<Task>();
-
-            //max_load = list.Where(x => x.EndsWith(".zip")).Count();
-
+            
             foreach (var files in list)
             {
                 if (!files.EndsWith(".zip"))
