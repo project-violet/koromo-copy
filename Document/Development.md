@@ -72,6 +72,8 @@ Console입력 => 각 최상위 명령 클래스 => Command Line Parser(+ Option)
 
 `지정`은 미리 정해진 옵션들 중 사용자가 선택할 수 있게끔 선택지를 제공합니다. `-type=small`, `-type="big"`처럼 쓰이며, `-`나 `--`옵션뒤에 `=`를 붙히고, 특정 옵션을 지정하면됩니다.
 
+명령어들을 리스팅하려면 `help` 커맨드를 입력하세요. 각 명령의 인스턴스를 확인하려면, `internal --get console.redirections -R`를 통해 원하는 명령의 인스턴스 정보를 가져온뒤, `internal -eEPS <latest>`를 통해 인스턴스 함수를 나열하세요.
+
 ## hitomi 명령 예제
 
 ```
