@@ -48,7 +48,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 13);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1122, 657);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1103, 649);
             this.flowLayoutPanel1.TabIndex = 0;
             this.flowLayoutPanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragDrop);
             this.flowLayoutPanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragEnter);
@@ -56,7 +56,7 @@
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button1.Location = new System.Drawing.Point(448, 674);
+            this.button1.Location = new System.Drawing.Point(456, 666);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(54, 28);
             this.button1.TabIndex = 1;
@@ -67,7 +67,7 @@
             // button2
             // 
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button2.Location = new System.Drawing.Point(614, 674);
+            this.button2.Location = new System.Drawing.Point(611, 666);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(54, 28);
             this.button2.TabIndex = 2;
@@ -78,7 +78,7 @@
             // numericUpDown1
             // 
             this.numericUpDown1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.numericUpDown1.Location = new System.Drawing.Point(508, 677);
+            this.numericUpDown1.Location = new System.Drawing.Point(516, 669);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             1,
             0,
@@ -103,7 +103,7 @@
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(566, 681);
+            this.label1.Location = new System.Drawing.Point(574, 673);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(23, 15);
             this.label1.TabIndex = 4;
@@ -114,7 +114,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1146, 709);
+            this.ClientSize = new System.Drawing.Size(1127, 701);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.button2);
@@ -123,8 +123,9 @@
             this.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.MinimumSize = new System.Drawing.Size(1162, 735);
+            this.MinimumSize = new System.Drawing.Size(1143, 740);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ZipListing";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
