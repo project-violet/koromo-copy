@@ -167,6 +167,25 @@ namespace ZipViewer
             Invalidate();
         }
 
+        public Size Adjust(Size image, Size match)
+        {
+            decimal r1 = (decimal)image.Width / image.Height;
+            decimal r2 = (decimal)(match.Width) / (match.Height);
+            int w = (match.Width);
+            int h = match.Height;
+            if (r1 > r2)
+            {
+                w = (match.Width);
+                h = (int)(w / r1);
+            }
+            else if (r1 < r2)
+            {
+                h = match.Height;
+                w = (int)(r1 * h);
+            }
+            return new Size(w, h);
+        }
+
         public void SetImageFromAddress(string addr, int pannelw, int pannelh, bool title = true)
         {
             Dock = DockStyle.Bottom;
@@ -179,7 +198,9 @@ namespace ZipViewer
                     pb.Size = new Size(pannelw - 6, pannelh - 6);
                 using (FileStream fs = new FileStream(addr, FileMode.Open, FileAccess.Read, FileShare.None, 4096, FileOptions.DeleteOnClose))
                 {
-                    pb.Image = image = Image.FromStream(fs);
+                    image = Image.FromStream(fs);
+                    Size sz = image.Size;//Adjust(image.Size, new Size((pannelw - 6) * 8, (pannelh - 30) * 8));
+                    pb.Image = image;//image.GetThumbnailImage(sz.Width, sz.Height, () => false, IntPtr.Zero);
                 }
                 pb.SizeMode = PictureBoxSizeMode.Zoom;
                 pb.Paint += Picture_Paint;
@@ -188,23 +209,7 @@ namespace ZipViewer
                 pb.MouseClick += Picture_MouseClick;
                 pb.MouseDoubleClick += Thumbnail_MouseDoubleClick;
                 pb.MouseMove += Picture_MouseMove;
-                {
-                    decimal r1 = (decimal)Image.Width / Image.Height;
-                    decimal r2 = (decimal)(150*3) / (200 * 3);
-                    int w = (150 * 3);
-                    int h = 200 * 3;
-                    if (r1 > r2)
-                    {
-                        w = (150 * 3);
-                        h = (int)(w / r1);
-                    }
-                    else if (r1 < r2)
-                    {
-                        h = 200 * 3;
-                        w = (int)(r1 * h);
-                    }
-                    info = new Lazy<InfoForm>(() => new InfoForm(Image, new Size(w,h)));
-                }
+                info = new Lazy<InfoForm>(() => new InfoForm(Image, Adjust(Image.Size, new Size(150*3,200*3))));
                 this.Width = pannelw;
                 this.Height = pannelh;
                 this.Controls.Add(pb);
