@@ -257,7 +257,7 @@ namespace Koromo_Copy.Console
 
             foreach (var plugin in PlugInManager.Instance.GetConsolePlugins())
             {
-                redirections.Add(plugin.Name, plugin.GetRedirection());
+                redirections.Add(plugin.AssignCommand(), plugin.GetRedirection());
             }
 
             System.Console.Out.WriteLine("");

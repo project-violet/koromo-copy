@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\Hiyobi\HiyobiArticle.cs" />
     <Compile Include="Console\Console.cs" />
     <Compile Include="Console\ConsoleData.cs" />
     <Compile Include="Console\ExHentaiConsole.cs" />
