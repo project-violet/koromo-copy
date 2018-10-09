@@ -7,10 +7,10 @@
 ***/
 
 using Etier.IconHelper;
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Controls;
 using Koromo_Copy.Fs;
 using Koromo_Copy.Fs.FileIcon;
-using Koromo_Copy.Hitomi;
 using System;
 using System.Collections.Generic;
 using System.IO;
