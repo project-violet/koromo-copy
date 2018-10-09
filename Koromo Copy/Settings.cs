@@ -54,12 +54,17 @@ namespace Koromo_Copy
             {
                 model = new SettingModel();
                 model.Thread = Environment.ProcessorCount * 3;
+                model.SensitiveUpdateCheck = false;
 
                 model.Hitomi = new HitomiSetting();
                 model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";
                 model.Hitomi.Language = "korean";
 
                 model.HitomiAnalysis = new HitomiAnalysisSetting();
+            }
+            else
+            {
+                model.LatestAccessTime = DateTime.Now;
             }
             Save();
         }

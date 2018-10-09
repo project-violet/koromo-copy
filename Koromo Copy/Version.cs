@@ -28,6 +28,7 @@ namespace Koromo_Copy
     {
         public const string Name = "Koromo Copy";
         public static string Text { get; } = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public static string SimpleText { get; } = $"{Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}";
 
         public const string UpdateCheckUrl = "";
         
