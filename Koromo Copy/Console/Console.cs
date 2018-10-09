@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Interface;
+using Koromo_Copy.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -253,6 +254,11 @@ namespace Koromo_Copy.Console
                 {"grep", new GrepConsole()},
                 {"out", new OutConsole()}
             };
+
+            foreach (var plugin in PlugInManager.Instance.GetConsolePlugins())
+            {
+                redirections.Add(plugin.Name, plugin.GetRedirection());
+            }
 
             System.Console.Out.WriteLine("");
 

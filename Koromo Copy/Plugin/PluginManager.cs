@@ -53,6 +53,13 @@ namespace Koromo_Copy.Plugin
             return result;
         }
 
+        public List<ConsolePlugIn> GetConsolePlugins()
+        {
+            return model.PlugIns.Select(x => x.PlugInProxy)
+                .Where(x => x.Type == KoromoCopyPlugInType.Console)
+                .OfType<ConsolePlugIn>().ToList();
+        }
+
         public PlugInModel Model { get => model; }
     }
 }
