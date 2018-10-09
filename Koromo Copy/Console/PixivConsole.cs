@@ -6,8 +6,8 @@
 
 ***/
 
+using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Interface;
-using Koromo_Copy.Pixiv;
 using System.Threading.Tasks;
 
 namespace Koromo_Copy.Console
