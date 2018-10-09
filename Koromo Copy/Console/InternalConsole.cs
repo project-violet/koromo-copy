@@ -83,7 +83,6 @@ namespace Koromo_Copy.Console
                     {"data", HitomiData.Instance},
                     {"monitor", Monitor.Instance},
                     {"console", Console.Instance},
-                    {"journal", Journal.Instance},
                 };
             }
 
