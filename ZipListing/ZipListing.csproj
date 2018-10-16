@@ -82,6 +82,7 @@
     <Compile Include="RecommendControl.designer.cs">
       <DependentUpon>RecommendControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <EmbeddedResource Include="InfoForm.resx">
       <DependentUpon>InfoForm.cs</DependentUpon>
     </EmbeddedResource>
