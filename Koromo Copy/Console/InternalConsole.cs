@@ -7,7 +7,6 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
-using Koromo_Copy.Fs;
 using Koromo_Copy.Interface;
 using Newtonsoft.Json;
 using System;
