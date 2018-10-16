@@ -33,7 +33,7 @@ namespace ZipListing
                 Hide();
                 MessageBox.Show(
                     "settings.json을 통해 환경설정 후 재시작해주세요!\r\n" +
-                    "SortOrderBy: 폴더 정렬 방법을 설정합니다.\r\n  - 0이면 이름순\r\n  - 1이면 수정날짜 오름차순\r\n  - 2이면 수정날짜 내림차순\r\n  - 3이면 포함파일 오름차순\r\n  - 4이면 포함파일 내림차순입니다.",
+                    "SortOrderBy: 폴더 정렬 방법을 설정합니다.\r\n  - 0이면 이름순\r\n  - 1이면 수정날짜 최신순\r\n  - 2이면 수정날짜 오래된순\r\n  - 3이면 포함파일개수 내림차순\r\n  - 4이면 포함파일개수 오름차순",
                     "ZipListing", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
                 Application.Exit();
@@ -89,7 +89,7 @@ namespace ZipListing
         private void load_folder_pre(string dir)
         {
             this.Post(() => flowLayoutPanel1.Controls.Clear());
-            folders = Directory.GetDirectories(dir).ToList();
+            folders = Directory.GetDirectories(dir).Where(x => new DirectoryInfo(x).GetFiles().Length > 0).ToList();
 
             switch (Settings.Instance.Model.SortOrderBy)
             {
@@ -100,18 +100,18 @@ namespace ZipListing
                 case 1:
                     folders.Sort((x, y) => new DirectoryInfo(y).LastWriteTime.CompareTo(new DirectoryInfo(x).LastWriteTime));
                     break;
-
                 case 2:
                     folders.Sort((x, y) => new DirectoryInfo(x).LastWriteTime.CompareTo(new DirectoryInfo(y).LastWriteTime));
                     break;
 
+
                 case 3:
                     folders.Sort((x, y) => new DirectoryInfo(y).GetFiles().Length.CompareTo(new DirectoryInfo(x).GetFiles().Length));
                     break;
-
                 case 4:
                     folders.Sort((x, y) => new DirectoryInfo(x).GetFiles().Length.CompareTo(new DirectoryInfo(y).GetFiles().Length));
                     break;
+
             }
                 
 
