@@ -10,6 +10,7 @@ using Hitomi_Copy_3;
 using Koromo_Copy;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -48,7 +49,8 @@ namespace ZipListing
 
         private void load_page(int page)
         {
-            this.Post(() => flowLayoutPanel1.Controls.Clear());
+            //this.Post(() => flowLayoutPanel1.Controls.Clear());
+            flowLayoutPanel1.Controls.OfType<RecommendControl>().ToList().ForEach(x => x.Dispose());
             //var list = Directory.GetDirectories(dir).ToList();
             //list.Sort((x, y) => StrCmpLogicalW(x, y));
 
@@ -80,6 +82,7 @@ namespace ZipListing
                 }
                 Thread.Sleep(100);
             }
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
 
         List<string> folders = new List<string>();
@@ -88,7 +91,9 @@ namespace ZipListing
 
         private void load_folder_pre(string dir)
         {
-            this.Post(() => flowLayoutPanel1.Controls.Clear());
+            //this.Post(() => flowLayoutPanel1.Controls.Clear());
+            flowLayoutPanel1.Controls.OfType<Control>().ToList().ForEach(x => x.Dispose());
+            //flowLayoutPanel1.Controls.Clear();
             folders = Directory.GetDirectories(dir).Where(x => new DirectoryInfo(x).GetFiles().Length > 0).ToList();
 
             switch (Settings.Instance.Model.SortOrderBy)
@@ -175,6 +180,17 @@ namespace ZipListing
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             load_page(page_now = (int)numericUpDown1.Value);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Process proc = Process.GetCurrentProcess();
+            lMemoryUsage.Text = (proc.PrivateMemorySize64 / 1000).ToString("#,#") + " KB";
+        }
+
+        private void lMemoryUsage_Click(object sender, EventArgs e)
+        {
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
     }
 }

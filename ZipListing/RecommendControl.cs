@@ -15,7 +15,7 @@ using ZipListing;
 
 namespace Hitomi_Copy_3
 {
-    public partial class RecommendControl : UserControl
+    public partial class RecommendControl : UserControl, IDisposable
     {
         InfoWrapper[] info = new InfoWrapper[5];
         string artist;
@@ -36,7 +36,7 @@ namespace Hitomi_Copy_3
             foreach (var iw in info.Where(iw => iw != null))
                 iw.Dispose();
         }
-
+        
         private async void RecommendControl_LoadAsync(object sender, System.EventArgs e)
         {
             await LoadThumbnailAsync();

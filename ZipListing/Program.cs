@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,6 +16,9 @@ namespace ZipListing
         [STAThread]
         static void Main()
         {
+            GCLatencyMode oldMode = GCSettings.LatencyMode;
+            RuntimeHelpers.PrepareConstrainedRegions();
+            GCSettings.LatencyMode = GCLatencyMode.Batch;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
