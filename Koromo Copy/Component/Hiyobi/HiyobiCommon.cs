@@ -8,7 +8,9 @@
 
 namespace Koromo_Copy.Component.Hiyobi
 {
-    public class HiyobiParser
+    public class HiyobiCommon
     {
+        public string list(string x) => $"https://aa.hiyobi.me/data/json/{x}_list.js";
+
     }
 }
