@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\Hitomi\HitomiDispatcher.cs" />
+    <Compile Include="Component\Hiyobi\HiyobiParser.cs" />
     <Compile Include="Component\IDispatchable.cs" />
     <Compile Include="Component\EH\EHentaiParser.cs" />
     <Compile Include="Component\Hiyobi\HiyobiArticle.cs" />
