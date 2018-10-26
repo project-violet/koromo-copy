@@ -1,15 +1,15 @@
-# Koromo Copy °³¹ß ÄÁ¼Á ¼³°èµµ
+# Koromo Copy ê°œë°œ ì»¨ì…‰ ì„¤ê³„ë„
 
-## 3 ºÐ¸® Ã¼°è
+## 3 ë¶„ë¦¬ ì²´ê³„
 
-´Ù¿î·Î´õ + Å©·Ñ·¯ + ÆÄÀÏ½Ã½ºÅÛ
+ë‹¤ìš´ë¡œë” + í¬ë¡¤ëŸ¬ + íŒŒì¼ì‹œìŠ¤í…œ
 
 ## User Interface
 
-UI´Â ÃÊ¹Ý¿£ `Form`±â¹ÝÀ¸·Î ½ÃÇèÇÏ´Ù°¡, `WPF`·Î º»°ÝÀûÀ¸·Î °³¹ßÇÒ ¿¹Á¤ÀÔ´Ï´Ù. º» °³¹ßÀÚ´Â ¾ÆÁ÷ `WPF`¸¦ ÇÐ½ÀÇÏÁö ¾Ê¾Æ Àû¿ëÇÏ´Âµ¥ ¿À·£½Ã°£ÀÌ °É¸± ¼ö ÀÖ½À´Ï´Ù ¤Ð¤Ð
+UIëŠ” ì´ˆë°˜ì—” `Form`ê¸°ë°˜ìœ¼ë¡œ ì‹œí—˜í•˜ë‹¤ê°€, `WPF`ë¡œ ë³¸ê²©ì ìœ¼ë¡œ ê°œë°œí•  ì˜ˆì •ìž…ë‹ˆë‹¤. ë³¸ ê°œë°œìžëŠ” ì•„ì§ `WPF`ë¥¼ í•™ìŠµí•˜ì§€ ì•Šì•„ ì ìš©í•˜ëŠ”ë° ì˜¤ëžœì‹œê°„ì´ ê±¸ë¦´ ìˆ˜ ìžˆìŠµë‹ˆë‹¤ ã… ã… 
 
-UI ½ºÅ¸ÀÏÀº BitdefenderÀÇ UI¸¦ Âü°íÇØ °³¹ßÇÒ °èÈ¹ÀÔ´Ï´Ù.
+UI ìŠ¤íƒ€ì¼ì€ Bitdefenderì˜ UIë¥¼ ì°¸ê³ í•´ ê°œë°œí•  ê³„íšìž…ë‹ˆë‹¤.
 
-## Selenium, PhantomJS °³¹ß °èÈ¹
+## Selenium, PhantomJS ê°œë°œ ê³„íš
 
-¼¿·¹´Ï¿ò¤·
+ì…€ë ˆë‹ˆì›€ã…‡
