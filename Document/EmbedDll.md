@@ -1,6 +1,6 @@
-# dll ÆÄÀÏ Embedding
+# dll íŒŒì¼ Embedding
 
-ÇöÀç´Â Fody¸¦ »ç¿ëÇÏ¹Ç·Î ÀÌ ¹æ¹ıÀº »ç¿ëÇÏÁö ¾Ê´Â´Ù.
+í˜„ì¬ëŠ” Fodyë¥¼ ì‚¬ìš©í•˜ë¯€ë¡œ ì´ ë°©ë²•ì€ ì‚¬ìš©í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 ``` c#
 static Assembly ResolveAssembly(object sender, ResolveEventArgs args)
@@ -27,10 +27,10 @@ static Assembly ResolveAssembly(object sender, ResolveEventArgs args)
 }
 ```
 
-¸ŞÀÎ½º·¹µå È£ÃâÀü(`Program.cs:Main` ÇÔ¼ö)¿¡ ÀÌ ÄÚµå¸¦ Ãß°¡ÇÑ´Ù.
+ë©”ì¸ìŠ¤ë ˆë“œ í˜¸ì¶œì „(`Program.cs:Main` í•¨ìˆ˜)ì— ì´ ì½”ë“œë¥¼ ì¶”ê°€í•œë‹¤.
 
 ``` c#
 AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);
 ```
 
-ÀÌÁ¦ ¸®¼Ò½º¿¡ dll ÆÄÀÏÀ» ³Ö°í `FileType`À» `Binary`·Î ¹Ù²Ù¸é µÈ´Ù. ÀÌÁ¦ dll ÆÄÀÏÀÌ ½ÇÇàÆÄÀÏ¿¡ Æ÷ÇÔµÉ °ÍÀÌ´Ù.
+ì´ì œ ë¦¬ì†ŒìŠ¤ì— dll íŒŒì¼ì„ ë„£ê³  `FileType`ì„ `Binary`ë¡œ ë°”ê¾¸ë©´ ëœë‹¤. ì´ì œ dll íŒŒì¼ì´ ì‹¤í–‰íŒŒì¼ì— í¬í•¨ë  ê²ƒì´ë‹¤.
