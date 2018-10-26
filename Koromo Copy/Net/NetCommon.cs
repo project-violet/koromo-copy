@@ -43,7 +43,7 @@ namespace Koromo_Copy.Net
             Monitor.Instance.Push($"Download string: {url}");
             return GetDefaultClient().DownloadString(url);
         }
-
+        
         /// <summary>
         /// 익헨 문서를 다운로드합니다.
         /// </summary>
