@@ -19,4 +19,14 @@ namespace Koromo_Copy.Interface
         string Title { get; set; }
         List<string> ImagesLink { get; set; }
     }
+
+    /// <summary>
+    /// 한 시리즈를 나타내는 단위입니다.
+    /// </summary>
+    public interface ISeries
+    {
+        string Thumbnail { get; set; }
+        string Title { get; set; }
+        List<IArticle> Archive { get; set; }
+    }
 }
