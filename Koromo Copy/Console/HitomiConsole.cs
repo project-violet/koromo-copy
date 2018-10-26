@@ -151,9 +151,7 @@ namespace Koromo_Copy.Console
         /// <param name="args"></param>
         static void ProcessArticle(string[] args)
         {
-            string html_source = NetCommon.DownloadString($"{HitomiCommon.HitomiGalleryBlock}{args[0]}.html");
-            HitomiArticle article = HitomiParser.ParseGalleryBlock(html_source);
-            Console.Instance.WriteLine(article);
+            Console.Instance.WriteLine(HitomiDispatchable.Collect(args[0]));
         }
 
         /// <summary>
