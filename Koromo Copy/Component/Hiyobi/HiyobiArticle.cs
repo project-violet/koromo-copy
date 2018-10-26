@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Koromo_Copy.Component.Hiyobi
 {
-    public class Hiyobi : IArticle
+    public class HiyobiArticle : IArticle
     {
         string[] artists;
         string[] characters;

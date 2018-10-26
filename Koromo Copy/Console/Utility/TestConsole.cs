@@ -94,6 +94,16 @@ namespace Koromo_Copy.Console.Utility
                 case "unpreempt_dq":
                     DownloadConsole.Instance.queue.Reactivation();
                     break;
+
+                case "hiyobi":
+                    var html = Net.NetCommon.DownloadString("https://hiyobi.me/info/1305694");
+                    var article = Component.Hiyobi.HiyobiParser.ParseGalleryConents(html);
+                    break;
+
+                case "hiyobi2":
+                    var html1 = Net.NetCommon.DownloadString("https://hiyobi.me/list/1");
+                    var article1 = Component.Hiyobi.HiyobiParser.ParseGalleryArticles(html1);
+                    break;
             }
         }
     }
