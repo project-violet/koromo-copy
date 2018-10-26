@@ -9,6 +9,7 @@
 using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Koromo_Copy.Net
 {
@@ -17,6 +18,7 @@ namespace Koromo_Copy.Net
         DownloadQueue queue;
         int remain_contents;
         int index_count;
+        int mutex_count;
 
         object add_lock = new object();
         object job_lock = new object();
@@ -91,6 +93,7 @@ namespace Koromo_Copy.Net
         public void Preempt()
         {
             queue.Preempt();
+            Interlocked.Increment(ref mutex_count);
         }
         
         /// <summary>
@@ -98,7 +101,8 @@ namespace Koromo_Copy.Net
         /// </summary>
         public void Reactivation()
         {
-            queue.Reactivation();
+            if (Interlocked.Decrement(ref mutex_count) == 0)
+                queue.Reactivation();
         }
 
         /// <summary>
