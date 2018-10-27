@@ -58,6 +58,7 @@ namespace Hik.Sps
         {
             if (string.IsNullOrEmpty(PlugInFolder) || !Directory.Exists(PlugInFolder))
             {
+                return;
                 throw new ApplicationException("PlugInFoler must be a valid folder path");
             }
 

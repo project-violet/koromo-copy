@@ -42,12 +42,22 @@ namespace Koromo_Copy_UX2
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             DataContext = new MainWindowViewModel(MainSnackbar.MessageQueue);
-
             Snackbar = this.MainSnackbar;
+
+            Closing += MainWindow_Closing;
 
             //new PaletteHelper().ReplacePrimaryColor(swatch);
         }
 
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Koromo_Copy.Monitor.IsValueCreated)
+            {
+                Koromo_Copy.Monitor.Instance.Save();
+                if (Koromo_Copy.Monitor.Instance.ControlEnable)
+                    Koromo_Copy.Console.Console.Instance.Stop();
+            }
+        }
 
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -74,14 +84,22 @@ namespace Koromo_Copy_UX2
 
         private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
         {
+            var content = ((ButtonBase)sender).Tag.ToString();
+
+            if (content == "Console")
+            {
+                Koromo_Copy.Monitor.Instance.ControlEnable = true;
+                Koromo_Copy.Monitor.Instance.Push("Hello!");
+                Koromo_Copy.Monitor.Instance.Start();
+                return;
+            }
+
             var sampleMessageDialog = new SampleMessageDialog
             {
-                Message = { Text = TranslateMenuPopupButtonMessage(((ButtonBase)sender).Tag.ToString()) }
+                Message = { Text = TranslateMenuPopupButtonMessage(content) }
             };
 
             await DialogHost.Show(sampleMessageDialog, "RootDialog");
         }
-
-
     }
 }

@@ -19,5 +19,6 @@ namespace Koromo_Copy.Interface
     {
         private static readonly Lazy<T> instance = new Lazy<T>(() => new T());
         public static T Instance => instance.Value;
+        public static bool IsValueCreated => instance.IsValueCreated;
     }
 }
