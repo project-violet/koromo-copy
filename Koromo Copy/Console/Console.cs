@@ -132,10 +132,16 @@ namespace Koromo_Copy.Console
             }
         }
 
+        Thread console_thread;
         public void Start()
         {
-            Thread thread = new Thread(Loop);
-            thread.Start();
+            console_thread = new Thread(Loop);
+            console_thread.Start();
+        }
+
+        public void Stop()
+        {
+            console_thread.Abort();
         }
 
         public void Hide()

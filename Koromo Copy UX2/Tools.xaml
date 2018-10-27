@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="Koromo_Copy_UX2.Tools"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:Koromo_Copy_UX2"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0 12 0 0">
+            <StackPanel>
+                <GroupBox Header="이전 도구" Style="{DynamicResource MaterialDesignGroupBox}" Margin="16" materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
+                    <StackPanel>
+                        <TextBlock FontSize="15" Margin="0 15 0 0">Hitomi Copy와 Koromo Copy 개발도중 실험적으로 만들어 두었던 도구들입니다.</TextBlock>
+                        <WrapPanel>
+                            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Fs Enumerator" ToolTip="파일시스템을 열거할 수 있는 도구입니다." Margin="3" Tag="1" Click="Button_Click"/>
+                            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Hitomi Explorer" ToolTip="다운로드된 작품을 관리할 수 있는 도구입니다." Margin="3" Tag="2" Click="Button_Click"/>
+                            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Metadata Downloader" ToolTip="메타데이터를 다운로드할 수 있는 도구입니다." Margin="3" Tag="3" Click="Button_Click"/>
+                            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="String Tools" ToolTip="문자열을 조작할 수 있는 여러 도구모음입니다." Margin="3" Tag="4" Click="Button_Click"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
