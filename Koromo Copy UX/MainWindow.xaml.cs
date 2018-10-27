@@ -35,7 +35,11 @@ namespace Koromo_Copy_UX
         {
             InitializeComponent();
         }
-        
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
         //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         //{
         //    if (e.ChangedButton == MouseButton.Left)
