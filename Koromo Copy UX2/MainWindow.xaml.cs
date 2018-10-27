@@ -44,6 +44,8 @@ namespace Koromo_Copy_UX2
             DataContext = new MainWindowViewModel(MainSnackbar.MessageQueue);
 
             Snackbar = this.MainSnackbar;
+
+            //new PaletteHelper().ReplacePrimaryColor(swatch);
         }
 
 
