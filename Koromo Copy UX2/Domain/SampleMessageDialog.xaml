@@ -20,7 +20,7 @@
                 HorizontalAlignment="Right"
                 Margin="16 16 16 0"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
-            ACCEPT
+            확인
         </Button>
     </Grid>
 </UserControl>
