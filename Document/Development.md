@@ -204,6 +204,24 @@ internal --call console.Write "asdf"
 
 ---
 
+# UI/UX
+
+`WPF`와 `WPF`기반 라이브러리들을 이용하여 UI/UX를 제작할 예정입니다.
+
+## 사용중인 라이브러리
+
+|이름|용도|주소|
+|----|--|---|
+|ControlzEx|간단한 컨트롤 확장들을 지원해줌|https://github.com/ControlzEx/ControlzEx|
+|Material Design In XAML Toolkit|실험중인 디자인|https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit|
+|Modern Chrome|실험중인 디자인, Visual Studio 테마|https://github.com/ChristianIvicevic/ModernChrome|
+
+## Material 아이콘
+
+https://materialdesignicons.com/
+
+---
+
 # 외부 라이브러리
 
 |이름|용도|주소|

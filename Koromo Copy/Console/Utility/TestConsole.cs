@@ -104,6 +104,10 @@ namespace Koromo_Copy.Console.Utility
                     var html1 = Net.NetCommon.DownloadString("https://hiyobi.me/list/1");
                     var article1 = Component.Hiyobi.HiyobiParser.ParseGalleryArticles(html1);
                     break;
+
+                case "noty":
+                    var xy = new Controls.DesktopNotification();
+                    break;
             }
         }
     }

@@ -45,13 +45,13 @@
     <modern:ModernWindow.CaptionIcon>
         <Path UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="UniformToFill"
               Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}"
-              Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+              Data="M15.09,11.63C15.09,11.63 15.28,10.35 16,10.35C16.76,10.35 17.78,12.06 17.78,12.06C17.78,12.06 15.46,11.63 15.09,11.63M19,4.69C18.64,4.09 16.83,3.41 15.89,3.41C14.96,3.41 13.5,3.41 13.5,3.41C13.5,3.41 12.7,2 10.88,2C9.05,2 9.17,2.81 9.17,3.5V6.32L8.34,7.19H4.5C4.5,7.19 3.44,7.91 3.44,9.44C3.44,11 3.92,16.35 7.13,16.85C10.93,17.43 11.58,15.67 11.58,15.46C11.58,14.56 11.6,13.21 11.6,13.21C11.6,13.21 12.71,15.33 14.39,15.33C16.07,15.33 17.04,16.3 17.04,17.29C17.04,18.28 17.04,19.13 17.04,19.13C17.04,19.13 17,20.28 16,20.28C15,20.28 13.89,20.28 13.89,20.28C13.89,20.28 13.2,19.74 13.2,19C13.2,18.25 13.53,18.05 13.93,18.05C14.32,18.05 14.65,18.09 14.65,18.09V16.53C14.65,16.53 11.47,16.5 11.47,18.94C11.47,21.37 13.13,22 14.46,22C15.8,22 16.63,22 16.63,22C16.63,22 20.56,21.5 20.56,13.75C20.56,6 19.33,5.28 19,4.69M7.5,6.31H4.26L8.32,2.22V5.5L7.5,6.31Z" />
     </modern:ModernWindow.CaptionIcon>
 
     <modern:ModernWindow.StatusBar>
         <TextBlock VerticalAlignment="Center">Ready</TextBlock>
     </modern:ModernWindow.StatusBar>
-
+    
     <Grid>
 
         <!--<Rectangle Fill="#00BCD4" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Top">
@@ -64,16 +64,19 @@
         <Button x:Name="Btnmin" Content="-" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,70,0" Width="35" Height="35"/>-->
         <TabControl HorizontalAlignment="Left" Height="381" Margin="10,10,0,0" VerticalAlignment="Top" Width="730" Background="#2D2D30">
             <TabItem Header="Search">
-                <Grid Background="#FFE5E5E5">
-                    <Button Content="Button" HorizontalAlignment="Left" Height="53" Margin="103,86,0,0" VerticalAlignment="Top" Width="165" Click="Button_Click"/>
+                <Grid Background="#252526">
+                    <Button Content="Button" HorizontalAlignment="Left" Height="53" Margin="103,86,0,0" VerticalAlignment="Top" Width="165" Click="Button_Click" controlz:KeyboardNavigationEx.AlwaysShowFocusVisual="True"/>
                     <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" Margin="103,32,197,0" Height="49" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Download">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#252526">
+                    <controlz:PopupEx>
+                    </controlz:PopupEx>
+                </Grid>
             </TabItem>
             <TabItem Header="Setting">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#252526"/>
             </TabItem>
         </TabControl>
 
