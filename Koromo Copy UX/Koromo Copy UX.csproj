@@ -34,8 +34,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ControlzEx">
+      <HintPath>..\..\..\..\Desktop\ModernChrome-master\ModernChrome\bin\Release\net45\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\..\..\..\Desktop\ModernChrome-master\ModernChrome\bin\Release\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions">
+      <HintPath>..\..\..\..\Desktop\ModernChrome-master\ModernChrome\bin\Release\net45\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernChrome">
+      <HintPath>..\..\..\..\Desktop\ModernChrome-master\ModernChrome\bin\Release\net45\ModernChrome.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\..\..\Desktop\ModernChrome-master\ModernChrome\bin\Release\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
