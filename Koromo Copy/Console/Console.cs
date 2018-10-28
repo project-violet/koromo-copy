@@ -287,6 +287,7 @@ namespace Koromo_Copy.Console
                     {
                         History.Add(commandLine);
                         string[] command = ParseArgument(commandLine);
+                        PipeContents.Clear();
 
                         while (command.Length > 0)
                         {
@@ -365,10 +366,11 @@ namespace Koromo_Copy.Console
                             {
                                 while (GlobalTask.Count > 0)
                                 {
+                                    GlobalTask.RemoveAll(x => x.Status == TaskStatus.RanToCompletion || x.Status == TaskStatus.Faulted);
                                     for (int i = 0; i < GlobalTask.Count; i++)
                                     {
                                         Task task = GlobalTask[i];
-                                        if (task != null && task.Status != TaskStatus.RanToCompletion)
+                                        if (task != null && task.Status != TaskStatus.Faulted && task.Status != TaskStatus.RanToCompletion)
                                             task.Wait();
                                     }
                                 }
