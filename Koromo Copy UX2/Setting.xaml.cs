@@ -34,11 +34,11 @@ namespace Koromo_Copy_UX2
             InitializeComponent();
             
             Loaded += Setting_Loaded;
+            AddLanguages();
         }
 
         private void Setting_Loaded(object sender, RoutedEventArgs e)
         {
-            AddLanguages();
             Update();
         }
 

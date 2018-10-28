@@ -34,7 +34,7 @@ namespace Koromo_Copy_UX2
             InitializeComponent();
         }
 
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        private void TextBox_KeyDownAsync(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -48,7 +48,46 @@ namespace Koromo_Copy_UX2
                     //}, TaskScheduler.FromCurrentSynchronizationContext());
                     MainWindow.Snackbar.MessageQueue.Enqueue("메타데이터가 로딩되지 않아 검색할 수 없습니다.");
                 }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(new Action(
+                    delegate
+                    {
+                        AppendAsync((sender as TextBox).Text);
+                    }));
+                }
             }
+        }
+
+        private async void AppendAsync(string content)
+        {
+            var result = await HitomiDataParser.SearchAsync(content);
+            result.Reverse();
+            
+            List<Task> task = new List<Task>();
+            foreach (var metadata in result)
+            {
+                task.Add(Task.Run(() => LoadThumbnail(metadata)));
+            }
+
+            await Task.Run(() => Task.WaitAll(task.ToArray()));
+        }
+
+        private void LoadThumbnail(HitomiMetadata md)
+        {
+            HitomiArticle ha = new HitomiArticle
+            {
+                Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
+                    $"{HitomiCommon.HitomiGalleryBlock}{md.ID}.html")).Thumbnail,
+                Title = $"[{md.ID}] {md.Name}"
+            };
+            Application.Current.Dispatcher.Invoke(new Action(
+            delegate
+            {
+                // Put code that needs to run on the UI thread here
+                var se = new SearchElements(ha);
+                SearchResult.Children.Add(se);
+            }));
         }
     }
 }

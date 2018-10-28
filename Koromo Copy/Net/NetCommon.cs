@@ -40,7 +40,7 @@ namespace Koromo_Copy.Net
         /// <returns></returns>
         public static string DownloadString(string url)
         {
-            Monitor.Instance.Push($"Download string: {url}");
+            lock (Monitor.Instance) Monitor.Instance.Push($"Download string: {url}");
             return GetDefaultClient().DownloadString(url);
         }
         
@@ -51,7 +51,7 @@ namespace Koromo_Copy.Net
         /// <returns></returns>
         public static string DownloadExHentaiString(string url)
         {
-            Monitor.Instance.Push($"Download string: {url}");
+            lock (Monitor.Instance) Monitor.Instance.Push($"Download string: {url}");
             return GetExHentaiClient().DownloadString(url);
         }
     }
