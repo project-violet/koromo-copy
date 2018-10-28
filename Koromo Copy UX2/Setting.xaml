@@ -7,17 +7,18 @@
              xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
+             xmlns:domain="clr-namespace:Koromo_Copy_UX2.Domain"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-
     <UserControl.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+
+            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="Margin" Value="0" />
             <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
@@ -96,27 +97,28 @@
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0 12 0 0">
             <StackPanel>
-                <GroupBox Header="일반 설정" Style="{DynamicResource MaterialDesignGroupBox}" Margin="16" materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
+                <GroupBox Header="검색 및 다운로드" Style="{DynamicResource MaterialDesignGroupBox}" Margin="16" materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
                 
                     <!--<TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}">일반 설정</TextBlock>-->
                     <StackPanel>
-                    <TextBox materialDesign:HintAssist.Hint="다운로드 경로" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 10 10 10"/>
+                        <TextBox x:Name="Path" materialDesign:HintAssist.Hint="다운로드 경로" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 10 10 10">
+                            <TextBox.Text>
+                                <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <domain:PathValidateRule ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                         <TextBlock FontSize="15">쓰레드 수</TextBlock>
-                        <Slider Minimum="0" Maximum="64" Style="{StaticResource MaterialDesignDiscreteSlider}"/>
+                        <Slider x:Name="Thread" Minimum="0" Maximum="64" Style="{StaticResource MaterialDesignDiscreteSlider}"/>
                         <TextBlock FontSize="15" Margin="0 15 0 0">언어</TextBlock>
-                        <ComboBox materialDesign:HintAssist.Hint="언어">
-                            <ComboBoxItem>
-                                한국어
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                English
-                            </ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox x:Name="Language" materialDesign:HintAssist.Hint="언어"/>
                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" HorizontalAlignment="Right" Content="저장" Width="100" Margin="0 10 10 0"/>
                     </StackPanel>
                 </GroupBox>
 
-                <GroupBox Header="테마 설정" Style="{DynamicResource MaterialDesignGroupBox}" Margin="16" materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
+                <GroupBox Header="테마" Style="{DynamicResource MaterialDesignGroupBox}" Margin="16" materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
                     <StackPanel>
                         <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="0 10 0 0">테마 설정</TextBlock>
                         <StackPanel Orientation="Horizontal" Margin="8">

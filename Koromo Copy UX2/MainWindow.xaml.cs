@@ -1,4 +1,11 @@
-﻿
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+   
+***/
+
 using Koromo_Copy_UX2.Domain;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -49,6 +56,11 @@ namespace Koromo_Copy_UX2
             //new PaletteHelper().ReplacePrimaryColor(swatch);
         }
 
+        private void EnqueueMessage(string message)
+        {
+             MainSnackbar.MessageQueue.Enqueue(message);
+        }
+
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (Koromo_Copy.Monitor.IsValueCreated)
@@ -77,7 +89,7 @@ namespace Koromo_Copy_UX2
             switch(tag)
             {
                 case "Version":
-                    return "Koromo Copy 0.1 Beta";
+                    return $"Koromo Copy {Koromo_Copy.Version.Text}";
             }
             return tag;
         }

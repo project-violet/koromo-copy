@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Koromo_Copy_UX2.Domain;
 using MaterialDesignThemes.Wpf;
 
-namespace MaterialDesignDemo.Domain
+namespace Koromo_Copy_UX2.Domain
 {
     public class DialogsViewModel : INotifyPropertyChanged
     {

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using Koromo_Copy_UX2.Domain;
 
-namespace MaterialDesignDemo.Domain
+namespace Koromo_Copy_UX2.Domain
 {
     public class SampleDialogViewModel : INotifyPropertyChanged
     {
