@@ -40,6 +40,18 @@ namespace Koromo_Copy
         /// </summary>
         [JsonProperty]
         public int Thread;
+
+        /// <summary>
+        /// 테마 색상을 지정합니다.
+        /// </summary>
+        [JsonProperty]
+        public string Theme;
+
+        /// <summary>
+        /// 어두운 테마를 사용할지의 여부입니다.
+        /// </summary>
+        [JsonProperty]
+        public bool DarkTheme;
     }
 
     public class Settings : ILazy<Settings>
@@ -55,6 +67,8 @@ namespace Koromo_Copy
                 model = new SettingModel();
                 model.Thread = Environment.ProcessorCount * 3;
                 model.SensitiveUpdateCheck = false;
+                model.Theme = "deeppurple";
+                model.DarkTheme = true;
 
                 model.Hitomi = new HitomiSetting();
                 model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";

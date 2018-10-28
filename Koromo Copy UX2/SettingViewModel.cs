@@ -3,6 +3,7 @@ using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace Koromo_Copy_UX2
 {
-    public class SettingViewModel
+    public class SettingViewModel : INotifyPropertyChanged
     {
         public SettingViewModel()
         {
@@ -47,6 +48,23 @@ namespace Koromo_Copy_UX2
                 case "brown": return "갈색";
             }
             return name;
+        }
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                this.MutateVerbose(ref _name, value, RaisePropertyChanged());
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged()
+        {
+            return args => PropertyChanged?.Invoke(this, args);
         }
 
         public ICommand ToggleBaseCommand { get; } = new AnotherCommandImplementation(o => ApplyBase((bool)o));

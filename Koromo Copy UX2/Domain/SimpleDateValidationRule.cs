@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Controls;
 
-namespace MaterialDesignDemo.Domain
+namespace Koromo_Copy_UX2.Domain
 {
     public class SimpleDateValidationRule : ValidationRule
     {

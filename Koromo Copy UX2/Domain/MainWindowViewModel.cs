@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
-using MaterialDesignDemo;
-using MaterialDesignDemo.Domain;
+using Koromo_Copy_UX2;
+using Koromo_Copy_UX2.Domain;
 using MaterialDesignThemes.Wpf;
 using MaterialDesignThemes.Wpf.Transitions;
 using System.Windows.Controls;

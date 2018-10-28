@@ -77,6 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\PathValidateRule.cs" />
     <Compile Include="Record.xaml.cs">
       <DependentUpon>Record.xaml</DependentUpon>
     </Compile>
