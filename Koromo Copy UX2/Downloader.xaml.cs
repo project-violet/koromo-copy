@@ -68,23 +68,20 @@ namespace Koromo_Copy_UX2
             List<Task> task = new List<Task>();
             foreach (var metadata in result)
             {
-                task.Add(Task.Run(() => LoadThumbnail(metadata)));
+                Task.Run(() => LoadThumbnail(metadata));
+                //task.Add();
             }
 
-            await Task.Run(() => Task.WaitAll(task.ToArray()));
+            //await Task.Run(() => Task.WaitAll(task.ToArray()));
         }
 
         private void LoadThumbnail(HitomiMetadata md)
         {
-            HitomiArticle ha = HitomiLegalize.MetadataToArticle(md);
-            ha.Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
-                $"{HitomiCommon.HitomiGalleryBlock}{md.ID}.html")).Thumbnail;
-            ha.ImagesLink = HitomiParser.GetImageLink(Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic)));
             Application.Current.Dispatcher.Invoke(new Action(
             delegate
             {
                 // Put code that needs to run on the UI thread here
-                var se = new SearchElements(ha);
+                var se = new SearchElements(HitomiLegalize.MetadataToArticle(md));
                 SearchResult.Children.Add(se);
                 SearchResult.Children.Add(new Separator());
             }));
