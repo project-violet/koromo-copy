@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX2"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" Height="200">
     <Grid>
         <StackPanel Orientation="Horizontal">
@@ -22,6 +23,31 @@
                 <TextBlock x:Name="Title" FontSize="22" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Margin="10 10 0 0"/>
             </StackPanel>
         </StackPanel>
-        <Button FontSize="10" Content="자세히 보기" HorizontalAlignment="Right" Height="22" VerticalAlignment="Top" Width="101" Click="Button_Click"/>
+        <StackPanel VerticalAlignment="Center">
+            <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Artist" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center">작가 찾기</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="UserGroup" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center">그룹 찾기</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="FolderMultipleImage" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">미리보기</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">
+                <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CommentTextMultipleOutline"  Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                        <TextBlock Margin="4 0 0 0" VerticalAlignment="Center">댓글 보기</TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

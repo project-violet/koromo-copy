@@ -43,7 +43,7 @@
                                 <Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True">
                                     <Border Background="Transparent" BorderBrush="Black"  BorderThickness="1" Margin="-2">
                                         <Border.Effect>
-                                            <DropShadowEffect ShadowDepth="0" BlurRadius="10"/>
+                                            <DropShadowEffect x:Name="DropShadow" ShadowDepth="0" BlurRadius="10"/>
                                         </Border.Effect>
                                         <StackPanel x:Name="SearchResult">
                                         </StackPanel>
