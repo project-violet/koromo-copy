@@ -1,4 +1,5 @@
-﻿using Koromo_Copy.Interface;
+﻿using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,8 +36,50 @@ namespace Koromo_Copy_UX2
 
             this.article = article;
 
-            Title.Text = article.Title;
-            
+            Title.Text = $"제목 : {article.Title}";
+
+            if (article is HitomiArticle)
+            {
+                var ha = article as HitomiArticle;
+                //Artist.Text = $"작가 : {art}"
+                if (ha.Artists != null)
+                    InfoPanel.Children.Add(new TextBlock
+                    {
+                        Text = $"작가 : " + string.Join(", ", ha.Artists),
+                        FontSize = 17,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        Margin = new Thickness(10, 0, 0, 0)
+                    });
+                if (ha.Groups != null)
+                    InfoPanel.Children.Add(new TextBlock
+                    {
+                        Text = $"그룹 : " + string.Join(", ", ha.Groups),
+                        FontSize = 17,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        Margin = new Thickness(10, 0, 0, 0)
+                    });
+                if (ha.Series != null)
+                    InfoPanel.Children.Add(new TextBlock
+                    {
+                        Text = $"시리즈 : " + string.Join(", ", ha.Series),
+                        FontSize = 17,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        Margin = new Thickness(10, 0, 0, 0)
+                    });
+                if (ha.Characters != null)
+                    InfoPanel.Children.Add(new TextBlock
+                    {
+                        Text = $"캐릭터 : " + string.Join(", ", ha.Characters),
+                        FontSize = 17,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        Margin = new Thickness(10, 0, 0, 0)
+                    });
+            }
+
             b.BeginInit();
             b.UriSource = new Uri(article.Thumbnail);
             b.EndInit();

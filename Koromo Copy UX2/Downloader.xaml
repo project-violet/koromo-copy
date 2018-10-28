@@ -37,9 +37,34 @@
                             <!--<TextBlock Text="Your Content" />
                             <TextBlock Opacity=".68" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                                TextWrapping="Wrap"/>-->
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="300">
-                                <StackPanel x:Name="SearchResult"/>
+                            
+                            <Separator Opacity=".68" Height="15" Margin="20 0 20 0"/>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="500">
+                                <Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True">
+                                    <Border Background="Transparent" BorderBrush="Black"  BorderThickness="1" Margin="-2">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" BlurRadius="10"/>
+                                        </Border.Effect>
+                                        <StackPanel x:Name="SearchResult">
+                                        </StackPanel>
+                                    </Border>
+                                </Border>
                             </ScrollViewer>
+                            <Separator Opacity=".68" Height="15" Margin="20 0 20 0"/>
+
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <TextBlock x:Name="SearchCount" VerticalAlignment="Center">
+                                        검색된 항목: 0개
+                                    </TextBlock>
+                                    <Button Content="정리" HorizontalAlignment="Left" Margin="10 0 0 0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="모두 선택"/>
+                                    <Button Content="모두 선택 취소"/>
+                                </StackPanel>
+                                <Button Content="다운로드"  HorizontalAlignment="Right"/>
+                            </Grid>
                         </StackPanel>
                     </Expander>
                     <Border Background="{DynamicResource MaterialDesignDivider}" Height="1" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" />

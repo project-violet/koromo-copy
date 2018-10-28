@@ -62,7 +62,8 @@ namespace Koromo_Copy_UX2
         private async void AppendAsync(string content)
         {
             var result = await HitomiDataParser.SearchAsync(content);
-            result.Reverse();
+            SearchCount.Text = "검색된 항목 : " + result.Count + "개";
+            //result.Reverse();
             
             List<Task> task = new List<Task>();
             foreach (var metadata in result)
@@ -75,18 +76,16 @@ namespace Koromo_Copy_UX2
 
         private void LoadThumbnail(HitomiMetadata md)
         {
-            HitomiArticle ha = new HitomiArticle
-            {
-                Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
-                    $"{HitomiCommon.HitomiGalleryBlock}{md.ID}.html")).Thumbnail,
-                Title = $"[{md.ID}] {md.Name}"
-            };
+            HitomiArticle ha = HitomiLegalize.MetadataToArticle(md);
+            ha.Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
+                $"{HitomiCommon.HitomiGalleryBlock}{md.ID}.html")).Thumbnail;
             Application.Current.Dispatcher.Invoke(new Action(
             delegate
             {
                 // Put code that needs to run on the UI thread here
                 var se = new SearchElements(ha);
                 SearchResult.Children.Add(se);
+                SearchResult.Children.Add(new Separator());
             }));
         }
     }
