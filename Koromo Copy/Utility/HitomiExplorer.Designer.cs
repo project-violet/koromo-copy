@@ -29,23 +29,23 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HitomiExplorer));
-            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel4 = new System.Windows.Forms.Label();
             this.AvailableList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel5 = new System.Windows.Forms.Label();
             this.bApply = new System.Windows.Forms.Button();
             this.tbRule = new System.Windows.Forms.TextBox();
-            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel3 = new System.Windows.Forms.Label();
             this.bOpen = new System.Windows.Forms.Button();
             this.tbPath = new System.Windows.Forms.TextBox();
-            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.PathTree = new Koromo_Copy.Controls.NativeTreeView();
             this.tabControl1.SuspendLayout();
@@ -65,7 +65,6 @@
             this.metroLabel1.Size = new System.Drawing.Size(468, 19);
             this.metroLabel1.TabIndex = 5;
             this.metroLabel1.Text = "Copyright (C) 2018. DCInside Programming Gallery Union. All Rights Reserved.";
-            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Light;
             // 
             // tabControl1
             // 
@@ -126,7 +125,6 @@
             this.metroLabel4.Size = new System.Drawing.Size(94, 19);
             this.metroLabel4.TabIndex = 14;
             this.metroLabel4.Text = "파일 시스템 : ";
-            this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Light;
             // 
             // AvailableList
             // 
@@ -174,7 +172,6 @@
             this.metroLabel5.Size = new System.Drawing.Size(122, 19);
             this.metroLabel5.TabIndex = 15;
             this.metroLabel5.Text = "가용성있는 항목 : ";
-            this.metroLabel5.Theme = MetroFramework.MetroThemeStyle.Light;
             // 
             // bApply
             // 
@@ -206,7 +203,6 @@
             this.metroLabel3.Size = new System.Drawing.Size(48, 19);
             this.metroLabel3.TabIndex = 9;
             this.metroLabel3.Text = "규칙 : ";
-            this.metroLabel3.Theme = MetroFramework.MetroThemeStyle.Light;
             // 
             // bOpen
             // 
@@ -237,7 +233,6 @@
             this.metroLabel2.Size = new System.Drawing.Size(48, 19);
             this.metroLabel2.TabIndex = 6;
             this.metroLabel2.Text = "경로 : ";
-            this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Light;
             // 
             // tabPage2
             // 
@@ -291,23 +286,23 @@
 
         #endregion
 
-        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private System.Windows.Forms.Label metroLabel1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private MetroFramework.Controls.MetroLabel metroLabel4;
+        private System.Windows.Forms.Label metroLabel4;
         private System.Windows.Forms.ListView AvailableList;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
-        private MetroFramework.Controls.MetroLabel metroLabel5;
+        private System.Windows.Forms.Label metroLabel5;
         private System.Windows.Forms.Button bApply;
         private System.Windows.Forms.TextBox tbRule;
-        private MetroFramework.Controls.MetroLabel metroLabel3;
+        private System.Windows.Forms.Label metroLabel3;
         private System.Windows.Forms.Button bOpen;
         private System.Windows.Forms.TextBox tbPath;
-        private MetroFramework.Controls.MetroLabel metroLabel2;
+        private System.Windows.Forms.Label metroLabel2;
         private System.Windows.Forms.TabPage tabPage2;
         private Controls.NativeTreeView PathTree;
     }
