@@ -89,5 +89,27 @@ namespace Koromo_Copy_UX2
                 SearchResult.Children.Add(new Separator());
             }));
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = (sender as Button).Tag.ToString();
+
+            if (tag == "Tidy")
+            {
+                SearchResult.Children.Clear();
+            }
+            else if (tag == "SelectAll")
+            {
+                SearchResult.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = true);
+            }
+            else if (tag == "SelectAllCancle") // deselect all
+            {
+                SearchResult.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = false);
+            }
+            else if (tag == "Download")
+            {
+
+            }
+        }
     }
 }

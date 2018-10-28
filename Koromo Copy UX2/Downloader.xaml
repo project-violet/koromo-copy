@@ -63,13 +63,13 @@
                                     <TextBlock x:Name="SearchCount" VerticalAlignment="Center">
                                             검색된 항목: 0개
                                     </TextBlock>
-                                    <Button Content="정리" HorizontalAlignment="Left" Margin="10 0 0 0"/>
+                                    <Button Content="정리" Tag="Tidy" HorizontalAlignment="Left" Margin="10 0 0 0" Click="Button_Click"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Content="모두 선택"/>
-                                    <Button Content="모두 선택 취소"/>
+                                    <Button Content="모두 선택" Tag="SelectAll" Click="Button_Click"/>
+                                    <Button Content="모두 선택 취소" Tag="SelectAllCancle" Click="Button_Click"/>
                                 </StackPanel>
-                                <Button Content="다운로드"  HorizontalAlignment="Right"/>
+                                <Button Content="다운로드" Tag="Download" HorizontalAlignment="Right" Click="Button_Click"/>
                             </Grid>
                         </Grid>
                     </Expander>
