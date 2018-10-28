@@ -50,13 +50,55 @@
             </BeginStoryboard>
         </EventTrigger>
     </UserControl.Triggers>
+    <!--<UserControl.Resources>
+        <Style BasedOn="{StaticResource {x:Type Button}}" x:Key="FemaleButton" TargetType="Button">
+            <Setter Property="Background" Value="#E860A0"/>
+            <Setter Property="BorderBrush" Value="#E860A0"/>
+            <Setter Property="Margin" Value="1 1 1 1"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="GenderFemale" Opacity="0.8" VerticalAlignment="Center"/>
+                        <TextBlock FontSize="10" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource {x:Type Button}}" x:Key="MaleButton" TargetType="Button">
+            <Setter Property="Background" Value="#00B1CF"/>
+            <Setter Property="BorderBrush" Value="#00B1CF"/>
+            <Setter Property="Margin" Value="1 1 1 1"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="GenderMale" Opacity="0.8" VerticalAlignment="Center"/>
+                        <TextBlock FontSize="10" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource {x:Type Button}}" x:Key="NormalButton" TargetType="Button">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="Margin" Value="1 1 1 1"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="10" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -84,7 +126,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" FontSize="17" Margin="10 0 0 0" VerticalAlignment="Top">태그:</TextBlock>
+            <TextBlock Grid.Column="0" FontSize="17" Margin="10 0 5 0" VerticalAlignment="Top">태그:</TextBlock>
             <WrapPanel Grid.Column="1" x:Name="Tags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Gray">
 
             </WrapPanel>
