@@ -35,7 +35,7 @@ namespace Koromo_Copy
             // 메인스레드 시작
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            //Application.Run(new MainForm());
 
             Environment.Exit(0);
         }
