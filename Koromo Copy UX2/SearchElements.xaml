@@ -5,12 +5,56 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX2"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" Height="200">
+             mc:Ignorable="d" Height="204" Background="Transparent" MouseUp="SearchElements_MouseUp">
+    <UserControl.RenderTransform>
+        <TransformGroup x:Name="transform">
+            <ScaleTransform ScaleX="1" ScaleY="1" x:Name="scale"/>
+            <TranslateTransform X="0" Y="0" x:Name="trans"/>
+        </TransformGroup>
+    </UserControl.RenderTransform>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="MouseDown">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="ScaleX"
+                                              Storyboard.TargetName="scale" To="0.95"
+                                              Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="ScaleY"
+                                              Storyboard.TargetName="scale" To="0.95"          
+                                              Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="X"
+                                              Storyboard.TargetName="trans" To="6"          
+                                              Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="Y"
+                                              Storyboard.TargetName="trans" To="6"          
+                                              Duration="0:0:0.1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseUp">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="ScaleX"
+                                          Storyboard.TargetName="scale" To="1" 
+                                          Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="ScaleY"
+                                          Storyboard.TargetName="scale" To="1" 
+                                          Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="X"
+                                              Storyboard.TargetName="trans" To="0"          
+                                              Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="Y"
+                                              Storyboard.TargetName="trans" To="0"          
+                                              Duration="0:0:0.1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
     <Grid>
         <StackPanel Orientation="Horizontal">
             <Image x:Name="Image" HorizontalAlignment="Left" Grid.Column="0" Height="200" VerticalAlignment="Top" Width="150"
                Stretch="Uniform"
-               RenderOptions.BitmapScalingMode="HighQuality">
+               RenderOptions.BitmapScalingMode="HighQuality" Margin="4 2 2 2">
                 <Image.ToolTip>
                     <ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
                         <Border BorderBrush="Black" BorderThickness="1" Margin="5,7,5,5">
@@ -19,9 +63,15 @@
                     </ToolTip>
                 </Image.ToolTip>
             </Image>
-            <StackPanel x:Name="InfoPanel">
-                <TextBlock x:Name="Title" FontSize="22" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Margin="10 10 0 0"/>
-            </StackPanel>
+            <Grid>
+                <StackPanel x:Name="InfoPanel" VerticalAlignment="Top">
+                    <TextBlock x:Name="Title" FontSize="22" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Margin="10 10 0 0"/>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ImageOutline" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="Page" VerticalAlignment="Center" Margin="4 0 0 0"></TextBlock>
+                </StackPanel>
+            </Grid>
         </StackPanel>
         <StackPanel VerticalAlignment="Center">
             <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">

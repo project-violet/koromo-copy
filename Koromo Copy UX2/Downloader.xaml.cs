@@ -79,6 +79,7 @@ namespace Koromo_Copy_UX2
             HitomiArticle ha = HitomiLegalize.MetadataToArticle(md);
             ha.Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
                 $"{HitomiCommon.HitomiGalleryBlock}{md.ID}.html")).Thumbnail;
+            ha.ImagesLink = HitomiParser.GetImageLink(Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic)));
             Application.Current.Dispatcher.Invoke(new Action(
             delegate
             {

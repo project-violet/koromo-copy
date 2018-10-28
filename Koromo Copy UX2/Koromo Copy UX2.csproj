@@ -95,10 +95,6 @@
       <DependentUpon>Tools.xaml</DependentUpon>
     </Compile>
     <Compile Include="XamlDisplayEx.cs" />
-    <Page Include="Domain\DocumentationLinks.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Domain\Sample4Dialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -130,11 +126,6 @@
     <Compile Include="Domain\AnotherCommandImplementation.cs" />
     <Compile Include="Domain\DemoItem.cs" />
     <Compile Include="Domain\DialogsViewModel.cs" />
-    <Compile Include="Domain\DocumentationLink.cs" />
-    <Compile Include="Domain\DocumentationLinks.xaml.cs">
-      <DependentUpon>DocumentationLinks.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Domain\DocumentationLinkType.cs" />
     <Compile Include="Domain\FutureDateValidationRule.cs" />
     <Compile Include="Domain\IsCheckedValidationRule.cs" />
     <Compile Include="Domain\ListsAndGridsViewModel.cs" />
