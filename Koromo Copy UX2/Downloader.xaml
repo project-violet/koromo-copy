@@ -14,11 +14,18 @@
                 <StackPanel>
                     <Expander HorizontalAlignment="Stretch"
                           Header="검색">
-                        <StackPanel Orientation="Vertical"
-                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                            Margin="24,8,24,16">
+                        <Grid Margin="24,8,24,16">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="550" MinHeight="300"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-                            <Grid>
+                            <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
@@ -27,19 +34,18 @@
                                 <Button Style="{DynamicResource MaterialDesignToolButton}">
                                     <materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
                                 </Button>
-                                <TextBox Grid.Column="1" Margin="8 0 0 0" materialDesign:HintAssist.Hint="무엇을 조사할까요?" 
-                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0"
-                                     MinWidth="200" VerticalAlignment="Center" KeyDown="TextBox_KeyDownAsync" />
+                                <TextBox Grid.Column="1" Margin="8 0 0 0" materialDesign:HintAssist.Hint="무엇을 검색할까요?" 
+                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0"
+                                         MinWidth="200" VerticalAlignment="Center" KeyDown="TextBox_KeyDownAsync" />
                                 <Button Style="{DynamicResource MaterialDesignToolButton}" Grid.Column="2">
                                     <materialDesign:PackIcon Kind="ArrowRight" Opacity=".56" Margin="8 0 0 0" />
                                 </Button>
                             </Grid>
                             <!--<TextBlock Text="Your Content" />
-                            <TextBlock Opacity=".68" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                               TextWrapping="Wrap"/>-->
-                            
-                            <Separator Opacity=".68" Height="15" Margin="20 0 20 0"/>
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="500">
+                                <TextBlock Opacity=".68" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                   TextWrapping="Wrap"/>-->
+                            <Separator  Grid.Row="1" Opacity=".68" Height="15" Margin="20 0 20 0"/>
+                            <ScrollViewer  Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True">
                                     <Border Background="Transparent" BorderBrush="Black"  BorderThickness="1" Margin="-2">
                                         <Border.Effect>
@@ -50,12 +56,12 @@
                                     </Border>
                                 </Border>
                             </ScrollViewer>
-                            <Separator Opacity=".68" Height="15" Margin="20 0 20 0"/>
-
-                            <Grid>
+                            <GridSplitter Grid.Row="3" Height="2.5" HorizontalAlignment="Stretch" Background="Beige"></GridSplitter>
+                            <Separator Grid.Row="4" Opacity=".68" Height="15" Margin="20 0 20 0"/>
+                            <Grid  Grid.Row="5">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <TextBlock x:Name="SearchCount" VerticalAlignment="Center">
-                                        검색된 항목: 0개
+                                            검색된 항목: 0개
                                     </TextBlock>
                                     <Button Content="정리" HorizontalAlignment="Left" Margin="10 0 0 0"/>
                                 </StackPanel>
@@ -65,7 +71,7 @@
                                 </StackPanel>
                                 <Button Content="다운로드"  HorizontalAlignment="Right"/>
                             </Grid>
-                        </StackPanel>
+                        </Grid>
                     </Expander>
                     <Border Background="{DynamicResource MaterialDesignDivider}" Height="1" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" />
                     <Expander HorizontalAlignment="Stretch"
@@ -79,6 +85,14 @@
                         </StackPanel>
                     </Expander>
                     <Border Background="{DynamicResource MaterialDesignDivider}" Height="1" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" />
+                    <Expander HorizontalAlignment="Stretch"
+                      Header="동기화">
+                        <StackPanel Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                            Margin="24,8,24,16">
+                            
+                        </StackPanel>
+                    </Expander>
 
                 </StackPanel>
             </materialDesign:Card>

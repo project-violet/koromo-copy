@@ -14,11 +14,10 @@ namespace Koromo_Copy_UX2.Domain
         private ScrollBarVisibility _verticalScrollBarVisibilityRequirement;
         private Thickness _marginRequirement = new Thickness(16);
 
-        public DemoItem(string name, object content, IEnumerable<DocumentationLink> documentation = null)
+        public DemoItem(string name, object content)
         {
             _name = name;
             Content = content;
-            Documentation = documentation;
         }
 
         public string Name
@@ -50,9 +49,7 @@ namespace Koromo_Copy_UX2.Domain
             get { return _marginRequirement; }
             set { this.MutateVerbose(ref _marginRequirement, value, RaisePropertyChanged()); }
         }
-
-        public IEnumerable<DocumentationLink> Documentation { get; }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         private Action<PropertyChangedEventArgs> RaisePropertyChanged()

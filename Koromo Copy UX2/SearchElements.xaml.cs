@@ -28,15 +28,32 @@ namespace Koromo_Copy_UX2
             InitializeComponent();
         }
 
-        IArticle article;
+        public bool Select = false;
+
+        private void SearchElements_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Select = !Select;
+            if (Select)
+            {
+                Background = new SolidColorBrush(Colors.Pink);
+                Background.Opacity = 0.5;
+            }
+            else
+            {
+                Background = Brushes.Transparent;
+            }
+        }
+
+        public IArticle Article;
 
         public SearchElements(IArticle article)
         {
             InitializeComponent();
 
-            this.article = article;
+            Article = article;
 
             Title.Text = $"제목 : {article.Title}";
+            Page.Text = article.ImagesLink.Count + " Pages";
 
             if (article is HitomiArticle)
             {
