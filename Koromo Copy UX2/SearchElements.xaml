@@ -18,7 +18,9 @@
                     </ToolTip>
                 </Image.ToolTip>
             </Image>
-            <TextBlock x:Name="Title" Text="Label" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top"/>
+            <StackPanel x:Name="InfoPanel">
+                <TextBlock x:Name="Title" FontSize="22" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Margin="10 10 0 0"/>
+            </StackPanel>
         </StackPanel>
         <Button FontSize="10" Content="자세히 보기" HorizontalAlignment="Right" Height="22" VerticalAlignment="Top" Width="101" Click="Button_Click"/>
     </Grid>

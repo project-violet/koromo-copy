@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX2"
         mc:Ignorable="d"
-        Title="Koromo Copy UX" Height="722.834" Width="866.851"
+        Title="Koromo Copy UX" Height="851.761" Width="866.851"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
