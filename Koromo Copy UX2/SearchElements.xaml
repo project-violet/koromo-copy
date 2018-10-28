@@ -50,7 +50,7 @@
             </BeginStoryboard>
         </EventTrigger>
     </UserControl.Triggers>
-    <Grid>
+    <Grid ShowGridLines="True">
         <StackPanel Orientation="Horizontal">
             <Image x:Name="Image" HorizontalAlignment="Left" Grid.Column="0" Height="200" VerticalAlignment="Top" Width="150"
                Stretch="Uniform"
@@ -64,10 +64,21 @@
                 </Image.ToolTip>
             </Image>
             <Grid>
-                <StackPanel x:Name="InfoPanel" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" x:Name="InfoPanel">
                     <TextBlock x:Name="Title" FontSize="22" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Margin="10 10 0 0"/>
                 </StackPanel>
-                <StackPanel VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
+                <StackPanel Grid.Row="1" Height="Auto" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock HorizontalAlignment="Left" FontSize="17" Margin="10 0 0 0" VerticalAlignment="Top">태그:</TextBlock>
+                    <WrapPanel x:Name="Tags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Background="Gray">
+
+                    </WrapPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="ImageOutline" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
                     <TextBlock x:Name="Page" VerticalAlignment="Center" Margin="4 0 0 0"></TextBlock>
                 </StackPanel>

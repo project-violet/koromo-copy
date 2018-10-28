@@ -98,6 +98,8 @@ namespace Koromo_Copy_UX2
                         VerticalAlignment = VerticalAlignment.Top,
                         Margin = new Thickness(10, 0, 0, 0)
                     });
+                if (ha.Tags != null)
+                    ha.Tags.ToList().ForEach(x => Tags.Children.Add(new Button { Content = x, Height = 20, FontSize = 10 }));
             }
 
             b.BeginInit();
