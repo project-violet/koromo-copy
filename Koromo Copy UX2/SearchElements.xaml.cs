@@ -28,20 +28,23 @@ namespace Koromo_Copy_UX2
             InitializeComponent();
         }
 
-        public bool Select = false;
+        private bool _Select = false;
+        public bool Select { get { return _Select; } set {
+                _Select = value;
+                if (value)
+                {
+                    Background = new SolidColorBrush(Colors.Pink);
+                    Background.Opacity = 0.5;
+                }
+                else
+                {
+                    Background = Brushes.Transparent;
+                }
+            } }
 
         private void SearchElements_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Select = !Select;
-            if (Select)
-            {
-                Background = new SolidColorBrush(Colors.Pink);
-                Background.Opacity = 0.5;
-            }
-            else
-            {
-                Background = Brushes.Transparent;
-            }
         }
 
         public IArticle Article;
