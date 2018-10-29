@@ -13,7 +13,7 @@
         </TransformGroup>
     </UserControl.RenderTransform>
     <UserControl.Triggers>
-        <EventTrigger RoutedEvent="MouseDown">
+        <EventTrigger RoutedEvent="MouseLeftButtonDown">
             <BeginStoryboard>
                 <Storyboard>
                     <DoubleAnimation Storyboard.TargetProperty="ScaleX"
@@ -31,7 +31,7 @@
                 </Storyboard>
             </BeginStoryboard>
         </EventTrigger>
-        <EventTrigger RoutedEvent="MouseUp">
+        <EventTrigger RoutedEvent="MouseLeftButtonUp">
             <BeginStoryboard>
                 <Storyboard>
                     <DoubleAnimation Storyboard.TargetProperty="ScaleX"

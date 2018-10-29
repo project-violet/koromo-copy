@@ -177,6 +177,8 @@ namespace Koromo_Copy_UX2
                     b.DownloadCompleted += B_DownloadCompleted;
                     Page.Text = ha.ImagesLink.Count + " Pages";
                     Image.Source = b;
+                    Image.Stretch = Stretch.Uniform;
+                    Image.Width = b.Width * 200 / b.Height;
                 }));
             });
         }

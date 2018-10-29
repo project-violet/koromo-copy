@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,8 +35,6 @@ namespace Koromo_Copy_UX2
         public Downloader()
         {
             InitializeComponent();
-
-            //DataContext = new DialogsViewModel();
         }
 
         private void TextBox_KeyDownAsync(object sender, KeyEventArgs e)
@@ -72,7 +71,6 @@ namespace Koromo_Copy_UX2
         {
             var result = await HitomiDataParser.SearchAsync(content);
             SearchCount.Text = "검색된 항목 : " + result.Count + "개";
-            //result.Reverse();
 
             if (result.Count > 100)
             {
@@ -86,36 +84,26 @@ namespace Koromo_Copy_UX2
 
                 if ((bool)xx == false)
                     return;
-                //(DataContext as DialogsViewModel).RunExtendedDialogCommand
-                //ExecuteRunExtendedDialog(null);
             }
             
-            List<Task> task = new List<Task>();
-            foreach (var metadata in result)
-            {
-                Task.Run(() => LoadThumbnail(metadata));
-                //task.Add();
-            }
-
-            //await Task.Run(() => Task.WaitAll(task.ToArray()));
+            Task.Run(() => LoadThumbnail(result));
         }
 
+        private void LoadThumbnail(List<HitomiMetadata> md)
+        {
+            List<Task> task = new List<Task>();
+            foreach (var metadata in md)
+            {
 
-        //private async void ExecuteRunExtendedDialog(object o)
-        //{
-        //    //let's set up a little MVVM, cos that's what the cool kids are doing:
-        //    var view = new MessageDialog
-        //    {
-        //        DataContext = new SampleDialogViewModel(),
-        //        Message = { Text = "검색결과가 너무 많습니다. 그래도 로딩할까요?" }
-        //    };
-
-        //    //show the dialog
-        //    var result = await DialogHost.Show(view, "RootDialog", ExtendedOpenedEventHandler, ExtendedClosingEventHandler);
-
-        //    //check the result...
-        //    Console.WriteLine("Dialog was closed, the CommandParameter used to close it was: " + (result ?? "NULL"));
-        //}
+                Application.Current.Dispatcher.Invoke(new Action(
+                delegate
+                {
+                    Task.Run(() => LoadThumbnail(metadata));
+                }));
+                Thread.Sleep(100);
+            }
+            //await Task.Run(() => Task.WaitAll(task.ToArray()));
+        }
         
         private void LoadThumbnail(HitomiMetadata md)
         {
