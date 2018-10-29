@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:smtx="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:koromo_copy_ux2="clr-namespace:Koromo_Copy_UX2"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -45,9 +46,9 @@
                                 <TextBlock Opacity=".68" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                                    TextWrapping="Wrap"/>-->
                             <Separator  Grid.Row="1" Opacity=".68" Height="15" Margin="20 0 20 0"/>
-                            <ScrollViewer  Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <koromo_copy_ux2:WheelSpeedScrollViewer   Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True">
-                                    <Border Background="Transparent" BorderBrush="Black"  BorderThickness="1" Margin="-2">
+                                    <Border x:Name="SearchPanel" Background="Transparent" BorderBrush="Black" BorderThickness="1" Margin="-2">
                                         <Border.Effect>
                                             <DropShadowEffect x:Name="DropShadow" ShadowDepth="0" BlurRadius="10"/>
                                         </Border.Effect>
@@ -55,7 +56,7 @@
                                         </StackPanel>
                                     </Border>
                                 </Border>
-                            </ScrollViewer>
+                            </koromo_copy_ux2:WheelSpeedScrollViewer>
                             <GridSplitter Grid.Row="3" Height="2.5" HorizontalAlignment="Stretch" Background="Beige"></GridSplitter>
                             <Separator Grid.Row="4" Opacity=".68" Height="15" Margin="20 0 20 0"/>
                             <Grid  Grid.Row="5">

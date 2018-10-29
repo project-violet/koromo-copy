@@ -6,11 +6,14 @@
    
 ***/
 
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX2.Domain;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,9 +41,14 @@ namespace Koromo_Copy_UX2
         {
             InitializeComponent();
 
+            // GC 설정
+            GCLatencyMode oldMode = GCSettings.LatencyMode;
+            RuntimeHelpers.PrepareConstrainedRegions();
+            GCSettings.LatencyMode = GCLatencyMode.Batch;
+
             Task.Factory.StartNew(() =>
             {
-                Thread.Sleep(2500);
+                Thread.Sleep(1000);
             }).ContinueWith(t =>
             {
                 //note you can use the message queue from any thread, but just for the demo here we 
@@ -54,6 +62,18 @@ namespace Koromo_Copy_UX2
             Closing += MainWindow_Closing;
 
             //new PaletteHelper().ReplacePrimaryColor(swatch);
+
+            Task.Factory.StartNew(() =>
+            {
+                HitomiData.Instance.LoadMetadataJson();
+                HitomiData.Instance.LoadHiddendataJson();
+                Koromo_Copy.Monitor.Instance.Push($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            }).ContinueWith(t =>
+            {
+                TotalProgress.IsIndeterminate = false;
+                MainSnackbar.MessageQueue.Enqueue("메타데이터 로딩이 완료되었습니다!");
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void EnqueueMessage(string message)

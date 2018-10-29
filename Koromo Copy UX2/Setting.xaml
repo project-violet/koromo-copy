@@ -114,12 +114,12 @@
                         <Slider x:Name="Thread" Minimum="0" Maximum="64" Style="{StaticResource MaterialDesignDiscreteSlider}"/>
                         <TextBlock FontSize="15" Margin="0 15 0 0">언어</TextBlock>
                         <ComboBox x:Name="Language" materialDesign:HintAssist.Hint="언어"/>
-                        <TextBlock FontSize="15" Margin="0 15 0 0">드롭 쉐도우</TextBlock>
+                        <!--<TextBlock FontSize="15" Margin="0 15 0 0">드롭 쉐도우</TextBlock>
                         <StackPanel Orientation="Horizontal" Margin="8">
                             <TextBlock VerticalAlignment="Center">끄기</TextBlock>
-                            <ToggleButton Margin="8 0 16 0" IsChecked="True"/>
+                            <ToggleButton Margin="8 0 16 0" IsChecked="True" Checked="ToggleButton_Checked"/>
                             <TextBlock VerticalAlignment="Center">켜기</TextBlock>
-                        </StackPanel>
+                        </StackPanel>-->
                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}" HorizontalAlignment="Right" Content="저장" Width="100" Margin="0 10 10 0"/>
                     </StackPanel>
                 </GroupBox>
