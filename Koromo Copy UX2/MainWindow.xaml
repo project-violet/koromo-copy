@@ -82,7 +82,7 @@
                     <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar"
                                             Grid.Row="1" />
 
-                    <ProgressBar Value="0" Height="10" x:Name="TotalProgress"/>
+                    <ProgressBar Value="0" Height="10" x:Name="TotalProgress" IsIndeterminate="True"/>
                 </Grid>
             </DockPanel>
         </materialDesign:DrawerHost>

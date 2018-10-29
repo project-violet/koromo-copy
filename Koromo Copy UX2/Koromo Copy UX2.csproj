@@ -94,6 +94,7 @@
     <Compile Include="Tools.xaml.cs">
       <DependentUpon>Tools.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WheelSpeedScrollViewer.cs" />
     <Compile Include="XamlDisplayEx.cs" />
     <Page Include="Domain\Sample4Dialog.xaml">
       <Generator>MSBuild:Compile</Generator>

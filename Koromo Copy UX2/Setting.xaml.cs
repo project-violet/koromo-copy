@@ -74,5 +74,10 @@ namespace Koromo_Copy_UX2
             ((Slider)FindName("Thread")).Value = Koromo_Copy.Settings.Instance.Model.Thread;
             ((ComboBox)FindName("Language")).Text = "한국어";//Koromo_Copy.Settings.Instance.Hitomi.Language;
         }
+
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

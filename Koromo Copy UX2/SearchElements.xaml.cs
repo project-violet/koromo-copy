@@ -155,8 +155,11 @@ namespace Koromo_Copy_UX2
             Loaded += SearchElements_Loaded;
         }
 
+        bool init = false;
         private void SearchElements_Loaded(object sender, EventArgs ex)
         {
+            if (init) return;
+            init = true;
             Task.Run(() =>
             {
                 HitomiArticle ha = Article as HitomiArticle;

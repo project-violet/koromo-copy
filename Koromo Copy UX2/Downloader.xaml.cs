@@ -59,6 +59,11 @@ namespace Koromo_Copy_UX2
             }
         }
 
+        public void TogglePanel()
+        {
+            //SearchPanel.Effect = Effect;
+        }
+
         private async void AppendAsync(string content)
         {
             var result = await HitomiDataParser.SearchAsync(content);
