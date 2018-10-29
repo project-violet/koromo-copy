@@ -135,6 +135,7 @@
         <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
             <materialDesign:PackIcon Kind="ImageOutline" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
             <TextBlock x:Name="Page" VerticalAlignment="Center" Margin="4 0 0 0"></TextBlock>
+            <materialDesign:PackIcon x:Name="Downloaded" Visibility="Hidden" Kind="Download" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
         </StackPanel>
 
         <StackPanel Grid.Column="2" Grid.RowSpan="3"  VerticalAlignment="Center" Margin="10 0 0 0">

@@ -141,7 +141,7 @@ namespace Koromo_Copy.Console
 
         public void Stop()
         {
-            console_thread.Abort();
+            console_thread?.Abort();
         }
 
         public void Hide()

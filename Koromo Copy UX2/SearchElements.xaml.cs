@@ -57,7 +57,8 @@ namespace Koromo_Copy_UX2
             Article = article;
 
             HitomiArticle ha = article as HitomiArticle;
-
+            if (HitomiLog.Instance.Contains(ha.Magic))
+                Downloaded.Visibility = Visibility.Visible;
             Title.Text = $"제목 : {ha.Title}";
             if (ha.Artists != null)
                 InfoPanel.Children.Add(new TextBlock
@@ -167,7 +168,7 @@ namespace Koromo_Copy_UX2
                     $"{HitomiCommon.HitomiGalleryBlock}{ha.Magic}.html")).Thumbnail;
                 ha.ImagesLink = HitomiParser.GetImageLink(Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic)));
 
-                Application.Current.Dispatcher.Invoke(new Action(
+                Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
                     b.BeginInit();
