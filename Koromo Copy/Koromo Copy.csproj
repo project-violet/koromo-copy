@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\Hitomi\HitomiDispatcher.cs" />
+    <Compile Include="Component\Hiyobi\HiyobiDispatcher.cs" />
     <Compile Include="Component\Hiyobi\HiyobiParser.cs" />
     <Compile Include="Component\IDispatchable.cs" />
     <Compile Include="Component\EH\EHentaiParser.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Console\ExHentaiConsole.cs" />
     <Compile Include="Console\GrepConsole.cs" />
     <Compile Include="Console\HitomiConsole.cs" />
+    <Compile Include="Console\HiyobiConsole.cs" />
     <Compile Include="Console\InConsole.cs" />
     <Compile Include="Console\InternalConsole.cs" />
     <Compile Include="Console\OutConsole.cs" />

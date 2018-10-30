@@ -248,6 +248,7 @@ namespace Koromo_Copy.Console
                 {"in", new InConsole()},
                 {"mm", new MMConsole()},
                 {"internal", new InternalConsole()},
+                {"hiyobi", new HiyobiConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
