@@ -123,6 +123,8 @@ namespace Koromo_Copy.Component.Hitomi
             }
             else
             {
+                Monitor.Instance.Push("[Query HitomiMetadata] " + search);
+                Monitor.Instance.Push(query);
                 query_result = (await HitomiDataSearch.Search3(query));
             }
 
