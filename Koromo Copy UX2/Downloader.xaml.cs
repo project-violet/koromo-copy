@@ -114,6 +114,7 @@ namespace Koromo_Copy_UX2
                 var se = new SearchElements(HitomiLegalize.MetadataToArticle(md));
                 SearchResult.Children.Add(se);
                 SearchResult.Children.Add(new Separator());
+                Koromo_Copy.Monitor.Instance.Push("[AddSearchElements] Hitomi Metadata " + md.ID);
             }));
         }
 
