@@ -151,7 +151,7 @@ namespace Koromo_Copy.Console
         /// <param name="args"></param>
         static void ProcessArticle(string[] args)
         {
-            Console.Instance.WriteLine(HitomiDispatchable.Collect(args[0]));
+            Console.Instance.WriteLine(HitomiDispatcher.Collect(args[0]));
         }
 
         /// <summary>

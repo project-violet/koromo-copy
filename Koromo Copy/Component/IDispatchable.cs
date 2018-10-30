@@ -13,6 +13,6 @@ namespace Koromo_Copy.Component
 {
     public interface IDispatchable
     {
-        Task<IArticle> Collect(string uri);
+        Task<IArticle> CollectAsync(string uri);
     }
 }
