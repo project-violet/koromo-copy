@@ -36,12 +36,13 @@ namespace Koromo_Copy.Component.Hiyobi
             var table = span.SelectNodes("./table/tr");
             var table_dic = new Dictionary<string, HtmlNode>();
             table.ToList().ForEach(x => table_dic.Add(x.SelectSingleNode("./td[1]").InnerText.Remove(2), x));
-            
-            if (table_dic.ContainsKey("작가")) article.Artists = table_dic["작가"].SelectNodes("./td[2]/a").ToList().Select(x => x.InnerText).ToArray();
-            if (table_dic.ContainsKey("원작")) article.Series = table_dic["원작"].SelectNodes("./td[2]/a").ToList().Select(x => $"{x.GetAttributeValue("data-original", "")}|{x.InnerText}").ToArray();
-            if (table_dic.ContainsKey("종류")) article.Type = table_dic["종류"].SelectSingleNode("./td[2]/a").InnerText;
-            if (table_dic.ContainsKey("태그")) article.Tags = table_dic["태그"].SelectNodes("./td[2]/a").ToList().Select(x => $"{x.GetAttributeValue("data-original", "")}|{x.InnerText}").ToArray();
-            
+
+            if (table_dic.ContainsKey("작가")) try { article.Artists = table_dic["작가"].SelectNodes("./td[2]/a").ToList().Select(x => x.InnerText).ToArray(); } catch { }
+            if (table_dic.ContainsKey("원작")) try { article.Series = table_dic["원작"].SelectNodes("./td[2]/a").ToList().Select(x => $"{x.GetAttributeValue("data-original", "")}|{x.InnerText}").ToArray(); } catch { }
+            if (table_dic.ContainsKey("종류")) try { article.Type = table_dic["종류"].SelectSingleNode("./td[2]/a").InnerText; } catch { }
+            if (table_dic.ContainsKey("태그")) try { article.Tags = table_dic["태그"].SelectNodes("./td[2]/a").ToList().Select(x => $"{x.GetAttributeValue("data-original", "")}|{x.InnerText}").ToArray(); } catch { }
+            if (table_dic.ContainsKey("캐릭")) try { article.Characters = table_dic["캐릭"].SelectNodes("./td[2]/a").ToList().Select(x => $"{x.GetAttributeValue("data-original", "")}|{x.InnerText}").ToArray(); } catch { }
+
             return article;
         }
 
