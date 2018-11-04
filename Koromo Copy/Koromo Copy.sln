@@ -14,6 +14,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koromo Copy UX2", "..\Koromo Copy UX2\Koromo Copy UX2.csproj", "{F38F146A-A4A8-4072-A999-040F46CAC3BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koromo Copy UX3", "..\Koromo Copy UX3\Koromo Copy UX3.csproj", "{FD214084-475D-404B-A3BD-53407DAF70BB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{006C0A9E-0729-47C1-836B-E407FA973A2D} = {006C0A9E-0729-47C1-836B-E407FA973A2D}
+		{41065EA7-BD36-4D4D-848E-D35F5A34CCAD} = {41065EA7-BD36-4D4D-848E-D35F5A34CCAD}
+		{34BBFAF4-C723-4E01-9BA2-4B90AE6ED3A7} = {34BBFAF4-C723-4E01-9BA2-4B90AE6ED3A7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
