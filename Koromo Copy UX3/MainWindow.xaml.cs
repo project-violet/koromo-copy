@@ -115,9 +115,23 @@ namespace Koromo_Copy_UX3
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (IsMetadataLoaded)
+            var tag = (sender as Button).Tag.ToString();
+
+            if (tag == "Search" && IsMetadataLoaded)
             {
                 AppendAsync(SearchText.Text);
+            }
+            else if (tag == "Tidy")
+            {
+                SearchPanel.Children.Clear();
+            }
+            else if (tag == "SelectAll")
+            {
+                SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = true);
+            }
+            else if (tag == "DeSelectAll")
+            {
+                SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = false);
             }
         }
 

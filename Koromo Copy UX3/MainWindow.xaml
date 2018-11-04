@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Koromo Copy" Height="444" Width="715"
+        Title="Koromo Copy" Height="616" Width="1156"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -49,20 +49,39 @@
                 </Grid.RowDefinitions>
                 <TextBlock Margin="2" Grid.Column="0" Text="검색 : "/>
                 <TextBox x:Name="SearchText" Grid.Column="1" Grid.Row="0" KeyDown="SearchText_KeyDown" Text="recent:0-25"/>
-                <Button x:Name="SearchButton" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="78" Click="Button_Click" Grid.ColumnSpan="2">검색</Button>
+                <Button x:Name="SearchButton" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="78" Click="Button_Click" Grid.ColumnSpan="2" Tag="Search">검색</Button>
                 <ProgressBar Value="0" Height="10" x:Name="TotalProgress" Grid.ColumnSpan="3" Grid.Row="1" IsIndeterminate="True" Style="{StaticResource MaterialDesignLinearProgressBar}"/>
             </Grid>
 
             <ScrollViewer Grid.Row="1">
+                <!--<Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True">
+                    <Border x:Name="SearchBorder" Background="Transparent" BorderBrush="Black" BorderThickness="1" Margin="-2">
+                        <Border.Effect>
+                            <DropShadowEffect x:Name="DropShadow" ShadowDepth="0" BlurRadius="2"/>
+                        </Border.Effect>-->
                 <StackPanel x:Name="SearchPanel"/>
+                <!--</Border>
+                </Border>-->
             </ScrollViewer>
 
             <Grid Grid.Row="2">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock x:Name="SearchCount" VerticalAlignment="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" x:Name="SearchCount">
                         검색된 항목: 0개
                     </TextBlock>
-                </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Click="Button_Click" Grid.Column="1" HorizontalAlignment="Center" Width="100" Tag="Tidy">정리</Button>
+                        <Button Click="Button_Click" Width="100" Margin="20 0 3 0" Tag="SelectAll">모두 선택</Button>
+                        <Button Click="Button_Click" Width="100" Tag="DeSelectAll">모두 선택 취소</Button>
+                        <Button Click="Button_Click" Grid.Column="1" Margin="20 0 0 0" Width="100" Tag="Downloader">다운로드</Button>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </Grid>
 

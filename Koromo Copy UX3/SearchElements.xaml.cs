@@ -122,7 +122,7 @@ namespace Koromo_Copy_UX3
                         e.BorderBrush = e.Background;
                     }
 
-                    stack_panel.Children.Add(new TextBlock { FontSize = 11, Margin = new Thickness(5, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = text });
+                    stack_panel.Children.Add(new TextBlock { FontSize = 11, Margin = new Thickness(2, 0, 3, 0), VerticalAlignment = VerticalAlignment.Center, Text = text });
                     e.Content = stack_panel;
                     e.Height = 20;
                     e.FontSize = 10;
