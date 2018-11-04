@@ -75,6 +75,9 @@
     <Compile Include="FinderWindow.xaml.cs">
       <DependentUpon>FinderWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PreviewWindow.xaml.cs">
+      <DependentUpon>PreviewWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>
     </Compile>
@@ -104,6 +107,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PreviewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SearchElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

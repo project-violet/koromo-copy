@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="작가 : " Height="636" Width="1589.325" WindowStyle="ToolWindow">
+        Title="작가 : " Height="719" Width="1612.325" WindowStyle="ToolWindow">
 
     <Grid>
         <Grid.ColumnDefinitions>
