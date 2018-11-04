@@ -83,6 +83,12 @@
                                             Grid.Row="1" />
 
                     <ProgressBar Value="0" Height="10" x:Name="TotalProgress" IsIndeterminate="True"/>
+
+                    <!--<MenuItem Header="_File">
+                        <MenuItem Header="_Open"/>
+                        <MenuItem Header="_Close"/>
+                        <MenuItem Header="_Save"/>
+                    </MenuItem>-->
                 </Grid>
             </DockPanel>
         </materialDesign:DrawerHost>
