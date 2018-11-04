@@ -137,28 +137,33 @@
         </StackPanel>
 
         <StackPanel Grid.Column="2" Grid.RowSpan="3"  VerticalAlignment="Center" Margin="10 0 0 0">
-            <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">
+            <Button FontSize="12" Margin="0 0 30 3" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="110" Click="Button_Click">
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="Artist" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="Artist" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
                     <TextBlock Margin="4 0 0 0" VerticalAlignment="Center">작가 찾기</TextBlock>
                 </StackPanel>
             </Button>
-            <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">
+            <Button FontSize="12" Margin="0 0 30 3" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="110" Click="Button_Click">
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="UserGroup" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="UserGroup" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
                     <TextBlock Margin="4 0 0 0" VerticalAlignment="Center">그룹 찾기</TextBlock>
                 </StackPanel>
             </Button>
-            <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">
+            <Button FontSize="12" Margin="0 0 30 3" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="110" Click="Button_Click">
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="FolderMultipleImage" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="FolderMultipleImage" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
                     <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">미리보기</TextBlock>
                 </StackPanel>
             </Button>
-            <Button FontSize="18" Margin="0 0 50 5" HorizontalAlignment="Right" Height="35" VerticalAlignment="Top" Width="140" Click="Button_Click">
+            <Button FontSize="12" Margin="0 0 30 3" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="110" Click="Button_Click">
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="CommentTextMultipleOutline"  Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="CommentTextMultipleOutline"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
                     <TextBlock Margin="4 0 0 0" VerticalAlignment="Center">댓글 보기</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button FontSize="12" Margin="0 15 30 0" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="110" Click="Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center">익헨에서 보기</TextBlock>
                 </StackPanel>
             </Button>
         </StackPanel>
