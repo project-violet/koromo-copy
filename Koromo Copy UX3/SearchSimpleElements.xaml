@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
-             mc:Ignorable="d" Background="Transparent" MouseUp="SearchSimpleElements_MouseUp">
-            <!--Height="230" Width="150">-->
+             mc:Ignorable="d" Background="#F5F5F5" MouseUp="SearchSimpleElements_MouseUp"
+    Height="242" Width="160">
     
     <UserControl.RenderTransform>
         <TransformGroup x:Name="transform">
@@ -52,24 +52,22 @@
             </BeginStoryboard>
         </EventTrigger>
     </UserControl.Triggers>
+    <Grid>
+        <Rectangle x:Name="PinkRectangle" Grid.RowSpan="2" Opacity="0.5" Panel.ZIndex="1" IsHitTestVisible="False">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Transparent" />
+            </Rectangle.Fill>
+        </Rectangle>
 
-    <Border Margin="2" x:Name="Border" BorderThickness="2" BorderBrush="Transparent" MouseEnter="SearchSimpleElements_MouseEnter" MouseLeave="SearchSimpleElements_MouseLeave">
-        <Grid>
-            <Rectangle x:Name="PinkRectangle" Grid.RowSpan="2" Opacity="0.5" Visibility="Hidden" Panel.ZIndex="10">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="Pink" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-            <Grid>
+        <Border x:Name="Border" BorderThickness="2">
+            <Grid Margin="2" Background="Transparent" MouseEnter="SearchSimpleElements_MouseEnter" MouseLeave="SearchSimpleElements_MouseLeave">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Image x:Name="Image" HorizontalAlignment="Left" Grid.Row="0" Height="200" VerticalAlignment="Top" Width="150"
-               Stretch="UniformToFill"
-               RenderOptions.BitmapScalingMode="HighQuality" Panel.ZIndex="0">
+                    Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" Panel.ZIndex="0">
                     <Image.ToolTip>
                         <ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
                             <Border BorderBrush="Black" BorderThickness="1" Margin="5,7,5,5">
@@ -79,8 +77,8 @@
                     </Image.ToolTip>
                 </Image>
 
-                <TextBlock x:Name="Title" FontSize="12" Grid.Row="1" MaxWidth="150" TextWrapping="Wrap"/>
+                <TextBlock x:Name="Title" FontSize="12" Grid.Row="1" Height="32" MaxHeight="32" MaxWidth="150" TextWrapping="Wrap"/>
             </Grid>
-        </Grid>
-    </Border>
+        </Border>
+    </Grid>
 </UserControl>

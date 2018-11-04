@@ -33,6 +33,8 @@ namespace Koromo_Copy_UX3
         {
             InitializeComponent();
 
+            DataContext = new Domain.ArtistDataGridViewModel();
+
             Task.Run(() =>
             {
                 var result = HitomiDataParser.SearchAsync("artist:michiking").Result;
@@ -44,11 +46,35 @@ namespace Koromo_Copy_UX3
         {
             InitializeComponent();
 
+            DataContext = new Domain.ArtistDataGridViewModel();
+
+            var dictionary = new Dictionary<string, int>();
             Task.Run(() =>
             {
                 var result = HitomiDataParser.SearchAsync($"artist:{artist.ToLower().Replace(' ', '_')}").Result;
                 _ = Task.Run(() => LoadThumbnail(result));
-            });
+
+                foreach (var md in result)
+                {
+                    if (md.Tags != null)
+                        foreach (var tag in md.Tags)
+                            if (dictionary.ContainsKey(tag))
+                                dictionary[tag] += 1;
+                            else
+                                dictionary.Add(tag, 1);
+                }
+            }).ContinueWith(t => {
+                var vm = DataContext as Domain.ArtistDataGridViewModel;
+                var list = dictionary.ToList();
+                list.Sort((a, b) => b.Value.CompareTo(a.Value));
+                foreach (var tag in list)
+                    vm.Items.Add(new Domain.ArtistDataGridItemViewModel
+                    {
+                        항목=tag.Key,
+                        카운트=tag.Value
+                    });
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+            
         }
         
         private void LoadThumbnail(List<HitomiMetadata> md)

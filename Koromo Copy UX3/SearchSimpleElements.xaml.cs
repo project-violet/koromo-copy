@@ -31,13 +31,19 @@ namespace Koromo_Copy_UX3
         {
             if (!_Select)
             {
-                PinkRectangle.Visibility = Visibility.Hidden;
+                PinkRectangle.Fill = Brushes.Transparent;
+                Border.BorderBrush = Brushes.Transparent;
             }
         }
 
         private void SearchSimpleElements_MouseEnter(object sender, MouseEventArgs e)
         {
-            PinkRectangle.Visibility = Visibility.Visible;
+            if (!_Select)
+            {
+                PinkRectangle.Fill = new SolidColorBrush(Color.FromArgb(100, 234, 202, 233));
+                Border.BorderThickness = new Thickness(1);
+                Border.BorderBrush = Brushes.LightPink;
+            }
         }
 
         private bool _Select = false;
@@ -49,13 +55,15 @@ namespace Koromo_Copy_UX3
                 _Select = value;
                 if (value)
                 {
-                    PinkRectangle.Visibility = Visibility.Visible;
+                    PinkRectangle.Fill = Brushes.Pink;
+                    Border.BorderThickness = new Thickness(2);
                     Border.BorderBrush = Brushes.LightPink;
                 }
                 else
                 {
-                    PinkRectangle.Visibility = Visibility.Hidden;
-                    Border.BorderBrush = Brushes.Transparent;
+                    PinkRectangle.Fill = new SolidColorBrush(Color.FromArgb(100, 234, 202, 233));
+                    Border.BorderThickness = new Thickness(1);
+                    Border.BorderBrush = Brushes.LightPink;
                 }
             }
         }
