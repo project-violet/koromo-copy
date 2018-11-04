@@ -119,6 +119,8 @@ namespace Koromo_Copy.Component.Hitomi
             List<HitomiMetadata> query_result;
             if (recent == true)
             {
+                Monitor.Instance.Push($"[Query GetSubsetOf] {recent_start} ~ {recent_count}");
+                Monitor.Instance.Push(query);
                 query_result = HitomiDataSearch.GetSubsetOf(recent_start, recent_count);
             }
             else
