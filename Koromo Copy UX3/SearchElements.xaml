@@ -127,9 +127,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" FontSize="17" Margin="10 0 5 0" VerticalAlignment="Top">태그:</TextBlock>
-            <WrapPanel Grid.Column="1" x:Name="Tags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Gray">
-
-            </WrapPanel>
+            <WrapPanel Grid.Column="1" x:Name="Tags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#F0F0F0"/>
         </Grid>
 
         <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
