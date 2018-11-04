@@ -77,7 +77,24 @@
             </Grid>
 
             <Grid Grid.Row="1">
-                <ProgressBar Value="0" Height="10" x:Name="TotalProgress" Grid.ColumnSpan="3" Grid.Row="1" IsIndeterminate="True" Style="{StaticResource MaterialDesignLinearProgressBar}"/>
+                <Grid.Resources>
+                    <Style x:Key="AnimationStyle" TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignLinearProgressBar}">
+                        <Style.Triggers>
+                            <Trigger Property="IsVisible" Value="False">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             From="1.0" To="0.1"
+                                             Duration="0:0:0.5" AutoReverse="True" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+                <ProgressBar Value="0" Height="10" x:Name="TotalProgress" Grid.ColumnSpan="3" Grid.Row="1" IsIndeterminate="True" Style="{StaticResource AnimationStyle}"/>
             </Grid>
 
             <ScrollViewer Grid.Row="2">
