@@ -9,6 +9,7 @@
 using Koromo_Copy.Component.Hitomi;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -26,6 +27,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Koromo_Copy_UX3
 {
@@ -43,24 +45,19 @@ namespace Koromo_Copy_UX3
             RuntimeHelpers.PrepareConstrainedRegions();
             GCSettings.LatencyMode = GCLatencyMode.Batch;
 
-            // Metadata 로딩
-            Task.Run(() => {
-                HitomiData.Instance.LoadMetadataJson();
-                HitomiData.Instance.LoadHiddendataJson();
-                Koromo_Copy.Monitor.Instance.Push($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
-            }).ContinueWith(t =>
-            {
-                TotalProgress.IsIndeterminate = false;
-                TotalProgress.Value = 100;
-                IsMetadataLoaded = true;
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-
-            KeyDown += MainWindow_KeyDown;
             Closing += MainWindow_Closing;
+
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
         }
 
-        public bool IsMetadataLoaded = false;
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            Process proc = Process.GetCurrentProcess();
+            MemoryStatus.Text = "Memory Usage :  " + (proc.PrivateMemorySize64 / 1000).ToString("#,#") + " KB";
+        }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -72,77 +69,9 @@ namespace Koromo_Copy_UX3
             }
         }
 
-        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        private void MemoryStatus_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.Key == Key.T && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                Koromo_Copy.Monitor.Instance.ControlEnable = true;
-                Koromo_Copy.Monitor.Instance.Push("Hello!");
-                Koromo_Copy.Monitor.Instance.Start();
-            }
-        }
-
-        private async void AppendAsync(string content)
-        {
-            var result = await HitomiDataParser.SearchAsync(content);
-            
-            SearchCount.Text = $"검색된 항목: {result.Count.ToString("#,#")}개";
-            _ = Task.Run(() => LoadThumbnail(result));
-        }
-
-        private void LoadThumbnail(List<HitomiMetadata> md)
-        {
-            List<Task> task = new List<Task>();
-            foreach (var metadata in md)
-            {
-                Task.Run(() => LoadThumbnail(metadata));
-                Thread.Sleep(100);
-            }
-        }
-
-        private void LoadThumbnail(HitomiMetadata md)
-        {
-            Application.Current.Dispatcher.Invoke(new Action(
-            delegate
-            {
-                // Put code that needs to run on the UI thread here
-                var se = new SearchElements(HitomiLegalize.MetadataToArticle(md));
-                SearchPanel.Children.Add(se);
-                SearchPanel.Children.Add(new Separator());
-                Koromo_Copy.Monitor.Instance.Push("[AddSearchElements] Hitomi Metadata " + md.ID);
-            }));
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var tag = (sender as Button).Tag.ToString();
-
-            if (tag == "Search" && IsMetadataLoaded)
-            {
-                AppendAsync(SearchText.Text);
-            }
-            else if (tag == "Tidy")
-            {
-                SearchPanel.Children.Clear();
-            }
-            else if (tag == "SelectAll")
-            {
-                SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = true);
-            }
-            else if (tag == "DeSelectAll")
-            {
-                SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = false);
-            }
-        }
-
-        private void SearchText_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(SearchButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
-            }
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
     }
 }
