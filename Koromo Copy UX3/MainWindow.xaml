@@ -14,9 +14,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Margin="3" FontSize="12" x:Name="MemoryStatus" Text="Memory Usage :  0 KB" PreviewMouseDown="MemoryStatus_PreviewMouseDown"/>
-        <Border Grid.Row="1" Margin="10" BorderThickness="2" BorderBrush="Purple">
-            <local:SearchSpace></local:SearchSpace>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Margin="3" FontSize="12" 
+                   x:Name="MemoryStatus" Text="Memory Usage :  0 KB" PreviewMouseDown="MemoryStatus_PreviewMouseDown"/>
+        <Border Grid.Row="1" Margin="10" BorderThickness="2" BorderBrush="Pink">
+            <local:SearchSpace/>
         </Border>
     </Grid>
 
