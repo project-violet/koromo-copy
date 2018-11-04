@@ -39,8 +39,9 @@ namespace Koromo_Copy_UX3
             }).ContinueWith(t =>
             {
                 TotalProgress.IsIndeterminate = false;
-                TotalProgress.Value = 100;
+                TotalProgress.Value = 0;
                 IsMetadataLoaded = true;
+                //TotalProgress.Visibility = Visibility.Hidden;
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
