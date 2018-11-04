@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         mc:Ignorable="d"
-        Title="ArtistViewerWindow" Height="636" Width="1589.325">
+        Title="작가 : " Height="636" Width="1589.325" WindowStyle="ToolWindow">
     <Grid>
         <ScrollViewer>
             <WrapPanel x:Name="ArticlePanel">
-                <WrapPanel.Resources>
+                <!--<WrapPanel.Resources>
                     <Style TargetType="{x:Type local:SearchSimpleElements}">
                         <Setter Property="Margin" Value="5"/>
                     </Style>
-                </WrapPanel.Resources>
+                </WrapPanel.Resources>-->
             </WrapPanel>
         </ScrollViewer>
     </Grid>

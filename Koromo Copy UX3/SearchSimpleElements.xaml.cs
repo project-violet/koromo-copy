@@ -26,7 +26,45 @@ namespace Koromo_Copy_UX3
         {
             InitializeComponent();
         }
-        
+
+        private void SearchSimpleElements_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!_Select)
+            {
+                PinkRectangle.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchSimpleElements_MouseEnter(object sender, MouseEventArgs e)
+        {
+            PinkRectangle.Visibility = Visibility.Visible;
+        }
+
+        private bool _Select = false;
+        public bool Select
+        {
+            get { return _Select; }
+            set
+            {
+                _Select = value;
+                if (value)
+                {
+                    PinkRectangle.Visibility = Visibility.Visible;
+                    Border.BorderBrush = Brushes.LightPink;
+                }
+                else
+                {
+                    PinkRectangle.Visibility = Visibility.Hidden;
+                    Border.BorderBrush = Brushes.Transparent;
+                }
+            }
+        }
+
+        private void SearchSimpleElements_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Select = !Select;
+        }
+
         public IArticle Article;
 
         public SearchSimpleElements(IArticle article)
