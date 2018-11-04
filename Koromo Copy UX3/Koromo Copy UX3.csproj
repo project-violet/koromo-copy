@@ -71,6 +71,9 @@
       <DependentUpon>ArtistViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Domain\UXConsole.cs" />
+    <Compile Include="FinderWindow.xaml.cs">
+      <DependentUpon>FinderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>
     </Compile>
@@ -81,6 +84,10 @@
       <DependentUpon>SearchSpace.xaml</DependentUpon>
     </Compile>
     <Page Include="ArtistViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FinderWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

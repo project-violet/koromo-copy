@@ -32,6 +32,7 @@ namespace Koromo_Copy_UX3
                 {
                     Background = new SolidColorBrush(Colors.Pink);
                     Background.Opacity = 0.5;
+                    
                 }
                 else
                 {
