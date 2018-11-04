@@ -172,6 +172,18 @@ namespace Koromo_Copy_UX3
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            var tag = (sender as Button).Tag.ToString();
+
+            HitomiArticle ha = Article as HitomiArticle;
+
+            if (tag == "FindArtist")
+            {
+                if (ha.Artists != null)
+                {
+                    ArtistViewerWindow avw = new ArtistViewerWindow(ha.Artists[0]);
+                    avw.Show();
+                }
+            }
         }
     }
 }

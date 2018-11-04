@@ -46,11 +46,23 @@ namespace Koromo_Copy_UX3
             GCSettings.LatencyMode = GCLatencyMode.Batch;
 
             Closing += MainWindow_Closing;
+            KeyDown += SearchSpace_KeyDown;
 
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+        }
+
+        private void SearchSpace_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.T && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                Koromo_Copy.Monitor.Instance.ControlEnable = true;
+                Koromo_Copy.Console.Console.Instance.RedirectionAfterLoopInit = () => Domain.UXConsole.Register();
+                Koromo_Copy.Monitor.Instance.Push("Hello!");
+                Koromo_Copy.Monitor.Instance.Start();
+            }
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -63,10 +75,12 @@ namespace Koromo_Copy_UX3
         {
             if (Koromo_Copy.Monitor.IsValueCreated)
             {
+                Koromo_Copy.Monitor.Instance.Push("UX Close");
                 Koromo_Copy.Monitor.Instance.Save();
                 if (Koromo_Copy.Monitor.Instance.ControlEnable)
                     Koromo_Copy.Console.Console.Instance.Stop();
             }
+            Application.Current.Shutdown();
         }
 
         private void MemoryStatus_PreviewMouseDown(object sender, MouseButtonEventArgs e)
