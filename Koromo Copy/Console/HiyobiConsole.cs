@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
@@ -25,7 +26,7 @@ namespace Koromo_Copy.Console
         public string[] ImageLink;
     }
 
-    public class HiyobiConsole : ILazy<HitomiConsole>, IConsole
+    public class HiyobiConsole : ILazy<HiyobiConsole>, IConsole
     {
         static bool Redirect(string[] arguments, string contents)
         {
@@ -85,8 +86,8 @@ namespace Koromo_Copy.Console
         /// <param name="dl">다운로드 가능한 이미지 링크를 출력할지의 여부를 설정합니다.</param>
         static void ProcessImage(string[] args)
         {
-            string html_source = NetCommon.DownloadString(HiyobiCommon.GetDownloadImageAddress(args[0]));
-            var image_link = HiyobiParser.ParseGalleryArticles(html_source);
+            string json_source = NetCommon.DownloadString(HiyobiCommon.GetDownloadImageAddress(args[0]));
+            var image_link = HitomiParser.GetImageLink(json_source);
             
             Console.Instance.WriteLine(image_link);
         }

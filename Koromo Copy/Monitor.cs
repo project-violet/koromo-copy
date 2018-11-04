@@ -132,7 +132,7 @@ namespace Koromo_Copy
             CultureInfo en = new CultureInfo("en-US");
             StringBuilder build = new StringBuilder();
             log.ToList().ForEach(x => build.Append($"[{x.Item1.ToString(en)}] {x.Item2}\r\n"));
-            File.WriteAllText("log.txt", build.ToString());
+            File.AppendAllText("log.txt", build.ToString());
         }
         
         private void Monitor_Notify(object sender, NotifyCollectionChangedEventArgs e)

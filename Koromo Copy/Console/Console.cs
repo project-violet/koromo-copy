@@ -234,6 +234,8 @@ namespace Koromo_Copy.Console
 
         public Dictionary<string, IConsole> redirections;
 
+        public Action RedirectionAfterLoopInit;
+
         /// <summary>
         /// 콘솔 스레드의 메인 루프입니다.
         /// </summary>
@@ -266,6 +268,8 @@ namespace Koromo_Copy.Console
             {
                 redirections.Add(plugin.AssignCommand(), plugin.GetRedirection());
             }
+
+            RedirectionAfterLoopInit?.Invoke();
 
             System.Console.Out.WriteLine("");
 

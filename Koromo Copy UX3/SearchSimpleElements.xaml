@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="Koromo_Copy_UX3.SearchSimpleElements"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Koromo_Copy_UX3"
+             mc:Ignorable="d">
+            <!--Height="230" Width="150">-->
+    <UserControl.RenderTransform>
+        <TransformGroup x:Name="transform">
+            <ScaleTransform ScaleX="1" ScaleY="1" x:Name="scale"/>
+            <TranslateTransform X="0" Y="0" x:Name="trans"/>
+        </TransformGroup>
+    </UserControl.RenderTransform>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="MouseLeftButtonDown">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="ScaleX"
+                                              Storyboard.TargetName="scale" To="0.95"
+                                              Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="ScaleY"
+                                              Storyboard.TargetName="scale" To="0.95"          
+                                              Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="X"
+                                              Storyboard.TargetName="trans" To="6"          
+                                              Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="Y"
+                                              Storyboard.TargetName="trans" To="6"          
+                                              Duration="0:0:0.1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseLeftButtonUp">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="ScaleX"
+                                          Storyboard.TargetName="scale" To="1" 
+                                          Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="ScaleY"
+                                          Storyboard.TargetName="scale" To="1" 
+                                          Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="X"
+                                              Storyboard.TargetName="trans" To="0"          
+                                              Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="Y"
+                                              Storyboard.TargetName="trans" To="0"          
+                                              Duration="0:0:0.1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Image x:Name="Image" HorizontalAlignment="Left" Grid.Row="0" Height="200" VerticalAlignment="Top" Width="150"
+               Stretch="UniformToFill"
+               RenderOptions.BitmapScalingMode="HighQuality">
+            <Image.ToolTip>
+                <ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5,7,5,5">
+                        <Image Source="{Binding Source}" Stretch="None" />
+                    </Border>
+                </ToolTip>
+            </Image.ToolTip>
+        </Image>
+
+        <TextBlock x:Name="Title" FontSize="12" Grid.Row="1" MaxWidth="150" TextWrapping="Wrap"/>
+    </Grid>
+</UserControl>
