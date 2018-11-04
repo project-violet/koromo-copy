@@ -222,6 +222,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Component\Pinterest\" />
     <Folder Include="Selenium\" />
   </ItemGroup>
   <ItemGroup>
