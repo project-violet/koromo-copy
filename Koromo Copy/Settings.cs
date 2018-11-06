@@ -8,6 +8,7 @@
 
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
+using Koromo_Copy.UX;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -21,6 +22,9 @@ namespace Koromo_Copy
 
         [JsonProperty]
         public HitomiAnalysisSetting HitomiAnalysis;
+
+        [JsonProperty]
+        public UXSetting UXSetting;
 
         /// <summary>
         /// 세밀한 버전 확인을 제공합니다.
@@ -40,18 +44,6 @@ namespace Koromo_Copy
         /// </summary>
         [JsonProperty]
         public int Thread;
-
-        /// <summary>
-        /// 테마 색상을 지정합니다.
-        /// </summary>
-        [JsonProperty]
-        public string Theme;
-
-        /// <summary>
-        /// 어두운 테마를 사용할지의 여부입니다.
-        /// </summary>
-        [JsonProperty]
-        public bool DarkTheme;
     }
 
     public class Settings : ILazy<Settings>
@@ -67,8 +59,6 @@ namespace Koromo_Copy
                 model = new SettingModel();
                 model.Thread = Environment.ProcessorCount * 3;
                 model.SensitiveUpdateCheck = false;
-                model.Theme = "deeppurple";
-                model.DarkTheme = true;
 
                 model.Hitomi = new HitomiSetting();
                 model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";
@@ -76,10 +66,15 @@ namespace Koromo_Copy
 
                 model.HitomiAnalysis = new HitomiAnalysisSetting();
             }
-            else
+            if (model.UXSetting == null)
             {
-                model.LatestAccessTime = DateTime.Now;
+                model.UXSetting = new UXSetting
+                {
+                    ArtistViewerWheelSpeed=1.5,
+                    SearchSpaceWheelSpeed=1.5
+                };
             }
+            model.LatestAccessTime = DateTime.Now;
             Save();
         }
 
@@ -95,5 +90,6 @@ namespace Koromo_Copy
         public SettingModel Model { get { return model; } }
         public HitomiSetting Hitomi { get { return model.Hitomi; } }
         public HitomiAnalysisSetting HitomiAnalysis { get { return model.HitomiAnalysis; } }
+        public UXSetting UXSetting { get { return model.UXSetting; } }
     }
 }
