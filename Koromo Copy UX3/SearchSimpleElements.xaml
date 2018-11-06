@@ -59,26 +59,28 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Border x:Name="Border" BorderThickness="2">
-            <Grid Margin="2" Background="Transparent" MouseEnter="SearchSimpleElements_MouseEnter" MouseLeave="SearchSimpleElements_MouseLeave">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+        <Border x:Name="BorderCollapsed" BorderThickness="0">
+            <Border x:Name="Border" BorderThickness="2">
+                <Grid Margin="2" Background="Transparent" MouseEnter="SearchSimpleElements_MouseEnter" MouseLeave="SearchSimpleElements_MouseLeave">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                <Image x:Name="Image" HorizontalAlignment="Left" Grid.Row="0" Height="200" VerticalAlignment="Top" Width="150"
+                    <Image x:Name="Image" HorizontalAlignment="Left" Grid.Row="0" Height="200" VerticalAlignment="Top" Width="150"
                     Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" Panel.ZIndex="0">
-                    <Image.ToolTip>
-                        <ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                            <Border BorderBrush="Black" BorderThickness="1" Margin="5,7,5,5">
-                                <Image Source="{Binding Source}" Stretch="None" />
-                            </Border>
-                        </ToolTip>
-                    </Image.ToolTip>
-                </Image>
+                        <Image.ToolTip>
+                            <ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+                                <Border BorderBrush="Black" BorderThickness="1" Margin="5,7,5,5">
+                                    <Image Source="{Binding Source}" Stretch="None" />
+                                </Border>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
 
-                <TextBlock x:Name="Title" FontSize="12" Grid.Row="1" Height="32" MaxHeight="32" MaxWidth="150" TextWrapping="Wrap"/>
-            </Grid>
+                    <TextBlock x:Name="Title" FontSize="12" Grid.Row="1" Height="32" MaxHeight="32" MaxWidth="150" TextWrapping="Wrap"/>
+                </Grid>
+            </Border>
         </Border>
     </Grid>
 </UserControl>
