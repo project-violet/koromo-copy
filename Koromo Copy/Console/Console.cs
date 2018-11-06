@@ -141,6 +141,9 @@ namespace Koromo_Copy.Console
 
         public void Stop()
         {
+            PromptToken?.Cancel();
+            ConsoleToken?.Cancel();
+            PromptThread?.Abort();
             console_thread?.Abort();
         }
 
@@ -229,6 +232,7 @@ namespace Koromo_Copy.Console
         public string commandLine;
         public Task PromptTask;
         public CancellationTokenSource PromptToken;
+        public Thread PromptThread;
         public Task ConsoleTask;
         public CancellationTokenSource ConsoleToken;
 
@@ -275,9 +279,13 @@ namespace Koromo_Copy.Console
 
             while (true)
             {
-                PromptToken = new CancellationTokenSource();
-                PromptTask = Task.Factory.StartNew(() => Prompt(), PromptToken.Token);
-                PromptTask.Wait();
+                //PromptToken = new CancellationTokenSource();
+                //PromptTask = Task.Factory.StartNew(() => Prompt(), PromptToken.Token);
+                //PromptTask.Wait();
+                PromptThread = new Thread(Prompt);
+                PromptThread.Start();
+                PromptThread.Join();
+                PromptThread = null;
 
                 ConsoleToken = new CancellationTokenSource();
                 ConsoleTask = Task.Factory.StartNew(() =>
