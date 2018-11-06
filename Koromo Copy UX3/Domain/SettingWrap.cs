@@ -28,13 +28,21 @@ namespace Koromo_Copy_UX3.Domain
             DependencyProperty.Register(nameof(SearchSpaceWheelSpeed),
                                         typeof(Double),
                                         typeof(SettingWrap),
+#if DEBUG
+                                        new PropertyMetadata(1.0));
+#else
                                         new PropertyMetadata(Settings.Instance.UXSetting.SearchSpaceWheelSpeed));
+#endif
 
         public static readonly DependencyProperty ArtistViewerWheelSpeedProperty =
             DependencyProperty.Register(nameof(ArtistViewerWheelSpeed),
                                         typeof(Double),
                                         typeof(SettingWrap),
+#if DEBUG
+                                        new PropertyMetadata(1.0));
+#else
                                         new PropertyMetadata(Settings.Instance.UXSetting.ArtistViewerWheelSpeed));
+#endif
 
         private static readonly SettingWrap _instance = new SettingWrap();
         public static SettingWrap Instance { get { return _instance; } }
