@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Koromo_Copy.Component.EH;
+using Koromo_Copy.Net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,32 @@ namespace Koromo_Copy_UX3
     /// </summary>
     public partial class CommentWindow : Window
     {
-        public CommentWindow()
+        string url;
+
+        public CommentWindow(string url)
         {
             InitializeComponent();
+
+            this.url = url;
+            Loaded += CommentWindow_Loaded;
+        }
+
+        private void CommentWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            var html = NetCommon.DownloadExHentaiString(url);
+            var article = ExHentaiParser.ParseArticleData(html);
+
+            foreach (var comment in article.comment)
+            {
+                Domain.CommentViewModel cvm = new Domain.CommentViewModel
+                {
+                    Author = comment.Item2.Trim(),
+                    Date = comment.Item1.ToString(),
+                    Content = comment.Item3
+                };
+
+                Comments.Children.Add(new CommentElements { DataContext = cvm });
+            }
         }
     }
 }

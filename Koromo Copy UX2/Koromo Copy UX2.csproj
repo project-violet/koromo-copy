@@ -77,6 +77,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CommentElements.xaml.cs">
+      <DependentUpon>CommentElements.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain\MessageDialog.xaml.cs">
       <DependentUpon>MessageDialog.xaml</DependentUpon>
     </Compile>
@@ -99,6 +102,10 @@
     </Compile>
     <Compile Include="WheelSpeedScrollViewer.cs" />
     <Compile Include="XamlDisplayEx.cs" />
+    <Page Include="CommentElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Domain\MessageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
