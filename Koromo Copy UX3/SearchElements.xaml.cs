@@ -195,6 +195,16 @@ namespace Koromo_Copy_UX3
                     // MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Hitomi Copy",  MessageBoxButtons.OK, MessageBoxIcon.Error);
                     MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Koromo Copy", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            else if (tag == "Comment")
+            {
+                string result = ExHentaiTool.GetAddressFromMagicTitle(ha.Magic, ha.Title);
+                if (result != "")
+                {
+                    (new CommentWindow(result)).Show();
+                }
+                else
+                    MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Hitomi Copy", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
