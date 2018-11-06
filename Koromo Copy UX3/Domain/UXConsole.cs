@@ -19,6 +19,9 @@ namespace Koromo_Copy_UX3.Domain
 
         [CommandLine("-window", CommandType.ARGUMENTS, Help = "use -window <Code>")]
         public string[] Window;
+
+        [CommandLine("-cmd", CommandType.ARGUMENTS, Help = "use -cmd <Code>")]
+        public string[] Command;
     }
     
     public class UXConsole : ILazy<UXConsole>, IConsole
@@ -46,6 +49,10 @@ namespace Koromo_Copy_UX3.Domain
             else if (option.Window != null)
             {
                 ProcessWindow(option.Window);
+            }
+            else if (option.Command != null)
+            {
+                ProcessCommand(option.Command);
             }
 
             return true;
@@ -85,6 +92,21 @@ namespace Koromo_Copy_UX3.Domain
 
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
+                    break;
+            }
+        }
+
+        static void ProcessCommand(string[] args)
+        {
+            switch (args[0])
+            {
+                case "1":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        SettingWrap.Instance.SearchSpaceWheelSpeed = 0.1;
+                    }));
                     break;
             }
         }
