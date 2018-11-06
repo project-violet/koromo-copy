@@ -1,4 +1,5 @@
-﻿using Koromo_Copy.Component.Hitomi;
+﻿using Koromo_Copy.Component.EH;
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -184,6 +185,15 @@ namespace Koromo_Copy_UX3
                     ArtistViewerWindow avw = new ArtistViewerWindow(ha.Artists[0]);
                     avw.Show();
                 }
+            }
+            else if (tag == "ShowOnEX")
+            {
+                string result = ExHentaiTool.GetAddressFromMagicTitle(ha.Magic, ha.Title);
+                if (result != "")
+                    System.Diagnostics.Process.Start(result);
+                else
+                    // MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Hitomi Copy",  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Koromo Copy", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
