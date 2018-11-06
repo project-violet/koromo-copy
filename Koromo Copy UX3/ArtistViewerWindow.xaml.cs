@@ -98,5 +98,19 @@ namespace Koromo_Copy_UX3
                 Koromo_Copy.Monitor.Instance.Push("[AddSearchElements] Hitomi Metadata " + md.ID);
             }));
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // We know longer need to size to the contents.
+            ClearValue(SizeToContentProperty);
+            // We want our control to shrink/expand with the window.
+            ArticlePanel.ClearValue(WidthProperty);
+            ArticlePanel.ClearValue(HeightProperty);
+            TagList.ClearValue(WidthProperty);
+            TagList.ClearValue(HeightProperty);
+            // Don't want our window to be able to get any smaller than this.
+            SetValue(MinWidthProperty, this.Width);
+            SetValue(MinHeightProperty, this.Height);
+        }
     }
 }
