@@ -63,7 +63,6 @@ namespace Koromo_Copy_UX3
                 Koromo_Copy.Monitor.Instance.Push("Hello!");
                 Koromo_Copy.Monitor.Instance.Start();
             }
-            Application.Current.Shutdown();
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
