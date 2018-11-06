@@ -71,6 +71,9 @@
     <Compile Include="ArtistViewerWindow.xaml.cs">
       <DependentUpon>ArtistViewerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommentWindow.xaml.cs">
+      <DependentUpon>CommentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain\ArtistDataGridViewModel.cs" />
     <Compile Include="Domain\UXConsole.cs" />
     <Compile Include="FinderWindow.xaml.cs">
@@ -89,6 +92,10 @@
       <DependentUpon>SearchSpace.xaml</DependentUpon>
     </Compile>
     <Page Include="ArtistViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CommentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
