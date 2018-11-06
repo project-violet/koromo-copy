@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         mc:Ignorable="d"
-        Title="CommentWindow" Height="339" Width="553" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
+        Title="CommentWindow" Height="339" Width="553" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>
         <ScrollViewer>
             <StackPanel x:Name="Comments"/>
