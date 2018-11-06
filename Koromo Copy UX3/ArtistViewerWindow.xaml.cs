@@ -47,6 +47,7 @@ namespace Koromo_Copy_UX3
             InitializeComponent();
 
             DataContext = new Domain.ArtistDataGridViewModel();
+            Title += artist;
 
             var dictionary = new Dictionary<string, int>();
             Task.Run(() =>
