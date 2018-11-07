@@ -8,6 +8,7 @@
 
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
+using Koromo_Copy_UX3.Controls;
 using System.Windows;
 
 namespace Koromo_Copy_UX3.Domain
@@ -87,6 +88,16 @@ namespace Koromo_Copy_UX3.Domain
                     {
                         ArtistViewerWindow avw = new ArtistViewerWindow();
                         avw.Show();
+                    }));
+                    break;
+
+                case "test":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        TestWindow tw = new TestWindow();
+                        tw.Show();
                     }));
                     break;
 

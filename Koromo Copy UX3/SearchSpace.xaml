@@ -47,7 +47,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Margin="2" Grid.Column="0" Text="검색 : "/>
-                <TextBox x:Name="SearchText" Grid.Column="1" Grid.Row="0" KeyDown="SearchText_KeyDown" Text="recent:0-25">
+                <TextBox x:Name="SearchText" Grid.Column="1" Grid.Row="0" PreviewKeyDown="SearchText_PreviewKeyDown" KeyDown="SearchText_KeyDown" KeyUp="SearchText_KeyUp" Text="recent:0-25">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
@@ -73,6 +73,12 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
+                <Popup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=SearchText}">
+                    <ListBox x:Name="AutoCompleteList" Width="350" Height="150" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
+                    <!--<Canvas>
+                        --><!--<TextBlock x:Name="test" Text="111"/>--><!--
+                    </Canvas>-->
+                </Popup>
                 <Button x:Name="SearchButton" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="78" Click="Button_Click" Grid.ColumnSpan="2" Tag="Search">검색</Button>
                 <!--<ProgressBar Value="0" Height="10" x:Name="TotalProgress" Grid.ColumnSpan="3" Grid.Row="1" IsIndeterminate="True" Style="{StaticResource MaterialDesignLinearProgressBar}"/>-->
             </Grid>

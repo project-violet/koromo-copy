@@ -96,6 +96,10 @@
     <Compile Include="CommentWindow.xaml.cs">
       <DependentUpon>CommentWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AutoComplete\AutoCompleteTextBox.cs" />
+    <Compile Include="Controls\TestWindow.xaml.cs">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain\ArtistDataGridViewModel.cs" />
     <Compile Include="Domain\CommentViewModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />
@@ -125,6 +129,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CommentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AutoComplete\AutoCompleteTextBoxTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
