@@ -53,12 +53,16 @@ namespace Koromo_Copy_UX3
         private void SearchSpace_Loaded(object sender, RoutedEventArgs e)
         {
             Window w = Window.GetWindow(this);
-            w.LocationChanged += (object obj, EventArgs args) =>
+            // 이거 지우면 디자이너 오류남
+            if (w != null)
             {
-                var offset = AutoComplete.HorizontalOffset;
-                AutoComplete.HorizontalOffset = offset + 1;
-                AutoComplete.HorizontalOffset = offset;
-            };
+                w.LocationChanged += (object obj, EventArgs args) =>
+                {
+                    var offset = AutoComplete.HorizontalOffset;
+                    AutoComplete.HorizontalOffset = offset + 1;
+                    AutoComplete.HorizontalOffset = offset;
+                };
+            }
         }
 
         public bool IsMetadataLoaded = false;
