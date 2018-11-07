@@ -53,7 +53,7 @@
         </EventTrigger>
     </UserControl.Triggers>
     <Grid>
-        <Rectangle x:Name="PinkRectangle" Grid.RowSpan="2" Opacity="0.5" Panel.ZIndex="1" IsHitTestVisible="False">
+        <Rectangle x:Name="PinkRectangle" Margin="2" Grid.RowSpan="2" Panel.ZIndex="1" IsHitTestVisible="False">
             <Rectangle.Fill>
                 <SolidColorBrush Color="Transparent" />
             </Rectangle.Fill>

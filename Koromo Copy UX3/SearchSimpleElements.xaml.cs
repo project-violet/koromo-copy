@@ -42,7 +42,8 @@ namespace Koromo_Copy_UX3
             {
                 PinkRectangle.Fill = new SolidColorBrush(Color.FromArgb(100, 234, 202, 233));
                 Border.BorderThickness = new Thickness(1);
-                Border.BorderBrush = Brushes.LightPink;
+                //Border.BorderBrush = Brushes.LightPink;
+                Border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 174, 201));
                 BorderCollapsed.BorderThickness = new Thickness(1);
             }
         }
@@ -56,7 +57,8 @@ namespace Koromo_Copy_UX3
                 _Select = value;
                 if (value)
                 {
-                    PinkRectangle.Fill = Brushes.Pink;
+                    PinkRectangle.Fill = new SolidColorBrush(Color.FromArgb(200, 234, 202, 233));
+                    //PinkRectangle.Fill = Brushes.Pink;
                     Border.BorderThickness = new Thickness(2);
                     Border.BorderBrush = Brushes.LightPink;
                     BorderCollapsed.BorderThickness = new Thickness(0);
@@ -65,7 +67,8 @@ namespace Koromo_Copy_UX3
                 {
                     PinkRectangle.Fill = new SolidColorBrush(Color.FromArgb(100, 234, 202, 233));
                     Border.BorderThickness = new Thickness(1);
-                    Border.BorderBrush = Brushes.LightPink;
+                    //Border.BorderBrush = Brushes.LightPink;
+                    Border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 174, 201));
                     BorderCollapsed.BorderThickness = new Thickness(1);
                 }
             }
