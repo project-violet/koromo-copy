@@ -117,8 +117,20 @@
             </Image.ToolTip>
         </Image>
 
-        <StackPanel Grid.Column="1" Grid.Row="0" x:Name="InfoPanel">
+        <StackPanel Grid.Column="1" Grid.Row="0" >
             <TextBlock x:Name="Title" FontSize="22" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Margin="10 10 0 0"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Grid.ColumnSpan="2" x:Name="InfoPanel"/>
+                <StackPanel Grid.Column="1" Margin="0 0 50 0" Orientation="Horizontal">
+                    <TextBlock Text="업로드된 날짜: " FontSize="17"/>
+                    <TextBlock x:Name="Date" FontSize="17"/>
+                </StackPanel>
+            </Grid>
         </StackPanel>
 
         <Grid Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
