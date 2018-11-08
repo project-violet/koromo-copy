@@ -66,13 +66,11 @@ namespace Koromo_Copy
                 model.Hitomi.CustomAutoComplete = new string[] { "recent:0-25" };
 
                 model.HitomiAnalysis = new HitomiAnalysisSetting();
-            }
-            if (model.UXSetting == null)
-            {
+
                 model.UXSetting = new UXSetting
                 {
-                    ArtistViewerWheelSpeed=1.5,
-                    SearchSpaceWheelSpeed=1.5,
+                    ArtistViewerWheelSpeed = 1.5,
+                    SearchSpaceWheelSpeed = 1.5,
                     DoNotHightlightAutoCompleteResults = false,
                     MaxCountOfAutoCompleteResult = 100
                 };
@@ -80,7 +78,7 @@ namespace Koromo_Copy
             model.LatestAccessTime = DateTime.Now;
             Save();
         }
-
+        
         public void Save()
         {
             string json = JsonConvert.SerializeObject(model, Formatting.Indented);
