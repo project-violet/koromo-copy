@@ -63,6 +63,7 @@ namespace Koromo_Copy
                 model.Hitomi = new HitomiSetting();
                 model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";
                 model.Hitomi.Language = "korean";
+                model.Hitomi.CustomAutoComplete = new string[] { "recent:0-25" };
 
                 model.HitomiAnalysis = new HitomiAnalysisSetting();
             }
@@ -71,7 +72,9 @@ namespace Koromo_Copy
                 model.UXSetting = new UXSetting
                 {
                     ArtistViewerWheelSpeed=1.5,
-                    SearchSpaceWheelSpeed=1.5
+                    SearchSpaceWheelSpeed=1.5,
+                    DoNotHightlightAutoCompleteResults = false,
+                    MaxCountOfAutoCompleteResult = 100
                 };
             }
             model.LatestAccessTime = DateTime.Now;

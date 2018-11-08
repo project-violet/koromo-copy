@@ -39,6 +39,9 @@ namespace Koromo_Copy.Component.Hitomi
         /// </summary>
         [JsonProperty]
         public bool UsingFuzzy;
+
+        [JsonProperty]
+        public string[] CustomAutoComplete;
     }
 
     /// <summary>
