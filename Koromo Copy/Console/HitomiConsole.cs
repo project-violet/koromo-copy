@@ -151,7 +151,11 @@ namespace Koromo_Copy.Console
                 "Hitomi Console Core\r\n" + 
                 "\r\n" +
                 " -article <Hitomi Number> : Show article info.\r\n" +
-                " -image <Hitomi Number> [-type=small | big]: Get Image Link."
+                " -image <Hitomi Number> [-type=small | big]: Get Image Link.\r\n" +
+                " -downloadmetadata, -loadmetadata, -downloadhidden, -loadhidden, -sync, -load : Manage Metadata.\r\n" +
+                " -search <Search What> [-all] : Language Dependent metadata seraching.\r\n" +
+                " -setsearch <Place What> : Fix specific search token.\r\n" +
+                " -syncdate : Synchronize HitomiDate data."
                 );
         }
 

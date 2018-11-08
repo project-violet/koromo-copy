@@ -74,7 +74,8 @@ namespace Koromo_Copy.Console
             Console.Instance.WriteLine(
                 "Ex-Hentai Console Core\r\n" +
                 "\r\n" +
-                " -article <Exhentai address> : Show article info."
+                " -article <Exhentai address> : Show article info.\r\n" +
+                " -addr <Hitomi Article> : Get ExHentai Address from HitomiArticle. This option can using pipe."
                 );
         }
 
