@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -115,7 +116,8 @@ namespace Koromo_Copy.Component.Hitomi
                     return null;
                 }
             }
-
+            
+            Stopwatch sw = Stopwatch.StartNew();
             List<HitomiMetadata> query_result;
             if (recent == true)
             {
@@ -129,6 +131,9 @@ namespace Koromo_Copy.Component.Hitomi
                 Monitor.Instance.Push(query);
                 query_result = (await HitomiDataSearch.Search3(query));
             }
+            var end = sw.ElapsedMilliseconds;
+            sw.Stop();
+            Monitor.Instance.Push($"[Query Results] {query_result.Count.ToString("#,#")} Articles ({end.ToString("#,#")} ms)");
 
             return query_result;
         }
