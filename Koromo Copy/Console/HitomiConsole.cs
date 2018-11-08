@@ -50,6 +50,9 @@ namespace Koromo_Copy.Console
         public string[] Search;
         [CommandLine("-setsearch", CommandType.ARGUMENTS)]
         public string[] SetSearchToken;
+
+        [CommandLine("-syncdate", CommandType.OPTION)]
+        public bool SyncDate;
     }
 
     /// <summary>
@@ -125,6 +128,13 @@ namespace Koromo_Copy.Console
             else if (option.SetSearchToken != null)
             {
                 Instance.setter = option.SetSearchToken[0];
+            }
+            //
+            //  Date 동기화
+            //
+            else if (option.SyncDate)
+            {
+                HitomiDate.print_datetime_data();
             }
 
             return true;

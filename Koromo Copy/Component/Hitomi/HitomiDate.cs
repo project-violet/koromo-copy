@@ -6,13 +6,16 @@
 
 ***/
 
+using Koromo_Copy.Net;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Koromo_Copy.Component.Hitomi.Analysis
+namespace Koromo_Copy.Component.Hitomi
 {
     public class HitomiDate
     {
@@ -1035,7 +1038,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             return new DateTime((long)(tgap * rate + date_data[index].Item2.Ticks));
         }
 
-#if false
+#if true
         public static List<Tuple<string, DateTime>> date_list = new List<Tuple<string, DateTime>>();
         public static List<string> download_list = new List<string>();
 
@@ -1072,23 +1075,20 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
                         builder.Append("new Tuple<string, DateTime> (\"" + pair.Item1 + "\", new DateTime(" + pair.Item2.Ticks + ")),\r\n");
                     }
                     File.WriteAllText("a.txt", builder.ToString());
-                    MessageBox.Show("Complete download");
+                    lock (Monitor.Instance) Monitor.Instance.Push($"[HitomiDate] Complete");
                     return;
                 }
                 url = $"https://hitomi.la/galleries/{download_list[pointer]}.html";
                 id = download_list[pointer];
                 pointer++;
             }
+            
+            string target = NetCommon.DownloadString(url);
+            string date_text = Regex.Split(Regex.Split(target, @"<span class=""date"">")[1], @"</span>")[0];
 
-            using (var wc = new System.Net.WebClient())
+            lock (date_list)
             {
-                string target = wc.DownloadString(url);
-                string date_text = Regex.Split(Regex.Split(target, @"<span class=""date"">")[1], @"</span>")[0];
-
-                lock (date_list)
-                {
-                    date_list.Add(new Tuple<string, DateTime>(id, DateTime.Parse(date_text)));
-                }
+                date_list.Add(new Tuple<string, DateTime>(id, DateTime.Parse(date_text)));
             }
 
             download_string();
