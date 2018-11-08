@@ -101,6 +101,16 @@ namespace Koromo_Copy_UX3.Domain
                     }));
                     break;
 
+                case "finder":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        FinderWindow fw = new FinderWindow();
+                        fw.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;
