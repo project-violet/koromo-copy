@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Koromo Copy" Height="616" Width="1156"
+        Title="Koromo Copy " Height="616" Width="1156"
         WindowStartupLocation="CenterScreen">
 
     <Grid>
