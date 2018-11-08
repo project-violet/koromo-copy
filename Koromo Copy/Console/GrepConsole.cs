@@ -89,7 +89,12 @@ namespace Koromo_Copy.Console
         {
             Console.Instance.WriteLine(
                 "Grep Pipeline\r\n" +
-                "This command must be used with pipe."
+                "This command must be used with pipe.\r\n" +
+                "\r\n" +
+                " -i : Ignore case. Case insensitive search.\r\n" +
+                " -r : Search using regular expression.\r\n" +
+                " -n : Show number on results\r\n" +
+                "You can combine -i, -r, -n options like -ir, -nr, -rni."
                 );
         }
 
