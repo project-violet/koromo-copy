@@ -6,7 +6,9 @@
 
 ***/
 
+using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,6 +19,7 @@ using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -63,6 +66,8 @@ namespace Koromo_Copy_UX3
                     AutoComplete.HorizontalOffset = offset;
                 };
             }
+
+            logic = new AutoCompleteLogic(SearchText, AutoComplete, AutoCompleteList);
         }
 
         public bool IsMetadataLoaded = false;
@@ -132,226 +137,38 @@ namespace Koromo_Copy_UX3
         }
 
         #region Search Helper
-        public int global_position = 0;
-        public string global_text = "";
-        public bool selected_part = false;
-        public bool skip_enter = false;
+        AutoCompleteLogic logic;
 
         private void SearchText_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return && !skip_enter)
+            if (e.Key == Key.Return && !logic.skip_enter)
             {
                 ButtonAutomationPeer peer = new ButtonAutomationPeer(SearchButton);
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
             }
-            skip_enter = false;
+            logic.skip_enter = false;
         }
         
         private void SearchText_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Escape)
-            {
-                AutoComplete.IsOpen = false;
-                SearchText.Focus();
-            }
-            else
-            {
-                if (AutoComplete.IsOpen)
-                {
-                    if (e.Key == Key.Down)
-                    {
-                        AutoCompleteList.SelectedIndex = 0;
-                        AutoCompleteList.Focus();
-                    }
-                    else if (e.Key == Key.Up)
-                    {
-                        AutoCompleteList.SelectedIndex = AutoCompleteList.Items.Count - 1;
-                        AutoCompleteList.Focus();
-                    }
-                }
-
-                if (selected_part)
-                {
-                    selected_part = false;
-                    if (e.Key != Key.Back)
-                    {
-                        SearchText.SelectionStart = global_position;
-                        SearchText.SelectionLength = 0;
-                    }
-                }
-            }
-        }
-
-        private Size MeasureString(string candidate)
-        {
-            var formattedText = new FormattedText(
-                candidate,
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface(SearchText.FontFamily, SearchText.FontStyle, SearchText.FontWeight, SearchText.FontStretch),
-                SearchText.FontSize,
-                Brushes.Black,
-                new NumberSubstitution(),
-                TextFormattingMode.Display);
-
-            return new Size(formattedText.WidthIncludingTrailingWhitespace, formattedText.Height);
+            logic.SearchText_PreviewKeyDown(sender, e);
         }
         
         private void SearchText_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) return;
-            int position = SearchText.SelectionStart;
-            while (position > 0 && SearchText.Text[position - 1] != ' ')
-                position -= 1;
-
-            string word = "";
-            for (int i = position; i < SearchText.Text.Length; i++)
-            {
-                if (SearchText.Text[i] == ' ') break;
-                word += SearchText.Text[i];
-            }
-
-            if (word == "") { AutoComplete.IsOpen = false; return; }
-            
-            List<HitomiTagdata> match = new List<HitomiTagdata>();
-            if (word.Contains(":"))
-            {
-                if (word.StartsWith("artist:"))
-                {
-                    word = word.Substring("artist:".Length);
-                    position += "artist:".Length;
-                    match = HitomiDataAnalysis.GetArtistList(word);
-                }
-                else if (word.StartsWith("tag:"))
-                {
-                    word = word.Substring("tag:".Length);
-                    position += "tag:".Length;
-                    match = HitomiDataAnalysis.GetTagList(word);
-                }
-                else if (word.StartsWith("tagx:"))
-                {
-                    word = word.Substring("tagx:".Length);
-                    position += "tagx:".Length;
-                    match = HitomiDataAnalysis.GetTagList(word);
-                }
-                else if (word.StartsWith("character:"))
-                {
-                    word = word.Substring("character:".Length);
-                    position += "character:".Length;
-                    match = HitomiDataAnalysis.GetCharacterList(word);
-                }
-                else if (word.StartsWith("group:"))
-                {
-                    word = word.Substring("group:".Length);
-                    position += "group:".Length;
-                    match = HitomiDataAnalysis.GetGroupList(word);
-                }
-                else if (word.StartsWith("series:"))
-                {
-                    word = word.Substring("series:".Length);
-                    position += "series:".Length;
-                    match = HitomiDataAnalysis.GetSeriesList(word);
-                }
-                else if (word.StartsWith("type:"))
-                {
-                    word = word.Substring("type:".Length);
-                    position += "type:".Length;
-                    match = HitomiDataAnalysis.GetTypeList(word);
-                }
-            }
-
-            string[] match_target = {
-                    "artist:",
-                    "character:",
-                    "group:",
-                    "recent:",
-                    "series:",
-                    "tag:",
-                    "tagx:",
-                    "type:"
-                };
-
-            List<HitomiTagdata> data_col = (from ix in match_target where ix.StartsWith(word) select new HitomiTagdata { Tag = ix }).ToList();
-            if (data_col.Count > 0)
-                match.AddRange(data_col);
-            match.AddRange(HitomiDataAnalysis.GetTotalList(word));
-
-            if (match.Count > 0)
-            {
-                AutoComplete.IsOpen = true;
-                AutoCompleteList.Items.Clear();
-                List<string> listing = new List<string>();
-                for (int i = 0; i < 100 && i < match.Count; i++)
-                {
-                    if (match[i].Count != 0)
-                        listing.Add(match[i].Tag + $" ({match[i].Count})");
-                    else
-                        listing.Add(match[i].Tag);
-                }
-                listing.ForEach(x => AutoCompleteList.Items.Add(x));
-                AutoComplete.HorizontalOffset = MeasureString(SearchText.Text.Substring(0, position)).Width;
-            }
-            else { AutoComplete.IsOpen = false; return; }
-
-            global_position = position;
-            global_text = word;
-
-            if (e.Key == Key.Down)
-            {
-                AutoCompleteList.SelectedIndex = 0;
-                AutoCompleteList.Focus();
-            }
-            else if (e.Key == Key.Up)
-            {
-                AutoCompleteList.SelectedIndex = AutoCompleteList.Items.Count - 1;
-                AutoCompleteList.Focus();
-            }
-            else if (e.Key == Key.Enter || e.Key == Key.Space)
-            {
-                PutStringIntoTextBox(AutoCompleteList.Items[0].ToString());
-            }
+            logic.SearchText_KeyUp(sender, e);
         }
         
-        private void PutStringIntoTextBox(string text)
-        {
-            text = text.Split('(')[0].Trim();
-            SearchText.Text = SearchText.Text.Substring(0, global_position) +
-                text +
-                SearchText.Text.Substring(global_position + global_text.Length);
-            AutoComplete.IsOpen = false;
-
-            SearchText.SelectionStart = global_position;
-            SearchText.SelectionLength = text.Length;
-            skip_enter = true;
-            SearchText.Focus();
-
-            global_position = global_position + SearchText.SelectionLength;
-            selected_part = true;
-        }
-
         private void AutoCompleteList_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter || e.Key == Key.Space)
-            {
-                if (AutoCompleteList.SelectedItems.Count > 0)
-                    PutStringIntoTextBox(AutoCompleteList.SelectedItem.ToString());
-            }
-            else if (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Escape)
-            {
-                AutoComplete.IsOpen = false;
-                SearchText.Focus();
-            }
+            logic.AutoCompleteList_KeyUp(sender, e);
         }
 
         private void AutoCompleteList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (AutoCompleteList.SelectedItems.Count > 0)
-            {
-                PutStringIntoTextBox(AutoCompleteList.SelectedItem.ToString());
-            }
+            logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
-
         #endregion
 
     }

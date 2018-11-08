@@ -28,5 +28,17 @@ namespace Koromo_Copy.UX
         /// </summary>
         [JsonProperty]
         public double ArtistViewerWheelSpeed;
+
+        /// <summary>
+        /// 자동완성결과에 하이라이트를 적용할지의 여부를 설정합니다.
+        /// </summary>
+        [JsonProperty]
+        public bool DoNotHightlightAutoCompleteResults;
+
+        /// <summary>
+        /// 자동완성결과의 최대 개수를 지정합니다.
+        /// </summary>
+        [JsonProperty]
+        public int MaxCountOfAutoCompleteResult;
     }
 }
