@@ -81,6 +81,7 @@ namespace Koromo_Copy_UX3
                     Koromo_Copy.Console.Console.Instance.Stop();
             }
             Application.Current.Shutdown();
+            Process.GetCurrentProcess().Kill();
         }
 
         private void MemoryStatus_PreviewMouseDown(object sender, MouseButtonEventArgs e)
