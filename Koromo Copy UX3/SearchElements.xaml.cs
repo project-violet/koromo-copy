@@ -133,6 +133,7 @@ namespace Koromo_Copy_UX3
                     Tags.Children.Add(e);
                 }
             }
+            Date.Text = HitomiDate.estimate_datetime(Convert.ToInt32(ha.Magic)).ToString();
 
             Loaded += SearchElements_Loaded;
         }
