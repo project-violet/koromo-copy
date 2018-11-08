@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +29,9 @@ namespace Koromo_Copy.Console
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool FreeConsole();
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern IntPtr GetStdHandle(int nStdHandle);
@@ -139,12 +143,14 @@ namespace Koromo_Copy.Console
             console_thread.Start();
         }
 
+        [SecurityPermissionAttribute(SecurityAction.Demand, ControlThread = true)]
         public void Stop()
         {
             PromptToken?.Cancel();
             ConsoleToken?.Cancel();
             PromptThread?.Abort();
             console_thread?.Abort();
+            FreeConsole();
         }
 
         public void Hide()
