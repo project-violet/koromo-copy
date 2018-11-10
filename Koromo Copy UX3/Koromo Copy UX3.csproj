@@ -87,6 +87,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ArticleInfoWindow.xaml.cs">
+      <DependentUpon>ArticleInfoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ArtistViewerWindow.xaml.cs">
       <DependentUpon>ArtistViewerWindow.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,9 @@
     <Compile Include="FinderWindow.xaml.cs">
       <DependentUpon>FinderWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GroupViewerWindow.xaml.cs">
+      <DependentUpon>GroupViewerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PreviewWindow.xaml.cs">
       <DependentUpon>PreviewWindow.xaml</DependentUpon>
     </Compile>
@@ -120,6 +126,10 @@
       <DependentUpon>SearchSpace.xaml</DependentUpon>
     </Compile>
     <Compile Include="WheelSpeedScrollViewer.cs" />
+    <Page Include="ArticleInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ArtistViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -137,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FinderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GroupViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,6 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="TETO.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tools\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Koromo Copy\packages\Fody.3.2.12\build\Fody.targets" Condition="Exists('..\Koromo Copy\packages\Fody.3.2.12\build\Fody.targets')" />
