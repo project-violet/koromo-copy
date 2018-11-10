@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Plugin;
 using Koromo_Copy.Utility.Develop;
@@ -103,6 +104,10 @@ namespace Koromo_Copy.Console.Utility
                 case "hiyobi2":
                     var html1 = Net.NetCommon.DownloadString("https://hiyobi.me/list/1");
                     var article1 = Component.Hiyobi.HiyobiParser.ParseGalleryArticles(html1);
+                    break;
+
+                case "query":
+                    HitomiDataSearchAdvanced.to_linear(HitomiDataSearchAdvanced.make_tree("(a b) - (c d) - (e f)"));
                     break;
             }
         }

@@ -89,7 +89,12 @@ namespace Koromo_Copy_UX3
 
         private async void AppendAsync(string content)
         {
-            var result = await HitomiDataParser.SearchAsync(content);
+            //var result = await HitomiDataParser.SearchAsync(content);
+            List<HitomiMetadata> result;
+            if (!Settings.Instance.Hitomi.UsingAdvancedSearch)
+                result = await HitomiDataParser.SearchAsync(content.Trim());
+            else
+                result = await HitomiDataSearchAdvanced.Search(content.Trim());
 
             SearchCount.Text = $"검색된 항목: {result.Count.ToString("#,#")}개";
             _ = Task.Run(() => LoadThumbnail(result));

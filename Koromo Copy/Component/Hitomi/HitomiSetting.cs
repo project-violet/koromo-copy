@@ -40,6 +40,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public bool UsingFuzzy;
 
+        /// <summary>
+        /// 고급 검색 기능을 사용할지의 여부입니다.
+        /// </summary>
+        [JsonProperty]
+        public bool UsingAdvancedSearch;
+
         [JsonProperty]
         public string[] CustomAutoComplete;
     }
