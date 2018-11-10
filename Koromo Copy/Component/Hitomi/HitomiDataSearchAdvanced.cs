@@ -240,7 +240,12 @@ namespace Koromo_Copy.Component.Hitomi
                         break;
 
                     case ')':
-                        while (stack.Peek() != '(') result_stack.Push(stack.Pop().ToString());
+                        while (stack.Peek() != '(' && stack.Count > 0) result_stack.Push(stack.Pop().ToString());
+                        if (stack.Count == 0)
+                        {
+                            Monitor.Instance.Push($"[Advanced Search] Missmatch ')' token on '{query_string}'.");
+                            throw new Exception("Missmatch closer!");
+                        }
                         stack.Pop();
                         break;
 
