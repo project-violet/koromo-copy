@@ -278,7 +278,7 @@ namespace Koromo_Copy.Console
             {
                 redirections.Add(plugin.AssignCommand(), plugin.GetRedirection());
             }
-
+            
             RedirectionAfterLoopInit?.Invoke();
 
             System.Console.Out.WriteLine("");
