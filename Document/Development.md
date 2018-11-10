@@ -207,6 +207,8 @@ internal --call console.Write "asdf"
 
 `Advanced Search` 기능이 `Koromo Copy 0.4` 버전부터 추가됩니다. 이 검색 방법은 집합연산을 사용합니다. 가령, `artist:michiking - (male:shota lang:japanes)`를 검색하면, `michiking` 작가의 작품 중 `male:shota`태그가 없고, 일본어가 아닌 작품들을 모두 가져옵니다. 집합 연산 중 차집합 연산은 사칙연산이 아니기 때문에 다음과 같은 해석의 오류가 있을 수 있습니다. 가령, `artist:michiking - (male:shota - lang:korean)`를 검색할 때 이 검색어를  `artist:michiking - male:shota + lang:korean`와 동치로 보면 안됩니다. 정확한 해석은 `michiking` 작가의 작품 중 `male:shota` 태그가 없거나, 언어가 한국어인 작품을 가져오는 것입니다.
 
+중첩가능한 최대 토큰 수는 30개 입니다. 이를 수정하려면 `to_linear` 함수에서 `querys` 배열 크기를 늘리세요.
+
 ---
 
 # 프로젝트 분리
