@@ -445,6 +445,8 @@ namespace Koromo_Copy.Component.Hitomi
             int term = HitomiData.Instance.metadata_collection.Count / number;
 
             query = to_linear(make_tree(query_string));
+            Monitor.Instance.Push("[AdvancedQuery HitomiMetadata] " + query_string);
+            Monitor.Instance.Push(query[1]);
 
             List<Task<List<HitomiMetadata>>> arr_task = new List<Task<List<HitomiMetadata>>>();
             for (int i = 0; i < number; i++)
