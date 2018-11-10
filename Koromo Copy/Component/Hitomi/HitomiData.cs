@@ -32,7 +32,7 @@ namespace Koromo_Copy.Component.Hitomi
         public static string tag_json_uri = @"https://ltn.hitomi.la/tags.json";
         public static string gallerie_json_uri(int no) => $"https://ltn.hitomi.la/galleries{no}.json";
 
-        public static string hidden_data_url = @"https://github.com/dc-koromo/hitomi-downloader-2/releases/download/hiddendata/hiddendata.json";
+        public static string hidden_data_url = @"https://github.com/dc-koromo/koromo-copy/releases/download/hiddendata/hiddendata.json";
 
         public HitomiTagdataCollection tagdata_collection = new HitomiTagdataCollection();
         public List<HitomiMetadata> metadata_collection;
