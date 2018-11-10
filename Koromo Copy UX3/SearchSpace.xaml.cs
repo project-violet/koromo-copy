@@ -11,7 +11,6 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,9 +18,7 @@ using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Koromo_Copy_UX3
 {
@@ -40,7 +37,15 @@ namespace Koromo_Copy_UX3
                 HitomiData.Instance.LoadHiddendataJson();
                 HitomiData.Instance.RebuildTagData();
                 if (HitomiData.Instance.metadata_collection != null)
-                Koromo_Copy.Monitor.Instance.Push($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+                {
+                    Koromo_Copy.Monitor.Instance.Push($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+
+                    if (Settings.Instance.Hitomi.UsingOptimization)
+                    {
+                        HitomiData.Instance.OptimizeMetadata();
+                        Koromo_Copy.Monitor.Instance.Push($"Optimize metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+                    }
+                }
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             }).ContinueWith(t =>
             {
