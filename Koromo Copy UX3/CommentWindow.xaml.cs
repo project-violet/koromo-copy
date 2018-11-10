@@ -31,6 +31,13 @@ namespace Koromo_Copy_UX3
             Loaded += CommentWindow_Loaded;
         }
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key == Key.Escape)
+                Close();
+        }
+        
         private void CommentWindow_Loaded(object sender, RoutedEventArgs e)
         {
             var html = NetCommon.DownloadExHentaiString(url);

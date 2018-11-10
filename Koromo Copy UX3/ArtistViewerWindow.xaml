@@ -43,6 +43,11 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.CellStyle>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseLeftButtonUp" Handler="DataGridRow_MouseDown"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
         </DataGrid>
 
         <GridSplitter BorderBrush="DarkGray" BorderThickness="1"/>
