@@ -92,8 +92,25 @@ namespace Koromo_Copy_UX3
             try
             {
                 List<HitomiMetadata> result;
-                if (!Settings.Instance.Hitomi.UsingAdvancedSearch)
+                if (!Settings.Instance.Hitomi.UsingAdvancedSearch || content.Contains("recent:"))
+                {
                     result = await HitomiDataParser.SearchAsync(content.Trim());
+
+                    if (content.Contains("recent:"))
+                    {
+                        var elem = content.Split(' ').Where(x => x.StartsWith("recent:")).ElementAt(0);
+                        int recent_count = 0;
+                        int recent_start = 0;
+                        if (elem.Substring("recent:".Length).Contains("-"))
+                        {
+                            recent_start = Convert.ToInt32(elem.Substring("recent:".Length).Split('-')[0]);
+                            recent_count = Convert.ToInt32(elem.Substring("recent:".Length).Split('-')[1]);
+                        }
+                        else
+                            recent_count = Convert.ToInt32(elem.Substring("recent:".Length));
+                        SearchText.Text = "recent:" + (recent_start + recent_count) + "-" + recent_count;
+                    }
+                }
                 else
                     result = await HitomiDataSearchAdvanced.Search(content.Trim());
 
