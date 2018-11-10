@@ -215,5 +215,12 @@ namespace Koromo_Copy_UX3
                     MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Hitomi Copy", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void Image_MouseMove(object sender, MouseEventArgs e)
+        {
+            ImageToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Relative;
+            ImageToolTip.HorizontalOffset = e.GetPosition((IInputElement)sender).X + 10;
+            ImageToolTip.VerticalOffset = e.GetPosition((IInputElement)sender).Y;
+        }
     }
 }

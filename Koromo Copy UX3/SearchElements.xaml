@@ -50,6 +50,17 @@
             </BeginStoryboard>
         </EventTrigger>
     </UserControl.Triggers>
+    <UserControl.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolTip">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <!--<UserControl.Resources>
         <Style BasedOn="{StaticResource {x:Type Button}}" x:Key="FemaleButton" TargetType="Button">
             <Setter Property="Background" Value="#E860A0"/>
@@ -106,13 +117,14 @@
         </Grid.RowDefinitions>
 
         <Image x:Name="Image" HorizontalAlignment="Left" Grid.RowSpan="3" Grid.Column="0" Height="200" VerticalAlignment="Top" Width="150"
-               Stretch="Uniform"
-               RenderOptions.BitmapScalingMode="HighQuality" Margin="4 2 2 2">
+               Stretch="Uniform" ToolTipService.InitialShowDelay="0"
+               RenderOptions.BitmapScalingMode="HighQuality" Margin="4 2 2 2" MouseMove="Image_MouseMove">
+            <Image.Resources>
+                <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
+            </Image.Resources>
             <Image.ToolTip>
-                <ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                    <Border BorderBrush="Black" BorderThickness="1" Margin="5,7,5,5">
-                        <Image Source="{Binding Source}" Stretch="None" />
-                    </Border>
+                <ToolTip x:Name="ImageToolTip" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+                    <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
                 </ToolTip>
             </Image.ToolTip>
         </Image>
