@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Koromo_Copy.Component.Hitomi
 {
-    public class HitomiDataSearchDetail
+    public class HitomiDataSearchAdvanced
     {
     }
 }
