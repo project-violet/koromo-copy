@@ -191,24 +191,31 @@ namespace Koromo_Copy_UX3.Domain
                     }
                     else
                     {
-                        var Result = new TextBlock();
-                        Result.Foreground = Brushes.Black;
-                        int StartColoredTextPosition = x.IndexOf(ColoredTargetText);
-                        string firstdraw = x.Substring(0, StartColoredTextPosition);
-                        Result.Text = firstdraw;
+                        try
+                        {
+                            var Result = new TextBlock();
+                            Result.Foreground = Brushes.Black;
+                            int StartColoredTextPosition = x.IndexOf(ColoredTargetText);
+                            string firstdraw = x.Substring(0, StartColoredTextPosition);
+                            Result.Text = firstdraw;
 
-                        var Detected = new Run();
-                        Detected.Foreground = Brushes.HotPink;
-                        string seconddraw = x.Substring(StartColoredTextPosition, MaxColoredTextLength);
-                        Detected.Text = seconddraw;
+                            var Detected = new Run();
+                            Detected.Foreground = Brushes.HotPink;
+                            string seconddraw = x.Substring(StartColoredTextPosition, MaxColoredTextLength);
+                            Detected.Text = seconddraw;
 
-                        var Postfix = new Run();
-                        Postfix.Foreground = Brushes.Black;
-                        Postfix.Text = x.Substring(StartColoredTextPosition + MaxColoredTextLength);
+                            var Postfix = new Run();
+                            Postfix.Foreground = Brushes.Black;
+                            Postfix.Text = x.Substring(StartColoredTextPosition + MaxColoredTextLength);
 
-                        Result.Inlines.Add(Detected);
-                        Result.Inlines.Add(Postfix);
-                        AutoCompleteList.Items.Add(Result);
+                            Result.Inlines.Add(Detected);
+                            Result.Inlines.Add(Postfix);
+                            AutoCompleteList.Items.Add(Result);
+                        }
+                        catch
+                        {
+                        }
+                        
                     }
                 });
                 AutoComplete.HorizontalOffset = MeasureString(SearchText.Text.Substring(0, position)).Width;
