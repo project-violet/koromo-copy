@@ -187,6 +187,14 @@ namespace Koromo_Copy_UX3
                     avw.Show();
                 }
             }
+            else if (tag == "FindGroup")
+            {
+                if (ha.Groups != null)
+                {
+                    GroupViewerWindow avw = new GroupViewerWindow(ha.Groups[0]);
+                    avw.Show();
+                }
+            }
             else if (tag == "ShowOnEX")
             {
                 string result = ExHentaiTool.GetAddressFromMagicTitle(ha.Magic, ha.Title);
