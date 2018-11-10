@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,13 @@ namespace Koromo_Copy_UX3
             });
         }
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key == Key.Escape)
+                Close();
+        }
+        
         public ArtistViewerWindow(string artist)
         {
             InitializeComponent();
@@ -112,6 +120,21 @@ namespace Koromo_Copy_UX3
             // Don't want our window to be able to get any smaller than this.
             SetValue(MinWidthProperty, this.Width);
             SetValue(MinHeightProperty, this.Height);
+        }
+
+        private void DataGridRow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var tags = TagList.SelectedItems.OfType<ArtistDataGridItemViewModel>().Select(x => x.항목);
+            foreach (var control in ArticlePanel.Children.OfType<SearchSimpleElements>())
+            {
+                if (tags.All(x => (control.Article as HitomiArticle).Tags != null && (control.Article as HitomiArticle).Tags.Contains(x)))
+                    control.Select = true;
+                else
+                {
+                    control.Select = false;
+                    control.Transparent();
+                }
+            }
         }
     }
 }
