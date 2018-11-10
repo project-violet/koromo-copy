@@ -95,10 +95,10 @@ namespace Koromo_Copy.Component.Hitomi
         {
             {'(', -1},
             {'-',  0},
-            {'|',  0},
             {'+',  0},
             {'&',  0},
-            {'~',  1},
+            {'|',  1},
+            {'~',  2},
         };
 
         static Dictionary<string, HitomiDataAdvancedQueryTokenType> token_dic = new Dictionary<string, HitomiDataAdvancedQueryTokenType>()
