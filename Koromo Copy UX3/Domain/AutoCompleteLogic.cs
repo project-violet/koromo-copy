@@ -150,6 +150,12 @@ namespace Koromo_Copy_UX3.Domain
                     position += "type:".Length;
                     match = HitomiDataAnalysis.GetTypeList(word);
                 }
+                else if (word.StartsWith("lang:"))
+                {
+                    word = word.Substring("lang:".Length);
+                    position += "lang:".Length;
+                    match = HitomiDataAnalysis.GetLanguageList(word);
+                }
             }
 
             string[] match_target = {

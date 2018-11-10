@@ -224,6 +224,7 @@ namespace Koromo_Copy.Component.Hitomi
             tagdata_collection.character.Sort((a, b) => b.Count.CompareTo(a.Count));
             tagdata_collection.series.Sort((a, b) => b.Count.CompareTo(a.Count));
             tagdata_collection.type.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.language.Sort((a, b) => b.Count.CompareTo(a.Count));
         }
         #endregion
 
@@ -247,22 +248,8 @@ namespace Koromo_Copy.Component.Hitomi
             tagdata_collection.character?.Clear();
             tagdata_collection.series?.Clear();
             tagdata_collection.type?.Clear();
-
-            HashSet<string> language = new HashSet<string>();
-
-            foreach (var metadata in metadata_collection)
-            {
-                if (metadata.Language != null)
-                {
-                    string lang = metadata.Language.Trim();
-                    if (lang != "" && !language.Contains(metadata.Language))
-                        language.Add(metadata.Language);
-                }
-            }
-
-            tagdata_collection.language = language.Select(x => new HitomiTagdata() { Tag = x }).ToList();
-            tagdata_collection.language.Sort((a, b) => a.Tag.CompareTo(b.Tag));
-
+            tagdata_collection.language?.Clear();
+            
             Dictionary<string, int> artist = new Dictionary<string, int>();
             Dictionary<string, int> tag = new Dictionary<string, int>();
             Dictionary<string, int> female = new Dictionary<string, int>();
@@ -271,10 +258,12 @@ namespace Koromo_Copy.Component.Hitomi
             Dictionary<string, int> character = new Dictionary<string, int>();
             Dictionary<string, int> series = new Dictionary<string, int>();
             Dictionary<string, int> type = new Dictionary<string, int>();
+            Dictionary<string, int> language = new Dictionary<string, int>();
 
             foreach (var metadata in metadata_collection)
             {
                 string lang = metadata.Language;
+                if (metadata.Language != null) Add(language, metadata.Language);
                 if (metadata.Language == null) lang = "N/A";
                 if (Settings.Instance.Hitomi.Language != "ALL" &&
                     Settings.Instance.Hitomi.Language != lang) continue;
@@ -294,6 +283,7 @@ namespace Koromo_Copy.Component.Hitomi
             tagdata_collection.character = character.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
             tagdata_collection.series = series.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
             tagdata_collection.type = type.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.language = language.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
 
             SortTagdata();
 
