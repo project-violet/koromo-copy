@@ -74,6 +74,12 @@ namespace Koromo_Copy_UX3
             }
         }
 
+        public void Transparent()
+        {
+            PinkRectangle.Fill = Brushes.Transparent;
+            Border.BorderBrush = Brushes.Transparent;
+        }
+
         private void SearchSimpleElements_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Select = !Select;
@@ -117,5 +123,12 @@ namespace Koromo_Copy_UX3
         }
 
         BitmapImage b = new BitmapImage();
+
+        private void Image_MouseMove(object sender, MouseEventArgs e)
+        {
+            ImageToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Relative;
+            ImageToolTip.HorizontalOffset = e.GetPosition((IInputElement)sender).X + 10;
+            ImageToolTip.VerticalOffset = e.GetPosition((IInputElement)sender).Y;
+        }
     }
 }
