@@ -166,7 +166,8 @@ namespace Koromo_Copy_UX3.Domain
                     "series:",
                     "tag:",
                     "tagx:",
-                    "type:"
+                    "type:",
+                    "lang:"
                 };
 
             List<HitomiTagdata> data_col = (from ix in match_target where ix.StartsWith(word) select new HitomiTagdata { Tag = ix }).ToList();
