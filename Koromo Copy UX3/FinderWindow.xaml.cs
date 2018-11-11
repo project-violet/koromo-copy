@@ -1,6 +1,9 @@
-﻿using Koromo_Copy_UX3.Domain;
+﻿using Koromo_Copy;
+using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,12 +29,15 @@ namespace Koromo_Copy_UX3
         {
             InitializeComponent();
 
+            DataContext = new Domain.FinderDataGridViewModel();
+
             Loaded += FinderWindow_Loaded;
         }
 
         private void FinderWindow_Loaded(object sender, RoutedEventArgs e)
         {
             logic = new AutoCompleteLogic(SearchText, AutoComplete, AutoCompleteList);
+            TagList.VerticalGridLinesBrush = TagList.HorizontalGridLinesBrush;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -41,9 +47,70 @@ namespace Koromo_Copy_UX3
             if (tag == "Search")
             {
                 //AppendAsync(SearchText.Text);
+                SearchAsync(SearchText.Text);
+                //SearchCount.Text = $"검색된 항목: {result.Count.ToString("#,#")}개";
             }
         }
-        
+
+        public async void SearchAsync(string content)
+        {
+            try
+            {
+                List<HitomiMetadata> result;
+                Stopwatch sw = Stopwatch.StartNew();
+                var end = sw.ElapsedMilliseconds;
+                if (!Settings.Instance.Hitomi.UsingAdvancedSearch || content.Contains("recent:"))
+                {
+                    result = await HitomiDataParser.SearchAsync(content.Trim());
+                    sw.Stop();
+                    if (content.Contains("recent:"))
+                    {
+                        var elem = content.Split(' ').Where(x => x.StartsWith("recent:")).ElementAt(0);
+                        int recent_count = 0;
+                        int recent_start = 0;
+                        if (elem.Substring("recent:".Length).Contains("-"))
+                        {
+                            recent_start = Convert.ToInt32(elem.Substring("recent:".Length).Split('-')[0]);
+                            recent_count = Convert.ToInt32(elem.Substring("recent:".Length).Split('-')[1]);
+                        }
+                        else
+                            recent_count = Convert.ToInt32(elem.Substring("recent:".Length));
+                        SearchText.Text = "recent:" + (recent_start + recent_count) + "-" + recent_count;
+                    }
+                }
+                else
+                {
+                    result = await HitomiDataSearchAdvanced.Search(content.Trim());
+                    end = sw.ElapsedMilliseconds;
+                    sw.Stop();
+                }
+
+                var vm = DataContext as Domain.FinderDataGridViewModel;
+                result.Sort((a, b) => b.ID.CompareTo(a.ID));
+                vm.Items.Clear();
+                foreach (var article in result)
+                    vm.Items.Add(new Domain.FinderDataGridItemViewModel
+                    {
+                        아이디 = article.ID.ToString(),
+                        제목 = article.Name,
+                        타입 = article.Type,
+                        작가 = string.Join(",", article.Artists ?? Enumerable.Empty<string>()),
+                        그룹 = string.Join(",", article.Groups ?? Enumerable.Empty<string>()),
+                        시리즈 = string.Join(",", article.Parodies ?? Enumerable.Empty<string>()),
+                        캐릭터 = string.Join(",", article.Characters ?? Enumerable.Empty<string>()),
+                        업로드_시간 = HitomiDate.estimate_datetime(article.ID).ToString(),
+                        태그 = string.Join(",", article.Tags ?? Enumerable.Empty<string>()),
+                        다운 = HitomiLog.Instance.Contains(article.ID.ToString()) ? "★" : ""
+                    });
+
+                ResultText.Text = $"{result.Count.ToString("#,#")}개 ({end / 1000.0} 초)";
+            }
+            catch
+            {
+
+            }
+        }
+
         #region Search Helper
         AutoCompleteLogic logic;
 

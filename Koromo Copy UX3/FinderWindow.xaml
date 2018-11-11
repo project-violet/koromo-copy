@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Finder" Height="482" Width="965" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
+        Title="Finder" Height="593" Width="1611" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="10">
@@ -47,6 +49,74 @@
                 <ListBox x:Name="AutoCompleteList" Width="350" Height="150" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
             </Popup>
             <Button x:Name="SearchButton" Grid.Column="1" HorizontalAlignment="Right" Width="78" Click="Button_Click" Grid.ColumnSpan="2" Tag="Search">검색</Button>
+        </Grid>
+        <Grid Grid.Row="1" Margin="10">
+            <DataGrid x:Name="TagList" Grid.Column="0" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
+                  SelectionMode="Single" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Background="Transparent"
+                  GridLinesVisibility="All" RowHeight="22"
+                  CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
+                <DataGrid.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 아이디}" Width="79" Header="아이디"
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" SortDirection="Descending"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 제목}" Width="354" Header="제목" 
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 타입}" Width="86" Header="타입" 
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 작가}" Width="105" Header="작가" 
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 그룹}" Width="151" Header="그룹" 
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 시리즈}" Width="144" Header="시리즈" 
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 캐릭터}" Width="145" Header="캐릭터" 
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 업로드_시간}" Width="163" Header="업로드 시간" 
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 태그}" Width="230" Header="태그" 
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 다운}" Width="40" Header="다운"
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                        <materialDesign:MaterialDataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </materialDesign:MaterialDataGridTextColumn.ElementStyle>
+                    </materialDesign:MaterialDataGridTextColumn>
+                </DataGrid.Columns>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Height" Value="25"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Background" Value="Gray"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <!--<DataGrid.ItemContainerStyle>
+                    <Style TargetType="DataGridRow">
+                        <EventSetter Event="MouseLeftButtonUp" Handler="DataGridRow_MouseDown"/>
+                    </Style>
+                </DataGrid.ItemContainerStyle>-->
+            </DataGrid>
+        </Grid>
+        <Grid Grid.Row="2" Margin="10">
+            <TextBlock x:Name="ResultText" Text="대기중" HorizontalAlignment="Center"/>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button HorizontalAlignment="Right" Width="100" Margin="0 0 10 0">다운로드</Button>
+                <Button HorizontalAlignment="Right" Width="140" >모두 다운로드</Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

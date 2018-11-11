@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
              mc:Ignorable="d" Background="#F5F5F5" MouseUp="SearchSimpleElements_MouseUp"
-    Height="242" Width="160">
+             Height="242">
     
     <UserControl.RenderTransform>
         <TransformGroup x:Name="transform">
@@ -80,17 +80,20 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Image x:Name="Image" HorizontalAlignment="Left" Grid.Row="0" Height="200" VerticalAlignment="Top" Width="150"
-                    Stretch="UniformToFill"  MouseMove="Image_MouseMove" RenderOptions.BitmapScalingMode="HighQuality" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
-                        <Image.Resources>
-                            <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
-                        </Image.Resources>
-                        <Image.ToolTip>
-                            <ToolTip x:Name="ImageToolTip" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                                <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
-                            </ToolTip>
-                        </Image.ToolTip>
-                    </Image>
+                    <Grid Grid.Row="0" Height="200" Width="145">
+                        <Image x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"
+                               Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
+                            <Image.Resources>
+                                <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
+                            </Image.Resources>
+                            <Image.ToolTip>
+                                <ToolTip x:Name="ImageToolTip" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+                                    <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
+                                </ToolTip>
+                            </Image.ToolTip>
+                        </Image>
+                    </Grid>
+
 
                     <TextBlock x:Name="Title" FontSize="12" Grid.Row="1" Height="32" MaxHeight="32" MaxWidth="150" TextWrapping="Wrap"/>
                 </Grid>

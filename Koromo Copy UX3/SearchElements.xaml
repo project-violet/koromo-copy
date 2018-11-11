@@ -118,7 +118,7 @@
 
         <Image x:Name="Image" HorizontalAlignment="Left" Grid.RowSpan="3" Grid.Column="0" Height="200" VerticalAlignment="Top" Width="150"
                Stretch="Uniform" ToolTipService.InitialShowDelay="0"
-               RenderOptions.BitmapScalingMode="HighQuality" Margin="4 2 2 2" MouseMove="Image_MouseMove">
+               RenderOptions.BitmapScalingMode="Fant" Margin="4 2 2 2" MouseMove="Image_MouseMove">
             <Image.Resources>
                 <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
             </Image.Resources>

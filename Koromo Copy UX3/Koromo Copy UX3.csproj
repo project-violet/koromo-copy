@@ -105,6 +105,7 @@
     <Compile Include="Domain\ArtistDataGridViewModel.cs" />
     <Compile Include="Domain\AutoCompleteLogic.cs" />
     <Compile Include="Domain\CommentViewModel.cs" />
+    <Compile Include="Domain\FinderDataGridViewModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />
     <Compile Include="Domain\UXConsole.cs" />
     <Compile Include="FinderWindow.xaml.cs">
