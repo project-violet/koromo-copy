@@ -120,6 +120,8 @@ namespace Koromo_Copy_UX3
             // Don't want our window to be able to get any smaller than this.
             SetValue(MinWidthProperty, this.Width);
             SetValue(MinHeightProperty, this.Height);
+
+            RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
         }
 
         private void DataGridRow_MouseDown(object sender, MouseButtonEventArgs e)

@@ -114,13 +114,75 @@ namespace Koromo_Copy_UX3
                     b.BeginInit();
                     b.UriSource = new Uri(ha.Thumbnail);
                     b.EndInit();
-                    //b.DownloadCompleted += B_DownloadCompleted;
-                    //.Text = ha.ImagesLink.Count + " Pages";
                     Title.Text = ha.Title;
                     Image.Source = b;
+                    //b.DownloadCompleted += B_DownloadCompleted;
                 }));
             });
         }
+
+        //private void B_DownloadCompleted(object sender, EventArgs e)
+        //{
+        //    Image.Source = bitmapto(b, b.Width, b.Height);
+        //}
+
+        //System.Drawing.Bitmap GetBitmap(BitmapSource source)
+        //{
+        //    System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(
+        //      source.PixelWidth,
+        //      source.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+        //    System.Drawing.Imaging.BitmapData data = bmp.LockBits(
+        //      new System.Drawing.Rectangle(System.Drawing.Point.Empty, bmp.Size),
+        //      System.Drawing.Imaging.ImageLockMode.WriteOnly,
+        //      System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+        //    source.CopyPixels(
+        //      Int32Rect.Empty,
+        //      data.Scan0,
+        //      data.Height * data.Stride,
+        //      data.Stride);
+        //    bmp.UnlockBits(data);
+        //    return bmp;
+        //}
+
+        //public static BitmapSource ConvertBitmap(System.Drawing.Bitmap source)
+        //{
+        //    return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+        //                  source.GetHbitmap(),
+        //                  IntPtr.Zero,
+        //                  Int32Rect.Empty,
+        //                  BitmapSizeOptions.FromEmptyOptions());
+        //}
+
+
+        //public BitmapSource bitmapto(BitmapSource bitmap_source, double ActualWidth, double ActualHeight)
+        //{
+        //    PresentationSource source = PresentationSource.FromVisual(this);
+
+        //    double dpiX, dpiY;
+        //    dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
+        //    dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
+
+        //    float dpi = (float)dpiX;
+        //    float factor = dpi / 96f * 2;
+        //    int width = (int)Math.Round(ActualWidth * factor);
+        //    int height = (int)Math.Round(ActualHeight * factor);
+
+        //    // Create bitmaps.
+        //    System.Drawing.Bitmap oldBitmap = GetBitmap(bitmap_source);
+        //    System.Drawing.Bitmap newBitmap = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+        //    // Draw the new bitmap. Use high-quality interpolation mode.
+        //    using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(newBitmap))
+        //    {
+        //        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+        //        g.Clear(System.Drawing.Color.Transparent);
+        //        g.DrawImage(oldBitmap, 0, 0, newBitmap.Width, newBitmap.Height);
+        //    }
+
+        //    // Set the image source to the resized bitmap.
+        //    return ConvertBitmap(newBitmap);
+        //}
 
         BitmapImage b = new BitmapImage();
 
