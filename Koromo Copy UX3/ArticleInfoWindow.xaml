@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         mc:Ignorable="d"
-        Title="ArticleInfoWindow" Height="300" Width="300">
+        Title="ArticleInfoWindow" Height="348.148" Width="612.963" WindowStyle="ToolWindow">
     <Grid>
-        
+
     </Grid>
 </Window>

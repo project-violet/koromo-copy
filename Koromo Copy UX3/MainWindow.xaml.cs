@@ -54,6 +54,7 @@ namespace Koromo_Copy_UX3
             dispatcherTimer.Start();
 
             Title += Koromo_Copy.Version.SimpleText;
+            VersionText.Text += Koromo_Copy.Version.SimpleText;
         }
 
         private void SearchSpace_KeyDown(object sender, KeyEventArgs e)
@@ -89,6 +90,12 @@ namespace Koromo_Copy_UX3
         private void MemoryStatus_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
     }
 }
