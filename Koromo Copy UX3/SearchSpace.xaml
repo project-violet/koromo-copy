@@ -76,7 +76,31 @@
                 <Popup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=SearchText}">
                     <ListBox x:Name="AutoCompleteList" Width="350" Height="150" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
                 </Popup>
-                <Button x:Name="SearchButton" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="78" Click="Button_Click" Grid.ColumnSpan="2" Tag="Search">검색</Button>
+                <Button x:Name="SearchButton" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="78" Click="Button_Click" 
+                        Grid.ColumnSpan="2" Tag="Search" BorderBrush="LightPink" Foreground="White" Content="검색">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Pink"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FDAEBB"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#F98498"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+                </Button>
                 <!--<ProgressBar Value="0" Height="10" x:Name="TotalProgress" Grid.ColumnSpan="3" Grid.Row="1" IsIndeterminate="True" Style="{StaticResource MaterialDesignLinearProgressBar}"/>-->
             </Grid>
 
@@ -116,7 +140,7 @@
                 </Border>-->
             </local:WheelSpeedScrollViewer>
 
-            <Separator Grid.Row="3"></Separator>
+            <Separator Grid.Row="3" Background="Pink"></Separator>
 
             <Grid Grid.Row="4" Margin="5">
                 <Grid>
@@ -130,10 +154,32 @@
                     </TextBlock>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Click="Button_Click" Grid.Column="1" HorizontalAlignment="Center" Width="100" Tag="Tidy">정리</Button>
-                        <Button Click="Button_Click" Width="100" Margin="20 0 3 0" Tag="SelectAll">모두 선택</Button>
-                        <Button Click="Button_Click" Width="100" Tag="DeSelectAll">모두 선택 취소</Button>
-                        <Button Click="Button_Click" Grid.Column="1" Margin="20 0 0 0" Width="100" Tag="Downloader">다운로드</Button>
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Pink"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FDAEBB"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="#F98498"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button Click="Button_Click" Grid.Column="1" HorizontalAlignment="Center"  BorderBrush="LightPink" Foreground="White" Width="100" Tag="Tidy">정리</Button>
+                        <Button Click="Button_Click" Width="100" Margin="20 0 3 0" BorderBrush="LightPink" Foreground="White" Tag="SelectAll">모두 선택</Button>
+                        <Button Click="Button_Click" Height="20" Width="100" Tag="DeSelectAll" BorderBrush="LightPink" Foreground="White" >모두 선택 취소</Button>
+                        <Button Click="Button_Click" Grid.Column="1" Margin="20 0 0 0" Width="100" BorderBrush="LightPink" Foreground="White" Tag="Downloader">다운로드</Button>
                     </StackPanel>
                 </Grid>
             </Grid>

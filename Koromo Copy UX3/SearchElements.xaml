@@ -151,7 +151,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" FontSize="17" Margin="10 0 5 0" VerticalAlignment="Top">태그:</TextBlock>
-            <WrapPanel Grid.Column="1" x:Name="Tags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#F0F0F0"/>
+            <WrapPanel Grid.Column="1" x:Name="Tags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FFE8EC"/>
         </Grid>
 
         <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
@@ -161,6 +161,29 @@
         </StackPanel>
 
         <StackPanel Grid.Column="2" Grid.RowSpan="3"  VerticalAlignment="Center" Margin="10 0 0 0">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Background" Value="#FF94A6"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FDAEBB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#F98498"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
             <Button FontSize="12" Margin="0 0 30 3" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="110" Click="Button_Click" Tag="FindArtist">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Artist" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>

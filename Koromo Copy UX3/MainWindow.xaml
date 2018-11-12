@@ -5,20 +5,137 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
         mc:Ignorable="d"
         Title="Koromo Copy " Height="616" Width="1156"
-        WindowStartupLocation="CenterScreen">
+        WindowStyle="None"
+        AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Margin="3" FontSize="12" 
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="5"
+                            GlassFrameThickness="0,0,0,1" ResizeBorderThickness="10"/>
+    </WindowChrome.WindowChrome>
+
+    <Border Margin="10" BorderThickness="1" BorderBrush="Pink">
+        <Border.Effect>
+            <DropShadowEffect Color="Black"
+                              Direction="270"
+                              BlurRadius="10"
+                              ShadowDepth="3" />
+        </Border.Effect>
+
+        <Grid Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="Pink" HorizontalAlignment="Stretch" Height="5" VerticalAlignment="Top"/>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 5 0" HorizontalAlignment="Right">
+                    <Button x:Name="Btnclos2" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" >
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Pink"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="HotPink"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="WindowMinimize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="Btnclose1" BorderThickness="0" Margin="0 0 5 0" Width="20" Height="20">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Pink"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="HotPink"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="WindowMaximize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="Btnclose" BorderThickness="0" Width="20" Height="20">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Pink"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="HotPink"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Close" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <TextBlock x:Name="VersionText" Grid.RowSpan="2" HorizontalAlignment="Left" FontSize="25" 
+                       Text="Koromo Copy " Margin="25 15 0 10" FontFamily="Open Sans Light" FontWeight="Thin" Opacity=".8"/>
+                <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="12" VerticalAlignment="Top"
                    x:Name="MemoryStatus" Text="Memory Usage :  0 KB" PreviewMouseDown="MemoryStatus_PreviewMouseDown"/>
-        <Border Grid.Row="1" Margin="10" BorderThickness="2" BorderBrush="Pink">
-            <local:SearchSpace/>
-        </Border>
-    </Grid>
+            </Grid>
+            <!--<Border Grid.Row="2" Margin="10" BorderThickness="2" BorderBrush="Pink">
+            </Border>-->
+            <TabControl Grid.Row="2"  Margin="10">
+                <TabItem Header="검색">
+                    <local:SearchSpace/>
+                </TabItem>
+                <TabItem Header="TabItem">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Border>
 
 </Window>
