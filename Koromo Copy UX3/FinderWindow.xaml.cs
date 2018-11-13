@@ -25,19 +25,27 @@ namespace Koromo_Copy_UX3
     /// </summary>
     public partial class FinderWindow : Window
     {
-        public FinderWindow()
+        string searcher;
+        public FinderWindow(string searcher = "")
         {
             InitializeComponent();
 
             DataContext = new Domain.FinderDataGridViewModel();
 
             Loaded += FinderWindow_Loaded;
+            this.searcher = searcher;
         }
 
         private void FinderWindow_Loaded(object sender, RoutedEventArgs e)
         {
             logic = new AutoCompleteLogic(SearchText, AutoComplete, AutoCompleteList);
             TagList.VerticalGridLinesBrush = TagList.HorizontalGridLinesBrush;
+
+            if (searcher != "")
+            {
+                SearchText.Text = searcher;
+                SearchAsync(searcher);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
