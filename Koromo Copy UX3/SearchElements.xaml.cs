@@ -1,4 +1,5 @@
-﻿using Koromo_Copy.Component.EH;
+﻿using Koromo_Copy;
+using Koromo_Copy.Component.EH;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using MaterialDesignThemes.Wpf;
@@ -129,6 +130,8 @@ namespace Koromo_Copy_UX3
                     e.Height = 20;
                     e.FontSize = 10;
                     e.Margin = new Thickness(1, 1, 1, 1);
+                    e.Click += E_Click;
+                    e.Tag = tag;
 
                     Tags.Children.Add(e);
                 }
@@ -136,6 +139,12 @@ namespace Koromo_Copy_UX3
             Date.Text = HitomiDate.estimate_datetime(Convert.ToInt32(ha.Magic)).ToString();
 
             Loaded += SearchElements_Loaded;
+        }
+
+        private void E_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = (sender as Button).Tag.ToString().Replace(' ', '_');
+            (new FinderWindow(tag)).Show();
         }
 
         bool init = false;
