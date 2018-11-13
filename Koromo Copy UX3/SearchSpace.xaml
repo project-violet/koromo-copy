@@ -125,22 +125,25 @@
                 <ProgressBar Value="0" Height="10" x:Name="TotalProgress" Grid.ColumnSpan="3" Grid.Row="1" IsIndeterminate="True" Style="{StaticResource AnimationStyle}"/>
             </Grid>
 
-            <local:WheelSpeedScrollViewer Grid.Row="2" SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
-                <!--<local:WheelSpeedScrollViewer.SpeedFactor>
+            <Border Grid.Row="2" BorderThickness="1" BorderBrush="Pink">
+
+                <local:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+                    <!--<local:WheelSpeedScrollViewer.SpeedFactor>
                     <Binding Path="SearchSpaceWheelSpeed"
                              Source="{x:Static domain:SettingWrap.Instance}"/>
                 </local:WheelSpeedScrollViewer.SpeedFactor>-->
-                <!--<Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True">
+                    <!--<Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True">
                     <Border x:Name="SearchBorder" Background="Transparent" BorderBrush="Black" BorderThickness="1" Margin="-2">
                         <Border.Effect>
                             <DropShadowEffect x:Name="DropShadow" ShadowDepth="0" BlurRadius="2"/>
                         </Border.Effect>-->
-                <StackPanel x:Name="SearchPanel"/>
-                <!--</Border>
+                    <StackPanel x:Name="SearchPanel"/>
+                    <!--</Border>
                 </Border>-->
-            </local:WheelSpeedScrollViewer>
+                </local:WheelSpeedScrollViewer>
+            </Border>
 
-            <Separator Grid.Row="3" Background="Pink"></Separator>
+            <!--<Separator Grid.Row="3" Background="Pink"></Separator>-->
 
             <Grid Grid.Row="4" Margin="5">
                 <Grid>
