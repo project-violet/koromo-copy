@@ -135,6 +135,29 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                <ToggleButton IsChecked="{Binding UsingSettingLanguageWhenAdvanceSearch}">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+                <TextBlock Text="  고급검색시 설정된 언어를 항상 검색어로 추가" ToolTip="고급검색은 설정된 언어에 따르지 않기때문에 한 언어로만 고급검색을 하려는 경우 유용합니다.">
+                    <TextBlock.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </TextBlock.Resources>
+                </TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
                 <ToggleButton IsChecked="{Binding UsingFuzzy}">
                     <ToggleButton.Resources>
                         <ResourceDictionary>
