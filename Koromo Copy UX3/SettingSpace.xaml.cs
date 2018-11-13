@@ -1,4 +1,13 @@
-﻿using System;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy_UX3.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +32,65 @@ namespace Koromo_Copy_UX3
         public SettingSpace()
         {
             InitializeComponent();
+
+            SettingsTree.Items.Add(new TreeViewItem
+            {
+                Header="정보",
+                DataContext = new SettingViewInformation()
+            });
+
+            var downloader = new TreeViewItem
+            {
+                Header="다운로더",
+                DataContext = new SettingViewDownloader()
+            };
+            downloader.Items.Add(new TreeViewItem
+            {
+                Header = "히토미",
+                DataContext = new SettingViewHitomi { DataContext = new SettingHitomiViewModel() }
+            });
+            downloader.Items.Add(new TreeViewItem
+            {
+                Header = "익헨"
+            });
+            downloader.Items.Add(new TreeViewItem
+            {
+                Header = "마루마루"
+            });
+            downloader.Items.Add(new TreeViewItem
+            {
+                Header = "픽시브"
+            });
+            SettingsTree.Items.Add(downloader);
+            
+            SettingsTree.Items.Add(new TreeViewItem
+            {
+                Header = "유저 인터페이스"
+            });
+
+            SettingsTree.Items.Add(new TreeViewItem
+            {
+                Header = "플러그인"
+            });
+
+            SettingsTree.Items.Add(new TreeViewItem
+            {
+                Header = "업데이트"
+            });
+
+            ContentControl.Content = (SettingsTree.Items[0] as TreeViewItem).DataContext;
+        }
+
+        private void SettingsTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var item = SettingsTree.SelectedItem;
+            if (item is TreeViewItem tvi)
+            {
+                if (tvi.DataContext != null)
+                {
+                    ContentControl.Content = tvi.DataContext;
+                }
+            }
         }
     }
 }

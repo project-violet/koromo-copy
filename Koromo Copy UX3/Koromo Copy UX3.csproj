@@ -106,6 +106,7 @@
     <Compile Include="Domain\AutoCompleteLogic.cs" />
     <Compile Include="Domain\CommentViewModel.cs" />
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
+    <Compile Include="Domain\SettingHitomiViewModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />
     <Compile Include="Domain\UXConsole.cs" />
     <Compile Include="FinderWindow.xaml.cs">
@@ -128,6 +129,15 @@
     </Compile>
     <Compile Include="SettingSpace.xaml.cs">
       <DependentUpon>SettingSpace.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingViewDownloader.xaml.cs">
+      <DependentUpon>SettingViewDownloader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingViewHitomi.xaml.cs">
+      <DependentUpon>SettingViewHitomi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingViewInformation.xaml.cs">
+      <DependentUpon>SettingViewInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="WheelSpeedScrollViewer.cs" />
     <Page Include="ArticleInfoWindow.xaml">
@@ -187,6 +197,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingSpace.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewDownloader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewHitomi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

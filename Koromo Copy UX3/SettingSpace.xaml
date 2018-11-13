@@ -4,14 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Background="#FAFAFA">
+             d:DesignHeight="300" d:DesignWidth="300" Background="Transparent">
 
     <UserControl.Resources>
     </UserControl.Resources>
 
     <Grid>
-        <TreeView MinWidth="220">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView x:Name="SettingsTree" MinWidth="220" Grid.Column="0" SelectedItemChanged="SettingsTree_SelectedItemChanged">
             <TreeView.Resources>
                 <ResourceDictionary>
                     <ResourceDictionary.MergedDictionaries>
@@ -21,8 +26,56 @@
                     </ResourceDictionary.MergedDictionaries>
                 </ResourceDictionary>
             </TreeView.Resources>
-            <TreeViewItem Header="정보"/>
-            
+            <!--<TreeViewItem Header="정보">
+                --><!--<TreeViewItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="16" Height="16">
+                            <materialDesign:PackIcon Width="24" Height="24" Kind="Information" VerticalAlignment="Center"/>
+                        </Viewbox>
+                        <TextBlock Margin="8 0 0 0">정보</TextBlock>
+                    </StackPanel>
+                </TreeViewItem.Header>--><!--
+            </TreeViewItem>
+            <TreeViewItem Header="다운로더">
+                --><!--<TreeViewItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="16" Height="16">
+                            <materialDesign:PackIcon Width="24" Height="24" Kind="Download" VerticalAlignment="Center"/>
+                        </Viewbox>
+                        <TextBlock Margin="8 0 0 0">다운로더</TextBlock>
+                    </StackPanel>
+                </TreeViewItem.Header>--><!--
+                <TreeViewItem Header="히토미"/>
+                <TreeViewItem Header="익헨"/>
+                <TreeViewItem Header="마루마루"/>
+                <TreeViewItem Header="픽시브"/>
+            </TreeViewItem>
+            <TreeViewItem Header="네트워크">
+                --><!--<TreeViewItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="16" Height="16">
+                            <materialDesign:PackIcon Width="24" Height="24" Kind="DownloadNetwork" VerticalAlignment="Center"/>
+                        </Viewbox>
+                        <TextBlock Margin="8 0 0 0">네트워크</TextBlock>
+                    </StackPanel>
+                </TreeViewItem.Header>--><!--
+            </TreeViewItem>
+            <TreeViewItem Header="유저 인터페이스">
+                --><!--<TreeViewItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="16" Height="16">
+                            <materialDesign:PackIcon Width="24" Height="24" Kind="CursorPointer" VerticalAlignment="Center"/>
+                        </Viewbox>
+                        <TextBlock Margin="8 0 0 0">유저 인터페이스</TextBlock>
+                    </StackPanel>
+                </TreeViewItem.Header>--><!--
+            </TreeViewItem>-->
         </TreeView>
+        <GridSplitter BorderThickness="1" BorderBrush="Gainsboro"></GridSplitter>
+        <ScrollViewer Grid.Column="1">
+            <Grid>
+                <ContentControl x:Name="ContentControl" Content="{Binding ElementName=SettingsTree, Path=SelectedItem.Content}"/>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>
