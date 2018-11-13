@@ -64,6 +64,7 @@ namespace Koromo_Copy
                 model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";
                 model.Hitomi.Language = "korean";
                 model.Hitomi.CustomAutoComplete = new string[] { "recent:0-25" };
+                model.Hitomi.UsingSettingLanguageWhenAdvanceSearch = true;
 
                 model.HitomiAnalysis = new HitomiAnalysisSetting();
 
