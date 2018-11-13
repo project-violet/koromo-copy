@@ -218,7 +218,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  작가추천 목록 생성시 해당 작가의 Article 수를 곱하지 않음" ToolTip="작가의 Article 수를 곱하지 않음으로써 많은 작품을 가진 작가가 상위에 노출되지 않게 합니다.">
+                <TextBlock Text="  작가추천 목록 생성시 해당 작가의 Article 수를 곱하지 않습니다" ToolTip="작가의 Article 수를 곱하지 않음으로써 많은 작품을 가진 작가가 상위에 노출되지 않게 합니다.">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
