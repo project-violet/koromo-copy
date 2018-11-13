@@ -145,5 +145,17 @@ namespace Koromo_Copy_UX3.Domain
                 OnPropertyChanged();
             }
         }
+
+        public bool UsingSettingLanguageWhenAdvanceSearch
+        {
+            get { return Settings.Instance.Hitomi.UsingSettingLanguageWhenAdvanceSearch; }
+            set
+            {
+                if (Settings.Instance.Hitomi.UsingSettingLanguageWhenAdvanceSearch == value) return;
+                Settings.Instance.Hitomi.UsingSettingLanguageWhenAdvanceSearch = value;
+                Settings.Instance.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }
