@@ -434,6 +434,8 @@ namespace Koromo_Copy.Component.Hitomi
                                     checker[i] = md.Tags.Contains("male:" + token);
                                 break;
                         }
+                        if (query.option == HitomiDataAdvancedQueryTokenOption.Complement)
+                            checker[i] = !checker[i];
                     }
                 }
             }
