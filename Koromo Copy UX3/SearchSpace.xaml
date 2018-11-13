@@ -36,7 +36,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Margin="5">
+            <Grid Grid.Row="0" Margin="0 5 0 5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -46,8 +46,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Margin="2" Grid.Column="0" Text="검색 : "/>
-                <TextBox x:Name="SearchText" Grid.Column="1" Grid.Row="0" PreviewKeyDown="SearchText_PreviewKeyDown" KeyDown="SearchText_KeyDown" KeyUp="SearchText_KeyUp" Text="recent:0-25">
+                <!--<TextBlock Margin="2" Grid.Column="0" Text="검색 : "/>-->
+                <TextBox x:Name="SearchText" Grid.Column="1" Grid.Row="0" PreviewKeyDown="SearchText_PreviewKeyDown" KeyDown="SearchText_KeyDown" KeyUp="SearchText_KeyUp" Text="recent:0-25" SelectionBrush="Pink">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
