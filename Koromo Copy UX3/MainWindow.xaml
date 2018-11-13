@@ -10,19 +10,74 @@
         Title="Koromo Copy " Height="616" Width="1156"
         WindowStyle="None"
         AllowsTransparency="True" Background="Transparent"
-        WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown">
+        WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="5"
-                            GlassFrameThickness="0,0,0,1" ResizeBorderThickness="10"/>
+                      GlassFrameThickness="0,0,0,1" ResizeBorderThickness="10"/>
     </WindowChrome.WindowChrome>
 
-    <Border Margin="10" BorderThickness="1" BorderBrush="Pink">
+    <Window.Resources>
+        <Style x:Key="TabControlStyle1" TargetType="TabControl">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                                <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DockPanel x:Name="headerPanel" Background="Transparent" Grid.Column="0" IsItemsHost="true" Margin="2,2,2,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1" />
+                            <Border x:Name="contentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="TabItem" x:Name="TabItemStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Grid.Row="1" Name="Border" BorderThickness="0,0,0,4" Background="Transparent" BorderBrush="Gainsboro" Margin="0,0">
+                            <Grid Width="70">
+                                <ContentPresenter x:Name="ContentSite"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Left"
+                                                            ContentSource="Header"
+                                                            Margin="0 0 0 4"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Pink" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Gainsboro" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border x:Name="TopBorder" Margin="10" BorderThickness="1">
+        <Border.BorderBrush>
+            <SolidColorBrush Color="Pink" Opacity="1"/>
+        </Border.BorderBrush>
         <Border.Effect>
-            <DropShadowEffect Color="Black"
-                              Direction="270"
-                              BlurRadius="10"
-                              ShadowDepth="3" />
+            <DropShadowEffect x:Name="DropShadow" Color="Pink"
+                                  BlurRadius="10"
+                                  ShadowDepth="0"/>
         </Border.Effect>
 
         <Grid Background="White">
@@ -37,8 +92,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 5 0" HorizontalAlignment="Right">
-                    <Button x:Name="Btnclos2" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" >
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button x:Name="Btnclos2" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" Tag="Minimize" Click="ThreeButton_Click">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -65,7 +120,7 @@
                             <materialDesign:PackIcon Kind="WindowMinimize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="Btnclose1" BorderThickness="0" Margin="0 0 5 0" Width="20" Height="20">
+                    <Button x:Name="Btnclose1" BorderThickness="0" Margin="0 0 5 0" Width="20" Height="20" Tag="Maximize" Click="ThreeButton_Click">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -89,10 +144,11 @@
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="WindowMaximize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <materialDesign:PackIcon x:Name="Maximize" Kind="WindowMaximize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible"/>
+                            <materialDesign:PackIcon x:Name="Restore"  Kind="WindowRestore" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="Btnclose" BorderThickness="0" Width="20" Height="20">
+                    <Button BorderThickness="0" Width="20" Height="20" Tag="Close" Click="ThreeButton_Click">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -121,19 +177,27 @@
                     </Button>
                 </StackPanel>
                 <TextBlock x:Name="VersionText" Grid.RowSpan="2" HorizontalAlignment="Left" FontSize="25" 
-                       Text="Koromo Copy " Margin="25 15 0 10" FontFamily="Open Sans Light" FontWeight="Thin" Opacity=".8"/>
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="12" VerticalAlignment="Top"
-                   x:Name="MemoryStatus" Text="Memory Usage :  0 KB" PreviewMouseDown="MemoryStatus_PreviewMouseDown"/>
+                                Text="Koromo Copy " Margin="25 15 0 10" FontFamily="Open Sans Light" FontWeight="Thin" Opacity=".8"/>
+                <TextBlock HorizontalAlignment="Center" Margin="0 15 0 0" FontSize="12" VerticalAlignment="Top" Opacity=".8"
+                               x:Name="MemoryStatus" Text="Memory Usage :  0 KB" PreviewMouseDown="MemoryStatus_PreviewMouseDown"/>
+                <TextBlock Grid.Row="1" Text="Copyright (C) 2018. DCInside Programming Gallery Union. All Rights Reserved." FontSize="14" FontWeight="Thin" Opacity=".8"
+                               HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 10 0"/>
             </Grid>
-            <!--<Border Grid.Row="2" Margin="10" BorderThickness="2" BorderBrush="Pink">
-            </Border>-->
-            <TabControl Grid.Row="2"  Margin="10">
-                <TabItem Header="검색">
+
+            <TabControl Grid.Row="2"  Margin="10" BorderThickness="0" FontSize="13" Style="{DynamicResource TabControlStyle1}">
+                <TabItem Header="검색" BorderThickness="0">
                     <local:SearchSpace/>
                 </TabItem>
-                <TabItem Header="TabItem">
-                    <Grid Background="#FFE5E5E5"/>
+                <TabItem Header="다운로드">
                 </TabItem>
+                <TabItem Header="작가추천">
+                </TabItem>
+                <TabItem Header="도구">
+                </TabItem>
+                <TabItem Header="설정">
+                    <local:SettingSpace/>
+                </TabItem>
+                <TabItem IsEnabled="False" HorizontalAlignment="Stretch"/>
             </TabControl>
         </Grid>
     </Border>

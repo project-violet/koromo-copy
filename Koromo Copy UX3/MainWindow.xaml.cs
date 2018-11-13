@@ -55,6 +55,7 @@ namespace Koromo_Copy_UX3
 
             Title += Koromo_Copy.Version.SimpleText;
             VersionText.Text += Koromo_Copy.Version.SimpleText;
+            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
         }
 
         private void SearchSpace_KeyDown(object sender, KeyEventArgs e)
@@ -96,6 +97,50 @@ namespace Koromo_Copy_UX3
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            DropShadow.BlurRadius = 8;
+            DropShadow.Color = Colors.Gray;
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            DropShadow.BlurRadius = 10;
+            DropShadow.Color = Colors.Pink;
+        }
+        
+        private void ThreeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = (sender as Button).Tag.ToString();
+            if (tag == "Minimize")
+            {
+                WindowState = WindowState.Minimized;
+            }
+            else if (tag == "Maximize")
+            {
+                if (WindowState != WindowState.Maximized)
+                {
+                    TopBorder.Margin = new Thickness(0,5,0,0);
+                    TopBorder.BorderThickness = new Thickness(0);
+                    WindowState = WindowState.Maximized;
+                    Maximize.Visibility = Visibility.Collapsed;
+                    Restore.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    TopBorder.Margin = new Thickness(10);
+                    TopBorder.BorderThickness = new Thickness(1);
+                    WindowState = WindowState.Normal;
+                    Restore.Visibility = Visibility.Collapsed;
+                    Maximize.Visibility = Visibility.Visible;
+                }
+            }
+            else if (tag == "Close")
+            {
+                Close();
+            }
         }
     }
 }
