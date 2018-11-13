@@ -124,6 +124,7 @@ namespace Koromo_Copy.Component.Hitomi
             var stack = new Stack<char>();
             var result_stack = new Stack<string>();
             bool latest = false;
+            bool complement = false;
             for (int i = 0; i < query_string.Length; i++)
             {
                 var builder = new StringBuilder();
@@ -147,6 +148,16 @@ namespace Koromo_Copy.Component.Hitomi
                 switch (token[0])
                 {
                     case '(':
+                        if (latest)
+                        {
+                            stack.Push('+');
+                            latest = false;
+                        }
+                        if (complement)
+                        {
+                            stack.Push('~');
+                            complement = false;
+                        }
                         stack.Push('(');
                         break;
 
@@ -158,13 +169,14 @@ namespace Koromo_Copy.Component.Hitomi
                             throw new Exception("Missmatch closer!");
                         }
                         stack.Pop();
+                        if (stack.Count > 0 && stack.Peek() == '~')
+                            result_stack.Push(stack.Pop().ToString());
                         break;
 
                     case '-':
                     case '+':
                     case '&':
                     case '|':
-                    case '~':
                         var p = get_priority(token[0]);
                         while (stack.Count > 0)
                         {
@@ -174,6 +186,10 @@ namespace Koromo_Copy.Component.Hitomi
                         }
                         stack.Push(token[0]);
                         latest = false;
+                        break;
+
+                    case '~':
+                        complement = true;
                         break;
 
                     default:
@@ -189,6 +205,11 @@ namespace Koromo_Copy.Component.Hitomi
                             stack.Push('+');
                         }
                         result_stack.Push(token);
+                        if (complement)
+                        {
+                            result_stack.Push("~");
+                            complement = false;
+                        }
                         latest = true;
                         break;
                 }
@@ -256,6 +277,11 @@ namespace Koromo_Copy.Component.Hitomi
                         break;
 
                     case '~':
+                        {
+                            var s = stack.Pop();
+                            s.option = HitomiDataAdvancedQueryTokenOption.Complement;
+                            stack.Push(s);
+                        }
                         break;
 
                     default:
@@ -429,6 +455,9 @@ namespace Koromo_Copy.Component.Hitomi
                             checker[i] = checker[s1] || checker[s2];
                         else if (qop.combination == HitomiDataAdvancedQueryCombinationOption.Difference)
                             checker[i] = checker[s1] && !checker[s2];
+
+                        if (qop.option == HitomiDataAdvancedQueryTokenOption.Complement)
+                            checker[i] = !checker[i];
                     }
                 }
             }
