@@ -93,13 +93,13 @@ namespace Koromo_Copy_UX3.Domain
         {
             if (e.Key == Key.Enter) return;
             int position = SearchText.SelectionStart;
-            while (position > 0 && SearchText.Text[position - 1] != ' ')
+            while (position > 0 && !" ()-+&|~".Contains(SearchText.Text[position - 1]))
                 position -= 1;
 
             string word = "";
             for (int i = position; i < SearchText.Text.Length; i++)
             {
-                if (SearchText.Text[i] == ' ') break;
+                if (" ()-+&|~".Contains(SearchText.Text[i])) break;
                 word += SearchText.Text[i];
             }
 
