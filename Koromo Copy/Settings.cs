@@ -11,6 +11,7 @@ using Koromo_Copy.Interface;
 using Koromo_Copy.UX;
 using Newtonsoft.Json;
 using System;
+using System.Drawing;
 using System.IO;
 
 namespace Koromo_Copy
@@ -73,7 +74,8 @@ namespace Koromo_Copy
                     ArtistViewerWheelSpeed = 1.5,
                     SearchSpaceWheelSpeed = 1.5,
                     DoNotHightlightAutoCompleteResults = false,
-                    MaxCountOfAutoCompleteResult = 100
+                    MaxCountOfAutoCompleteResult = 100,
+                    ThemeColor = Color.Pink
                 };
             }
             model.LatestAccessTime = DateTime.Now;

@@ -9,6 +9,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,5 +41,10 @@ namespace Koromo_Copy.UX
         /// </summary>
         [JsonProperty]
         public int MaxCountOfAutoCompleteResult;
+
+        /// <summary>
+        /// 테마 색상입니다.
+        /// </summary>
+        public Color ThemeColor;
     }
 }
