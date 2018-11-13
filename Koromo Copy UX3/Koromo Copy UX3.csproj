@@ -126,6 +126,9 @@
     <Compile Include="SearchSpace.xaml.cs">
       <DependentUpon>SearchSpace.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingSpace.xaml.cs">
+      <DependentUpon>SettingSpace.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WheelSpeedScrollViewer.cs" />
     <Page Include="ArticleInfoWindow.xaml">
       <SubType>Designer</SubType>
@@ -180,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SearchSpace.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingSpace.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
