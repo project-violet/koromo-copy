@@ -46,6 +46,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public bool UsingAdvancedSearch;
 
+        /// <summary>
+        /// 고급 검색시 설정된 언어를 기본으로 추가합니다.
+        /// </summary>
+        [JsonProperty]
+        public bool UsingSettingLanguageWhenAdvanceSearch;
+
         [JsonProperty]
         public string[] CustomAutoComplete;
     }

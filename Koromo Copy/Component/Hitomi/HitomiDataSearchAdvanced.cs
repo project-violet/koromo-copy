@@ -362,7 +362,7 @@ namespace Koromo_Copy.Component.Hitomi
                                 if (md.Artists != null)
                                     checker[i] = md.Artists.Any(x => x.Contains(token));
                                 if (md.Name != null)
-                                    checker[i] = token.ToLower().Contains(token);
+                                    checker[i] = md.Name.ToLower().Contains(token);
                                 if (md.Groups != null)
                                     checker[i] = md.Groups.Any(x => x.Contains(token));
                                 if (md.Parodies != null)
@@ -439,7 +439,7 @@ namespace Koromo_Copy.Component.Hitomi
                     }
                 }
             }
-
+            
             for (int i = queries.Length - 1; i >= 0; i--)
             {
                 if (queries[i] is HitomiDataAdvancedQuery query)
@@ -474,6 +474,9 @@ namespace Koromo_Copy.Component.Hitomi
 
             int number = Environment.ProcessorCount;
             int term = HitomiData.Instance.metadata_collection.Count / number;
+
+            if (Settings.Instance.Hitomi.UsingSettingLanguageWhenAdvanceSearch)
+                query_string = "lang:" + Settings.Instance.Hitomi.Language + " " + query_string;
 
             query = to_linear(make_tree(query_string));
             Monitor.Instance.Push("[AdvancedQuery HitomiMetadata] " + query_string);
