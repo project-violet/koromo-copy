@@ -11,6 +11,7 @@ using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -63,7 +64,17 @@ namespace Koromo_Copy_UX3.Domain
 #else
                                         new PropertyMetadata(Settings.Instance.UXSetting.MaxCountOfAutoCompleteResult));
 #endif
-        
+
+        public static readonly DependencyProperty ThemeColorProperty =
+            DependencyProperty.Register(nameof(ThemeColorProperty),
+                                        typeof(Color),
+                                        typeof(SettingWrap),
+#if DEBUG
+                                        new PropertyMetadata(Color.Pink));
+#else
+                                        new PropertyMetadata(Settings.Instance.UXSetting.ThemeColor));
+#endif
+
         private static readonly SettingWrap _instance = new SettingWrap();
         public static SettingWrap Instance { get { return _instance; } }
 
@@ -131,6 +142,23 @@ namespace Koromo_Copy_UX3.Domain
             {
                 SetValue(MaxCountOfAutoCompleteResultProperty, value);
                 Settings.Instance.UXSetting.MaxCountOfAutoCompleteResult = value;
+                Settings.Instance.Save();
+            }
+        }
+
+        /// <summary>
+        /// 테마 색상입니다.
+        /// </summary>
+        public Color ThemeColor
+        {
+            get
+            {
+                return (Color)GetValue(ThemeColorProperty);
+            }
+            set
+            {
+                SetValue(ThemeColorProperty, value);
+                Settings.Instance.UXSetting.ThemeColor = value;
                 Settings.Instance.Save();
             }
         }
