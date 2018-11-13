@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Koromo_Copy_UX3.SettingViewInformation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Koromo_Copy_UX3"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock x:Name="VersionText" FontSize="25" Text="Koromo Copy " FontWeight="Thin"/>
+            <TextBlock Text="Copyright (C) 2018. dc-koromo. All Rights Reserved."/>
+
+            <TextBlock Text="E-mail: koromo.software@gmail.com"/>
+            <TextBlock>
+                Source-Code:
+                <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy" RequestNavigate="Hyperlink_RequestNavigate">
+                    https://github.com/dc-koromo/koromo-copy
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock>
+                Manual:
+                <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md" RequestNavigate="Hyperlink_RequestNavigate">
+                    https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
+                </Hyperlink>
+            </TextBlock>
+            
+
+            <TextBlock Margin="0 20 0 0" Text="이 프로그램은 Hitomi Copy의 후속작으로 이미지, 동영상 다운로드 기능 및 여러가지 유용한 도구들을 제공하는 범용프로그램입니다." TextWrapping="Wrap"/>
+            <TextBlock Text="옳바른 사용을 위해 네 가지 사항을 꼭 지켜주세요!" TextWrapping="Wrap"/>
+
+            <TextBlock Margin="0 20 0 0" Text="1. 프로그램 업데이트 및 다운로드는 Koromo Copy Github 홈페이지나 프로그램을 통해 진행해주세요. " TextWrapping="Wrap"/>
+            <TextBlock Text="   오픈소스로 공개된 있어 외부에서 다운로드시 바이러스나 랜섬웨어가 포함되어있을 수 있습니다." TextWrapping="Wrap"/>
+            <TextBlock Margin="0 3 0 0" Text="2. 업데이트를 미루지마세요. 매 업데이트마다 새로운 기능이 추가되고, 기존의 오류가 수정될 수 있습니다." TextWrapping="Wrap"/>
+            <TextBlock Margin="0 3 0 0" Text="3. 프로그램 재배포를 자제해주세요. 되도록이면 링크를 통한 배포부탁드립니다." TextWrapping="Wrap"/>
+            <TextBlock Margin="0 3 0 0" Text="4. Hitomi Copy 개발시 기능사용법에 대한 문의가 매우 많았습니다." TextWrapping="Wrap"/>
+            <TextBlock Text="   문의를 보내기 전 사용설명서를 반드시 읽어주세요." TextWrapping="Wrap"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
