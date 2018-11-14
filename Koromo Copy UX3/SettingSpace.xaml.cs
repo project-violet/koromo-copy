@@ -65,7 +65,8 @@ namespace Koromo_Copy_UX3
             
             SettingsTree.Items.Add(new TreeViewItem
             {
-                Header = "유저 인터페이스"
+                Header = "유저 인터페이스",
+                DataContext = new SettingViewUI()
             });
 
             SettingsTree.Items.Add(new TreeViewItem
