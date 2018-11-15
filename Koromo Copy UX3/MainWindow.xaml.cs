@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -111,7 +112,7 @@ namespace Koromo_Copy_UX3
         private void Window_Activated(object sender, EventArgs e)
         {
             DropShadow.BlurRadius = 10;
-            DropShadow.Color = Colors.Pink;
+            DropShadow.Color = SettingWrap.Instance.ThemeColor;
         }
         
         private void ThreeButton_Click(object sender, RoutedEventArgs e)

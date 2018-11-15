@@ -11,12 +11,12 @@ using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Koromo_Copy_UX3.Domain
 {
@@ -70,14 +70,17 @@ namespace Koromo_Copy_UX3.Domain
                                         typeof(Color),
                                         typeof(SettingWrap),
 #if DEBUG
-                                        new PropertyMetadata(Color.Pink));
+                                        new PropertyMetadata(Colors.Pink));
 #else
-                                        new PropertyMetadata(Settings.Instance.UXSetting.ThemeColor));
+                                        new PropertyMetadata(Color.FromArgb(Settings.Instance.UXSetting.ThemeColor.A,
+                                                                            Settings.Instance.UXSetting.ThemeColor.R,
+                                                                            Settings.Instance.UXSetting.ThemeColor.G,
+                                                                            Settings.Instance.UXSetting.ThemeColor.B)));
 #endif
 
         private static readonly SettingWrap _instance = new SettingWrap();
         public static SettingWrap Instance { get { return _instance; } }
-
+        
         /// <summary>
         /// 검색창의 휠 스피드를 조정합니다.
         /// </summary>
@@ -158,7 +161,7 @@ namespace Koromo_Copy_UX3.Domain
             set
             {
                 SetValue(ThemeColorProperty, value);
-                Settings.Instance.UXSetting.ThemeColor = value;
+                Settings.Instance.UXSetting.ThemeColor = System.Drawing.Color.FromArgb(value.A, value.R, value.G, value.B);
                 Settings.Instance.Save();
             }
         }
