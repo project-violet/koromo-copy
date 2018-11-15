@@ -180,7 +180,7 @@ namespace Koromo_Copy.Component.Hitomi
 
         public DateTime DateTimeMetadata()
         {
-            return File.GetLastAccessTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadata.json"));
+            return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadata.json"));
         }
 
         public bool CheckHiddendataExist()
@@ -208,8 +208,8 @@ namespace Koromo_Copy.Component.Hitomi
             for (int i = 0; i < m; i++)
             {
                 string lang = metadata_collection[i].Language;
-                if (metadata_collection[i].Language == null) lang = "N/A";
-                if (Settings.Instance.Hitomi.Language != "ALL" &&
+                if (metadata_collection[i].Language == null) lang = "n/a";
+                if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang)
                     continue;
                 tmeta.Add(metadata_collection[i]);
@@ -268,9 +268,9 @@ namespace Koromo_Copy.Component.Hitomi
             foreach (var metadata in metadata_collection)
             {
                 string lang = metadata.Language;
-                if (metadata.Language != null) Add(language, metadata.Language);
-                if (metadata.Language == null) lang = "N/A";
-                if (Settings.Instance.Hitomi.Language != "ALL" &&
+                if (metadata.Language == null) lang = "n/a";
+                Add(language, lang);
+                if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang) continue;
                 if (metadata.Artists != null) metadata.Artists.ToList().ForEach(x => Add(artist, x));
                 if (metadata.Tags != null) metadata.Tags.ToList().ForEach(x => { if (x.StartsWith("female:")) Add(female, x); else if (x.StartsWith("male:")) Add(male, x); else Add(tag, x); });
