@@ -62,6 +62,10 @@ namespace Koromo_Copy_UX3
                     NNSync.Visibility = Visibility.Visible;
                 }
             }
+            else
+            {
+                SyncDate.Text = "데이터 없음";
+            }
         }
 
         DispatcherTimer timer = null;
