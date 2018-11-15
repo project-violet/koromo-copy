@@ -8,6 +8,10 @@ Koromo Copy 0.4.6888.32067 Alpha
 
 https://github.com/dc-koromo/koromo-copy/releases/tag/0.4.6888.32067
 
+![hitomi history](Document/Images/1.png)
+
+![hitomi history](Document/Images/2.png)
+
 ## 개발 관련
 
 개발자 문서
