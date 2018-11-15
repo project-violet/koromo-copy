@@ -45,8 +45,8 @@ namespace Koromo_Copy.Component.Hitomi
             foreach (var v in HitomiData.Instance.metadata_collection)
             {
                 string lang = v.Language;
-                if (v.Language == null) lang = "N/A";
-                if (Settings.Instance.Hitomi.Language != "ALL" &&
+                if (v.Language == null) lang = "n/a";
+                if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang) continue;
                 if (v.Tags != null)
                 {
@@ -110,8 +110,8 @@ namespace Koromo_Copy.Component.Hitomi
                     continue;
                 }
                 string lang = v.Language;
-                if (v.Language == null) lang = "N/A";
-                if (Settings.Instance.Hitomi.Language != "ALL" &&
+                if (v.Language == null) lang = "n/a";
+                if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang) continue;
                 if (query.Language != null &&
                     query.Language != lang) continue;

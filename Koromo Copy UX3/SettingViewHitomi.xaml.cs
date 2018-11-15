@@ -124,6 +124,7 @@ namespace Koromo_Copy_UX3
         {
             Settings.Instance.Hitomi.Language = HitomiLegalize.LegalizeLanguage(Language.Text);
             Settings.Instance.Save();
+            HitomiData.Instance.RebuildTagData();
         }
     }
 }

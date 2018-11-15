@@ -410,7 +410,10 @@ namespace Koromo_Copy.Component.Hitomi
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.Language:
-                                if (md.Language == token)
+                                var lang = md.Language;
+                                if (string.IsNullOrEmpty(lang))
+                                    lang = "n/a";
+                                if (lang == token)
                                     checker[i] = true;
                                 break;
 
