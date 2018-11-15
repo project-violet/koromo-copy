@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy;
+using Koromo_Copy.Component.Hitomi;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +35,9 @@ namespace Koromo_Copy_UX3
         public SettingViewHitomi()
         {
             InitializeComponent();
+
+            AddLanguages();
+            Language.Text = HitomiLegalize.DeLegalizeLanguage(Settings.Instance.Hitomi.Language);
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -85,6 +89,40 @@ namespace Koromo_Copy_UX3
 
             Error.Visibility = Visibility.Collapsed;
             Settings.Instance.Hitomi.Path = value;
+            Settings.Instance.Save();
+        }
+
+        public void AddLanguages()
+        {
+            var langs = new string[] {
+                "모든 언어",
+                "ALL",
+                "N/A",
+                "한국어",
+                "日本語",
+                "English",
+                "Español",
+                "ไทย",
+                "Deutsch",
+                "中文",
+                "Português",
+                "Français",
+                "Tagalog",
+                "Русский",
+                "Italiano",
+                "polski",
+                "tiếng việt",
+                "magyar",
+                "Čeština",
+                "Bahasa Indonesia",
+                "العربية"
+            };
+            langs.ToList().ForEach(lang => Language.Items.Add(new ComboBoxItem { Content = lang }));
+        }
+
+        private void Language_DropDownClosed(object sender, EventArgs e)
+        {
+            Settings.Instance.Hitomi.Language = HitomiLegalize.LegalizeLanguage(Language.Text);
             Settings.Instance.Save();
         }
     }

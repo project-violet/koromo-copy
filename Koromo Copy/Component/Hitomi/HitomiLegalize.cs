@@ -54,6 +54,7 @@ namespace Koromo_Copy.Component.Hitomi
         {
             switch (lang)
             {
+                case "모든 언어": return "ALL";
                 case "한국어": return "korean";
                 case "日本語": return "japanese";
                 case "English": return "english";
@@ -72,6 +73,34 @@ namespace Koromo_Copy.Component.Hitomi
                 case "Čeština": return "czech";
                 case "Bahasa Indonesia": return "indonesian";
                 case "العربية": return "arabic";
+            }
+
+            return lang;
+        }
+
+        public static string DeLegalizeLanguage(string lang)
+        {
+            switch (lang)
+            {
+                case "ALL": return "모든 언어";
+                case "korean": return "한국어";
+                case "japanese": return "日本語";
+                case "english": return "English";
+                case "spanish": return "Español";
+                case "thai": return "ไทย";
+                case "german": return "Deutsch";
+                case "chinese": return "中文";
+                case "portuguese": return "Português";
+                case "french": return "Français";
+                case "tagalog": return "Tagalog";
+                case "russian": return "Русский";
+                case "italian": return "Italiano";
+                case "polish": return "polski";
+                case "vietnamese": return "tiếng việt";
+                case "hungarian": return "magyar";
+                case "czech": return "Čeština";
+                case "indonesian": return "Bahasa Indonesia";
+                case "arabic": return "العربية";
             }
 
             return lang;
