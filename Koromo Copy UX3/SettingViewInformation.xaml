@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d">
     <Grid Margin="20">
         <StackPanel>
             <TextBlock x:Name="VersionText" FontSize="25" Text="Koromo Copy " FontWeight="Thin"/>
@@ -35,6 +35,63 @@
             <TextBlock Margin="0 3 0 0" Text="3. 프로그램 재배포를 자제해주세요. 되도록이면 링크를 통한 배포부탁드립니다." TextWrapping="Wrap"/>
             <TextBlock Margin="0 3 0 0" Text="4. Hitomi Copy 개발시 기능사용법에 대한 문의가 매우 많았습니다." TextWrapping="Wrap"/>
             <TextBlock Text="   문의를 보내기 전 사용설명서를 반드시 읽어주세요." TextWrapping="Wrap"/>
+
+            <Separator Height="5"  Margin="0 40 0 0"/>
+            <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                <TextBlock Text="마지막 데이터 동기화 날짜 : "/>
+                <TextBlock x:Name="SyncDate" Text="2000년 00월 00일 (0일 지남)"/>
+                <TextBlock x:Name="NNSync" Foreground="Red" Text=" -- 데이터동기화가 필요합니다." Visibility="Collapsed"/>
+            </StackPanel>
+
+            <StackPanel Margin="0 10 0 0">
+                <ProgressBar x:Name="SyncProgress" IsIndeterminate="False" Height="10" Foreground="Pink" Maximum="100"/>
+                <Grid Margin="0 5 0 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="진행도:" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="전체 바이트:" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="다운로드된 바이트:" HorizontalAlignment="Right"/>
+
+                    <TextBlock x:Name="SyncPercent" Margin="5 0 20 0" Grid.Row="0" Grid.Column="1" Text="0.0 %" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="SyncTotalBytes" Margin="5 0 20 0" Grid.Row="1" Grid.Column="1" Text="0 KB" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="SyncDownloadBytes" Margin="5 0 20 0" Grid.Row="2" Grid.Column="1" Text="0 KB" HorizontalAlignment="Left"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="로드:" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="진행 시간:" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="남은 시간:" HorizontalAlignment="Right"/>
+
+                    <TextBlock x:Name="SyncLoad" Margin="5 0 0 0" Grid.Row="0" Grid.Column="3" Text="[0/20]" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="SyncRegret" Margin="5 0 0 0" Grid.Row="1" Grid.Column="3" Text="0" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="SyncRemain" Margin="5 0 0 0" Grid.Row="2" Grid.Column="3" Text="0" HorizontalAlignment="Left"/>
+
+
+                    <Button x:Name="SyncButton" HorizontalAlignment="Right" Margin="0 0 100 0" Grid.RowSpan="3" Grid.Column="4" Click="Button_ClickAsync">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Sync"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">동기화</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>
