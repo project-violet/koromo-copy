@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -56,6 +57,8 @@ namespace Koromo_Copy_UX3
             Title += Koromo_Copy.Version.SimpleText;
             VersionText.Text += Koromo_Copy.Version.SimpleText;
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+
+            ServicePointManager.DefaultConnectionLimit = 999999999;
         }
 
         private void SearchSpace_KeyDown(object sender, KeyEventArgs e)
