@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
+        xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
         mc:Ignorable="d"
         Title="Koromo Copy " Height="616" Width="1156"
         WindowStyle="None"
@@ -72,10 +73,10 @@
 
     <Border x:Name="TopBorder" Margin="10" BorderThickness="1">
         <Border.BorderBrush>
-            <SolidColorBrush Color="Pink" Opacity="1"/>
+            <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}" Opacity="1"/>
         </Border.BorderBrush>
         <Border.Effect>
-            <DropShadowEffect x:Name="DropShadow" Color="Pink"
+            <DropShadowEffect x:Name="DropShadow" Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"
                                   BlurRadius="10"
                                   ShadowDepth="0"/>
         </Border.Effect>
@@ -86,7 +87,11 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Rectangle Fill="Pink" HorizontalAlignment="Stretch" Height="5" VerticalAlignment="Top"/>
+            <Rectangle HorizontalAlignment="Stretch" Height="5" VerticalAlignment="Top">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"/>
+                </Rectangle.Fill>
+            </Rectangle>
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
