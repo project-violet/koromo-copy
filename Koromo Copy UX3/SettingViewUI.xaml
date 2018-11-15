@@ -95,7 +95,12 @@
 
         <StackPanel HorizontalAlignment="Stretch">
             <TextBlock Text="UI 설정" FontSize="20"/>
-            <Slider  Style="{StaticResource Horizontal_Slider}" />
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="자동완성 결과 표시 개수 : "/>
+                <TextBlock x:Name="CountOfAutoCompleteResult" Text="100 개"/>
+            </StackPanel>
+            <Slider Style="{StaticResource Horizontal_Slider}" Minimum="5" Maximum="1000"/>
         </StackPanel>
     </Grid>
 </UserControl>
