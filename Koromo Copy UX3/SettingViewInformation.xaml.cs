@@ -73,6 +73,7 @@ namespace Koromo_Copy_UX3
         {
             SyncButton.IsEnabled = false;
             SyncProgress.IsIndeterminate = true;
+            MainWindow.Instance.FadeOut_MiddlePopup("데이터 동기화를 시작합니다!");
 
             download_size = 0;
             status_size = 0;
@@ -108,6 +109,7 @@ namespace Koromo_Copy_UX3
 
             SyncButton.IsEnabled = true;
             UpdateSyncDate();
+            MainWindow.Instance.FadeOut_MiddlePopup("데이터 동기화 완료!", false);
         }
 
         private void Timer_Tick(object sender, EventArgs e)

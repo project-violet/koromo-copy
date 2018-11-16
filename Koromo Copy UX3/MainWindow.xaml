@@ -43,7 +43,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="TabItem" x:Name="TabItemStyle">
             <Setter Property="Template">
                 <Setter.Value>
@@ -80,13 +80,69 @@
                                   BlurRadius="10"
                                   ShadowDepth="0"/>
         </Border.Effect>
-
         <Grid Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+
+            <Popup x:Name="MiddlePopup" PlacementTarget="{Binding ElementName=TopBorder}" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" IsOpen="True" AllowsTransparency="True">
+                <Border x:Name="PopupBorder" CornerRadius="8" Background="Black">
+                    <!--Style="{StaticResource BorderFadeStyle}"-->
+                    <Border.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                            <Storyboard x:Key="FadeOnEvent">
+                                <DoubleAnimation Storyboard.TargetName="PopupBorder" 
+                                        Storyboard.TargetProperty="(Border.Opacity)"
+                                        From="0" To="0.7" Duration="0:0:1" />
+                            </Storyboard>
+                            <Storyboard x:Key="FadeOffEvent">
+                                <DoubleAnimation Storyboard.TargetName="PopupBorder"
+                                        Storyboard.TargetProperty="(Border.Opacity)"
+                                        From="0.7" To="0" Duration="0:0:1" />
+                            </Storyboard>
+                            <Storyboard x:Key="FadeOutEvent">
+                                <DoubleAnimation Storyboard.TargetName="PopupBorder"
+                                        Storyboard.TargetProperty="(Border.Opacity)"
+                                        From="0" To="0.7" Duration="0:0:1" />
+                                <DoubleAnimation BeginTime="0:0:1" Storyboard.TargetName="PopupBorder"
+                                        Storyboard.TargetProperty="(Border.Opacity)"
+                                        From="0.7" To="0.7" Duration="0:0:1" />
+                                <DoubleAnimation BeginTime="0:0:3"  Storyboard.TargetName="PopupBorder"
+                                        Storyboard.TargetProperty="(Border.Opacity)"
+                                        From="0.7" To="0" Duration="0:0:1" />
+                            </Storyboard>
+                        </ResourceDictionary>
+                    </Border.Resources>
+
+                    <Grid>
+                        <Grid x:Name="PopupGridLoading">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar x:Name="PopupProgress" Grid.Column="0" Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
+                            <TextBlock x:Name="PopupText" Grid.Column="1" Text="데이터를 로딩중 입니다 ..." VerticalAlignment="Center" Margin="5" Foreground="White"/>
+                        </Grid>
+                        <Grid x:Name="PopupGridComplete" Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#FFFFFF"/>
+                                <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="#FFFFFF"/>
+                            </Grid.Resources>
+                            <materialDesign:PackIcon Kind="CheckOutline" Height="30" Width="30" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Popup>
+
             <Rectangle HorizontalAlignment="Stretch" Height="5" VerticalAlignment="Top">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"/>

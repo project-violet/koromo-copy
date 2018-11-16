@@ -56,6 +56,7 @@ namespace Koromo_Copy_UX3
                 Storyboard sb = TotalProgress.FindResource("FadeProgressStoryboard") as Storyboard;
                 sb.Completed += Sb_Completed;
                 if (sb != null) { BeginStoryboard(sb); }
+                MainWindow.Instance.Fade_MiddlePopup(false);
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             Loaded += SearchSpace_Loaded;
