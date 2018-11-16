@@ -66,6 +66,7 @@ namespace Koromo_Copy
                 model.Hitomi.Language = "korean";
                 model.Hitomi.CustomAutoComplete = new string[] { "recent:0-25" };
                 model.Hitomi.UsingSettingLanguageWhenAdvanceSearch = true;
+                model.Hitomi.UsingOptimization = true;
 
                 model.HitomiAnalysis = new HitomiAnalysisSetting();
 
