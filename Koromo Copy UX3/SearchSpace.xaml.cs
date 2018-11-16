@@ -32,10 +32,39 @@ namespace Koromo_Copy_UX3
         {
             InitializeComponent();
 
+            Loaded += SearchSpace_Loaded;
+        }
+
+        private void Sb_Completed(object sender, EventArgs e)
+        {
+            TotalProgress.Visibility = Visibility.Collapsed;
+        }
+
+        private bool StartsLoading = false;
+        private void SearchSpace_Loaded(object sender, RoutedEventArgs e)
+        {
+            bool loading = false;
             // Metadata 로딩
-            Task.Run(() => {
-                HitomiData.Instance.LoadMetadataJson();
-                HitomiData.Instance.LoadHiddendataJson();
+            Task.Run(async () => {
+                if (IsMetadataLoaded || StartsLoading) return;
+                StartsLoading = true;
+                if (!HitomiData.Instance.CheckMetadataExist())
+                {
+                    Koromo_Copy.Monitor.Instance.ControlEnable = true;
+                    Koromo_Copy.Monitor.Instance.Push("다운로드가 계속 진행되지 않는다면 이 창에서 Enter키를 눌러주세요");
+                    //Koromo_Copy.Console.Console.Instance.Show();
+                    MainWindow.Instance.Fade_MiddlePopup(true, "데이터를 다운로드 중입니다...");
+                    await HitomiData.Instance.DownloadMetadata();
+                    await HitomiData.Instance.DownloadHiddendata();
+                    MainWindow.Instance.FadeOut_MiddlePopup("데이터를 모두 다운로드했습니다!", false);
+                    Koromo_Copy.Monitor.Instance.ControlEnable = false;
+                }
+                else
+                {
+                    HitomiData.Instance.LoadMetadataJson();
+                    HitomiData.Instance.LoadHiddendataJson();
+                    MainWindow.Instance.Fade_MiddlePopup(false);
+                }
                 HitomiData.Instance.RebuildTagData();
                 if (HitomiData.Instance.metadata_collection != null)
                 {
@@ -48,27 +77,18 @@ namespace Koromo_Copy_UX3
                     }
                 }
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+                loading = true;
             }).ContinueWith(t =>
             {
+                if ((IsMetadataLoaded || StartsLoading) && !loading) return;
                 TotalProgress.IsIndeterminate = false;
                 TotalProgress.Value = 0;
                 IsMetadataLoaded = true;
                 Storyboard sb = TotalProgress.FindResource("FadeProgressStoryboard") as Storyboard;
                 sb.Completed += Sb_Completed;
                 if (sb != null) { BeginStoryboard(sb); }
-                MainWindow.Instance.Fade_MiddlePopup(false);
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
-            Loaded += SearchSpace_Loaded;
-        }
-
-        private void Sb_Completed(object sender, EventArgs e)
-        {
-            TotalProgress.Visibility = Visibility.Collapsed;
-        }
-
-        private void SearchSpace_Loaded(object sender, RoutedEventArgs e)
-        {
             Window w = Window.GetWindow(this);
             // 이거 지우면 디자이너 오류남
             if (w != null)

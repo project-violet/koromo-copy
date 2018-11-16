@@ -65,6 +65,14 @@ namespace Koromo_Copy_UX3
             Instance = this;
 
             ServicePointManager.DefaultConnectionLimit = 999999999;
+            
+            AppDomain.CurrentDomain.UnhandledException += UnhandledException;
+        }
+
+        private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("프로그램 내부에서 예외처리되지 않은 오류가 발생했습니다. 오류가 계속된다면 개발자에게 문의하십시오. " + (e.ExceptionObject as Exception).Source + "\nStackTrace: " + (e.ExceptionObject as Exception).StackTrace,
+                Koromo_Copy.Version.Name + " " + Koromo_Copy.Version.Text, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -86,42 +94,50 @@ namespace Koromo_Copy_UX3
 
         public void Fade_MiddlePopup(bool fade, string text = "", bool progress = true)
         {
-            if (progress)
-                PopupProgress.Visibility = Visibility.Visible;
-            else
-                PopupProgress.Visibility = Visibility.Collapsed;
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+               new Action(() =>
+               {
+                   if (progress)
+                       PopupProgress.Visibility = Visibility.Visible;
+                   else
+                       PopupProgress.Visibility = Visibility.Collapsed;
 
-            if (fade)
-            {
-                Storyboard sb = PopupBorder.FindResource("FadeOnEvent") as Storyboard;
-                BeginStoryboard(sb);
-            }
-            else
-            {
-                Storyboard sb = PopupBorder.FindResource("FadeOffEvent") as Storyboard;
-                BeginStoryboard(sb);
-            }
+                   if (fade)
+                   {
+                       Storyboard sb = PopupBorder.FindResource("FadeOnEvent") as Storyboard;
+                       BeginStoryboard(sb);
+                   }
+                   else
+                   {
+                       Storyboard sb = PopupBorder.FindResource("FadeOffEvent") as Storyboard;
+                       BeginStoryboard(sb);
+                   }
 
-            if (text != "")
-            {
-                PopupText.Text = text;
-            }
+                   if (text != "")
+                   {
+                       PopupText.Text = text;
+                   }
+               }));
         }
 
         public void FadeOut_MiddlePopup(string text = "", bool progress = true)
         {
-            if (progress)
-                PopupProgress.Visibility = Visibility.Visible;
-            else
-                PopupProgress.Visibility = Visibility.Collapsed;
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+               new Action(() =>
+               {
+                   if (progress)
+                       PopupProgress.Visibility = Visibility.Visible;
+                   else
+                       PopupProgress.Visibility = Visibility.Collapsed;
 
-            Storyboard sb = PopupBorder.FindResource("FadeOutEvent") as Storyboard;
-            BeginStoryboard(sb);
+                   Storyboard sb = PopupBorder.FindResource("FadeOutEvent") as Storyboard;
+                   BeginStoryboard(sb);
 
-            if (text != "")
-            {
-                PopupText.Text = text;
-            }
+                   if (text != "")
+                   {
+                       PopupText.Text = text;
+                   }
+               }));
         }
 
         private void SearchSpace_KeyDown(object sender, KeyEventArgs e)
@@ -158,15 +174,6 @@ namespace Koromo_Copy_UX3
         {
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             FadeOut_MiddlePopup("메모리 최적화 완료!", false);
-            //Task.Factory.StartNew(() =>
-            //{
-            //    System.Threading.Thread.Sleep(1500);
-            //    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-            //       new Action(() => { FadeOut_MiddlePopup("최적화 완료!", false); }));
-            //    //System.Threading.Thread.Sleep(1500);
-            //    //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-            //    //   new Action(() => { Fade_MiddlePopup(false, "", false); }));
-            //});
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
