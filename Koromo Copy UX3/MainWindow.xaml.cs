@@ -26,6 +26,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -38,6 +39,8 @@ namespace Koromo_Copy_UX3
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Instance;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -49,6 +52,7 @@ namespace Koromo_Copy_UX3
 
             Closing += MainWindow_Closing;
             KeyDown += SearchSpace_KeyDown;
+            Loaded += MainWindow_Loaded;
 
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
@@ -58,8 +62,66 @@ namespace Koromo_Copy_UX3
             Title += Koromo_Copy.Version.SimpleText;
             VersionText.Text += Koromo_Copy.Version.SimpleText;
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            Instance = this;
 
             ServicePointManager.DefaultConnectionLimit = 999999999;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Window w = Window.GetWindow(this);
+            // 이거 지우면 디자이너 오류남
+            if (w != null)
+            {
+                w.LocationChanged += (object obj, EventArgs args) =>
+                {
+                    var offset = MiddlePopup.HorizontalOffset;
+                    MiddlePopup.HorizontalOffset = offset + 1;
+                    MiddlePopup.HorizontalOffset = offset;
+                };
+            }
+
+            Fade_MiddlePopup(true);
+        }
+
+        public void Fade_MiddlePopup(bool fade, string text = "", bool progress = true)
+        {
+            if (progress)
+                PopupProgress.Visibility = Visibility.Visible;
+            else
+                PopupProgress.Visibility = Visibility.Collapsed;
+
+            if (fade)
+            {
+                Storyboard sb = PopupBorder.FindResource("FadeOnEvent") as Storyboard;
+                BeginStoryboard(sb);
+            }
+            else
+            {
+                Storyboard sb = PopupBorder.FindResource("FadeOffEvent") as Storyboard;
+                BeginStoryboard(sb);
+            }
+
+            if (text != "")
+            {
+                PopupText.Text = text;
+            }
+        }
+
+        public void FadeOut_MiddlePopup(string text = "", bool progress = true)
+        {
+            if (progress)
+                PopupProgress.Visibility = Visibility.Visible;
+            else
+                PopupProgress.Visibility = Visibility.Collapsed;
+
+            Storyboard sb = PopupBorder.FindResource("FadeOutEvent") as Storyboard;
+            BeginStoryboard(sb);
+
+            if (text != "")
+            {
+                PopupText.Text = text;
+            }
         }
 
         private void SearchSpace_KeyDown(object sender, KeyEventArgs e)
@@ -95,6 +157,16 @@ namespace Koromo_Copy_UX3
         private void MemoryStatus_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            FadeOut_MiddlePopup("메모리 최적화 완료!", false);
+            //Task.Factory.StartNew(() =>
+            //{
+            //    System.Threading.Thread.Sleep(1500);
+            //    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+            //       new Action(() => { FadeOut_MiddlePopup("최적화 완료!", false); }));
+            //    //System.Threading.Thread.Sleep(1500);
+            //    //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+            //    //   new Action(() => { Fade_MiddlePopup(false, "", false); }));
+            //});
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
