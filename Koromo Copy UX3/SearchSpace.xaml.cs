@@ -19,6 +19,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace Koromo_Copy_UX3
 {
@@ -52,10 +53,17 @@ namespace Koromo_Copy_UX3
                 TotalProgress.IsIndeterminate = false;
                 TotalProgress.Value = 0;
                 IsMetadataLoaded = true;
-                //TotalProgress.Visibility = Visibility.Hidden;
+                Storyboard sb = TotalProgress.FindResource("FadeProgressStoryboard") as Storyboard;
+                sb.Completed += Sb_Completed;
+                if (sb != null) { BeginStoryboard(sb); }
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             Loaded += SearchSpace_Loaded;
+        }
+
+        private void Sb_Completed(object sender, EventArgs e)
+        {
+            TotalProgress.Visibility = Visibility.Collapsed;
         }
 
         private void SearchSpace_Loaded(object sender, RoutedEventArgs e)
