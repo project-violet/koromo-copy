@@ -225,37 +225,43 @@ namespace Koromo_Copy_UX3.Domain
                     }
                     else
                     {
-                        var Result = new TextBlock();
-                        Result.Foreground = Brushes.Black;
-                        string prefix = "";
-                        if (x.Contains(":") && !ColoredTargetText.Contains(":") && x.Split(':')[1] != "")
+                        try
                         {
-                            prefix = x.Split(':')[0] + ":";
-                            x = x.Split(':')[1];
+                            var Result = new TextBlock();
+                            Result.Foreground = Brushes.Black;
+                            string prefix = "";
+                            if (x.Contains(":") && !ColoredTargetText.Contains(":") && x.Split(':')[1] != "")
+                            {
+                                prefix = x.Split(':')[0] + ":";
+                                x = x.Split(':')[1];
+                            }
+                            string postfix = x.Split(' ').Length > 1 ? x.Split(' ')[1] : "";
+                            x = x.Split(' ')[0];
+
+                            if (prefix != "")
+                            {
+                                Result.Text = prefix;
+                            }
+                            int[] diff = Strings.GetLevenshteinDistance(x, ColoredTargetText);
+                            for (int i = 0; i < x.Length; i++)
+                            {
+                                var Temp = new Run();
+                                Temp.Text = x[i].ToString();
+                                if (diff[i + 1] == 1)
+                                    Temp.Foreground = Brushes.HotPink;
+                                else
+                                    Temp.Foreground = Brushes.Black;
+                                Result.Inlines.Add(Temp);
+                            }
+                            var Postfix = new Run();
+                            Postfix.Text = postfix;
+                            Postfix.Foreground = Brushes.Black;
+                            Result.Inlines.Add(Postfix);
+                            AutoCompleteList.Items.Add(Result);
                         }
-                        string postfix = x.Split(' ').Length > 1 ? x.Split(' ')[1] : "";
-                        x = x.Split(' ')[0];
-                        
-                        if (prefix != "")
+                        catch
                         {
-                            Result.Text = prefix;
                         }
-                        int[] diff = Strings.GetLevenshteinDistance(x, ColoredTargetText);
-                        for (int i = 0; i < x.Length; i++)
-                        {
-                            var Temp = new Run();
-                            Temp.Text = x[i].ToString();
-                            if (diff[i + 1] == 1)
-                                Temp.Foreground = Brushes.HotPink;
-                            else
-                                Temp.Foreground = Brushes.Black;
-                            Result.Inlines.Add(Temp);
-                        }
-                        var Postfix = new Run();
-                        Postfix.Text = postfix;
-                        Postfix.Foreground = Brushes.Black;
-                        Result.Inlines.Add(Postfix);
-                        AutoCompleteList.Items.Add(Result);
                     }
                 });
                 AutoComplete.HorizontalOffset = MeasureString(SearchText.Text.Substring(0, position)).Width;
