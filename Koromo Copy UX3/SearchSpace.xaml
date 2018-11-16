@@ -122,7 +122,15 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Resources>
-                <ProgressBar Value="0" Height="10" x:Name="TotalProgress" Grid.ColumnSpan="3" Grid.Row="1" IsIndeterminate="True" Style="{StaticResource AnimationStyle}"/>
+                <ProgressBar Value="0" Height="10" x:Name="TotalProgress" Grid.ColumnSpan="3" Grid.Row="1" IsIndeterminate="True" Style="{StaticResource AnimationStyle}">
+                    <ProgressBar.Resources>
+                        <Storyboard x:Key="FadeProgressStoryboard">
+                            <DoubleAnimation Storyboard.TargetName="TotalProgress" 
+                                        Storyboard.TargetProperty="(ProgressBar.Height)"
+                                        From="10" To="0" Duration="0:0:0.5" />
+                        </Storyboard>
+                    </ProgressBar.Resources>
+                </ProgressBar>
             </Grid>
 
             <Border Grid.Row="2" BorderThickness="1" BorderBrush="Pink">
