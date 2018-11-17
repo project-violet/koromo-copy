@@ -131,7 +131,7 @@ namespace Koromo_Copy
         {
             CultureInfo en = new CultureInfo("en-US");
             StringBuilder build = new StringBuilder();
-            log.ToList().ForEach(x => build.Append($"[{x.Item1.ToString(en)}] {x.Item2}\r\n"));
+            log.ToList().Where(x => x != null).ToList().ForEach(x => build.Append($"[{x.Item1.ToString(en)}] {x.Item2}\r\n"));
             File.AppendAllText("log.txt", build.ToString());
         }
         
