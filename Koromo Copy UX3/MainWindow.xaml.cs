@@ -151,11 +151,19 @@ namespace Koromo_Copy_UX3
             }
         }
 
+        int zip_status = 0;
+        object zip_lock = new object();
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             Process proc = Process.GetCurrentProcess();
             MemoryStatus.Text = "Memory Usage :  " + (proc.PrivateMemorySize64 / 1000).ToString("#,#") + " KB";
+            lock (zip_lock)
+                if (zip_status > 0)
+                    MemoryStatus.Text += $" ({zip_status})";
         }
+
+        public void ZipCountUp() { lock (zip_lock) zip_status++; }
+        public void ZipCountDown() {  lock (zip_lock) zip_status--; }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
