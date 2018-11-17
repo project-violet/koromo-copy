@@ -110,6 +110,7 @@
     <Compile Include="Domain\CommentViewModel.cs" />
     <Compile Include="Domain\Converter.cs" />
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
+    <Compile Include="Domain\SettingDownloaderViewModel.cs" />
     <Compile Include="Domain\SettingHitomiViewModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />
     <Compile Include="Domain\UXConsole.cs" />
@@ -121,6 +122,9 @@
     </Compile>
     <Compile Include="PreviewWindow.xaml.cs">
       <DependentUpon>PreviewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RecommendArtistElements.xaml.cs">
+      <DependentUpon>RecommendArtistElements.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>
@@ -142,6 +146,9 @@
     </Compile>
     <Compile Include="SettingViewInformation.xaml.cs">
       <DependentUpon>SettingViewInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingViewPlugin.xaml.cs">
+      <DependentUpon>SettingViewPlugin.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingViewUI.xaml.cs">
       <DependentUpon>SettingViewUI.xaml</DependentUpon>
@@ -191,6 +198,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="RecommendArtistElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SearchElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -216,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingViewInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewPlugin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
