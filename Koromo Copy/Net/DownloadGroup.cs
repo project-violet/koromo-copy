@@ -49,40 +49,48 @@ namespace Koromo_Copy.Net
 
         private void downloadSizeCallback(string uri, long size, object obj)
         {
-            if (NotifySize != null)
-                NotifySize.Invoke(null, Tuple.Create(uri, size, obj));
             lock (job_lock)
-                jobs[(int)obj].Item4?.Invoke(uri, size, obj);
+            {
+                if (NotifySize != null)
+                    NotifySize.Invoke(null, Tuple.Create(uri, size, jobs[(int)obj].Item2));
+                jobs[(int)obj].Item4?.Invoke(uri, size, jobs[(int)obj].Item2);
+            }
         }
 
         private void downloadStatusCallback(string uri, int size, object obj)
         {
-            if (DownloadStatus != null)
-                DownloadStatus.Invoke(null, Tuple.Create(uri, size, obj));
             lock (job_lock)
-                jobs[(int)obj].Item5?.Invoke(uri, size, obj);
+            {
+                if (DownloadStatus != null)
+                    DownloadStatus.Invoke(null, Tuple.Create(uri, size, jobs[(int)obj].Item2));
+                jobs[(int)obj].Item5?.Invoke(uri, size, jobs[(int)obj].Item2);
+            }
         }
 
         private void downloadRetryCallback(string uri, object obj)
         {
-            if (Retry != null)
-                Retry.Invoke(null, Tuple.Create(uri, obj));
             lock (job_lock)
-                jobs[(int)obj].Item6?.Invoke(uri, obj);
+            {
+                if (Retry != null)
+                    Retry.Invoke(null, Tuple.Create(uri, jobs[(int)obj].Item2));
+                jobs[(int)obj].Item6?.Invoke(uri, jobs[(int)obj].Item2);
+            }
         }
 
         private void downloadCallback(string url, string filename, object obj)
         {
-            if (Complete != null)
-                Complete.Invoke(null, Tuple.Create(url, filename, obj));
-            lock(job_lock)
+            lock (job_lock)
             {
+                if (Complete != null)
+                Complete.Invoke(null, Tuple.Create(url, filename, jobs[(int)obj].Item2));
+
                 lock (add_lock)
                 {
                     remain_contents--;
                     if (remain_contents == 0)
                         DownloadComplete.Invoke(null, null);
                 }
+
                 download_file_count[(int)obj]++;
                 if (download_file_count[(int)obj] == file_count[(int)obj])
                     if (CompleteGroup != null)
@@ -138,21 +146,23 @@ namespace Koromo_Copy.Net
         public void Add(string[] urls, string[] paths, object obj, SemaphoreCallBack callback, SemaphoreExtends se, 
             DownloadQueue.DownloadSizeCallBack size_callback = null, DownloadQueue.DownloadStatusCallBack status_callback = null, DownloadQueue.RetryCallBack retry_callback = null)
         {
+            lock (job_lock)
+            {
+                jobs.Add(new Tuple<int, object, SemaphoreCallBack, DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>(
+                    index_count, obj, callback,
+                    size_callback, status_callback, retry_callback));
+                download_file_count.Add(0);
+                file_count.Add(urls.Length);
+            }
+
             lock (add_lock)
             {
-                lock (job_lock)
-                {
-                    jobs.Add(new Tuple<int, object, SemaphoreCallBack, DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>(
-                        index_count, obj, callback,
-                        size_callback, status_callback, retry_callback));
-                    download_file_count.Add(0);
-                }
                 for (int i = 0; i < urls.Length; i++)
                 {
                     queue.Add(urls[i], paths[i], index_count, downloadCallback, se);
                 }
                 index_count++;
-                remain_contents++;
+                remain_contents += urls.Length;
             }
         }
     }

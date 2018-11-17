@@ -109,6 +109,7 @@
     <Compile Include="Domain\AutoCompleteLogic.cs" />
     <Compile Include="Domain\CommentViewModel.cs" />
     <Compile Include="Domain\Converter.cs" />
+    <Compile Include="Domain\DownloadDataGridViewModel.cs" />
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
     <Compile Include="Domain\SettingDownloaderViewModel.cs" />
     <Compile Include="Domain\SettingHitomiViewModel.cs" />
