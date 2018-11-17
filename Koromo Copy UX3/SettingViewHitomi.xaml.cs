@@ -38,6 +38,7 @@ namespace Koromo_Copy_UX3
 
             AddLanguages();
             Language.Text = HitomiLegalize.DeLegalizeLanguage(Settings.Instance.Hitomi.Language);
+            Path.Text = Settings.Instance.Hitomi.Path;
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
