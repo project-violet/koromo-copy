@@ -78,8 +78,8 @@
                     </Grid.ColumnDefinitions>
 
                     <Button HorizontalAlignment="Right" Width="160" Grid.Column="0" Margin="0 0 10 0">이름 비슷한 작품 정리</Button>
-                    <Button HorizontalAlignment="Right" Width="100" Grid.Column="2" Margin="0 0 10 0">다운로드</Button>
-                    <Button HorizontalAlignment="Right" Width="140" Grid.Column="3">모두 다운로드</Button>
+                    <Button HorizontalAlignment="Right" Width="100" Grid.Column="2" Margin="0 0 10 0" Tag="Download" Click="Button_Click">다운로드</Button>
+                    <Button HorizontalAlignment="Right" Width="140" Grid.Column="3" Tag="DownloadAll" Click="Button_Click">모두 다운로드</Button>
                 </Grid>
             </Grid>
         </Grid>
