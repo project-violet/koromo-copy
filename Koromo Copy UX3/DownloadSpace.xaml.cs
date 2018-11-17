@@ -7,6 +7,8 @@
 ***/
 
 using Koromo_Copy;
+using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Koromo_Copy_UX3.Domain;
 using System;
@@ -107,14 +109,17 @@ namespace Koromo_Copy_UX3
 
         private void Instance_CompleteGroup(object sender, Tuple<string, object> e)
         {
-            // AutoZip켜져있으면 압축 시작
-            Monitor.Instance.Push("[Complete Group] " + (e.Item2 as string));
+            var tuple = e.Item2 as Tuple<string, IArticle>;
+            Monitor.Instance.Push("[Complete Group] " + (tuple.Item1));
+
+            if (tuple.Item2 is HitomiArticle ha)
+                HitomiLog.Instance.AddArticle(ha);
 
             if (Settings.Instance.Model.AutoZip)
             {
-                Monitor.Instance.Push("[Zip Start] " + (e.Item2 as string));
+                Monitor.Instance.Push("[Zip Start] " + (tuple.Item1));
                 MainWindow.Instance.ZipCountUp();
-                Task.Run(() => Zip(e.Item2 as string));
+                Task.Run(() => Zip(tuple.Item1));
             }
         }
 
@@ -161,7 +166,7 @@ namespace Koromo_Copy_UX3
         
         int index_count = 0;
         object count_lock = new object();
-        public void RequestDownload(string title, string[] urls, string[] paths, SemaphoreExtends se, string folder)
+        public void RequestDownload(string title, string[] urls, string[] paths, SemaphoreExtends se, string folder, IArticle article)
         {
             lock (count_lock)
             {
@@ -181,7 +186,7 @@ namespace Koromo_Copy_UX3
                         Status.Text = $"{Progress.Value} / {Progress.Maximum}";
                     }));
                 }
-                DownloadGroup.Instance.Add(urls, paths, folder, null, se);
+                DownloadGroup.Instance.Add(urls, paths, Tuple.Create(folder, article), null, se);
             }
         }
     }
