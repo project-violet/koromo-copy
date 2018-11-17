@@ -11,7 +11,10 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -200,12 +203,58 @@ namespace Koromo_Copy_UX3
             }
             else if (tag == "Download")
             {
-                //SearchPanel.Children.OfType<SearchElements>().ToList().Where(x => x.Select).ToList().ForEach(
-                //    x => DownloadSpace.Instance.RequestDownload(x.BitmapImage, null, null, x.Article.Title));
+                SearchPanel.Children.OfType<SearchElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
+                {
+                    var prefix = MakeDownloadDirectory(x.Article as HitomiArticle);
+                    Directory.CreateDirectory(prefix);
+                    DownloadSpace.Instance.RequestDownload(x.Article.Title, 
+                        x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(), 
+                        x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                        Koromo_Copy.Net.SemaphoreExtends.Default, prefix);
+                });
             }
         }
 
-#region Search Helper
+        private string MakeDownloadDirectory(HitomiArticle article)
+        {
+            string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            string title = article.Title ?? "";
+            string artists = "";
+            string type = article.Type ?? "";
+            string series = "";
+            string search = SearchText.Text;
+            if (article.Artists != null)
+            {
+                //if (HitomiSetting.Instance.GetModel().ReplaceArtistsWithTitle == false)
+                    artists = article.Artists[0];
+                //else
+                //{
+                //    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                //    artists = textInfo.ToTitleCase(article.Artists[0]);
+                //}
+            }
+            if (article.Series != null) series = article.Series[0];
+            if (title != null)
+                foreach (char c in invalid) title = title.Replace(c.ToString(), "");
+            if (artists != null)
+                foreach (char c in invalid) artists = artists.Replace(c.ToString(), "");
+            if (series != null)
+                foreach (char c in invalid) series = series.Replace(c.ToString(), "");
+            if (search != null)
+                foreach (char c in invalid) search = search.Replace(c.ToString(), "");
+
+            string path = Settings.Instance.Hitomi.Path;
+            path = Regex.Replace(path, "{Title}", title, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Artists}", artists, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Id}", article.Magic, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Type}", type, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Date}", DateTime.Now.ToString(), RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Series}", series, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Search}", search, RegexOptions.IgnoreCase);
+            return path;
+        }
+
+        #region Search Helper
         AutoCompleteLogic logic;
 
         private void SearchText_KeyDown(object sender, KeyEventArgs e)

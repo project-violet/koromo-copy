@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Net;
+using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Koromo_Copy_UX3
 {
@@ -30,17 +32,27 @@ namespace Koromo_Copy_UX3
     public partial class DownloadSpace : UserControl
     {
         public static DownloadSpace Instance;
+        private static DownloadDataGridViewModel view_model;
+        DispatcherTimer timer;
 
         public DownloadSpace()
         {
             InitializeComponent();
 
             Instance = this;
+            DataContext = view_model = new DownloadDataGridViewModel();
+
             DownloadGroup.Instance.Complete += Instance_Complete;
             DownloadGroup.Instance.DownloadComplete += Instance_DownloadComplete;
             DownloadGroup.Instance.DownloadStatus += Instance_DownloadStatus;
             DownloadGroup.Instance.NotifySize += Instance_NotifySize;
             DownloadGroup.Instance.Retry += Instance_Retry;
+            DownloadGroup.Instance.CompleteGroup += Instance_CompleteGroup;
+
+            timer = new DispatcherTimer();
+            timer.Tick += Timer_Tick;
+            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Start();
         }
 
         private void Instance_Retry(object sender, Tuple<string, object> e)
@@ -48,12 +60,28 @@ namespace Koromo_Copy_UX3
             Koromo_Copy.Monitor.Instance.Push("[Retry Download] " + e.Item1);
         }
 
+        long download_size = 0;
+        object size_lock = new object();
         private void Instance_NotifySize(object sender, Tuple<string, long, object> e)
         {
+            lock (size_lock) download_size += e.Item2;
+            Application.Current.Dispatcher.Invoke(new Action(
+            delegate
+            {
+                TotalSize.Text = ((double)download_size / 1000 / 1000).ToString("#,#.#") + " MB";
+            }));
         }
 
+        long status_size = 0;
+        object status_lock = new object();
         private void Instance_DownloadStatus(object sender, Tuple<string, int, object> e)
         {
+            lock (status_lock) status_size += e.Item2;
+            Application.Current.Dispatcher.Invoke(new Action(
+            delegate
+            {
+                DownloadSize.Text = ((double)status_size / 1000 / 1000).ToString("#,#.#") + " MB";
+            }));
         }
 
         private void Instance_DownloadComplete(object sender, EventArgs e)
@@ -63,11 +91,77 @@ namespace Koromo_Copy_UX3
 
         private void Instance_Complete(object sender, Tuple<string, string, object> e)
         {
+            Application.Current.Dispatcher.Invoke(new Action(
+            delegate
+            {
+                Progress.Value += 1;
+                Status.Text = $"{Progress.Value} / {Progress.Maximum}";
+                view_model.Items.Remove(view_model.Items.Where(x => x.경로 == e.Item2).ToList()[0]);
+            }));
+            
+            Koromo_Copy.Monitor.Instance.Push("[Complete File] " + e.Item2);
+        }
+
+        private void Instance_CompleteGroup(object sender, Tuple<string, object> e)
+        {
+            // AutoZip켜져있으면 압축 시작
+            Koromo_Copy.Monitor.Instance.Push("[Complete Group] " + (e.Item2 as string));
+        }
+
+        long latest_status_size = 0;
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(new Action(
+            delegate
+            {
+                if (status_size == latest_status_size)
+                    DownloadSpeed.Text = "0 KB/S";
+                else
+                    DownloadSpeed.Text = ((double)(status_size - latest_status_size) / 1000).ToString("#,#.#") + " KB/S";
+                latest_status_size = status_size;
+            }));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (Pause.Content.ToString() == "일시정지")
+            {
+                DownloadGroup.Instance.Preempt();
+                MainWindow.Instance.FadeOut_MiddlePopup("다운로드 일시정지", false);
+                Pause.Content = "다시시작";
+            }
+            else
+            {
+                DownloadGroup.Instance.Reactivation();
+                MainWindow.Instance.FadeOut_MiddlePopup("다운로드 다시시작", false);
+                Pause.Content = "일시정지";
+            }
+        }
+        
+        int index_count = 0;
+        object count_lock = new object();
+        public void RequestDownload(string title, string[] urls, string[] paths, SemaphoreExtends se, string folder)
+        {
+            lock (count_lock)
+            {
+                for (int i = 0; i < urls.Length; i++)
+                {
+                    view_model.Items.Add(new DownloadDataGridItemViewModel
+                    {
+                        인덱스 = (++index_count).ToString(),
+                        제목 = title,
+                        경로 = paths[i]
+                    });
 
+                    Application.Current.Dispatcher.Invoke(new Action(
+                    delegate
+                    {
+                        Progress.Maximum += 1;
+                        Status.Text = $"{Progress.Value} / {Progress.Maximum}";
+                    }));
+                }
+                DownloadGroup.Instance.Add(urls, paths, folder, null, se);
+            }
         }
     }
 }

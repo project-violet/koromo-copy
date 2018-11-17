@@ -8,13 +8,35 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="0 5 0 0">
+        <Grid.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="Pink"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FDAEBB"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#F98498"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Border  Grid.Column="0" BorderThickness="1" BorderBrush="Gainsboro">
-            <DataGrid x:Name="TagList" ItemsSource="{Binding Items}" CanUserSortColumns="False" IsReadOnly="True" AutoGenerateColumns="False"
+            <DataGrid x:Name="DownloadList" ItemsSource="{Binding Items}" CanUserSortColumns="False" IsReadOnly="True" AutoGenerateColumns="False"
                   SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Background="Transparent"
                   CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
                 <DataGrid.Resources>
@@ -27,13 +49,11 @@
                     </ResourceDictionary>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 아이디}" Width="79" Header="인덱스"
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="79" Header="인덱스"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
                     <materialDesign:MaterialDataGridTextColumn Binding="{Binding 제목}" Width="354" Header="제목" 
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 타입}" Width="305" Header="경로" 
-                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 작가}" Width="305" Header="URL" 
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 경로}" Width="630" Header="경로" 
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
                 </DataGrid.Columns>
                 <DataGrid.CellStyle>
@@ -50,31 +70,37 @@
                 </DataGrid.CellStyle>
             </DataGrid>
         </Border>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Background" Value="Pink"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FDAEBB"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="#F98498"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Resources>
-            <Button x:Name="Pause" Content="일시정지" Height="20" Width="100" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="State"/>
-            
-        </StackPanel>
+        <Grid Grid.Row="1" Margin="0 10 0 10">
+            <StackPanel HorizontalAlignment="Stretch">
+                <ProgressBar x:Name="Progress" Height="30" Foreground="Pink" Maximum="0" Value="0"/>
+                <Grid Margin="0 10 0 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="다운로드 상태 : " FontSize="13" HorizontalAlignment="Right"/>
+                    <TextBlock Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Text="총 다운로드 크기 : " FontSize="13" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="다운받은 크기 : " FontSize="13" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="다운로드 속도 : " FontSize="13" HorizontalAlignment="Right"/>
+
+                    <TextBlock x:Name="Status" Grid.Row="0" Grid.Column="1" Text="0 / 0" Margin="5 0 0 0" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="TotalSize" Grid.Row="1" Grid.Column="1" Text="0 MB" Margin="5 10 0 0" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="DownloadSize" Grid.Row="2" Grid.Column="1" Text="0 MB" Margin="5 0 0 0" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="DownloadSpeed" Grid.Row="3" Grid.Column="1" Text="0 KB/S" Margin="5 0 0 0" HorizontalAlignment="Left"/>
+                    <Button Grid.RowSpan="4" Margin="0 0 30 0" Grid.Column="3" x:Name="Pause" Content="일시정지" Height="40" Width="200" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="State" HorizontalAlignment="Right"/>
+
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
