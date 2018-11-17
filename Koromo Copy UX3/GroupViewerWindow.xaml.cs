@@ -10,6 +10,7 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,7 +22,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Koromo_Copy_UX3
 {
@@ -135,6 +135,48 @@ namespace Koromo_Copy_UX3
                     control.Transparent();
                 }
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+
+            if (btn.Tag.ToString() == "DownloadAll")
+            {
+                int count = 0;
+                ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x =>
+                {
+                    var prefix = HitomiCommon.MakeDownloadDirectory(x.Article as HitomiArticle);
+                    Directory.CreateDirectory(prefix);
+                    DownloadSpace.Instance.RequestDownload(x.Article.Title,
+                        x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
+                        x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                        Koromo_Copy.Net.SemaphoreExtends.Default, prefix, x.Article);
+                    count++;
+                });
+                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                MainWindow.Instance.Activate();
+                MainWindow.Instance.FocusDownload();
+                Close();
+            }
+            else if (btn.Tag.ToString() == "Download")
+            {
+                int count = 0;
+                ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
+                {
+                    var prefix = HitomiCommon.MakeDownloadDirectory(x.Article as HitomiArticle);
+                    Directory.CreateDirectory(prefix);
+                    DownloadSpace.Instance.RequestDownload(x.Article.Title,
+                        x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
+                        x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                        Koromo_Copy.Net.SemaphoreExtends.Default, prefix, x.Article);
+                    count++;
+                });
+                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                MainWindow.Instance.Activate();
+                MainWindow.Instance.FocusDownload();
+            }
+
         }
     }
 }
