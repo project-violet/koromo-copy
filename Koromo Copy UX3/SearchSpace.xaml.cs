@@ -190,8 +190,11 @@ namespace Koromo_Copy_UX3
             }
             else if (tag == "Tidy")
             {
+                int count = SearchPanel.Children.Count / 2;
                 SearchPanel.Children.Clear();
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+                if (count > 0)
+                MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목을 정리했습니다!", false);
             }
             else if (tag == "SelectAll")
             {
