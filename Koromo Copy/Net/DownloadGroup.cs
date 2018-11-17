@@ -28,12 +28,13 @@ namespace Koromo_Copy.Net
         public event EventHandler<Tuple<string, int, object>> DownloadStatus;
         public event EventHandler<Tuple<string, object>> Retry;
         public event EventHandler<Tuple<string, string, object>> Complete;
+        public event EventHandler<Tuple<string, object>> CompleteGroup;
 
         List<Tuple<int, object, SemaphoreCallBack, 
             DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>> jobs;
-
-        List<bool> completes;
-
+        List<int> download_file_count;
+        List<int> file_count;
+        
         public DownloadQueue Queue { get { return queue; } }
         
         public DownloadGroup()
@@ -42,14 +43,15 @@ namespace Koromo_Copy.Net
             remain_contents = 0;
             index_count = 0;
             jobs = new List<Tuple<int, object, SemaphoreCallBack, DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>>();
-            completes = new List<bool>();
+            download_file_count = new List<int>();
+            file_count = new List<int>();
         }
 
         private void downloadSizeCallback(string uri, long size, object obj)
         {
             if (NotifySize != null)
                 NotifySize.Invoke(null, Tuple.Create(uri, size, obj));
-            lock (jobs)
+            lock (job_lock)
                 jobs[(int)obj].Item4?.Invoke(uri, size, obj);
         }
 
@@ -57,7 +59,7 @@ namespace Koromo_Copy.Net
         {
             if (DownloadStatus != null)
                 DownloadStatus.Invoke(null, Tuple.Create(uri, size, obj));
-            lock (jobs)
+            lock (job_lock)
                 jobs[(int)obj].Item5?.Invoke(uri, size, obj);
         }
 
@@ -65,7 +67,7 @@ namespace Koromo_Copy.Net
         {
             if (Retry != null)
                 Retry.Invoke(null, Tuple.Create(uri, obj));
-            lock (jobs)
+            lock (job_lock)
                 jobs[(int)obj].Item6?.Invoke(uri, obj);
         }
 
@@ -81,9 +83,10 @@ namespace Koromo_Copy.Net
                     if (remain_contents == 0)
                         DownloadComplete.Invoke(null, null);
                 }
-                completes[(int)obj] = true;
-                if (completes.TrueForAll(x => x))
-                    Complete.Invoke(null, Tuple.Create(url, filename, obj));
+                download_file_count[(int)obj]++;
+                if (download_file_count[(int)obj] == file_count[(int)obj])
+                    if (CompleteGroup != null)
+                        CompleteGroup.Invoke(null, Tuple.Create("", jobs[(int)obj].Item2));
             }
         }
         
@@ -132,7 +135,7 @@ namespace Koromo_Copy.Net
         /// <param name="size_callback">리퀘스트 응답을 성공적으로 받을 시 파일의 크기가 전달됩니다.</param>
         /// <param name="status_callback">파일의 바이트 블록(131,072 바이트)이나 맨 마지막 바이트 블록을 전달받으면 이 함수가 호출됩니다.</param>
         /// <param name="retry_callback">리퀘스트 도중 응답이 끊기거나, 정의되지 않은 오류로인해 다운로드가 취소되어 파일을 재다운로드할 경우 이 함수가 호출됩니다.</param>
-        public void Add(string[] urls, string[] paths, object obj, SemaphoreCallBack callback, SemaphoreExtends se = null, 
+        public void Add(string[] urls, string[] paths, object obj, SemaphoreCallBack callback, SemaphoreExtends se, 
             DownloadQueue.DownloadSizeCallBack size_callback = null, DownloadQueue.DownloadStatusCallBack status_callback = null, DownloadQueue.RetryCallBack retry_callback = null)
         {
             lock (add_lock)
@@ -142,7 +145,7 @@ namespace Koromo_Copy.Net
                     jobs.Add(new Tuple<int, object, SemaphoreCallBack, DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>(
                         index_count, obj, callback,
                         size_callback, status_callback, retry_callback));
-                    completes.Add(false);
+                    download_file_count.Add(0);
                 }
                 for (int i = 0; i < urls.Length; i++)
                 {
