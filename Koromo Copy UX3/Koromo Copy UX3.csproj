@@ -114,6 +114,12 @@
     <Compile Include="Domain\SettingHitomiViewModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />
     <Compile Include="Domain\UXConsole.cs" />
+    <Compile Include="DownloadElements.xaml.cs">
+      <DependentUpon>DownloadElements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DownloadSpace.xaml.cs">
+      <DependentUpon>DownloadSpace.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FinderWindow.xaml.cs">
       <DependentUpon>FinderWindow.xaml</DependentUpon>
     </Compile>
@@ -171,6 +177,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DownloadElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DownloadSpace.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

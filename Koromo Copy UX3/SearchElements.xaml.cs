@@ -162,14 +162,14 @@ namespace Koromo_Copy_UX3
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
-                    b.BeginInit();
-                    b.UriSource = new Uri(ha.Thumbnail);
-                    b.EndInit();
-                    b.DownloadCompleted += B_DownloadCompleted;
+                    BitmapImage.BeginInit();
+                    BitmapImage.UriSource = new Uri(ha.Thumbnail);
+                    BitmapImage.EndInit();
+                    BitmapImage.DownloadCompleted += B_DownloadCompleted;
                     Page.Text = ha.ImagesLink.Count + " Pages";
-                    Image.Source = b;
+                    Image.Source = BitmapImage;
                     Image.Stretch = Stretch.Uniform;
-                    Image.Width = b.Width * 200 / b.Height;
+                    Image.Width = BitmapImage.Width * 200 / BitmapImage.Height;
                 }));
             });
         }
@@ -177,10 +177,10 @@ namespace Koromo_Copy_UX3
         private void B_DownloadCompleted(object sender, EventArgs e)
         {
             Image.Stretch = Stretch.Uniform;
-            Image.Width = b.Width * 200 / b.Height;
+            Image.Width = BitmapImage.Width * 200 / BitmapImage.Height;
         }
 
-        BitmapImage b = new BitmapImage();
+        public BitmapImage BitmapImage = new BitmapImage();
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
