@@ -37,7 +37,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Text="다운로드 경로 : "/>
-                <TextBox Grid.Column="1" Text="C:\Hitomi\{Artists}\[{Id}] {Title}\" HorizontalAlignment="Stretch" SelectionBrush="Pink" LostFocus="TextBox_LostFocus">
+                <TextBox Grid.Column="1" x:Name="Path" HorizontalAlignment="Stretch" SelectionBrush="Pink" LostFocus="TextBox_LostFocus">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
@@ -63,9 +63,9 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <TextBlock x:Name="Error" Grid.Column="1" Grid.Row="2" Text="Error: " Foreground="Red" Visibility="Collapsed"/>
-                <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="1" Text="언어 : " HorizontalAlignment="Right"/>
-                <ComboBox x:Name="Language" Grid.Column="1" Grid.Row="1" DropDownClosed="Language_DropDownClosed">
+                <TextBlock x:Name="Error" Grid.Column="1" Grid.Row="1" Text="Error: " Foreground="Red" Visibility="Collapsed"/>
+                <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Text="언어 : " HorizontalAlignment="Right"/>
+                <ComboBox x:Name="Language" Grid.Column="1" Grid.Row="2" DropDownClosed="Language_DropDownClosed">
                     <ComboBox.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
