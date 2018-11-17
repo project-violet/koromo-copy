@@ -154,6 +154,33 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button x:Name="Btnclos1" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" Tag="Console" Click="ThreeButton_Click">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Pink"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="HotPink"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Console" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </Button>
                     <Button x:Name="Btnclos2" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" Tag="Minimize" Click="ThreeButton_Click">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
@@ -250,6 +277,7 @@
                     <local:SearchSpace/>
                 </TabItem>
                 <TabItem Header="다운로드">
+                    <local:DownloadSpace/>
                 </TabItem>
                 <TabItem Header="작가추천">
                 </TabItem>

@@ -224,6 +224,13 @@ namespace Koromo_Copy_UX3
             {
                 Close();
             }
+            else if (tag == "Console")
+            {
+                Koromo_Copy.Monitor.Instance.ControlEnable = true;
+                Koromo_Copy.Console.Console.Instance.RedirectionAfterLoopInit = () => Domain.UXConsole.Register();
+                Koromo_Copy.Monitor.Instance.Push("Hello!");
+                Koromo_Copy.Monitor.Instance.Start();
+            }
         }
     }
 }
