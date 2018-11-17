@@ -23,11 +23,34 @@ namespace Koromo_Copy.Net
         object add_lock = new object();
         object job_lock = new object();
 
+        /// <summary>
+        /// 모든 다운로드가 끝났을 때 발생합니다.
+        /// </summary>
         public event EventHandler DownloadComplete;
+
+        /// <summary>
+        /// 다운로드 시작 전 사이즈를 알립니다.
+        /// </summary>
         public event EventHandler<Tuple<string, long, object>> NotifySize;
+
+        /// <summary>
+        /// 다운로드한 바이트 수를 알립니다.
+        /// </summary>
         public event EventHandler<Tuple<string, int, object>> DownloadStatus;
+
+        /// <summary>
+        /// 재시도한 파일을 알립니다.
+        /// </summary>
         public event EventHandler<Tuple<string, object>> Retry;
+
+        /// <summary>
+        /// 어떤 파일의 다운로드가 끝났을 때 발생합니다.
+        /// </summary>
         public event EventHandler<Tuple<string, string, object>> Complete;
+
+        /// <summary>
+        /// 어떤 그룹(작품)의 다운로드가 끝났을 때 발생합니다.
+        /// </summary>
         public event EventHandler<Tuple<string, object>> CompleteGroup;
 
         List<Tuple<int, object, SemaphoreCallBack, 
