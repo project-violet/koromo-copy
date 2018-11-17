@@ -42,37 +42,38 @@ namespace Koromo_Copy_UX3
             var downloader = new TreeViewItem
             {
                 Header="다운로더",
-                DataContext = new SettingViewDownloader()
+                DataContext = new SettingViewDownloader { DataContext = new SettingDownloaderViewModel() }
             };
             downloader.Items.Add(new TreeViewItem
             {
                 Header = "히토미",
                 DataContext = new SettingViewHitomi { DataContext = new SettingHitomiViewModel() }
             });
-            downloader.Items.Add(new TreeViewItem
-            {
-                Header = "익헨"
-            });
-            downloader.Items.Add(new TreeViewItem
-            {
-                Header = "마루마루"
-            });
-            downloader.Items.Add(new TreeViewItem
-            {
-                Header = "픽시브"
-            });
+            //downloader.Items.Add(new TreeViewItem
+            //{
+            //    Header = "익헨"
+            //});
+            //downloader.Items.Add(new TreeViewItem
+            //{
+            //    Header = "마루마루"
+            //});
+            //downloader.Items.Add(new TreeViewItem
+            //{
+            //    Header = "픽시브"
+            //});
             SettingsTree.Items.Add(downloader);
             
-            SettingsTree.Items.Add(new TreeViewItem
-            {
-                Header = "유저 인터페이스",
-                DataContext = new SettingViewUI()
-            });
+            //SettingsTree.Items.Add(new TreeViewItem
+            //{
+            //    Header = "유저 인터페이스",
+            //    DataContext = new SettingViewUI()
+            //});
 
-            SettingsTree.Items.Add(new TreeViewItem
-            {
-                Header = "플러그인"
-            });
+            //SettingsTree.Items.Add(new TreeViewItem
+            //{
+            //    Header = "플러그인",
+            //    DataContext = new SettingViewPlugin()
+            //});
 
             SettingsTree.Items.Add(new TreeViewItem
             {
