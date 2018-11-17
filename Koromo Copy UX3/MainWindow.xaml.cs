@@ -240,5 +240,11 @@ namespace Koromo_Copy_UX3
                 Koromo_Copy.Monitor.Instance.Start();
             }
         }
+
+        public void FocusDownload()
+        {
+            DownloadTab.Focus();
+            UpdateLayout();
+        }
     }
 }
