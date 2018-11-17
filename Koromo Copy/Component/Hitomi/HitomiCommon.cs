@@ -7,7 +7,9 @@
 ***/
 
 using System;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Koromo_Copy.Component.Hitomi
 {
@@ -72,5 +74,51 @@ namespace Koromo_Copy.Component.Hitomi
         /// <returns></returns>
         public static string GetImagesLinkAddress(string gallery)
             => $"{HitomiGalleryAddress}{gallery}.js";
+
+        /// <summary>
+        /// Article의 디렉토리 경로를 만듭니다.
+        /// </summary>
+        /// <param name="article"></param>
+        /// <param name="search_text"></param>
+        /// <returns></returns>
+        public static string MakeDownloadDirectory(HitomiArticle article, string search_text = "")
+        {
+            string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            string title = article.Title ?? "";
+            string artists = "";
+            string type = article.Type ?? "";
+            string series = "";
+            string search = search_text;
+            if (article.Artists != null)
+            {
+                //if (HitomiSetting.Instance.GetModel().ReplaceArtistsWithTitle == false)
+                artists = article.Artists[0];
+                //else
+                //{
+                //    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                //    artists = textInfo.ToTitleCase(article.Artists[0]);
+                //}
+            }
+            if (article.Series != null) series = article.Series[0];
+            if (title != null)
+                foreach (char c in invalid) title = title.Replace(c.ToString(), "");
+            if (artists != null)
+                foreach (char c in invalid) artists = artists.Replace(c.ToString(), "");
+            if (series != null)
+                foreach (char c in invalid) series = series.Replace(c.ToString(), "");
+            if (search != null)
+                foreach (char c in invalid) search = search.Replace(c.ToString(), "");
+
+            string path = Settings.Instance.Hitomi.Path;
+            path = Regex.Replace(path, "{Title}", title, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Artists}", artists, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Id}", article.Magic, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Type}", type, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Date}", DateTime.Now.ToString(), RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Series}", series, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Search}", search, RegexOptions.IgnoreCase);
+            return path;
+        }
+
     }
 }
