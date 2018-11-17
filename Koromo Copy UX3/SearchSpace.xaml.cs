@@ -50,9 +50,11 @@ namespace Koromo_Copy_UX3
                 StartsLoading = true;
                 if (!HitomiData.Instance.CheckMetadataExist())
                 {
+#if !DEBUG
                     Koromo_Copy.Monitor.Instance.ControlEnable = true;
                     Koromo_Copy.Monitor.Instance.Push("다운로드가 계속 진행되지 않는다면 이 창에서 Enter키를 눌러주세요");
-                    //Koromo_Copy.Console.Console.Instance.Show();
+                    Koromo_Copy.Console.Console.Instance.Show();
+#endif
                     MainWindow.Instance.Fade_MiddlePopup(true, "데이터를 다운로드 중입니다...");
                     await HitomiData.Instance.DownloadMetadata();
                     await HitomiData.Instance.DownloadHiddendata();
@@ -198,7 +200,7 @@ namespace Koromo_Copy_UX3
             }
         }
 
-        #region Search Helper
+#region Search Helper
         AutoCompleteLogic logic;
 
         private void SearchText_KeyDown(object sender, KeyEventArgs e)
@@ -231,7 +233,7 @@ namespace Koromo_Copy_UX3
         {
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
-        #endregion
+#endregion
 
     }
 }
