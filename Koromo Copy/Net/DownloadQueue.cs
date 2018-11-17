@@ -35,6 +35,7 @@ namespace Koromo_Copy.Net
         
         object notify_lock = new object();
         object shutdown_lock = new object();
+        object task_lock = new object();
         volatile bool preempt_take = false;
         
         /// <summary>
@@ -164,8 +165,9 @@ namespace Koromo_Copy.Net
                 object s3 = queue[i].Item3;
                 SemaphoreCallBack s4 = queue[i].Item4;
                 SemaphoreExtends s5 = queue[i].Item5;
+                lock(task_lock)
                 tasks.Add(Task.Run(() => DownloadRemoteImageFile(s1, s2, s3, s4, s5)).ContinueWith(
-                    x => Task.Run(() => { tasks.RemoveAll(y => y.IsCompleted); })));
+                    x => Task.Run(() => { lock (task_lock) tasks.RemoveAll(y => y.IsCompleted); })));
                 Interlocked.Increment(ref mtx);
             }
         }
