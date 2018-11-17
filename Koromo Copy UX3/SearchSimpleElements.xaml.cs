@@ -111,11 +111,11 @@ namespace Koromo_Copy_UX3
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
-                    b.BeginInit();
-                    b.UriSource = new Uri(ha.Thumbnail);
-                    b.EndInit();
+                    BitmapImage.BeginInit();
+                    BitmapImage.UriSource = new Uri(ha.Thumbnail);
+                    BitmapImage.EndInit();
                     Title.Text = ha.Title;
-                    Image.Source = b;
+                    Image.Source = BitmapImage;
                     //b.DownloadCompleted += B_DownloadCompleted;
                 }));
             });
@@ -184,7 +184,7 @@ namespace Koromo_Copy_UX3
         //    return ConvertBitmap(newBitmap);
         //}
 
-        BitmapImage b = new BitmapImage();
+        public BitmapImage BitmapImage = new BitmapImage();
 
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {

@@ -198,6 +198,11 @@ namespace Koromo_Copy_UX3
             {
                 SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = false);
             }
+            else if (tag == "Download")
+            {
+                //SearchPanel.Children.OfType<SearchElements>().ToList().Where(x => x.Select).ToList().ForEach(
+                //    x => DownloadSpace.Instance.RequestDownload(x.BitmapImage, null, null, x.Article.Title));
+            }
         }
 
 #region Search Helper

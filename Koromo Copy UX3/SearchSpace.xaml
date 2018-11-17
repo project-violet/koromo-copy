@@ -190,7 +190,7 @@
                         <Button Click="Button_Click" Grid.Column="1" HorizontalAlignment="Center"  BorderBrush="LightPink" Foreground="White" Width="100" Tag="Tidy">정리</Button>
                         <Button Click="Button_Click" Width="100" Margin="20 0 3 0" BorderBrush="LightPink" Foreground="White" Tag="SelectAll">모두 선택</Button>
                         <Button Click="Button_Click" Height="20" Width="100" Tag="DeSelectAll" BorderBrush="LightPink" Foreground="White" >모두 선택 취소</Button>
-                        <Button Click="Button_Click" Grid.Column="1" Margin="20 0 0 0" Width="100" BorderBrush="LightPink" Foreground="White" Tag="Downloader">다운로드</Button>
+                        <Button Click="Button_Click" Grid.Column="1" Margin="20 0 0 0" Width="100" BorderBrush="LightPink" Foreground="White" Tag="Download">다운로드</Button>
                     </StackPanel>
                 </Grid>
             </Grid>
