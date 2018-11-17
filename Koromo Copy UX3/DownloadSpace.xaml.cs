@@ -6,10 +6,13 @@
 
 ***/
 
+using Koromo_Copy;
 using Koromo_Copy.Net;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -99,13 +102,31 @@ namespace Koromo_Copy_UX3
                 view_model.Items.Remove(view_model.Items.Where(x => x.경로 == e.Item2).ToList()[0]);
             }));
             
-            Koromo_Copy.Monitor.Instance.Push("[Complete File] " + e.Item2);
+            Monitor.Instance.Push("[Complete File] " + e.Item2);
         }
 
         private void Instance_CompleteGroup(object sender, Tuple<string, object> e)
         {
             // AutoZip켜져있으면 압축 시작
-            Koromo_Copy.Monitor.Instance.Push("[Complete Group] " + (e.Item2 as string));
+            Monitor.Instance.Push("[Complete Group] " + (e.Item2 as string));
+
+            if (Settings.Instance.Model.AutoZip)
+            {
+                Monitor.Instance.Push("[Zip Start] " + (e.Item2 as string));
+                MainWindow.Instance.ZipCountUp();
+                Task.Run(() => Zip(e.Item2 as string));
+            }
+        }
+
+        private void Zip(string address)
+        {
+            address = address.Remove(address.Length - 1);
+            if (File.Exists($"{address}.zip"))
+                File.Delete($"{address}.zip");
+            ZipFile.CreateFromDirectory(address, $"{address}.zip");
+            Directory.Delete(address, true);
+            Monitor.Instance.Push("[Zip End] " + address);
+            MainWindow.Instance.ZipCountDown();
         }
 
         long latest_status_size = 0;

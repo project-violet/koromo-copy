@@ -203,6 +203,7 @@ namespace Koromo_Copy_UX3
             }
             else if (tag == "Download")
             {
+                int count = 0;
                 SearchPanel.Children.OfType<SearchElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
                 {
                     var prefix = MakeDownloadDirectory(x.Article as HitomiArticle);
@@ -211,7 +212,9 @@ namespace Koromo_Copy_UX3
                         x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(), 
                         x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
                         Koromo_Copy.Net.SemaphoreExtends.Default, prefix);
+                    count++;
                 });
+                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
             }
         }
 
