@@ -50,7 +50,7 @@ namespace Koromo_Copy_UX3
             ImageToolTip.VerticalOffset = e.GetPosition((IInputElement)sender).Y;
         }
 
-        private void RemoseMe()
+        private void RemoveMe()
         {
             if (this.ParentControl != null)
                 this.ParentControl.Children.Remove(this);
