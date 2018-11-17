@@ -210,8 +210,9 @@ namespace Koromo_Copy_UX3
                 if (result != "")
                     System.Diagnostics.Process.Start(result);
                 else
-                    // MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Hitomi Copy",  MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Koromo Copy", MessageBoxButton.OK, MessageBoxImage.Error);
+                {
+                    MainWindow.Instance.FadeOut_MiddlePopup("익헨 주소를 찾지 못했습니다 ㅠㅠ", false);
+                }
             }
             else if (tag == "Comment")
             {
@@ -221,7 +222,7 @@ namespace Koromo_Copy_UX3
                     (new CommentWindow(result)).Show();
                 }
                 else
-                    MessageBox.Show("익헨 주소를 찾지 못했습니다.", "Hitomi Copy", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MainWindow.Instance.FadeOut_MiddlePopup("익헨 주소를 찾지 못했습니다 ㅠㅠ", false);
             }
         }
 
