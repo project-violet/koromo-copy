@@ -45,6 +45,13 @@ namespace Koromo_Copy
         /// </summary>
         [JsonProperty]
         public int Thread;
+
+        /// <summary>
+        /// 다운로드한 파일이 있는 폴더를 자동으로 압축합니다.
+        /// 이후 다운로드된 파일은 삭제됩니다.
+        /// </summary>
+        [JsonProperty]
+        public bool AutoZip;
     }
 
     public class Settings : ILazy<Settings>
@@ -60,6 +67,7 @@ namespace Koromo_Copy
                 model = new SettingModel();
                 model.Thread = Environment.ProcessorCount * 3;
                 model.SensitiveUpdateCheck = false;
+                model.AutoZip = false;
 
                 model.Hitomi = new HitomiSetting();
                 model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";
