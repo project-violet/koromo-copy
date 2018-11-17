@@ -209,7 +209,7 @@ namespace Koromo_Copy_UX3
                 int count = 0;
                 SearchPanel.Children.OfType<SearchElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
                 {
-                    var prefix = MakeDownloadDirectory(x.Article as HitomiArticle);
+                    var prefix = HitomiCommon.MakeDownloadDirectory(x.Article as HitomiArticle, SearchText.Text);
                     Directory.CreateDirectory(prefix);
                     DownloadSpace.Instance.RequestDownload(x.Article.Title, 
                         x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(), 
@@ -220,46 +220,7 @@ namespace Koromo_Copy_UX3
                 if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
             }
         }
-
-        private string MakeDownloadDirectory(HitomiArticle article)
-        {
-            string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            string title = article.Title ?? "";
-            string artists = "";
-            string type = article.Type ?? "";
-            string series = "";
-            string search = SearchText.Text;
-            if (article.Artists != null)
-            {
-                //if (HitomiSetting.Instance.GetModel().ReplaceArtistsWithTitle == false)
-                    artists = article.Artists[0];
-                //else
-                //{
-                //    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-                //    artists = textInfo.ToTitleCase(article.Artists[0]);
-                //}
-            }
-            if (article.Series != null) series = article.Series[0];
-            if (title != null)
-                foreach (char c in invalid) title = title.Replace(c.ToString(), "");
-            if (artists != null)
-                foreach (char c in invalid) artists = artists.Replace(c.ToString(), "");
-            if (series != null)
-                foreach (char c in invalid) series = series.Replace(c.ToString(), "");
-            if (search != null)
-                foreach (char c in invalid) search = search.Replace(c.ToString(), "");
-
-            string path = Settings.Instance.Hitomi.Path;
-            path = Regex.Replace(path, "{Title}", title, RegexOptions.IgnoreCase);
-            path = Regex.Replace(path, "{Artists}", artists, RegexOptions.IgnoreCase);
-            path = Regex.Replace(path, "{Id}", article.Magic, RegexOptions.IgnoreCase);
-            path = Regex.Replace(path, "{Type}", type, RegexOptions.IgnoreCase);
-            path = Regex.Replace(path, "{Date}", DateTime.Now.ToString(), RegexOptions.IgnoreCase);
-            path = Regex.Replace(path, "{Series}", series, RegexOptions.IgnoreCase);
-            path = Regex.Replace(path, "{Search}", search, RegexOptions.IgnoreCase);
-            return path;
-        }
-
+        
         #region Search Helper
         AutoCompleteLogic logic;
 
