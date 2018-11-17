@@ -40,5 +40,17 @@ namespace Koromo_Copy_UX3.Domain
             }
         }
 
+        public bool AutoZip
+        {
+            get { return Settings.Instance.Model.AutoZip; }
+            set
+            {
+                if (Settings.Instance.Model.AutoZip == value) return;
+                Settings.Instance.Model.AutoZip = value;
+                Settings.Instance.Save();
+                OnPropertyChanged();
+            }
+        }
+
     }
 }
