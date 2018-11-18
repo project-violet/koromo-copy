@@ -8,7 +8,20 @@
         xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
         mc:Ignorable="d"
         Title="작가 : " Height="719" Width="1602.325" WindowStyle="ToolWindow" Loaded="Window_Loaded">
-
+    
+    <Window.CommandBindings>
+        <CommandBinding Command="local:ArtistViewerWindow.Command" Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="A" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="A"/>
+        <KeyBinding Key="C" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="C"/>
+        <KeyBinding Key="R" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="R"/>
+        <KeyBinding Key="S" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="S"/>
+        <KeyBinding Key="G" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="G"/>
+        <KeyBinding Key="B" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="B"/>
+        <KeyBinding Key="D" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="D"/>
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -65,6 +78,27 @@
                             <Setter Property="Margin" Value="4 4 0 0"/>
                         </Style>
                     </WrapPanel.Resources>
+                    <WrapPanel.ContextMenu>
+                        <ContextMenu>
+                            <ContextMenu.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </ContextMenu.Resources>
+                            <MenuItem Header="모두 선택" InputGestureText="Ctrl+A" Tag="A" Click="MenuItem_Click"/>
+                            <MenuItem Header="모두 선택 취소" InputGestureText="Ctrl+C" Tag="C" Click="MenuItem_Click"/>
+                            <MenuItem Header="선택 반전" InputGestureText="Ctrl+R" Tag="R" Click="MenuItem_Click"/>
+                            <Separator/>
+                            <MenuItem Header="제목 비슷한 작품 선택 취소" InputGestureText="Ctrl+S" Tag="S" Click="MenuItem_Click"/>
+                            <MenuItem Header="이미 다운로드된 작품 선택 취소" InputGestureText="Ctrl+G" Tag="G" Click="MenuItem_Click"/>
+                            <Separator/>
+                            <MenuItem Header="자세한 정보 보기" InputGestureText="Ctrl+D" Tag="D" Click="MenuItem_Click"/>
+                        </ContextMenu>
+                    </WrapPanel.ContextMenu>
                 </WrapPanel>
             </local:WheelSpeedScrollViewer>
 

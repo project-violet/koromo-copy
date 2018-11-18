@@ -178,5 +178,46 @@ namespace Koromo_Copy_UX3
             }
 
         }
+
+        public static RoutedCommand Command = new RoutedCommand();
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ProcessCommand((e.Parameter as string)[0]);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ProcessCommand((sender as MenuItem).Tag.ToString()[0]);
+        }
+
+        private void ProcessCommand(char c)
+        {
+            switch (c)
+            {
+                case 'A':
+                    ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x => x.Select = true);
+                    break;
+
+                case 'C':
+                    ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x => {
+                        x.Select = false;
+                        x.Transparent();
+                    });
+                    break;
+
+                case 'R':
+                    ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x => {
+                        x.Select = !x.Select;
+                        if (!x.Select) x.Transparent();
+                    });
+                    break;
+
+                case 'S':
+                case 'G':
+                case 'B':
+                case 'D':
+                    break;
+            }
+        }
     }
 }
