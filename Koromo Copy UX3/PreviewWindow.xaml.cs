@@ -1,7 +1,18 @@
-﻿using System;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +33,39 @@ namespace Koromo_Copy_UX3
         public PreviewWindow()
         {
             InitializeComponent();
+        }
+
+        public PreviewWindow(IArticle article)
+        {
+            InitializeComponent();
+
+            Article = article;
+            Loaded += PreviewWindow_Loaded;
+        }
+
+        public IArticle Article;
+
+        private void PreviewWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Task.Run(() => LoadImages());
+        }
+
+        private void LoadImages()
+        {
+            for (int i = 0; i < Article.ImagesLink.Count; i++)
+            {
+                Application.Current.Dispatcher.Invoke(new Action(
+                delegate
+                {
+                    string address = Article.ImagesLink[i];
+                    if (Article is HitomiArticle ha)
+                    {
+                        address = HitomiCommon.GetDownloadImageAddress(ha.Magic, address);
+                    }
+                    ImageStack.Children.Add(new PreviewImageElements($"{i + 1} Page", address));
+                }));
+                Thread.Sleep(100);
+            }
         }
     }
 }

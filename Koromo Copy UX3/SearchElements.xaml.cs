@@ -212,6 +212,11 @@ namespace Koromo_Copy_UX3
                     avw.Show();
                 }
             }
+            else if (tag == "Preview")
+            {
+                PreviewWindow pw = new PreviewWindow(Article);
+                pw.Show();
+            }
             else if (tag == "ShowOnEX")
             {
                 string result = ExHentaiTool.GetAddressFromMagicTitle(ha.Magic, ha.Title);
