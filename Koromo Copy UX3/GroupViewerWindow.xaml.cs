@@ -214,6 +214,15 @@ namespace Koromo_Copy_UX3
 
                 case 'S':
                 case 'G':
+                    ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x => {
+                        if (HitomiLog.Instance.Contains((x.Article as HitomiArticle).Magic))
+                        {
+                            x.Select = false;
+                            x.Transparent();
+                        }
+                    });
+                    break;
+
                 case 'B':
                 case 'D':
                     break;
