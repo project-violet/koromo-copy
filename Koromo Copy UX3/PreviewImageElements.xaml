@@ -32,7 +32,7 @@
             </Image.Resources>
             <Image.ToolTip>
                 <ToolTip x:Name="ImageToolTip" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                    <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
+                    <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="1000" MaxWidth="1000" />
                 </ToolTip>
             </Image.ToolTip>
         </Image>
