@@ -104,10 +104,9 @@ namespace Koromo_Copy_UX3
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             int rc = RecommendList.Children.Count;
-            int sp = Settings.Instance.Hitomi.RecommendPerScroll;
+            int sp = Settings.Instance.Hitomi.RecommendPerScroll * 2;
             for (int i = 0; i < rc - sp; i++)
             {
-                RecommendList.Children.RemoveAt(0);
                 RecommendList.Children.RemoveAt(0);
             }
         }
