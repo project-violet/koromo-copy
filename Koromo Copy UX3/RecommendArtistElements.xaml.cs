@@ -38,12 +38,17 @@ namespace Koromo_Copy_UX3
 
         public string Artist;
 
-        public RecommendArtistElements(string artist, string score)
+        public RecommendArtistElements(string artist, string score, string detail)
         {
             InitializeComponent();
 
             ArtistTextBox.Text = artist;
-            ScoreLabel.Text = $"점수 : {score} 점";
+            ScoreTextBox.Text = detail;
+
+            if (score.Length > 8)
+                ScoreLabel.Text = $"점수 : {score.Remove(8)} 점";
+            else
+                ScoreLabel.Text = $"점수 : {score} 점";
             Artist = artist;
 
             Loaded += RecommendArtistElements_Loaded;
