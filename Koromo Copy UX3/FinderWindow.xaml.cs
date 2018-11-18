@@ -48,15 +48,20 @@ namespace Koromo_Copy_UX3
             }
         }
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key == Key.Escape)
+                Close();
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var tag = (sender as Button).Tag.ToString();
 
             if (tag == "Search")
             {
-                //AppendAsync(SearchText.Text);
                 SearchAsync(SearchText.Text);
-                //SearchCount.Text = $"검색된 항목: {result.Count.ToString("#,#")}개";
             }
         }
 
