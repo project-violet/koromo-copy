@@ -23,6 +23,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public string[] Artists;
         [JsonProperty]
+        public string[] Groups;
+        [JsonProperty]
+        public string[] Series;
+        [JsonProperty]
+        public string[] Characters;
+        [JsonProperty]
         public string[] Tags;
         [JsonProperty]
         public DateTime Time;
@@ -57,6 +63,9 @@ namespace Koromo_Copy.Component.Hitomi
             mm.Id = article.Magic;
             mm.Title = article.Title;
             mm.Artists = article.Artists;
+            mm.Groups = article.Groups;
+            mm.Series = article.Series;
+            mm.Characters = article.Characters;
             mm.Tags = article.Tags;
             mm.Time = DateTime.Now;
             model.Add(mm);
