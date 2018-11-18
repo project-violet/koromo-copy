@@ -153,7 +153,6 @@ namespace Koromo_Copy_UX3
                     Page.Text = ha.ImagesLink.Count + " Pages";
                     Image.Source = BitmapImage;
                     Image.Stretch = Stretch.Uniform;
-                    Image.Width = BitmapImage.Width * 500 / BitmapImage.Height;
                 }));
             });
         }
@@ -162,6 +161,7 @@ namespace Koromo_Copy_UX3
         {
             Image.Stretch = Stretch.Uniform;
             Image.Width = BitmapImage.Width * 500 / BitmapImage.Height;
+            UpdateLayout();
         }
 
         public BitmapImage BitmapImage = new BitmapImage();
