@@ -124,6 +124,13 @@ namespace Koromo_Copy_UX3
             Loaded += SearchElements_Loaded;
         }
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key == Key.Escape)
+                Close();
+        }
+
         bool init = false;
         private void SearchElements_Loaded(object sender, EventArgs ex)
         {
