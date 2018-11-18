@@ -111,7 +111,10 @@ namespace Koromo_Copy
         /// <param name="str"></param>
         public void Push(string str)
         {
-            log.Add(Tuple.Create(DateTime.Now, str, false));
+            lock (log)
+            {
+                log.Add(Tuple.Create(DateTime.Now, str, false));
+            }
         }
 
         /// <summary>
@@ -120,8 +123,11 @@ namespace Koromo_Copy
         /// <param name="obj"></param>
         public void Push(object obj)
         {
-            log.Add(Tuple.Create(DateTime.Now, obj.ToString(), false));
-            log.Add(Tuple.Create(DateTime.Now, SerializeObject(obj), true));
+            lock (log)
+            {
+                log.Add(Tuple.Create(DateTime.Now, obj.ToString(), false));
+                log.Add(Tuple.Create(DateTime.Now, SerializeObject(obj), true));
+            }
         }
 
         /// <summary>
