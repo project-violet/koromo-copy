@@ -196,5 +196,22 @@ namespace Koromo_Copy_UX3
             ImageToolTip.HorizontalOffset = e.GetPosition((IInputElement)sender).X + 10;
             ImageToolTip.VerticalOffset = e.GetPosition((IInputElement)sender).Y;
         }
+
+        private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //Application.Current.Dispatcher.BeginInvoke(new System.Action(
+            //delegate
+            //{
+            //    ArticleInfoWindow aiw = new ArticleInfoWindow();
+            //    aiw.Show();
+            //}));
+            Application.Current.Dispatcher.BeginInvoke(new System.Action(
+            delegate
+            {
+                if (Article is HitomiArticle ha)
+                    (new ArticleInfoWindow(ha)).Show();
+            }));
+
+        }
     }
 }

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" Background="#F5F5F5" MouseUp="SearchSimpleElements_MouseUp"
+             MouseDoubleClick="UserControl_MouseDoubleClick"
              Height="242">
     
     <UserControl.RenderTransform>
