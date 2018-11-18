@@ -107,6 +107,7 @@ namespace Koromo_Copy_UX3
             Monitor.Instance.Push("[Complete File] " + e.Item2);
         }
 
+        object log_lock = new object();
         private void Instance_CompleteGroup(object sender, Tuple<string, object> e)
         {
             var tuple = e.Item2 as Tuple<string, IArticle>;
@@ -114,8 +115,11 @@ namespace Koromo_Copy_UX3
 
             if (tuple.Item2 is HitomiArticle ha)
             {
-                HitomiLog.Instance.AddArticle(ha);
-                HitomiLog.Instance.Save();
+                lock(log_lock)
+                {
+                    HitomiLog.Instance.AddArticle(ha);
+                    HitomiLog.Instance.Save();
+                }
             }
 
             if (Settings.Instance.Model.AutoZip)

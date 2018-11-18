@@ -72,53 +72,41 @@ namespace Koromo_Copy.Net
 
         private void downloadSizeCallback(string uri, long size, object obj)
         {
-            lock (job_lock)
-            {
-                if (NotifySize != null)
-                    NotifySize.Invoke(null, Tuple.Create(uri, size, jobs[(int)obj].Item2));
-                jobs[(int)obj].Item4?.Invoke(uri, size, jobs[(int)obj].Item2);
-            }
+            if (NotifySize != null)
+                NotifySize.Invoke(null, Tuple.Create(uri, size, jobs[(int)obj].Item2));
+            jobs[(int)obj].Item4?.Invoke(uri, size, jobs[(int)obj].Item2);
         }
 
         private void downloadStatusCallback(string uri, int size, object obj)
         {
-            lock (job_lock)
-            {
-                if (DownloadStatus != null)
-                    DownloadStatus.Invoke(null, Tuple.Create(uri, size, jobs[(int)obj].Item2));
-                jobs[(int)obj].Item5?.Invoke(uri, size, jobs[(int)obj].Item2);
-            }
+            if (DownloadStatus != null)
+                DownloadStatus.Invoke(null, Tuple.Create(uri, size, jobs[(int)obj].Item2));
+            jobs[(int)obj].Item5?.Invoke(uri, size, jobs[(int)obj].Item2);
         }
 
         private void downloadRetryCallback(string uri, object obj)
         {
-            lock (job_lock)
-            {
-                if (Retry != null)
-                    Retry.Invoke(null, Tuple.Create(uri, jobs[(int)obj].Item2));
-                jobs[(int)obj].Item6?.Invoke(uri, jobs[(int)obj].Item2);
-            }
+            if (Retry != null)
+                Retry.Invoke(null, Tuple.Create(uri, jobs[(int)obj].Item2));
+            jobs[(int)obj].Item6?.Invoke(uri, jobs[(int)obj].Item2);
         }
 
         private void downloadCallback(string url, string filename, object obj)
         {
-            lock (job_lock)
+            if (Complete != null)
+            Complete.Invoke(null, Tuple.Create(url, filename, jobs[(int)obj].Item2));
+
+            lock (add_lock)
             {
-                if (Complete != null)
-                Complete.Invoke(null, Tuple.Create(url, filename, jobs[(int)obj].Item2));
-
-                lock (add_lock)
-                {
-                    remain_contents--;
-                    if (remain_contents == 0)
-                        DownloadComplete.Invoke(null, null);
-                }
-
-                download_file_count[(int)obj]++;
-                if (download_file_count[(int)obj] == file_count[(int)obj])
-                    if (CompleteGroup != null)
-                        CompleteGroup.Invoke(null, Tuple.Create("", jobs[(int)obj].Item2));
+                remain_contents--;
+                if (remain_contents == 0)
+                    DownloadComplete.Invoke(null, null);
             }
+
+            download_file_count[(int)obj]++;
+            if (download_file_count[(int)obj] == file_count[(int)obj])
+                if (CompleteGroup != null)
+                    CompleteGroup.Invoke(null, Tuple.Create("", jobs[(int)obj].Item2));
         }
         
         /// <summary>

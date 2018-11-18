@@ -226,6 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Component\Pinterest\" />
+    <Folder Include="Component\SoundCloud\" />
     <Folder Include="Selenium\" />
   </ItemGroup>
   <ItemGroup>
