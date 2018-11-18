@@ -50,7 +50,7 @@
             </Popup>
             <Button x:Name="SearchButton" Grid.Column="1" HorizontalAlignment="Right" Width="78" Click="Button_Click" Grid.ColumnSpan="2" Tag="Search">검색</Button>
         </Grid>
-        <Grid Grid.Row="1" Margin="10">
+        <Grid Grid.Row="1" Margin="10 0 10 0">
             <DataGrid x:Name="TagList" Grid.Column="0" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
                   SelectionMode="Single" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Background="Transparent"
                   GridLinesVisibility="All" RowHeight="22"
