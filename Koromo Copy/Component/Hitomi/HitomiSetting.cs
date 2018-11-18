@@ -58,6 +58,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public bool SaveJsonFile;
 
+        /// <summary>
+        /// 작가추천에서 중복된 Article를 표시하지않도록 설정하는 고유값입니다.
+        /// </summary>
+        [JsonProperty]
+        public int TextMatchingAccuracy;
+
         [JsonProperty]
         public string[] CustomAutoComplete;
     }

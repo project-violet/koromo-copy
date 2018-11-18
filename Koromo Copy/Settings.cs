@@ -76,6 +76,7 @@ namespace Koromo_Copy
                 model.Hitomi.UsingSettingLanguageWhenAdvanceSearch = true;
                 model.Hitomi.UsingOptimization = true;
                 model.Hitomi.SaveJsonFile = true;
+                model.Hitomi.TextMatchingAccuracy = 5;
 
                 model.HitomiAnalysis = new HitomiAnalysisSetting();
 
