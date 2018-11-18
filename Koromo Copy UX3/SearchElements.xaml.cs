@@ -1,4 +1,12 @@
-﻿using Koromo_Copy;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy;
 using Koromo_Copy.Component.EH;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
@@ -231,6 +239,16 @@ namespace Koromo_Copy_UX3
             ImageToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Relative;
             ImageToolTip.HorizontalOffset = e.GetPosition((IInputElement)sender).X + 10;
             ImageToolTip.VerticalOffset = e.GetPosition((IInputElement)sender).Y;
+        }
+
+        private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new System.Action(
+            delegate
+            {
+                if (Article is HitomiArticle ha)
+                    (new ArticleInfoWindow(ha)).Show();
+            }));
         }
     }
 }

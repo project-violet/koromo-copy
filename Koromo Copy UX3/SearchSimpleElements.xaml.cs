@@ -1,4 +1,12 @@
-﻿using Koromo_Copy.Component.Hitomi;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
@@ -42,7 +50,6 @@ namespace Koromo_Copy_UX3
             {
                 PinkRectangle.Fill = new SolidColorBrush(Color.FromArgb(100, 234, 202, 233));
                 Border.BorderThickness = new Thickness(1);
-                //Border.BorderBrush = Brushes.LightPink;
                 Border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 174, 201));
                 BorderCollapsed.BorderThickness = new Thickness(1);
             }
@@ -58,7 +65,6 @@ namespace Koromo_Copy_UX3
                 if (value)
                 {
                     PinkRectangle.Fill = new SolidColorBrush(Color.FromArgb(200, 234, 202, 233));
-                    //PinkRectangle.Fill = Brushes.Pink;
                     Border.BorderThickness = new Thickness(2);
                     Border.BorderBrush = Brushes.LightPink;
                     BorderCollapsed.BorderThickness = new Thickness(0);
@@ -67,7 +73,6 @@ namespace Koromo_Copy_UX3
                 {
                     PinkRectangle.Fill = new SolidColorBrush(Color.FromArgb(100, 234, 202, 233));
                     Border.BorderThickness = new Thickness(1);
-                    //Border.BorderBrush = Brushes.LightPink;
                     Border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 174, 201));
                     BorderCollapsed.BorderThickness = new Thickness(1);
                 }
@@ -120,74 +125,10 @@ namespace Koromo_Copy_UX3
                     BitmapImage.EndInit();
                     Title.Text = ha.Title;
                     Image.Source = BitmapImage;
-                    //b.DownloadCompleted += B_DownloadCompleted;
                 }));
             });
         }
-
-        //private void B_DownloadCompleted(object sender, EventArgs e)
-        //{
-        //    Image.Source = bitmapto(b, b.Width, b.Height);
-        //}
-
-        //System.Drawing.Bitmap GetBitmap(BitmapSource source)
-        //{
-        //    System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(
-        //      source.PixelWidth,
-        //      source.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-        //    System.Drawing.Imaging.BitmapData data = bmp.LockBits(
-        //      new System.Drawing.Rectangle(System.Drawing.Point.Empty, bmp.Size),
-        //      System.Drawing.Imaging.ImageLockMode.WriteOnly,
-        //      System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-        //    source.CopyPixels(
-        //      Int32Rect.Empty,
-        //      data.Scan0,
-        //      data.Height * data.Stride,
-        //      data.Stride);
-        //    bmp.UnlockBits(data);
-        //    return bmp;
-        //}
-
-        //public static BitmapSource ConvertBitmap(System.Drawing.Bitmap source)
-        //{
-        //    return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-        //                  source.GetHbitmap(),
-        //                  IntPtr.Zero,
-        //                  Int32Rect.Empty,
-        //                  BitmapSizeOptions.FromEmptyOptions());
-        //}
-
-
-        //public BitmapSource bitmapto(BitmapSource bitmap_source, double ActualWidth, double ActualHeight)
-        //{
-        //    PresentationSource source = PresentationSource.FromVisual(this);
-
-        //    double dpiX, dpiY;
-        //    dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
-        //    dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
-
-        //    float dpi = (float)dpiX;
-        //    float factor = dpi / 96f * 2;
-        //    int width = (int)Math.Round(ActualWidth * factor);
-        //    int height = (int)Math.Round(ActualHeight * factor);
-
-        //    // Create bitmaps.
-        //    System.Drawing.Bitmap oldBitmap = GetBitmap(bitmap_source);
-        //    System.Drawing.Bitmap newBitmap = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-        //    // Draw the new bitmap. Use high-quality interpolation mode.
-        //    using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(newBitmap))
-        //    {
-        //        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-
-        //        g.Clear(System.Drawing.Color.Transparent);
-        //        g.DrawImage(oldBitmap, 0, 0, newBitmap.Width, newBitmap.Height);
-        //    }
-
-        //    // Set the image source to the resized bitmap.
-        //    return ConvertBitmap(newBitmap);
-        //}
-
+        
         public BitmapImage BitmapImage = new BitmapImage();
 
         private void Image_MouseMove(object sender, MouseEventArgs e)
@@ -198,20 +139,13 @@ namespace Koromo_Copy_UX3
         }
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            //Application.Current.Dispatcher.BeginInvoke(new System.Action(
-            //delegate
-            //{
-            //    ArticleInfoWindow aiw = new ArticleInfoWindow();
-            //    aiw.Show();
-            //}));
+        { 
             Application.Current.Dispatcher.BeginInvoke(new System.Action(
             delegate
             {
                 if (Article is HitomiArticle ha)
                     (new ArticleInfoWindow(ha)).Show();
             }));
-
         }
     }
 }
