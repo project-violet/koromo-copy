@@ -39,7 +39,7 @@ namespace Koromo_Copy_UX3
         private void FinderWindow_Loaded(object sender, RoutedEventArgs e)
         {
             logic = new AutoCompleteLogic(SearchText, AutoComplete, AutoCompleteList);
-            TagList.VerticalGridLinesBrush = TagList.HorizontalGridLinesBrush;
+            SearchList.VerticalGridLinesBrush = SearchList.HorizontalGridLinesBrush;
 
             if (searcher != "")
             {
@@ -123,6 +123,17 @@ namespace Koromo_Copy_UX3
 
             }
         }
+        
+        private void SearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (SearchList.SelectedItems.Count > 0)
+            {
+                (new ArticleInfoWindow(
+                    HitomiLegalize.MetadataToArticle(
+                    HitomiLegalize.GetMetadataFromMagic((SearchList.SelectedItems[0] as FinderDataGridItemViewModel).아이디).Value)
+                    )).Show();
+            }
+        }
 
         #region Search Helper
         AutoCompleteLogic logic;
@@ -158,6 +169,5 @@ namespace Koromo_Copy_UX3
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
         #endregion
-
     }
 }

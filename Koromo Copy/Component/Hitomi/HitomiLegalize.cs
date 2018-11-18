@@ -7,6 +7,7 @@
 ***/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Koromo_Copy.Component.Hitomi
@@ -41,6 +42,15 @@ namespace Koromo_Copy.Component.Hitomi
             metadata.Tags = article.Tags.Select(x => LegalizeTag(x)).ToArray();
             metadata.Type = article.Type;
             return metadata;
+        }
+
+        public class CompareMetadata : IComparer<HitomiMetadata> { public int Compare(HitomiMetadata x, HitomiMetadata y) { return y.ID.CompareTo(x.ID); } }
+        public static HitomiMetadata? GetMetadataFromMagic(string magic)
+        {
+            HitomiMetadata tmp = new HitomiMetadata() { ID = Convert.ToInt32(magic) };
+            var pos = HitomiData.Instance.metadata_collection.BinarySearch(tmp, new CompareMetadata());
+            if (pos < 0) return null;
+            return HitomiData.Instance.metadata_collection[pos];
         }
 
         public static string LegalizeTag(string tag)
