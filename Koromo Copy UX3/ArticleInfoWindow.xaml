@@ -155,17 +155,17 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Column="0" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="미리보기"/>
-                    <Button Grid.Column="1" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="작가 찾기"/>
-                    <Button Grid.Column="2" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="그룹 찾기"/>
-                    <Button Grid.Column="3" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="" Visibility="Collapsed"/>
-                    <Button Grid.Column="4" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="히토미에서 열기"/>
+                    <Button Grid.Column="0" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Preview" Content="미리보기"/>
+                    <Button Grid.Column="1" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Artist" Content="작가 찾기"/>
+                    <Button Grid.Column="2" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Group" Content="그룹 찾기"/>
+                    <Button Grid.Column="3" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Content="" Visibility="Collapsed"/>
+                    <Button Grid.Column="4" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Hitomi" Content="히토미에서 열기"/>
 
-                    <Button Grid.Column="0" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="익헨에서 열기"/>
-                    <Button Grid.Column="1" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="시리즈 찾기"/>
-                    <Button Grid.Column="2" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="캐릭터 찾기"/>
-                    <Button Grid.Column="3" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="댓글 보기"/>
-                    <Button Grid.Column="4" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="다운로드"/>
+                    <Button Grid.Column="0" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Exhentai" Content="익헨에서 열기"/>
+                    <Button Grid.Column="1" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Series" Content="시리즈 찾기"/>
+                    <Button Grid.Column="2" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Character" Content="캐릭터 찾기"/>
+                    <Button Grid.Column="3" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Comment" Content="댓글 보기"/>
+                    <Button Grid.Column="4" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="Download" Content="다운로드"/>
                 </Grid>
 
                 <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">

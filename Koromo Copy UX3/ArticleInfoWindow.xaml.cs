@@ -6,12 +6,14 @@
 
 ***/
 
+using Koromo_Copy.Component.EH;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy_UX3.Domain;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +24,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Koromo_Copy_UX3
 {
@@ -153,6 +154,7 @@ namespace Koromo_Copy_UX3
                     Page.Text = ha.ImagesLink.Count + " Pages";
                     Image.Source = BitmapImage;
                     Image.Stretch = Stretch.Uniform;
+                    Image.Width = BitmapImage.Width * 500 / BitmapImage.Height;
                 }));
             });
         }
@@ -210,6 +212,113 @@ namespace Koromo_Copy_UX3
             ImageToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Relative;
             ImageToolTip.HorizontalOffset = e.GetPosition((IInputElement)sender).X + 10;
             ImageToolTip.VerticalOffset = e.GetPosition((IInputElement)sender).Y;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as Button).Tag.ToString())
+            {
+                case "Preview":
+                    (new PreviewWindow(Article)).Show();
+                    break;
+
+                case "Artist":
+                    {
+                        if (Article is HitomiArticle ha)
+                        {
+                            if (ha.Artists != null)
+                                (new ArtistViewerWindow(ha.Artists[0])).Show();
+                        }
+                    }
+                    break;
+
+                case "Group":
+                    {
+                        if (Article is HitomiArticle ha)
+                        {
+                            if (ha.Groups != null)
+                                (new GroupViewerWindow(ha.Groups[0])).Show();
+                        }
+                    }
+                    break;
+
+                case "":
+                case "Hitomi":
+                    {
+                        if (Article is HitomiArticle ha)
+                        {
+                            System.Diagnostics.Process.Start($"{HitomiCommon.HitomiAddress}galleries/{ha.Magic}.html");
+                        }
+                    }
+                    break;
+
+                case "Exhentai":
+                    {
+                        if (Article is HitomiArticle ha)
+                        {
+                            string result = ExHentaiTool.GetAddressFromMagicTitle(ha.Magic, ha.Title);
+                            if (result != "")
+                                System.Diagnostics.Process.Start(result);
+                            else
+                                MainWindow.Instance.FadeOut_MiddlePopup("익헨 주소를 찾지 못했습니다 ㅠㅠ", false);
+                        }
+                    }
+                    break;
+
+                case "Series":
+                    {
+                        if (Article is HitomiArticle ha)
+                        {
+                            if (ha.Series != null)
+                                (new FinderWindow($"series:{ha.Series[0].Replace(' ', '_')}")).Show();
+                        }
+                    }
+                    break;
+
+                case "Character":
+                    {
+                        if (Article is HitomiArticle ha)
+                        {
+                            if (ha.Characters != null)
+                                (new FinderWindow($"character:{ha.Characters[0].Replace(' ', '_')}")).Show();
+                        }
+                    }
+                    break;
+
+                case "Comment":
+                    {
+                        if (Article is HitomiArticle ha)
+                        {
+                            string result = ExHentaiTool.GetAddressFromMagicTitle(ha.Magic, ha.Title);
+                            if (result != "")
+                            {
+                                (new CommentWindow(result)).Show();
+                            }
+                            else
+                                MainWindow.Instance.FadeOut_MiddlePopup("익헨 주소를 찾지 못했습니다 ㅠㅠ", false);
+                        }
+                    }
+                    break;
+
+                case "Download":
+                    {
+                        if (Article is HitomiArticle ha)
+                        {
+                            var prefix = HitomiCommon.MakeDownloadDirectory(ha);
+                            Directory.CreateDirectory(prefix);
+                            DownloadSpace.Instance.RequestDownload(ha.Title,
+                                ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y)).ToArray(),
+                                ha.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                                Koromo_Copy.Net.SemaphoreExtends.Default, prefix, ha);
+
+                            MainWindow.Instance.FadeOut_MiddlePopup($"1개 항목 다운로드 시작...");
+                            MainWindow.Instance.Activate();
+                            MainWindow.Instance.FocusDownload();
+                            Close();
+                        }
+                    }
+                    break;
+            }
         }
     }
 }
