@@ -94,6 +94,10 @@ namespace Koromo_Copy_UX3
             Article = article;
             
             Loaded += SearchSimpleElements_Loaded;
+
+            if (article is HitomiArticle ha)
+                if (HitomiLog.Instance.Contains(ha.Magic))
+                    DownloadMark.Visibility = Visibility.Visible;
         }
 
         bool init = false;
