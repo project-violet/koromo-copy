@@ -64,7 +64,7 @@ namespace Koromo_Copy.Component.Hitomi
         {
             switch (lang)
             {
-                case "모든 언어": return "ALL";
+                case "모든 언어": return "all";
                 case "한국어": return "korean";
                 case "N/A": return "n/a";
                 case "日本語": return "japanese";
@@ -93,7 +93,7 @@ namespace Koromo_Copy.Component.Hitomi
         {
             switch (lang)
             {
-                case "ALL": return "모든 언어";
+                case "all": return "모든 언어";
                 case "korean": return "한국어";
                 case "n/a": return "N/A";
                 case "japanese": return "日本語";
