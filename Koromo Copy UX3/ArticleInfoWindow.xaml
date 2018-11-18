@@ -4,9 +4,118 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
+        xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="ArticleInfoWindow" Height="348.148" Width="612.963" WindowStyle="ToolWindow">
-    <Grid>
+        WindowStyle="None"
+        AllowsTransparency="True" Background="Transparent"
+        Title="ArticleInfoWindow" Height="559.258" Width="1357.408"  MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated">
 
-    </Grid>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="5"
+                      GlassFrameThickness="0,0,0,1" ResizeBorderThickness="10"/>
+    </WindowChrome.WindowChrome>
+
+    <Border x:Name="TopBorder" Margin="10" BorderThickness="1">
+        <Border.BorderBrush>
+            <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}" Opacity="1"/>
+        </Border.BorderBrush>
+        <Border.Effect>
+            <DropShadowEffect x:Name="DropShadow" Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"
+                                  BlurRadius="10"
+                                  ShadowDepth="0"/>
+        </Border.Effect>
+        <Grid Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button BorderThickness="0" Width="20" Height="20" Tag="Close" Click="ThreeButton_Click">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Pink"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="HotPink"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Close" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <Grid Grid.Row="1" Margin="5 5 40 5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Image x:Name="Image" Grid.Column="0" Grid.RowSpan="3" Width="375" Height="500" HorizontalAlignment="Left" Stretch="Uniform" ToolTipService.InitialShowDelay="0"
+                        RenderOptions.BitmapScalingMode="Fant" MouseMove="Image_MouseMove">
+                    <Image.Resources>
+                        <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
+                    </Image.Resources>
+                    <Image.ToolTip>
+                        <ToolTip x:Name="ImageToolTip" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+                            <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+
+                <StackPanel Grid.Column="1" Grid.Row="0">
+                    <TextBlock x:Name="Title" FontSize="30" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Margin="10 10 0 0"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" x:Name="InfoPanel"/>
+                        <StackPanel Grid.Column="1" Margin="0 0 50 0" Orientation="Horizontal">
+                            <TextBlock Text="업로드된 날짜: " FontSize="20"/>
+                            <TextBlock x:Name="Date" FontSize="20"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+
+                <Grid Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxHeight="200">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontSize="20" Margin="10 0 5 0" VerticalAlignment="Top">태그:</TextBlock>
+                    <WrapPanel Grid.Column="1" x:Name="Tags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FFE8EC"/>
+                </Grid>
+
+                <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ImageOutline" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="Page" VerticalAlignment="Center" Margin="4 0 0 0"></TextBlock>
+                    <materialDesign:PackIcon x:Name="Downloaded" Visibility="Hidden" Kind="Download" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+    </Border>
 </Window>
