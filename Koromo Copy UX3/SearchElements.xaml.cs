@@ -248,6 +248,7 @@ namespace Koromo_Copy_UX3
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            Select = false;
             Application.Current.Dispatcher.BeginInvoke(new System.Action(
             delegate
             {

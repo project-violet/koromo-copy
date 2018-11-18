@@ -139,7 +139,9 @@ namespace Koromo_Copy_UX3
         }
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        { 
+        {
+            Select = false;
+            Transparent();
             Application.Current.Dispatcher.BeginInvoke(new System.Action(
             delegate
             {
