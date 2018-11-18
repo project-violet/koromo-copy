@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Finder" Height="593" Width="1611" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
+        Title="Finder" Height="606" Width="1611" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
