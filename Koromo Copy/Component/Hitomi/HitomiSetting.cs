@@ -52,6 +52,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public bool UsingSettingLanguageWhenAdvanceSearch;
 
+        /// <summary>
+        /// Article 다운로드 폴더에 작품의 정보를 담은 json파일을 남깁니다.
+        /// </summary>
+        [JsonProperty]
+        public bool SaveJsonFile;
+
         [JsonProperty]
         public string[] CustomAutoComplete;
     }

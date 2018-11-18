@@ -75,6 +75,7 @@ namespace Koromo_Copy
                 model.Hitomi.CustomAutoComplete = new string[] { "recent:0-25" };
                 model.Hitomi.UsingSettingLanguageWhenAdvanceSearch = true;
                 model.Hitomi.UsingOptimization = true;
+                model.Hitomi.SaveJsonFile = true;
 
                 model.HitomiAnalysis = new HitomiAnalysisSetting();
 
