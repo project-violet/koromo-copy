@@ -177,6 +177,12 @@ namespace Koromo_Copy_UX3
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
         }
+        
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Right)
+                Close();
+        }
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
