@@ -62,7 +62,7 @@
             </TextBox>
 
             <TextBlock x:Name="ScoreLabel" Grid.Row="2" Margin="0 20 0 2" Text="점수: 0 점" FontSize="15"/>
-            <TextBox x:Name="ScoreTextBox" Grid.Row="3" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" SelectionBrush="Pink">
+            <TextBox x:Name="ScoreTextBox" Grid.Row="3" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" SelectionBrush="Pink" MaxHeight="98">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
                         <Setter Property="Template">

@@ -74,7 +74,7 @@ namespace Koromo_Copy_UX3
                 delegate
                 {
                     RecommendList.Children.Add(new RecommendArtistElements(HitomiAnalysis.Instance.Rank[llc].Item1,
-                        HitomiAnalysis.Instance.Rank[llc].Item2.ToString()) { LoadComplete = DownStay });
+                        HitomiAnalysis.Instance.Rank[llc].Item2.ToString(), HitomiAnalysis.Instance.Rank[llc].Item3) { LoadComplete = DownStay });
                     RecommendList.Children.Add(new Separator());
                 }));
                 wait_count++;
