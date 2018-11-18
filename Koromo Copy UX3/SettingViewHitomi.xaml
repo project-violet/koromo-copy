@@ -301,7 +301,7 @@
                         </RadioButton.Resources>
                     </RadioButton>
 
-                    <RadioButton IsChecked="{Binding UsingXiAanlysis}" Margin="0 8 0 0"  Content="  Xi 알고리즘">
+                    <RadioButton IsChecked="{Binding UsingXiAanlysis}" Margin="0 8 0 0"  Content="  Xi 알고리즘" ToolTip="단순 회귀 방법을 이용해 작가 추천 목록을 작성합니다.">
                         <RadioButton.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>
