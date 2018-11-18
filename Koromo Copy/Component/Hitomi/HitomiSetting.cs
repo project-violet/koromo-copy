@@ -64,6 +64,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public int TextMatchingAccuracy;
 
+        /// <summary>
+        /// 스크롤 당 몇 개의 작가추천 목록을 표시할지 설정합니다.
+        /// </summary>
+        [JsonProperty]
+        public int RecommendPerScroll;
+
         [JsonProperty]
         public string[] CustomAutoComplete;
     }

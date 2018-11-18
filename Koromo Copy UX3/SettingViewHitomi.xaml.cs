@@ -97,7 +97,6 @@ namespace Koromo_Copy_UX3
         {
             var langs = new string[] {
                 "모든 언어",
-                "ALL",
                 "N/A",
                 "한국어",
                 "日本語",
