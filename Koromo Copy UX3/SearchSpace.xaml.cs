@@ -237,11 +237,13 @@ namespace Koromo_Copy_UX3
         
         private void SearchText_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (!IsMetadataLoaded) return;
             logic.SearchText_PreviewKeyDown(sender, e);
         }
         
         private void SearchText_KeyUp(object sender, KeyEventArgs e)
         {
+            if (!IsMetadataLoaded) return;
             logic.SearchText_KeyUp(sender, e);
         }
         
