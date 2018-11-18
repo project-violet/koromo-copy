@@ -119,6 +119,10 @@ namespace Koromo_Copy_UX3
                 {
                     HitomiLog.Instance.AddArticle(ha);
                     HitomiLog.Instance.Save();
+
+                    var hj = new HitomiJson(tuple.Item1);
+                    hj.SetModelFromArticle(ha);
+                    hj.Save();
                 }
             }
 
