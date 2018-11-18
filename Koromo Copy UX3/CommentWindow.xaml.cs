@@ -37,13 +37,6 @@ namespace Koromo_Copy_UX3
             if (e.Key == Key.Escape)
                 Close();
         }
-
-        protected override void OnPreviewKeyDown(KeyEventArgs e)
-        {
-            base.OnPreviewKeyDown(e);
-            if (e.Key == Key.Escape)
-                Close();
-        }
         
         private void CommentWindow_Loaded(object sender, RoutedEventArgs e)
         {
