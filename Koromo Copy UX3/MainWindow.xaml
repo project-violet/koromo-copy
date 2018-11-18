@@ -280,6 +280,7 @@
                     <local:DownloadSpace/>
                 </TabItem>
                 <TabItem Header="작가추천">
+                    <local:RecommendSpace/>
                 </TabItem>
                 <TabItem Header="도구">
                 </TabItem>

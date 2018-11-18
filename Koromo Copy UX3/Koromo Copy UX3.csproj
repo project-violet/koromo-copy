@@ -137,6 +137,9 @@
     <Compile Include="RecommendArtistElements.xaml.cs">
       <DependentUpon>RecommendArtistElements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RecommendSpace.xaml.cs">
+      <DependentUpon>RecommendSpace.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>
     </Compile>
@@ -222,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RecommendArtistElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecommendSpace.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
