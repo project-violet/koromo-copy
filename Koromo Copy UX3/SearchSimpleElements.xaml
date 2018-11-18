@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" Background="#F5F5F5" MouseUp="SearchSimpleElements_MouseUp"
              Height="242">
     
@@ -64,8 +65,9 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid>
+        <materialDesign:PackIcon Foreground="Orange" x:Name="DownloadMark" Visibility="Collapsed" Margin="5" Kind="Star" Panel.ZIndex="2" Height="17" Width="17" Opacity=".9" VerticalAlignment="Top"/>
         <Rectangle x:Name="PinkRectangle" Margin="2" Grid.RowSpan="2" Panel.ZIndex="1" IsHitTestVisible="False">
             <Rectangle.Fill>
                 <SolidColorBrush Color="Transparent" />
