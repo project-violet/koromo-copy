@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
         AllowsTransparency="True" Background="Transparent" MouseUp="Window_MouseUp"
-        Title="ArticleInfoWindow" Height="559.258" Width="1357.408"  MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated">
+        Title="ArticleInfoWindow" Height="536.258" Width="1357.408"  MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="5"
@@ -38,10 +38,10 @@
                                   ShadowDepth="0"/>
         </Border.Effect>
         <Grid Background="White">
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            </Grid.RowDefinitions>-->
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <Button BorderThickness="0" Width="20" Height="20" Tag="Close" Click="ThreeButton_Click">
                     <Button.Style>
@@ -84,8 +84,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Image x:Name="Image" Grid.Column="0" Grid.RowSpan="4" Width="375" Height="500" HorizontalAlignment="Left" Stretch="Uniform" ToolTipService.InitialShowDelay="0"
-                        RenderOptions.BitmapScalingMode="Fant" MouseMove="Image_MouseMove">
+                <Image x:Name="Image" Grid.Column="0" Grid.RowSpan="4" Width="375" Height="500" HorizontalAlignment="Stretch" Stretch="Uniform" ToolTipService.InitialShowDelay="0"
+                        RenderOptions.BitmapScalingMode="Fant" MouseMove="Image_MouseMove" VerticalAlignment="Stretch">
                     <Image.Resources>
                         <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
                     </Image.Resources>
@@ -96,7 +96,7 @@
                     </Image.ToolTip>
                 </Image>
 
-                <StackPanel Grid.Column="1" Grid.Row="0">
+                <StackPanel Grid.Column="1" Grid.Row="0" Margin="10 0 0 0">
                     <TextBlock x:Name="Title" FontSize="30" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Margin="10 10 0 0"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -112,7 +112,7 @@
                     </Grid>
                 </StackPanel>
 
-                <Grid Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxHeight="150">
+                <Grid Grid.Column="1" Grid.Row="1" Margin="10 0 0 0" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxHeight="150">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
