@@ -7,7 +7,7 @@
         xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        WindowStyle="None"
+        WindowStyle="None" WindowStartupLocation="CenterScreen"
         AllowsTransparency="True" Background="Transparent"
         Title="ArticleInfoWindow" Height="559.258" Width="1357.408"  MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated">
 
@@ -69,9 +69,10 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Image x:Name="Image" Grid.Column="0" Grid.RowSpan="3" Width="375" Height="500" HorizontalAlignment="Left" Stretch="Uniform" ToolTipService.InitialShowDelay="0"
+                <Image x:Name="Image" Grid.Column="0" Grid.RowSpan="4" Width="375" Height="500" HorizontalAlignment="Left" Stretch="Uniform" ToolTipService.InitialShowDelay="0"
                         RenderOptions.BitmapScalingMode="Fant" MouseMove="Image_MouseMove">
                     <Image.Resources>
                         <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
@@ -99,7 +100,6 @@
                     </Grid>
                 </StackPanel>
 
-
                 <Grid Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxHeight="200">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -109,7 +109,54 @@
                     <WrapPanel Grid.Column="1" x:Name="Tags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FFE8EC"/>
                 </Grid>
 
-                <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
+                <Grid Grid.Column="1" Grid.Row="2" Margin="10" HorizontalAlignment="Center">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Pink"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FDAEBB"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#F98498"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="0" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="미리보기"/>
+                    <Button Grid.Column="1" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="작가 찾기"/>
+                    <Button Grid.Column="2" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="그룹 찾기"/>
+                    <Button Grid.Column="3" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="" Visibility="Collapsed"/>
+                    <Button Grid.Column="4" Grid.Row="0" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="히토미에서 열기"/>
+
+                    <Button Grid.Column="0" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="익헨에서 열기"/>
+                    <Button Grid.Column="1" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="시리즈 찾기"/>
+                    <Button Grid.Column="2" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="캐릭터 찾기"/>
+                    <Button Grid.Column="3" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="댓글 보기"/>
+                    <Button Grid.Column="4" Grid.Row="1" Width="150" Height="45" Margin="2.5" BorderBrush="LightPink" Foreground="White" Content="다운로드"/>
+                </Grid>
+
+                <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" Margin="5 5 5 5" Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="ImageOutline" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
                     <TextBlock x:Name="Page" VerticalAlignment="Center" Margin="4 0 0 0"></TextBlock>
                     <materialDesign:PackIcon x:Name="Downloaded" Visibility="Hidden" Kind="Download" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
