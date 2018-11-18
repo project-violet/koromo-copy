@@ -157,5 +157,17 @@ namespace Koromo_Copy_UX3.Domain
                 OnPropertyChanged();
             }
         }
+
+        public bool SaveJsonFile
+        {
+            get { return Settings.Instance.Hitomi.SaveJsonFile; }
+            set
+            {
+                if (Settings.Instance.Hitomi.SaveJsonFile == value) return;
+                Settings.Instance.Hitomi.SaveJsonFile = value;
+                Settings.Instance.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }
