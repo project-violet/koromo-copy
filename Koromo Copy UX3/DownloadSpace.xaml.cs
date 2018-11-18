@@ -113,7 +113,10 @@ namespace Koromo_Copy_UX3
             Monitor.Instance.Push("[Complete Group] " + (tuple.Item1));
 
             if (tuple.Item2 is HitomiArticle ha)
+            {
                 HitomiLog.Instance.AddArticle(ha);
+                HitomiLog.Instance.Save();
+            }
 
             if (Settings.Instance.Model.AutoZip)
             {
