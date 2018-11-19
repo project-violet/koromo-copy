@@ -63,7 +63,6 @@ namespace Koromo_Copy_UX3
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
-                    UpdateButton.IsEnabled = true;
                     LatestVersion.Text = $"{Koromo_Copy.Version.LatestVersionModel.MajorVersion}.{Koromo_Copy.Version.LatestVersionModel.MinorVersion}.{Koromo_Copy.Version.LatestVersionModel.BuildVersion}.{Koromo_Copy.Version.LatestVersionModel.RevisionVersion}";
                 }));
             });

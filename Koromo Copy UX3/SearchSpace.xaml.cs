@@ -95,6 +95,7 @@ namespace Koromo_Copy_UX3
                 sb.Completed += Sb_Completed;
                 if (sb != null) { BeginStoryboard(sb); }
                 RecommendSpace.Instance.Update();
+                Task.Run(() => CheckUpdate());
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             Window w = Window.GetWindow(this);
@@ -115,6 +116,12 @@ namespace Koromo_Copy_UX3
         private void UpdateDownloadText(string text)
         {
             MainWindow.Instance.ModifyText_MiddlePopup($"데이터를 다운로드 중입니다... {text}");
+        }
+
+        private void CheckUpdate()
+        {
+            if (Koromo_Copy.Version.UpdateRequired())
+                MainWindow.Instance.FadeOut_MiddlePopup("새로운 업데이트가 있습니다! 설정->업데이트에서 확인해주세요!", false);
         }
 
         public bool IsMetadataLoaded = false;
