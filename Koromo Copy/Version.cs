@@ -33,16 +33,14 @@ namespace Koromo_Copy
         public static string SimpleText { get; } = $"{Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}";
 
         public const string UpdateCheckUrl = "";
-        public static string VersionBinaryURL = "";
-        public static List<Tuple<string, DateTime, string>> Notifications;
+        public static VersionModel LatestVersionModel;
 
         public static bool UpdateRequired()
         {
             var download = NetCommon.DownloadString(UpdateCheckUrl);
             var net_data = JsonConvert.DeserializeObject<VersionModel>(download);
 
-            VersionBinaryURL = net_data.VersionBinary;
-            Notifications = net_data.Notifications;
+            LatestVersionModel = net_data;
 
             int major = Assembly.GetExecutingAssembly().GetName().Version.Major;
             int minor = Assembly.GetExecutingAssembly().GetName().Version.Minor;
