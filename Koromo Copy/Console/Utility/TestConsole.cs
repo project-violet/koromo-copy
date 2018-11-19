@@ -109,6 +109,10 @@ namespace Koromo_Copy.Console.Utility
                 case "query":
                     HitomiDataSearchAdvanced.to_linear(HitomiDataSearchAdvanced.make_tree("(a b) - (c d) - (e f)"));
                     break;
+
+                case "version_check":
+                    Version.UpdateRequired();
+                    break;
             }
         }
     }

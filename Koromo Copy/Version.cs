@@ -23,6 +23,7 @@ namespace Koromo_Copy
         public int RevisionVersion;
         public DateTime UpdateTime;
         public string VersionBinary;
+        public string PatchNote;
         public List<Tuple<string, DateTime, string>> Notifications;
     }
 
@@ -32,7 +33,7 @@ namespace Koromo_Copy
         public static string Text { get; } = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static string SimpleText { get; } = $"{Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}";
 
-        public const string UpdateCheckUrl = "";
+        public const string UpdateCheckUrl = "https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/version";
         public static VersionModel LatestVersionModel;
 
         public static bool UpdateRequired()
