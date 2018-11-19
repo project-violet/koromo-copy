@@ -7,7 +7,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
         mc:Ignorable="d"
-        Title="작가 : " Height="719" Width="1602.325" WindowStyle="ToolWindow" Loaded="Window_Loaded">
+        Title="작가 : " Height="719" Width="1602.325" WindowStyle="ToolWindow" Loaded="Window_Loaded"
+        SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
     
     <Window.CommandBindings>
         <CommandBinding Command="local:ArtistViewerWindow.Command" Executed="CommandBinding_Executed"/>
@@ -21,12 +22,49 @@
         <KeyBinding Key="B" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="B"/>
         <KeyBinding Key="D" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="D"/>
     </Window.InputBindings>
+
+    <Window.Resources>
+        <!--<DataTemplate DataType="{x:Type Border}">
+            
+        </DataTemplate>
+        <Style>
+            
+        </Style>-->
+    </Window.Resources>
     
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <local:NonTopmostPopup x:Name="ArtistsPopup" Placement="Right" IsOpen="True" AllowsTransparency="True" PlacementTarget="{Binding ElementName=MainWindow}">
+            <Grid x:Name="ArtistsStack" Opacity=".8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" CornerRadius="6" Margin="10 0 0 0" Background="Black" Width="150">
+                    <TextBlock Text="비슷한 작가" HorizontalAlignment="Center" Margin="5" Foreground="White"/>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" Background="Transparent">
+                    <StackPanel x:Name="RecommendArtist" Background="Transparent">
+                        <!--<local:ArtistViewerToastElements/>
+                        <local:ArtistViewerToastElements/>
+                        <local:ArtistViewerToastElements/>
+                        <local:ArtistViewerToastElements/>-->
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!--<Border Grid.Row="2" CornerRadius="6" Margin="10 10 0 0" Background="Black" Width="150">
+                    <TextBlock Text="더보기" HorizontalAlignment="Center" Margin="5" Foreground="White"/>
+                </Border>-->
+
+            </Grid>
+        </local:NonTopmostPopup>
 
         <DataGrid x:Name="TagList" Grid.Column="0" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
                   SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True"

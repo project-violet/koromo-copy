@@ -94,6 +94,9 @@
     <Compile Include="ArticleInfoWindow.xaml.cs">
       <DependentUpon>ArticleInfoWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ArtistViewerToastElements.xaml.cs">
+      <DependentUpon>ArtistViewerToastElements.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ArtistViewerWindow.xaml.cs">
       <DependentUpon>ArtistViewerWindow.xaml</DependentUpon>
     </Compile>
@@ -128,6 +131,7 @@
     <Compile Include="GroupViewerWindow.xaml.cs">
       <DependentUpon>GroupViewerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NonTopmostPopup.cs" />
     <Compile Include="PreviewImageElements.xaml.cs">
       <DependentUpon>PreviewImageElements.xaml</DependentUpon>
     </Compile>
@@ -175,6 +179,10 @@
     </Compile>
     <Compile Include="WheelSpeedScrollViewer.cs" />
     <Page Include="ArticleInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ArtistViewerToastElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,6 +8,7 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Hitomi.Analysis;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
@@ -74,7 +75,7 @@ namespace Koromo_Copy_UX3
                             else
                                 dictionary.Add(tag, 1);
                 }
-            }).ContinueWith(t => {
+            }).ContinueWith(async t => {
                 var vm = DataContext as Domain.ArtistDataGridViewModel;
                 var list = dictionary.ToList();
                 list.Sort((a, b) => b.Value.CompareTo(a.Value));
@@ -84,11 +85,19 @@ namespace Koromo_Copy_UX3
                         항목=tag.Key,
                         카운트=tag.Value
                     });
+                var hpa = new HitomiPortableAnalysis();
+                hpa.CustomAnalysis = dictionary.Select(x => new Tuple<string, int>(x.Key, x.Value)).ToList();
+                await Task.Run(() => hpa.Update());
+                for (int i = 0, j = 0; j < 5 && i < hpa.Rank.Count; i++)
+                {
+                    if (hpa.Rank[i].Item1 == Artist) continue;
+                    RecommendArtist.Children.Add(new ArtistViewerToastElements(
+                        $"{j+1}. {hpa.Rank[i].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[i].Item1]})", $"점수: {hpa.Rank[i].Item2}", hpa.Rank[i].Item1));
+                    j++;
+                }
             }, TaskScheduler.FromCurrentSynchronizationContext());
-            
-
         }
-
+        
         public string Artist;
 
         private void LoadThumbnail(List<HitomiMetadata> md)
@@ -127,6 +136,8 @@ namespace Koromo_Copy_UX3
             SetValue(MinHeightProperty, this.Height);
 
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
+
+            ArtistsPopup.MaxHeight = ArtistsPopup.Height = 689;
         }
 
         private void DataGridRow_MouseDown(object sender, MouseButtonEventArgs e)
@@ -253,6 +264,19 @@ namespace Koromo_Copy_UX3
                 case 'D':
                     break;
             }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //if (!Double.IsNaN(MainGrid.Height) && !Double.IsInfinity(MainGrid.Height))
+            //    ArtistsPopup.MaxHeight = ArtistsPopup.Height = MainGrid.Height;
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            var offset = ArtistsPopup.HorizontalOffset;
+            ArtistsPopup.HorizontalOffset = offset + 1;
+            ArtistsPopup.HorizontalOffset = offset;
         }
     }
 }
