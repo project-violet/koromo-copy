@@ -90,6 +90,8 @@ namespace Koromo_Copy_UX3
             }
 
             Fade_MiddlePopup(true);
+
+            Koromo_Copy.Version.RequireTidy();
         }
 
         public void Fade_MiddlePopup(bool fade, string text = "", bool progress = true)
@@ -137,6 +139,15 @@ namespace Koromo_Copy_UX3
                    {
                        PopupText.Text = text;
                    }
+               }));
+        }
+
+        public void ModifyText_MiddlePopup(string text)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+               new Action(() =>
+               {
+                    PopupText.Text = text;
                }));
         }
 

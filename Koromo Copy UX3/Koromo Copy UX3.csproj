@@ -167,6 +167,9 @@
     <Compile Include="SettingViewUI.xaml.cs">
       <DependentUpon>SettingViewUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingViewUpdate.xaml.cs">
+      <DependentUpon>SettingViewUpdate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToolSpace.xaml.cs">
       <DependentUpon>ToolSpace.xaml</DependentUpon>
     </Compile>
@@ -268,6 +271,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingViewUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewUpdate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

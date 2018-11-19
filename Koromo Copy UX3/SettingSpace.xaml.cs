@@ -77,7 +77,8 @@ namespace Koromo_Copy_UX3
 
             SettingsTree.Items.Add(new TreeViewItem
             {
-                Header = "업데이트"
+                Header = "업데이트",
+                DataContext = new SettingViewUpdate()
             });
 
             ContentControl.Content = (SettingsTree.Items[0] as TreeViewItem).DataContext;

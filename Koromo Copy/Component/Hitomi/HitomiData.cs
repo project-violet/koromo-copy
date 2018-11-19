@@ -108,6 +108,8 @@ namespace Koromo_Copy.Component.Hitomi
             metadata_collection.Sort((a, b) => b.ID.CompareTo(a.ID));
         }
 
+        public Action<string> MetadataDownloadStatusEvent;
+
         private async Task downloadMetadata(int no)
         {
             int retry = 0;
@@ -133,6 +135,7 @@ namespace Koromo_Copy.Component.Hitomi
                 lock (lock_count)
                 {
                     downloadCount++;
+                    MetadataDownloadStatusEvent?.Invoke($"[{downloadCount.ToString("00")}/{number_of_gallery_jsons}]");
                     Monitor.Instance.Push($"Download complete: [{downloadCount.ToString("00")}/{number_of_gallery_jsons}] {gallerie_json_uri(no)}");
                 }
             }
