@@ -36,8 +36,14 @@ namespace Koromo_Copy
         public const string UpdateCheckUrl = "https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/version";
         public static VersionModel LatestVersionModel;
 
+        private static bool already_check = false;
+        private static bool update_required = false;
+
         public static bool UpdateRequired()
         {
+            if (already_check) return update_required;
+            already_check = true;
+
             var download = NetCommon.DownloadString(UpdateCheckUrl);
             var net_data = JsonConvert.DeserializeObject<VersionModel>(download);
 
@@ -63,7 +69,7 @@ namespace Koromo_Copy
                     require = true;
             }
 
-            return require;
+            return update_required = require;
         }
 
         public static bool RequireTidy()
