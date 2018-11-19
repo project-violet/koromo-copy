@@ -51,7 +51,11 @@ namespace Koromo_Copy_UX3
             if (e.Key == Key.Escape)
                 Close();
         }
-        
+
+        HitomiPortableAnalysis hpa = new HitomiPortableAnalysis();
+        int current_load = 0;
+        int current_item = 0;
+
         public ArtistViewerWindow(string artist)
         {
             InitializeComponent();
@@ -85,15 +89,15 @@ namespace Koromo_Copy_UX3
                         항목=tag.Key,
                         카운트=tag.Value
                     });
-                var hpa = new HitomiPortableAnalysis();
                 hpa.CustomAnalysis = dictionary.Select(x => new Tuple<string, int>(x.Key, x.Value)).ToList();
                 await Task.Run(() => hpa.Update());
-                for (int i = 0, j = 0; j < 5 && i < hpa.Rank.Count; i++)
+                for (int j = 0; j < 5 && current_item < hpa.Rank.Count; current_item++)
                 {
-                    if (hpa.Rank[i].Item1 == Artist) continue;
+                    if (hpa.Rank[current_item].Item1 == Artist) continue;
                     RecommendArtist.Children.Add(new ArtistViewerToastElements(
-                        $"{j+1}. {hpa.Rank[i].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[i].Item1]})", $"점수: {hpa.Rank[i].Item2}", hpa.Rank[i].Item1));
+                        $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"점수: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
                     j++;
+                    current_load++;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -137,7 +141,7 @@ namespace Koromo_Copy_UX3
 
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
 
-            ArtistsPopup.MaxHeight = ArtistsPopup.Height = 689;
+            ArtistsPopup.MaxHeight = 689;
         }
 
         private void DataGridRow_MouseDown(object sender, MouseButtonEventArgs e)
@@ -268,8 +272,9 @@ namespace Koromo_Copy_UX3
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //if (!Double.IsNaN(MainGrid.Height) && !Double.IsInfinity(MainGrid.Height))
-            //    ArtistsPopup.MaxHeight = ArtistsPopup.Height = MainGrid.Height;
+            var offset = ArtistsPopup.HorizontalOffset;
+            ArtistsPopup.HorizontalOffset = offset + 1;
+            ArtistsPopup.HorizontalOffset = offset;
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
@@ -277,6 +282,28 @@ namespace Koromo_Copy_UX3
             var offset = ArtistsPopup.HorizontalOffset;
             ArtistsPopup.HorizontalOffset = offset + 1;
             ArtistsPopup.HorizontalOffset = offset;
+        }
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CoverRectangle.Background = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            CoverRectangle.Background = new SolidColorBrush(Colors.Transparent);
+        }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            for (int j = 0; j < 5 && current_item < hpa.Rank.Count; current_item++)
+            {
+                if (hpa.Rank[current_item].Item1 == Artist) continue;
+                RecommendArtist.Children.Add(new ArtistViewerToastElements(
+                    $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"점수: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
+                j++;
+                current_load++;
+            }
         }
     }
 }
