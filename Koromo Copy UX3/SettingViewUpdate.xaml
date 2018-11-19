@@ -36,7 +36,8 @@
                     <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">업데이트 시작</TextBlock>
                 </StackPanel>
             </Button>
-            
+
+            <StackPanel x:Name="UpdateLogs" Margin="0 20 0 0"/>
         </StackPanel>
     </Grid>
 </UserControl>
