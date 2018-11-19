@@ -27,6 +27,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             Dictionary<string, Tuple<double, HitomiAnalysisArtist>> score = new Dictionary<string, Tuple<double, HitomiAnalysisArtist>>();
             bool rms = Settings.Instance.HitomiAnalysis.UsingRMSAanlysis;
             bool cos = Settings.Instance.HitomiAnalysis.UsingCosineAnalysis;
+            if (!rms && !cos) cos = true;
             if (rms && cos)
             {
                 System.Windows.Forms.MessageBox.Show("[작가 추천 설정 오류] rms, cos는 동시에 사용할 수 없습니다.", "Hitomi Copy", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
