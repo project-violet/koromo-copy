@@ -118,14 +118,24 @@ namespace Koromo_Copy_UX3
                         e.Background = new SolidColorBrush(Color.FromRgb(0xE8, 0x60, 0xA0));
                         e.BorderBrush = e.Background;
                         text = tag.Substring("female:".Length);
-                        stack_panel.Children.Add(new PackIcon { Kind = PackIconKind.GenderFemale, Opacity = 0.8, VerticalAlignment = VerticalAlignment.Center });
+                        stack_panel.Children.Add(new PackIcon
+                        {
+                            Kind = PackIconKind.GenderFemale,
+                            Opacity = 0.8,
+                            VerticalAlignment = VerticalAlignment.Center,
+                        });
                     }
                     else if (tag.StartsWith("male:"))
                     {
                         e.Background = new SolidColorBrush(Color.FromRgb(0x00, 0xB1, 0xCF));
                         e.BorderBrush = e.Background;
                         text = tag.Substring("male:".Length);
-                        stack_panel.Children.Add(new PackIcon { Kind = PackIconKind.GenderMale, Opacity = 0.8, VerticalAlignment = VerticalAlignment.Center });
+                        stack_panel.Children.Add(new PackIcon
+                        {
+                            Kind = PackIconKind.GenderMale,
+                            Opacity = 0.8,
+                            VerticalAlignment = VerticalAlignment.Center,
+                        });
                     }
                     else
                     {
@@ -133,7 +143,14 @@ namespace Koromo_Copy_UX3
                         e.BorderBrush = e.Background;
                     }
 
-                    stack_panel.Children.Add(new TextBlock { FontSize = 11, Margin = new Thickness(2, 0, 3, 0), VerticalAlignment = VerticalAlignment.Center, Text = text });
+                    stack_panel.Children.Add(new TextBlock
+                    {
+                        FontSize = 11,
+                        Margin = new Thickness(2, 0, 3, 0),
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Text = text
+                    });
+
                     e.Content = stack_panel;
                     e.Height = 20;
                     e.FontSize = 10;
