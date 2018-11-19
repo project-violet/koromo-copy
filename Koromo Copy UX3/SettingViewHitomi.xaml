@@ -146,6 +146,32 @@
                 </TextBlock>
             </StackPanel>
             
+
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                <ToggleButton IsChecked="{Binding DisableArtistViewToast}">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+                <TextBlock Text="  작가창에서 비슷한 작가란 숨기기">
+                    <TextBlock.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </TextBlock.Resources>
+                </TextBlock>
+            </StackPanel>
+
+            <TextBlock Text="검색 설정" FontSize="20" Margin="0 20 0 0"/>
+
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
                 <ToggleButton IsChecked="{Binding UsingAdvancedSearch}">
                     <ToggleButton.Resources>
@@ -214,8 +240,7 @@
                     </TextBlock.Resources>
                 </TextBlock>
             </StackPanel>
-
-
+            
             <TextBlock Text="작가추천 기능 설정" FontSize="20" Margin="0 20 0 0"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">

@@ -55,6 +55,7 @@ namespace Koromo_Copy_UX3
         HitomiPortableAnalysis hpa = new HitomiPortableAnalysis();
         int current_load = 0;
         int current_item = 0;
+        bool loaded = false;
 
         public ArtistViewerWindow(string artist)
         {
@@ -63,6 +64,9 @@ namespace Koromo_Copy_UX3
             DataContext = new Domain.ArtistDataGridViewModel();
             Title += artist;
             Artist = artist;
+
+            if (Settings.Instance.Hitomi.DisableArtistViewToast)
+                ArtistsPopup.IsOpen = false;
 
             var dictionary = new Dictionary<string, int>();
             Task.Run(() =>
@@ -90,14 +94,19 @@ namespace Koromo_Copy_UX3
                         카운트=tag.Value
                     });
                 hpa.CustomAnalysis = dictionary.Select(x => new Tuple<string, int>(x.Key, x.Value)).ToList();
-                await Task.Run(() => hpa.Update());
-                for (int j = 0; j < 5 && current_item < hpa.Rank.Count; current_item++)
+
+                if (!Settings.Instance.Hitomi.DisableArtistViewToast)
                 {
-                    if (hpa.Rank[current_item].Item1 == Artist) continue;
-                    RecommendArtist.Children.Add(new ArtistViewerToastElements(
-                        $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"점수: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
-                    j++;
-                    current_load++;
+                    await Task.Run(() => hpa.Update());
+                    for (int j = 0; j < 5 && current_item < hpa.Rank.Count; current_item++)
+                    {
+                        if (hpa.Rank[current_item].Item1 == Artist) continue;
+                        RecommendArtist.Children.Add(new ArtistViewerToastElements(
+                            $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"점수: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
+                        j++;
+                        current_load++;
+                    }
+                    loaded = true;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -296,6 +305,7 @@ namespace Koromo_Copy_UX3
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!loaded) return;
             for (int j = 0; j < 5 && current_item < hpa.Rank.Count; current_item++)
             {
                 if (hpa.Rank[current_item].Item1 == Artist) continue;
