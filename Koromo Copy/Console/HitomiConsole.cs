@@ -9,7 +9,9 @@
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Koromo_Copy.Console
@@ -53,6 +55,8 @@ namespace Koromo_Copy.Console
 
         [CommandLine("-syncdate", CommandType.OPTION)]
         public bool SyncDate;
+        [CommandLine("-latest", CommandType.OPTION)]
+        public bool Latest;
     }
 
     /// <summary>
@@ -135,6 +139,10 @@ namespace Koromo_Copy.Console
             else if (option.SyncDate)
             {
                 HitomiDate.print_datetime_data();
+            }
+            else if (option.Latest)
+            {
+                ProcessLatest();
             }
 
             return true;
@@ -305,6 +313,22 @@ namespace Koromo_Copy.Console
                 }
                 Console.Instance.WriteLine($"Found {result.Count} results.");
             }));
+        }
+
+        /// <summary>
+        /// 가장 최근 작품의 업로드 시간을 가져옵니다.
+        /// </summary>
+        static void ProcessLatest()
+        {
+            Console.Instance.WriteLine($"{HitomiData.Instance.metadata_collection[0].ID}");
+
+            using (var wc = new System.Net.WebClient())
+            {
+                string target = wc.DownloadString("https://hitomi.la/galleries/" + HitomiData.Instance.metadata_collection[0].ID + ".html");
+                string date_text = Regex.Split(Regex.Split(target, @"<span class=""date"">")[1], @"</span>")[0];
+                Console.Instance.WriteLine(DateTime.Parse(date_text).Ticks.ToString());
+                Console.Instance.WriteLine(DateTime.Parse(date_text).ToString());
+            }
         }
     }
 }
