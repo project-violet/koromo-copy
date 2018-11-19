@@ -79,7 +79,12 @@ namespace Koromo_Copy
                 model.Hitomi.TextMatchingAccuracy = 5;
                 model.Hitomi.RecommendPerScroll = 10;
 
-                model.HitomiAnalysis = new HitomiAnalysisSetting();
+                model.HitomiAnalysis = new HitomiAnalysisSetting
+                {
+                    RecommendNMultipleWithLength = true,
+                    UsingRMSAanlysis = true
+                };
+
 
                 model.UXSetting = new UXSetting
                 {
