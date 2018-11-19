@@ -23,15 +23,6 @@
         <KeyBinding Key="D" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="D"/>
     </Window.InputBindings>
 
-    <Window.Resources>
-        <!--<DataTemplate DataType="{x:Type Border}">
-            
-        </DataTemplate>
-        <Style>
-            
-        </Style>-->
-    </Window.Resources>
-    
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -45,8 +36,16 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" CornerRadius="6" Margin="10 0 0 0" Background="Black" Width="150">
+                <!--<Border Grid.Row="0" CornerRadius="6" Margin="10 0 0 0" Background="Black" Width="150">
                     <TextBlock Text="비슷한 작가" HorizontalAlignment="Center" Margin="5" Foreground="White"/>
+                </Border>-->
+
+                <Border Grid.Row="0" CornerRadius="6" Margin="10 0 0 0" Background="Black" Width="150" MouseEnter="Border_MouseEnter_1" MouseLeave="Border_MouseLeave_1" MouseLeftButtonDown="Border_MouseLeftButtonDown_1"
+                        ToolTip="더블클릭하면 작가추천 목록으로 업데이트 됩니다!">
+                    <Grid>
+                        <Border x:Name="CoverRectangleTop" Grid.RowSpan="2" CornerRadius="6" Opacity=".7" IsHitTestVisible="False" Background="Transparent"/>
+                        <TextBlock Text="비슷한 작가" HorizontalAlignment="Center" Margin="5" Foreground="White"/>
+                    </Grid>
                 </Border>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" Background="Transparent">

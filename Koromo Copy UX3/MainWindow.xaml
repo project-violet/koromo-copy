@@ -279,7 +279,7 @@
                 <TabItem Header="다운로드" x:Name="DownloadTab">
                     <local:DownloadSpace/>
                 </TabItem>
-                <TabItem Header="작가추천">
+                <TabItem Header="작가추천" x:Name="RecommendTab">
                     <local:RecommendSpace/>
                 </TabItem>
                 <TabItem Header="도구">

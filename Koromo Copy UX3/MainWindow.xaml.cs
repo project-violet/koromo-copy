@@ -257,5 +257,11 @@ namespace Koromo_Copy_UX3
             DownloadTab.Focus();
             UpdateLayout();
         }
+
+        public void FocusRecommend()
+        {
+            RecommendTab.Focus();
+            UpdateLayout();
+        }
     }
 }

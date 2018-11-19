@@ -306,6 +306,7 @@ namespace Koromo_Copy_UX3
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (!loaded) return;
+            
             for (int j = 0; j < 5 && current_item < hpa.Rank.Count; current_item++)
             {
                 if (hpa.Rank[current_item].Item1 == Artist) continue;
@@ -313,6 +314,29 @@ namespace Koromo_Copy_UX3
                     $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"점수: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
                 j++;
                 current_load++;
+            }
+        }
+
+        private void Border_MouseLeave_1(object sender, MouseEventArgs e)
+        {
+            CoverRectangleTop.Background = new SolidColorBrush(Colors.Transparent);
+        }
+
+        private void Border_MouseEnter_1(object sender, MouseEventArgs e)
+        {
+            CoverRectangleTop.Background = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void Border_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+        {
+            if (!loaded) return;
+            if (e.ClickCount == 2)
+            {
+                HitomiAnalysis.Instance.UserDefined = true;
+                HitomiAnalysis.Instance.CustomAnalysis = hpa.CustomAnalysis;
+                RecommendSpace.Instance.Update();
+                MainWindow.Instance.Activate();
+                MainWindow.Instance.FocusRecommend();
             }
         }
     }

@@ -51,7 +51,7 @@ namespace Koromo_Copy_UX3
             Task.Run(async () => {
                 if (IsMetadataLoaded || StartsLoading) return;
                 StartsLoading = true;
-                if (!HitomiData.Instance.CheckMetadataExist())
+                if (!HitomiData.Instance.CheckMetadataExist() || Settings.Instance.Hitomi.AutoSync)
                 {
 //#if !DEBUG
 //                    Koromo_Copy.Monitor.Instance.ControlEnable = true;
