@@ -56,6 +56,7 @@ namespace Koromo_Copy_UX3
 
             DataContext = new Domain.ArtistDataGridViewModel();
             Title += artist;
+            Artist = artist;
 
             var dictionary = new Dictionary<string, int>();
             Task.Run(() =>
@@ -84,8 +85,11 @@ namespace Koromo_Copy_UX3
                     });
             }, TaskScheduler.FromCurrentSynchronizationContext());
             
+
         }
-        
+
+        public string Artist;
+
         private void LoadThumbnail(List<HitomiMetadata> md)
         {
             List<Task> task = new List<Task>();
@@ -148,7 +152,9 @@ namespace Koromo_Copy_UX3
                 int count = 0;
                 ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x =>
                 {
-                    var prefix = HitomiCommon.MakeDownloadDirectory(x.Article as HitomiArticle);
+                    var ha = x.Article as HitomiArticle;
+                    ha.Artists = new string[] { Artist };
+                    var prefix = HitomiCommon.MakeDownloadDirectory(ha);
                     Directory.CreateDirectory(prefix);
                     DownloadSpace.Instance.RequestDownload(x.Article.Title,
                         x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
@@ -166,7 +172,9 @@ namespace Koromo_Copy_UX3
                 int count = 0;
                 ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
                 {
-                    var prefix = HitomiCommon.MakeDownloadDirectory(x.Article as HitomiArticle);
+                    var ha = x.Article as HitomiArticle;
+                    ha.Artists = new string[] { Artist };
+                    var prefix = HitomiCommon.MakeDownloadDirectory(ha);
                     Directory.CreateDirectory(prefix);
                     DownloadSpace.Instance.RequestDownload(x.Article.Title,
                         x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
