@@ -82,7 +82,7 @@ namespace Koromo_Copy
                 model.HitomiAnalysis = new HitomiAnalysisSetting
                 {
                     RecommendNMultipleWithLength = true,
-                    UsingRMSAanlysis = true
+                    UsingCosineAnalysis = true
                 };
 
 
