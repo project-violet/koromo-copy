@@ -53,13 +53,15 @@ namespace Koromo_Copy_UX3
                 StartsLoading = true;
                 if (!HitomiData.Instance.CheckMetadataExist())
                 {
-#if !DEBUG
-                    Koromo_Copy.Monitor.Instance.ControlEnable = true;
-                    Koromo_Copy.Monitor.Instance.Push("다운로드가 계속 진행되지 않는다면 이 창에서 Enter키를 눌러주세요");
-                    Koromo_Copy.Console.Console.Instance.Show();
-#endif
+//#if !DEBUG
+//                    Koromo_Copy.Monitor.Instance.ControlEnable = true;
+//                    Koromo_Copy.Monitor.Instance.Push("다운로드가 계속 진행되지 않는다면 이 창에서 Enter키를 눌러주세요");
+//                    Koromo_Copy.Console.Console.Instance.Show();
+//#endif
                     MainWindow.Instance.Fade_MiddlePopup(true, "데이터를 다운로드 중입니다...");
+                    HitomiData.Instance.MetadataDownloadStatusEvent = UpdateDownloadText;
                     await HitomiData.Instance.DownloadMetadata();
+                    MainWindow.Instance.ModifyText_MiddlePopup("히든 데이터를 다운로드 중입니다...");
                     await HitomiData.Instance.DownloadHiddendata();
                     MainWindow.Instance.FadeOut_MiddlePopup("데이터를 모두 다운로드했습니다!", false);
                     Koromo_Copy.Monitor.Instance.ControlEnable = false;
@@ -108,6 +110,11 @@ namespace Koromo_Copy_UX3
             }
 
             logic = new AutoCompleteLogic(SearchText, AutoComplete, AutoCompleteList);
+        }
+
+        private void UpdateDownloadText(string text)
+        {
+            MainWindow.Instance.ModifyText_MiddlePopup($"데이터를 다운로드 중입니다... {text}");
         }
 
         public bool IsMetadataLoaded = false;

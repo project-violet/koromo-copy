@@ -66,6 +66,17 @@ namespace Koromo_Copy
             return require;
         }
 
+        public static bool RequireTidy()
+        {
+            string now_fpath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            if (File.Exists(now_fpath + ".tmp"))
+            {
+                File.Delete(now_fpath + ".tmp");
+                return true;
+            }
+            return false;
+        }
+
         public static void ExportVersion()
         {
             int major = Assembly.GetExecutingAssembly().GetName().Version.Major;
