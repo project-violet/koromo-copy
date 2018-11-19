@@ -272,7 +272,7 @@
                                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 10 0"/>
             </Grid>
 
-            <TabControl x:Name="MainTab" Grid.Row="2"  Margin="10" BorderThickness="0" FontSize="13" Style="{DynamicResource TabControlStyle1}">
+            <TabControl x:Name="MainTab" Grid.Row="2" Margin="10" BorderThickness="0" FontSize="13" Style="{DynamicResource TabControlStyle1}">
                 <TabItem Header="검색" BorderThickness="0">
                     <local:SearchSpace/>
                 </TabItem>
@@ -285,6 +285,11 @@
                 <TabItem Header="도구">
                 </TabItem>
                 <TabItem Header="설정">
+                    <!--<TabItem.Header>
+                        <materialDesign:Badged Badge="3">
+                           설정
+                        </materialDesign:Badged>
+                    </TabItem.Header>-->
                     <local:SettingSpace/>
                 </TabItem>
                 <TabItem IsEnabled="False" HorizontalAlignment="Stretch"/>

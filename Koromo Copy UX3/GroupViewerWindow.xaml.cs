@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX3.Domain;
 using System;
@@ -217,6 +218,21 @@ namespace Koromo_Copy_UX3
                     break;
 
                 case 'S':
+                    List<string> titles = new List<string>();
+                    for (int i = 0; i < ArticlePanel.Children.Count; i++)
+                    {
+                        string ttitle = (ArticlePanel.Children[i] as SearchSimpleElements).Article.Title.Split('|')[0];
+                        if (titles.Count > 0 && !titles.TrueForAll((title) => Strings.ComputeLevenshteinDistance(ttitle, title) > Settings.Instance.Hitomi.TextMatchingAccuracy))
+                        {
+                            (ArticlePanel.Children[i] as SearchSimpleElements).Select = false;
+                            (ArticlePanel.Children[i] as SearchSimpleElements).Transparent();
+                            continue;
+                        }
+
+                        titles.Add(ttitle);
+                    }
+                    break;
+
                 case 'G':
                     ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x => {
                         if (HitomiLog.Instance.Contains((x.Article as HitomiArticle).Magic))
