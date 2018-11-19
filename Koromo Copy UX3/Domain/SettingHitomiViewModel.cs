@@ -169,5 +169,17 @@ namespace Koromo_Copy_UX3.Domain
                 OnPropertyChanged();
             }
         }
+
+        public bool DisableArtistViewToast
+        {
+            get { return Settings.Instance.Hitomi.DisableArtistViewToast; }
+            set
+            {
+                if (Settings.Instance.Hitomi.DisableArtistViewToast == value) return;
+                Settings.Instance.Hitomi.DisableArtistViewToast = value;
+                Settings.Instance.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }

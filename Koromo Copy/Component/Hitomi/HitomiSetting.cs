@@ -70,6 +70,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public int RecommendPerScroll;
 
+        /// <summary>
+        /// 작가창에서 비슷한 작가를 더이상 사용하지 않습니다.
+        /// </summary>
+        [JsonProperty]
+        public bool DisableArtistViewToast;
+
         [JsonProperty]
         public string[] CustomAutoComplete;
     }
