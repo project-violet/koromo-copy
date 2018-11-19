@@ -1070,9 +1070,12 @@ namespace Koromo_Copy.Component.Hitomi
             {
                 if (pointer == download_list.Count) {
                     StringBuilder builder = new StringBuilder();
-                    foreach (var pair in date_list)
+                    lock (date_list)
                     {
-                        builder.Append("new Tuple<string, DateTime> (\"" + pair.Item1 + "\", new DateTime(" + pair.Item2.Ticks + ")),\r\n");
+                        foreach (var pair in date_list)
+                        {
+                            builder.Append("new Tuple<string, DateTime> (\"" + pair.Item1 + "\", new DateTime(" + pair.Item2.Ticks + ")),\r\n");
+                        }
                     }
                     File.WriteAllText("a.txt", builder.ToString());
                     lock (Monitor.Instance) Monitor.Instance.Push($"[HitomiDate] Complete");
