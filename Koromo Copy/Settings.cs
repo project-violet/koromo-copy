@@ -100,6 +100,13 @@ namespace Koromo_Copy
                     }
                 };
             }
+            else
+            {
+                if (Hitomi.ExclusiveTag == null)
+                {
+                    Hitomi.ExclusiveTag = new string[0];
+                }
+            }
             model.LatestAccessTime = DateTime.Now;
             Save();
         }
