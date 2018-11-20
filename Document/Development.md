@@ -139,16 +139,6 @@ pixiv -user 4
 pixiv -image 4
 ```
 
-## mm 명령 예제
-
-```
-1. 시리즈 정보를 가져오고 싶을 경우
-mm -series https://...
-
-2. 시리즈의 모든 아카이브 정보를 가져오고 싶을 경우
-mm -articles https://...
-```
-
 ## internal 명령 예제
 
 ```

@@ -73,7 +73,6 @@
     <Compile Include="Component\EH\EHentaiParser.cs" />
     <Compile Include="Component\Hiyobi\HiyobiArticle.cs" />
     <Compile Include="Component\Hiyobi\HiyobiCommon.cs" />
-    <Compile Include="Component\MM\MMDispatcher.cs" />
     <Compile Include="Console\Console.cs" />
     <Compile Include="Console\ConsoleData.cs" />
     <Compile Include="Console\ExHentaiConsole.cs" />
@@ -127,9 +126,6 @@
     <Compile Include="Component\Hitomi\HitomiSetting.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanSeries.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanTag.cs" />
-    <Compile Include="Console\MMConsole.cs" />
-    <Compile Include="Component\MM\MMArticle.cs" />
-    <Compile Include="Component\MM\MMParser.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="Net\DownloadGroup.cs" />
     <Compile Include="Net\DownloadQueue.cs" />
