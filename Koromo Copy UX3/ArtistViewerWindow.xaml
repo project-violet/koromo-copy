@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
+        xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
         Title="작가 : " Height="719" Width="1602.325" WindowStyle="ToolWindow" Loaded="Window_Loaded"
         SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
@@ -29,7 +30,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <local:NonTopmostPopup x:Name="ArtistsPopup" Placement="Right" IsOpen="True" AllowsTransparency="True" PlacementTarget="{Binding ElementName=MainWindow}">
+        <controls:NonTopmostPopup x:Name="ArtistsPopup" Placement="Right" IsOpen="True" AllowsTransparency="True" PlacementTarget="{Binding ElementName=MainWindow}">
             <Grid x:Name="ArtistsStack" Opacity=".8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -56,7 +57,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
-        </local:NonTopmostPopup>
+        </controls:NonTopmostPopup>
 
         <DataGrid x:Name="TagList" Grid.Column="0" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
                   SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True"
@@ -101,7 +102,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <local:WheelSpeedScrollViewer Grid.Row="0" SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ArtistViewerWheelSpeed}">
+            <controls:WheelSpeedScrollViewer Grid.Row="0" SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ArtistViewerWheelSpeed}">
                 <WrapPanel x:Name="ArticlePanel" Background="#F0F0F0" Grid.Row="0">
                     <WrapPanel.Resources>
                         <Style TargetType="{x:Type local:SearchSimpleElements}">
@@ -130,7 +131,7 @@
                         </ContextMenu>
                     </WrapPanel.ContextMenu>
                 </WrapPanel>
-            </local:WheelSpeedScrollViewer>
+            </controls:WheelSpeedScrollViewer>
 
             <Grid Grid.Row="1"  Background="#F9F9F9">
                 <Grid  Margin="10">

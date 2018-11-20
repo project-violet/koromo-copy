@@ -15,7 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX3.Controls
 {
     public class WheelSpeedScrollViewer : ScrollViewer
     {

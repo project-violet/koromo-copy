@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
+        xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
         Title="그룹 : " Height="719" Width="1641.325" WindowStyle="ToolWindow" Loaded="Window_Loaded">
 
@@ -71,7 +72,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <local:WheelSpeedScrollViewer Grid.Row="0" SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ArtistViewerWheelSpeed}">
+            <controls:WheelSpeedScrollViewer Grid.Row="0" SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ArtistViewerWheelSpeed}">
                 <WrapPanel x:Name="ArticlePanel" Background="#F0F0F0" Grid.Row="0">
                     <WrapPanel.Resources>
                         <Style TargetType="{x:Type local:SearchSimpleElements}">
@@ -100,7 +101,7 @@
                         </ContextMenu>
                     </WrapPanel.ContextMenu>
                 </WrapPanel>
-            </local:WheelSpeedScrollViewer>
+            </controls:WheelSpeedScrollViewer>
 
             <Grid Grid.Row="1"  Background="#F9F9F9">
                 <Grid  Margin="10">
