@@ -64,35 +64,40 @@ namespace Koromo_Copy
             if (File.Exists(log_path)) model = JsonConvert.DeserializeObject<SettingModel>(File.ReadAllText(log_path));
             if (model == null)
             {
-                model = new SettingModel();
-                model.Thread = Environment.ProcessorCount * 3;
-                model.SensitiveUpdateCheck = false;
-                model.AutoZip = false;
-
-                model.Hitomi = new HitomiSetting();
-                model.Hitomi.Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\";
-                model.Hitomi.Language = "korean";
-                model.Hitomi.CustomAutoComplete = new string[] { "recent:0-25" };
-                model.Hitomi.UsingSettingLanguageWhenAdvanceSearch = true;
-                model.Hitomi.UsingOptimization = true;
-                model.Hitomi.SaveJsonFile = true;
-                model.Hitomi.TextMatchingAccuracy = 5;
-                model.Hitomi.RecommendPerScroll = 10;
-
-                model.HitomiAnalysis = new HitomiAnalysisSetting
+                model = new SettingModel
                 {
-                    RecommendNMultipleWithLength = true,
-                    UsingCosineAnalysis = true
-                };
+                    Thread = Environment.ProcessorCount * 3,
+                    SensitiveUpdateCheck = false,
+                    AutoZip = false,
+
+                    Hitomi = new HitomiSetting
+                    {
+                        Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\",
+                        Language = "korean",
+                        CustomAutoComplete = new string[] { "recent:0-25" },
+                        UsingSettingLanguageWhenAdvanceSearch = true,
+                        UsingOptimization = true,
+                        SaveJsonFile = true,
+                        TextMatchingAccuracy = 5,
+                        RecommendPerScroll = 10,
+                        ExclusiveTag = new string[] { "female:mother", "male:anal", "male:guro", "female:guro", "male:snuff", "female:snuff" }
+                    },
+
+                    HitomiAnalysis = new HitomiAnalysisSetting
+                    {
+                        RecommendNMultipleWithLength = true,
+                        UsingCosineAnalysis = true
+                    },
 
 
-                model.UXSetting = new UXSetting
-                {
-                    ArtistViewerWheelSpeed = 1.5,
-                    SearchSpaceWheelSpeed = 1.5,
-                    DoNotHightlightAutoCompleteResults = false,
-                    MaxCountOfAutoCompleteResult = 100,
-                    ThemeColor = Color.Pink
+                    UXSetting = new UXSetting
+                    {
+                        ArtistViewerWheelSpeed = 1.5,
+                        SearchSpaceWheelSpeed = 1.5,
+                        DoNotHightlightAutoCompleteResults = false,
+                        MaxCountOfAutoCompleteResult = 100,
+                        ThemeColor = Color.Pink
+                    }
                 };
             }
             model.LatestAccessTime = DateTime.Now;
