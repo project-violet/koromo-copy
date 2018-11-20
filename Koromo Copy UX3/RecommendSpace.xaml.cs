@@ -110,6 +110,8 @@ namespace Koromo_Copy_UX3
             {
                 RecommendList.Children.RemoveAt(0);
             }
+            stay = true;
+            timer.Start();
         }
     }
 }
