@@ -14,7 +14,6 @@
 |E-Hentai| https://e-hentai.org|0 %|
 |Ex-Hentai|https://exhentai.org|100 %|
 |Pixiv| https://www.pixiv.net|100 %|
-|Marumaru | https://marumaru.in|50 %|
 |Instagram|https://www.instagram.com|0 %|
 |YouTube|https://www.youtube.com|0 %|
 |Twitter|https://twitter.com|0 %|

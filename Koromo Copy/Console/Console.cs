@@ -258,7 +258,6 @@ namespace Koromo_Copy.Console
                 {"exh", new ExHentaiConsole()},
                 {"pixiv", new PixivConsole()},
                 {"in", new InConsole()},
-                {"mm", new MMConsole()},
                 {"internal", new InternalConsole()},
                 {"hiyobi", new HiyobiConsole()},
 
