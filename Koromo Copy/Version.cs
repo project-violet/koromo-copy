@@ -72,12 +72,11 @@ namespace Koromo_Copy
             return update_required = require;
         }
 
-        public static bool RequireTidy()
+        public static bool RequireTidy(string program_path)
         {
-            string now_fpath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            if (File.Exists(now_fpath + ".tmp"))
+            if (File.Exists(program_path + ".tmp"))
             {
-                File.Delete(now_fpath + ".tmp");
+                File.Delete(program_path + ".tmp");
                 return true;
             }
             return false;
