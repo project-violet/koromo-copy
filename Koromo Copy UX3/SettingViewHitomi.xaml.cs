@@ -39,6 +39,7 @@ namespace Koromo_Copy_UX3
             AddLanguages();
             Language.Text = HitomiLegalize.DeLegalizeLanguage(Settings.Instance.Hitomi.Language);
             Path.Text = Settings.Instance.Hitomi.Path;
+            ExclusiveTags.Text = string.Join(", ",Settings.Instance.Hitomi.ExclusiveTag);
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -125,6 +126,12 @@ namespace Koromo_Copy_UX3
             Settings.Instance.Hitomi.Language = HitomiLegalize.LegalizeLanguage(Language.Text);
             Settings.Instance.Save();
             HitomiData.Instance.RebuildTagData();
+        }
+
+        private void ExclusiveTags_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Settings.Instance.Hitomi.ExclusiveTag = ExclusiveTags.Text.Split(',').Select(x=>x.Trim()).ToArray();
+            Settings.Instance.Save();
         }
     }
 }

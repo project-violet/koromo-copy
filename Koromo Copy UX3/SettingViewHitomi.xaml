@@ -35,6 +35,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Text="다운로드 경로 : "/>
                 <TextBox Grid.Column="1" x:Name="Path" HorizontalAlignment="Stretch" SelectionBrush="Pink" LostFocus="TextBox_LostFocus">
@@ -64,8 +65,46 @@
                     </TextBox.Style>
                 </TextBox>
                 <TextBlock x:Name="Error" Grid.Column="1" Grid.Row="1" Text="Error: " Foreground="Red" Visibility="Collapsed"/>
-                <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="2" Text="언어 : " HorizontalAlignment="Right"/>
-                <ComboBox x:Name="Language" Grid.Column="1" Grid.Row="2" DropDownClosed="Language_DropDownClosed">
+
+                <TextBlock Grid.Column="0" Text="제외할 태그 : " Grid.Row="2" Margin="0 5 0 5" HorizontalAlignment="Right"/>
+                <TextBox Grid.Column="1" x:Name="ExclusiveTags" Grid.Row="2" Margin="0 5 0 5" HorizontalAlignment="Stretch" SelectionBrush="Pink" LostFocus="ExclusiveTags_LostFocus" ToolTip="일반검색을 할 때 제외할 태그 목록입니다.">
+
+                    <TextBox.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </TextBox.Resources>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="BorderBrush" TargetName="border" Value="LightPink"/>
+                                            </Trigger>
+                                            <Trigger Property="IsFocused" Value="true">
+                                                <Setter Property="BorderBrush" TargetName="border" Value="Pink"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="3" Text="언어 : " HorizontalAlignment="Right"/>
+                <ComboBox x:Name="Language" Grid.Column="1" Grid.Row="3" DropDownClosed="Language_DropDownClosed">
                     <ComboBox.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>

@@ -84,6 +84,8 @@ namespace Koromo_Copy.Component.Hitomi
 
         [JsonProperty]
         public string[] CustomAutoComplete;
+        [JsonProperty]
+        public string[] ExclusiveTag;
     }
 
     /// <summary>
