@@ -102,7 +102,11 @@ namespace Koromo_Copy_UX3
 
             if (article is HitomiArticle ha)
                 if (HitomiLog.Instance.Contains(ha.Magic))
+                {
                     DownloadMark.Visibility = Visibility.Visible;
+                    DateBorder.Visibility = Visibility.Visible;
+                    Date.Text = HitomiLog.Instance.GetLatestDownload(ha.Magic).ToString();
+                }
         }
 
         bool init = false;
@@ -134,7 +138,7 @@ namespace Koromo_Copy_UX3
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {
             ImageToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Relative;
-            ImageToolTip.HorizontalOffset = e.GetPosition((IInputElement)sender).X + 10;
+            ImageToolTip.HorizontalOffset = e.GetPosition((IInputElement)sender).X - 160;
             ImageToolTip.VerticalOffset = e.GetPosition((IInputElement)sender).Y;
         }
 
