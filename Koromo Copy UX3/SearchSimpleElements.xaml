@@ -91,7 +91,27 @@
                             </Image.Resources>
                             <Image.ToolTip>
                                 <ToolTip x:Name="ImageToolTip" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                                    <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <Border Grid.Column="0" x:Name="DateBorder" VerticalAlignment="Top" MaxWidth="150" Width="150" CornerRadius="6" Background="Black" Margin="0 0 0 0" Opacity=".8" Visibility="Hidden">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border x:Name="Rectangle" Grid.RowSpan="2" CornerRadius="6" Opacity=".7" IsHitTestVisible="False" Background="Transparent"/>
+
+                                                <TextBlock Grid.Row="0" Text="마지막 다운로드" VerticalAlignment="Center" Margin="5" Foreground="White"/>
+                                                <TextBlock Grid.Row="1" x:Name="Date" Text="" VerticalAlignment="Center" Margin="5 0 5 5" Foreground="White"/>
+                                            </Grid>
+                                        </Border>
+                                        <Image Grid.Column="1" Margin="20 0 0 0" x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
+                                    </Grid>
                                 </ToolTip>
                             </Image.ToolTip>
                         </Image>

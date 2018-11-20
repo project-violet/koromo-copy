@@ -91,5 +91,13 @@ namespace Koromo_Copy.Component.Hitomi
         {
             return model;
         }
+
+        public DateTime GetLatestDownload(string id)
+        {
+            for (int i = model.Count - 1; i >= 0; i--)
+                if (model[i].Id == id)
+                    return model[i].Time;
+            return DateTime.MinValue;
+        }
     }
 }
