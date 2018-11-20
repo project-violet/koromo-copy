@@ -72,6 +72,24 @@ namespace Koromo_Copy_UX3
                 List<HitomiMetadata> result;
                 Stopwatch sw = Stopwatch.StartNew();
                 var end = sw.ElapsedMilliseconds;
+                
+                int start_element = 0;
+                int count_element = 0;
+
+                if (content.Contains('/'))
+                {
+                    var elem = content.Split(' ').Where(x => x.StartsWith("/")).ElementAt(0);
+                    start_element = Convert.ToInt32(elem.Substring(1));
+                    content = content.Replace(elem, " ");
+                }
+
+                if (content.Contains('?'))
+                {
+                    var elem = content.Split(' ').Where(x => x.StartsWith("?")).ElementAt(0);
+                    count_element = Convert.ToInt32(elem.Substring(1));
+                    content = content.Replace(elem, " ");
+                }
+
                 if (!Settings.Instance.Hitomi.UsingAdvancedSearch || content.Contains("recent:"))
                 {
                     result = await HitomiDataParser.SearchAsync(content.Trim());
@@ -97,6 +115,9 @@ namespace Koromo_Copy_UX3
                     end = sw.ElapsedMilliseconds;
                     sw.Stop();
                 }
+
+                if (start_element != 0 && start_element <= result.Count) result.RemoveRange(0, start_element);
+                if (count_element != 0 && count_element < result.Count) result.RemoveRange(count_element, result.Count - count_element);
 
                 var vm = DataContext as Domain.FinderDataGridViewModel;
                 result.Sort((a, b) => b.ID.CompareTo(a.ID));
