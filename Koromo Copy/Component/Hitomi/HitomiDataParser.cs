@@ -36,7 +36,7 @@ namespace Koromo_Copy.Component.Hitomi
             search.Trim().Split(' ').ToList().ForEach((a) => { if (!a.Contains(":") && !a.StartsWith("/") && !a.StartsWith("?")) positive_data.Add(a.Trim()); });
             query.Common = positive_data;
             query.Common.Add("");
-            query.TagExclude = negative_data;
+            query.TagExclude = Settings.Instance.Hitomi.ExclusiveTag.ToList();
             foreach (var elem in from elem in search.Trim().Split(' ') where elem.Contains(":") where !elem.StartsWith("/") where !elem.StartsWith("?") select elem)
             {
                 if (elem.StartsWith("tag:"))
