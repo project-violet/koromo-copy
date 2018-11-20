@@ -141,6 +141,24 @@ namespace Koromo_Copy_UX3
             try
             {
                 List<HitomiMetadata> result;
+
+                int start_element = 0;
+                int count_element = 0;
+
+                if (content.Contains('/'))
+                {
+                    var elem = content.Split(' ').Where(x => x.StartsWith("/")).ElementAt(0);
+                    start_element = Convert.ToInt32(elem.Substring(1));
+                    content = content.Replace(elem, " ");
+                }
+
+                if (content.Contains('?'))
+                {
+                    var elem = content.Split(' ').Where(x => x.StartsWith("?")).ElementAt(0);
+                    count_element = Convert.ToInt32(elem.Substring(1));
+                    content = content.Replace(elem, " ");
+                }
+
                 if (!Settings.Instance.Hitomi.UsingAdvancedSearch || content.Contains("recent:"))
                 {
                     result = await HitomiDataParser.SearchAsync(content.Trim());
@@ -161,7 +179,12 @@ namespace Koromo_Copy_UX3
                     }
                 }
                 else
+                {
                     result = await HitomiDataSearchAdvanced.Search(content.Trim());
+                }
+                
+                if (start_element != 0 && start_element <= result.Count) result.RemoveRange(0, start_element);
+                if (count_element != 0 && count_element < result.Count) result.RemoveRange(count_element, result.Count - count_element);
 
                 SearchCount.Text = $"검색된 항목: {result.Count.ToString("#,#")}개";
                 _ = Task.Run(() => LoadThumbnail(result));

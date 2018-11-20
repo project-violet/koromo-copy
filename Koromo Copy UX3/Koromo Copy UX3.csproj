@@ -144,6 +144,9 @@
     <Compile Include="RecommendSpace.xaml.cs">
       <DependentUpon>RecommendSpace.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RecordWindow.xaml.cs">
+      <DependentUpon>RecordWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>
     </Compile>
@@ -243,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RecommendSpace.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
