@@ -181,5 +181,17 @@ namespace Koromo_Copy_UX3.Domain
                 OnPropertyChanged();
             }
         }
+
+        public bool DisableArtistLastestDownloadDate
+        {
+            get { return Settings.Instance.Hitomi.DisableArtistLastestDownloadDate; }
+            set
+            {
+                if (Settings.Instance.Hitomi.DisableArtistLastestDownloadDate == value) return;
+                Settings.Instance.Hitomi.DisableArtistLastestDownloadDate = value;
+                Settings.Instance.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }
