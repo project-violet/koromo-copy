@@ -76,6 +76,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public bool DisableArtistViewToast;
 
+        /// <summary>
+        /// 더이상 마지막 다운로드 날짜를 표시하지 않습니다.
+        /// </summary>
+        [JsonProperty]
+        public bool DisableArtistLastestDownloadDate;
+
         [JsonProperty]
         public string[] CustomAutoComplete;
     }

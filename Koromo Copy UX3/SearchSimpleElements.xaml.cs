@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using System;
@@ -104,8 +105,12 @@ namespace Koromo_Copy_UX3
                 if (HitomiLog.Instance.Contains(ha.Magic))
                 {
                     DownloadMark.Visibility = Visibility.Visible;
-                    DateBorder.Visibility = Visibility.Visible;
-                    Date.Text = HitomiLog.Instance.GetLatestDownload(ha.Magic).ToString();
+
+                    if (!Settings.Instance.Hitomi.DisableArtistLastestDownloadDate)
+                    {
+                        DateBorder.Visibility = Visibility.Visible;
+                        Date.Text = HitomiLog.Instance.GetLatestDownload(ha.Magic).ToString();
+                    }
                 }
         }
 

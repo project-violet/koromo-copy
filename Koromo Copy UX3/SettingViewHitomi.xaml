@@ -170,6 +170,29 @@
                 </TextBlock>
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                <ToggleButton IsChecked="{Binding DisableArtistLastestDownloadDate}">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+                <TextBlock Text="  마지막 다운로드 날짜 표시하지 않기" ToolTip="작가창에서 이미지를 확대할때 더이상 마지막 다운로드 날짜를 표시하지 않습니다.">
+                    <TextBlock.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </TextBlock.Resources>
+                </TextBlock>
+            </StackPanel>
+            
             <TextBlock Text="검색 설정" FontSize="20" Margin="0 20 0 0"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
