@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
              xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
+             xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -135,7 +136,7 @@
 
             <Border Grid.Row="2" BorderThickness="1" BorderBrush="Pink">
 
-                <local:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+                <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
                     <!--<local:WheelSpeedScrollViewer.SpeedFactor>
                     <Binding Path="SearchSpaceWheelSpeed"
                              Source="{x:Static domain:SettingWrap.Instance}"/>
@@ -148,7 +149,7 @@
                     <StackPanel x:Name="SearchPanel"/>
                     <!--</Border>
                 </Border>-->
-                </local:WheelSpeedScrollViewer>
+                </controls:WheelSpeedScrollViewer>
             </Border>
 
             <!--<Separator Grid.Row="3" Background="Pink"></Separator>-->

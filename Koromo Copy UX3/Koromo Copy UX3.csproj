@@ -131,7 +131,7 @@
     <Compile Include="GroupViewerWindow.xaml.cs">
       <DependentUpon>GroupViewerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NonTopmostPopup.cs" />
+    <Compile Include="Controls\NonTopmostPopup.cs" />
     <Compile Include="PreviewImageElements.xaml.cs">
       <DependentUpon>PreviewImageElements.xaml</DependentUpon>
     </Compile>
@@ -177,7 +177,7 @@
     <Compile Include="ToolSpace.xaml.cs">
       <DependentUpon>ToolSpace.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WheelSpeedScrollViewer.cs" />
+    <Compile Include="Controls\WheelSpeedScrollViewer.cs" />
     <Page Include="ArticleInfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
+        xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
         Title="미리보기" Height="789" Width="994" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>
-        <local:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+        <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
             <StackPanel x:Name="ImageStack" HorizontalAlignment="Center"/>
-        </local:WheelSpeedScrollViewer>
+        </controls:WheelSpeedScrollViewer>
     </Grid>
 </Window>
