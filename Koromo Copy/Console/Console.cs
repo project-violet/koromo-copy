@@ -260,6 +260,7 @@ namespace Koromo_Copy.Console
                 {"in", new InConsole()},
                 {"internal", new InternalConsole()},
                 {"hiyobi", new HiyobiConsole()},
+                {"youtube", new YoutubeConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
