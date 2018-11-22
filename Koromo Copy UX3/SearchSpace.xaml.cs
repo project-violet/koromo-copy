@@ -8,6 +8,7 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
@@ -96,6 +97,7 @@ namespace Koromo_Copy_UX3
                 if (sb != null) { BeginStoryboard(sb); }
                 RecommendSpace.Instance.Update();
                 Task.Run(() => CheckUpdate());
+                Task.Run(() => LoadOthersAsync());
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             Window w = Window.GetWindow(this);
@@ -138,6 +140,12 @@ namespace Koromo_Copy_UX3
 
         private async void AppendAsync(string content)
         {
+            if (content.Trim().StartsWith("http://") || content.Trim().StartsWith("https://"))
+            {
+                ProcessOthers(content.Trim());
+                return;
+            }
+
             try
             {
                 List<HitomiMetadata> result;
@@ -294,7 +302,70 @@ namespace Koromo_Copy_UX3
         {
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
-#endregion
+        #endregion
 
+        #region Other Downloader
+
+        private async void LoadOthersAsync()
+        {
+            if (!string.IsNullOrEmpty(Settings.Instance.Pixiv.Id) && !string.IsNullOrEmpty(Settings.Instance.Pixiv.Password))
+            {
+                try
+                {
+                    await PixivTool.Instance.Login(Settings.Instance.Pixiv.Id, Settings.Instance.Pixiv.Password);
+                    Koromo_Copy.Monitor.Instance.Push($"[Pixiv Login] Access Token: {PixivTool.Instance.GetAccessToken()}");
+                }
+                catch
+                {
+                    MainWindow.Instance.FadeOut_MiddlePopup("Pixiv 로그인 오류!", false);
+                }
+            }
+        }
+
+        private void ProcessOthers(string url)
+        {
+            if (url.Contains("pixiv.net"))
+            {
+                ProcessPixivAsync(url);
+            }
+        }
+
+        private async void ProcessPixivAsync(string url)
+        {
+            if (!PixivTool.Instance.IsLogin)
+            {
+                MainWindow.Instance.FadeOut_MiddlePopup("로그인이 필요합니다", false);
+                return;
+            }
+
+            string id = Regex.Split(Regex.Split(url, @"\?id\=")[1], @"\&")[0];
+
+            try
+            {
+                string name = await PixivTool.Instance.GetUserAsync(id);
+                string dir = Path.Combine(Settings.Instance.Pixiv.Path, name);
+                Directory.CreateDirectory(dir);
+
+                var se = Koromo_Copy.Net.SemaphoreExtends.MakeDefault();
+                se.Referer = "https://www.pixiv.net/member_illust.php?";
+
+                var list = await PixivTool.Instance.GetDownloadUrlsAsync(id);
+                DownloadSpace.Instance.RequestDownload(name,
+                    list.ToArray(),
+                    list.Select(x => Path.Combine(dir, x.Split('/').Last())).ToArray(),
+                    se,
+                    dir + '\\',
+                    null
+                    );
+                MainWindow.Instance.FadeOut_MiddlePopup($"{list.Count}개 항목 다운로드 시작...");
+            }
+            catch (Exception e)
+            {
+                MainWindow.Instance.FadeOut_MiddlePopup("오류가 발생했습니다", false);
+                Koromo_Copy.Monitor.Instance.Push("[Pixiv Error] " + e.Message + "\r\n" + e.StackTrace);
+            }
+        }
+
+        #endregion
     }
 }

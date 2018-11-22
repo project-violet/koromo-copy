@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Interface;
 using Koromo_Copy.UX;
 using Newtonsoft.Json;
@@ -26,6 +27,9 @@ namespace Koromo_Copy
 
         [JsonProperty]
         public UXSetting UXSetting;
+
+        [JsonProperty]
+        public PixivSetting Pixiv;
 
         /// <summary>
         /// 세밀한 버전 확인을 제공합니다.
@@ -88,8 +92,7 @@ namespace Koromo_Copy
                         RecommendNMultipleWithLength = true,
                         UsingCosineAnalysis = true
                     },
-
-
+                    
                     UXSetting = new UXSetting
                     {
                         ArtistViewerWheelSpeed = 1.5,
@@ -97,6 +100,13 @@ namespace Koromo_Copy
                         DoNotHightlightAutoCompleteResults = false,
                         MaxCountOfAutoCompleteResult = 100,
                         ThemeColor = Color.Pink
+                    },
+
+                    Pixiv = new PixivSetting
+                    {
+                        Path = @"C:\Pixiv\",
+                        Id = "",
+                        Password = ""
                     }
                 };
             }
@@ -124,5 +134,6 @@ namespace Koromo_Copy
         public HitomiSetting Hitomi { get { return model.Hitomi; } }
         public HitomiAnalysisSetting HitomiAnalysis { get { return model.HitomiAnalysis; } }
         public UXSetting UXSetting { get { return model.UXSetting; } }
+        public PixivSetting Pixiv { get { return model.Pixiv; } }
     }
 }
