@@ -168,6 +168,9 @@
     <Compile Include="SettingViewInformation.xaml.cs">
       <DependentUpon>SettingViewInformation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingViewPixiv.xaml.cs">
+      <DependentUpon>SettingViewPixiv.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingViewPlugin.xaml.cs">
       <DependentUpon>SettingViewPlugin.xaml</DependentUpon>
     </Compile>
@@ -278,6 +281,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingViewInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewPixiv.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

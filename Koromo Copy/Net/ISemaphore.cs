@@ -12,11 +12,15 @@ namespace Koromo_Copy.Net
 {
     public class SemaphoreExtends
     {
-        public static SemaphoreExtends Default = new SemaphoreExtends()
+        public static SemaphoreExtends Default = MakeDefault();
+        public static SemaphoreExtends MakeDefault()
         {
-            Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-            UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
-        };
+            return new SemaphoreExtends()
+            {
+                Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
+            };
+        }
 
         public string Accept = null;
         public string UserAgent = null;
