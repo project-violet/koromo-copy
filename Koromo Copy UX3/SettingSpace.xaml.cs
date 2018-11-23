@@ -53,14 +53,11 @@ namespace Koromo_Copy_UX3
             //{
             //    Header = "익헨"
             //});
-            //downloader.Items.Add(new TreeViewItem
-            //{
-            //    Header = "마루마루"
-            //});
-            //downloader.Items.Add(new TreeViewItem
-            //{
-            //    Header = "픽시브"
-            //});
+            downloader.Items.Add(new TreeViewItem
+            {
+                Header = "픽시브",
+                DataContext = new SettingViewPixiv {  }
+            });
             SettingsTree.Items.Add(downloader);
             
             //SettingsTree.Items.Add(new TreeViewItem

@@ -1,4 +1,14 @@
-﻿using System;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy;
+using Koromo_Copy.Component.Pixiv;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +33,33 @@ namespace Koromo_Copy_UX3
         public SettingViewPixiv()
         {
             InitializeComponent();
+
+            Path.Text = Settings.Instance.Pixiv.Path;
+            Id.Text = Settings.Instance.Pixiv.Id;
+            Password.Password = Settings.Instance.Pixiv.Password;
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await PixivTool.Instance.Login(Id.Text, Password.Password);
+                MainWindow.Instance.FadeOut_MiddlePopup("아이디/비밀번호가 유효합니다!", false);
+                Settings.Instance.Pixiv.Id = Id.Text;
+                Settings.Instance.Pixiv.Password = Password.Password;
+                Settings.Instance.Save();
+            }
+            catch (Exception ex)
+            {
+                MainWindow.Instance.FadeOut_MiddlePopup("로그인 오류! 아이디/비밀번호를 확인하세요!", false);
+                Koromo_Copy.Monitor.Instance.Push(ex.Message + "\r\n" + ex.StackTrace);
+            }
+        }
+
+        private void Path_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Settings.Instance.Pixiv.Path = Path.Text;
+            Settings.Instance.Save();
         }
     }
 }
