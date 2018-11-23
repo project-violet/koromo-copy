@@ -116,6 +116,16 @@ namespace Koromo_Copy
                 {
                     Hitomi.ExclusiveTag = new string[0];
                 }
+
+                if (Pixiv == null)
+                {
+                    model.Pixiv = new PixivSetting
+                    {
+                        Path = @"C:\Pixiv\",
+                        Id = "",
+                        Password = ""
+                    };
+                }
             }
             model.LatestAccessTime = DateTime.Now;
             Save();
