@@ -115,6 +115,7 @@
     <Compile Include="Domain\Converter.cs" />
     <Compile Include="Domain\DownloadDataGridViewModel.cs" />
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
+    <Compile Include="Domain\PatchNoteViewModel.cs" />
     <Compile Include="Domain\SettingDownloaderViewModel.cs" />
     <Compile Include="Domain\SettingHitomiViewModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />
@@ -132,6 +133,9 @@
       <DependentUpon>GroupViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\NonTopmostPopup.cs" />
+    <Compile Include="PatchNoteElements.xaml.cs">
+      <DependentUpon>PatchNoteElements.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PreviewImageElements.xaml.cs">
       <DependentUpon>PreviewImageElements.xaml</DependentUpon>
     </Compile>
@@ -236,6 +240,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PatchNoteElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PreviewImageElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

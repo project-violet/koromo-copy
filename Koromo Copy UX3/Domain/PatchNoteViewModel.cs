@@ -6,8 +6,6 @@
 
 ***/
 
-using Koromo_Copy;
-using Koromo_Copy.Net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Koromo_Copy_UX3.Domain
 {
-    public class SettingDownloaderViewModel : INotifyPropertyChanged
+    public class PatchNoteViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -27,27 +25,24 @@ namespace Koromo_Copy_UX3.Domain
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public int Thread
+        private string version;
+        public string Version
         {
-            get { return Settings.Instance.Model.Thread; }
+            get { return version; }
             set
             {
-                if (Settings.Instance.Model.Thread == value) return;
-                Settings.Instance.Model.Thread = value;
-                DownloadGroup.Instance.Queue.Capacity = value;
-                Settings.Instance.Save();
+                version = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool AutoZip
+        private string content;
+        public string Content
         {
-            get { return Settings.Instance.Model.AutoZip; }
+            get { return content; }
             set
             {
-                if (Settings.Instance.Model.AutoZip == value) return;
-                Settings.Instance.Model.AutoZip = value;
-                Settings.Instance.Save();
+                content = value;
                 OnPropertyChanged();
             }
         }
