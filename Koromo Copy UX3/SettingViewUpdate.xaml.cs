@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,6 +37,7 @@ namespace Koromo_Copy_UX3
 
             NowVersion.Text = Koromo_Copy.Version.Text;
             Loaded += SettingViewUpdate_Loaded;
+            UpdatePatchNotes();
         }
 
         private void SettingViewUpdate_Loaded(object sender, RoutedEventArgs e)
@@ -132,5 +134,100 @@ namespace Koromo_Copy_UX3
                 goto RETRY_LABEL;
             }
         }
+
+        #region Update Note
+
+        private void UpdatePatchNotes()
+        {
+            // 0.7
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 0.7 Alpha",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 픽시브 다운로더\r\n\r\n" +
+                    " - 검색시 제외할 태그 추가 기능\r\n\r\n" +
+                    "[수정된 기능]\r\n" +
+                    " - 업데이트 후 임시파일이 삭제되지 않는 버그\r\n\r\n" +
+                    " - setting.json 파일이 형식에 맞지않게 변경되었을 때 발생하는 오류\r\n\r\n" +
+                    " - 작가추천 기능에서 정리 후 자동스크롤되어 다음 작가 목록이 로딩되는 문제\r\n\r\n" +
+                    "[삭제된 기능]\r\n" +
+                    " - 마루마루 다운로더\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
+            // 0.6
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8});
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 0.6 Alpha",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 작가 추천 기능 구현\r\n\r\n" +
+                    " - 수동 업데이트 도구 추가\r\n\r\n" +
+                    " - 작가창 오른쪽에 추천 작가 표시 기능, 작품 날짜표시 기능\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
+            // 0.5
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 0.5 Alpha",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 다운로더 기능\r\n\r\n" +
+                    " - 미리보기 기능\r\n\r\n" +
+                    " - 작가/그룹창에서 모두 다운로드/다운로드 기능\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
+            // 0.4
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 0.4 Alpha",
+                    Content = 
+                    "[추가된 기능]\r\n" +
+                    " - 작품 업로드 날짜 표시\r\n\r\n" +
+                    " - 검색어 자동완성\r\n\r\n" +
+                    " - 고급 검색 기능\r\n\r\n" +
+                    " - 댓글 보기 기능\r\n\r\n" +
+                    " - Window Style을 Default에서 None으로 변경하고 DropShadow를 지원하는 새로운 윈도우로 대체함\r\n\r\n" +
+                    " - 설정 탭을 추가함\r\n\r\n" +
+                    " - 시작시 필요한 데이터를 다운로드\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
+            // 0.3
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 0.3 Alpha",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 메타데이터 검색 구현\r\n\r\n" +
+                    " - Material Control을 적용해서 구현함\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+        }
+
+        #endregion
     }
 }
