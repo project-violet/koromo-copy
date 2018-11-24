@@ -99,13 +99,25 @@ namespace Koromo_Copy.Plugin
         /// 작품 정보를 가져옵니다.
         /// </summary>
         /// <returns></returns>
-        public abstract IArticle GetArticle();
+        public abstract IArticle GetArticle(string url);
 
         /// <summary>
         /// 이미지 링크 정보가 포함된 작품 정보를 가져옵니다.
         /// </summary>
         /// <returns></returns>
-        public abstract IArticle GetImageLink();
+        public abstract IArticle GetImageLink(string url);
+
+        /// <summary>
+        /// 이미지 링크 정보가 포함된 작품 정보를 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public abstract string[] GetDownloadPaths();
+
+        /// <summary>
+        /// 폴더 이름을 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetFolderName();
 
         /// <summary>
         /// 다운로드 옵션을 가져옵니다.
