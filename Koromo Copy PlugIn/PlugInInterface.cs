@@ -106,6 +106,12 @@ namespace Koromo_Copy.Plugin
         /// </summary>
         /// <returns></returns>
         public abstract IArticle GetImageLink();
+
+        /// <summary>
+        /// 다운로드 옵션을 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public abstract SemaphoreExtends GetSemaphoreExtends();
     }
     
     /// <summary>

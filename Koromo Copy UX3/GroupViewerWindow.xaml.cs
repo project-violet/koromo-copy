@@ -154,7 +154,7 @@ namespace Koromo_Copy_UX3
                     DownloadSpace.Instance.RequestDownload(ha.Title,
                         ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y)).ToArray(),
                         ha.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
-                        Koromo_Copy.Net.SemaphoreExtends.Default, prefix, ha);
+                        Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, ha);
                     count++;
                 });
                 if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
@@ -174,7 +174,7 @@ namespace Koromo_Copy_UX3
                     DownloadSpace.Instance.RequestDownload(ha.Title,
                         ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y)).ToArray(),
                         ha.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
-                        Koromo_Copy.Net.SemaphoreExtends.Default, prefix, ha);
+                        Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, ha);
                     count++;
                 });
                 if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
