@@ -60,6 +60,13 @@ namespace Koromo_Copy.Plugin
                 .OfType<ConsolePlugIn>().ToList();
         }
 
+        public List<DownloadPlugIn> GetDownloadPlugins()
+        {
+            return model.PlugIns.Select(x => x.PlugInProxy)
+                .Where(x => x.Type == KoromoCopyPlugInType.Download)
+                .OfType<DownloadPlugIn>().ToList();
+        }
+
         public PlugInModel Model { get => model; }
     }
 }

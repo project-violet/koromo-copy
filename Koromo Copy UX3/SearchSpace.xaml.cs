@@ -9,6 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Pixiv;
+using Koromo_Copy.Plugin;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
@@ -328,6 +329,18 @@ namespace Koromo_Copy_UX3
             {
                 ProcessPixivAsync(url);
             }
+            else
+            {
+                // Plugins
+                foreach (var plugin in PlugInManager.Instance.GetDownloadPlugins())
+                {
+                    if (plugin.SpecifyUrl(url))
+                    {
+                        ProcessPlugInAsync(plugin, url);
+                        break;
+                    }
+                }
+            }
         }
 
         private async void ProcessPixivAsync(string url)
@@ -363,6 +376,27 @@ namespace Koromo_Copy_UX3
             {
                 MainWindow.Instance.FadeOut_MiddlePopup("오류가 발생했습니다", false);
                 Koromo_Copy.Monitor.Instance.Push("[Pixiv Error] " + e.Message + "\r\n" + e.StackTrace);
+            }
+        }
+
+        private async void ProcessPlugInAsync(DownloadPlugIn plugin, string url)
+        {
+            try
+            {
+                var article = await Task.Run(() => plugin.GetImageLink(url));
+                DownloadSpace.Instance.RequestDownload(article.Title,
+                    article.ImagesLink.ToArray(),
+                    plugin.GetDownloadPaths(),
+                    plugin.GetSemaphoreExtends(),
+                    plugin.GetFolderName() + '\\',
+                    null
+                    );
+                MainWindow.Instance.FadeOut_MiddlePopup($"{article.ImagesLink.Count}개 항목 다운로드 시작...");
+            }
+            catch (Exception e)
+            {
+                MainWindow.Instance.FadeOut_MiddlePopup("오류가 발생했습니다", false);
+                Koromo_Copy.Monitor.Instance.Push($"[{plugin.Name} {plugin.Version} Error] " + e.Message + "\r\n" + e.StackTrace);
             }
         }
 
