@@ -260,7 +260,7 @@ namespace Koromo_Copy_UX3
                     DownloadSpace.Instance.RequestDownload(x.Article.Title, 
                         x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(), 
                         x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
-                        Koromo_Copy.Net.SemaphoreExtends.Default, prefix, x.Article);
+                        Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
                     count++;
                 });
                 if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
@@ -346,7 +346,7 @@ namespace Koromo_Copy_UX3
                 string dir = Path.Combine(Settings.Instance.Pixiv.Path, name);
                 Directory.CreateDirectory(dir);
 
-                var se = Koromo_Copy.Net.SemaphoreExtends.MakeDefault();
+                var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
                 se.Referer = "https://www.pixiv.net/member_illust.php?";
 
                 var list = await PixivTool.Instance.GetDownloadUrlsAsync(id);

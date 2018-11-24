@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace Koromo_Copy.Net.Driver
 {
-    class PhantomJSWrapper
-    {
-    }
+    //class PhantomJSWrapper
+    //{
+    //    public PhantomJSWrapper()
+    //    {
+
+    //        var phantomDriver = new PhantomJSDriver
+    //        {
+    //            Url = @"C:\page.html"
+    //        };
+    //        var src = phantomDriver.PageSource;
+    //    }
+    //}
 }

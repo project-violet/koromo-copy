@@ -8,7 +8,7 @@
 
 using System.Net;
 
-namespace Koromo_Copy.Net
+namespace Koromo_Copy.Interface
 {
     public class SemaphoreExtends
     {
