@@ -12,7 +12,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="SettingsTree" MinWidth="220" Grid.Column="0" SelectedItemChanged="SettingsTree_SelectedItemChanged">
+        <TreeView x:Name="ToolsTree" MinWidth="220" Grid.Column="0" SelectedItemChanged="ToolsTree_SelectedItemChanged">
             <TreeView.Resources>
                 <ResourceDictionary>
                     <ResourceDictionary.MergedDictionaries>
@@ -26,7 +26,7 @@
         <GridSplitter BorderThickness="1" BorderBrush="Gainsboro"></GridSplitter>
         <ScrollViewer Grid.Column="1">
             <Grid>
-                <ContentControl x:Name="ContentControl" Content="{Binding ElementName=SettingsTree, Path=SelectedItem.Content}"/>
+                <ContentControl x:Name="ContentControl" Content="{Binding ElementName=ToolsTree, Path=SelectedItem.Content}"/>
             </Grid>
         </ScrollViewer>
     </Grid>

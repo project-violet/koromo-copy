@@ -1,4 +1,13 @@
-﻿using System;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy_UX3.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,11 +32,22 @@ namespace Koromo_Copy_UX3
         public ToolSpace()
         {
             InitializeComponent();
-        }
 
-        private void SettingsTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+            ToolsTree.Items.Add(new TreeViewItem
+            {
+                Header = "Hyper Maintainer",
+                DataContext = new HyperMaintainer()
+            });
+            ToolsTree.Items.Add(new TreeViewItem
+            {
+                Header = "Hitomi Analyzer",
+                DataContext = new HitomiAnalyzer()
+            });
+        }
+        
+        private void ToolsTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var item = SettingsTree.SelectedItem;
+            var item = ToolsTree.SelectedItem;
             if (item is TreeViewItem tvi)
             {
                 if (tvi.DataContext != null)

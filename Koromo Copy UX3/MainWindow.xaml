@@ -283,6 +283,7 @@
                     <local:RecommendSpace/>
                 </TabItem>
                 <TabItem Header="도구">
+                    <local:ToolSpace/>
                 </TabItem>
                 <TabItem Header="설정">
                     <!--<TabItem.Header>
