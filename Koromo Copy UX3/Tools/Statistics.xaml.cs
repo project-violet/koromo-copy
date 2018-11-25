@@ -177,6 +177,7 @@ namespace Koromo_Copy_UX3.Tools
                         AxisX.Title = "아이디 간격";
                         AxisX.MinValue = 1125000;
                         AxisY.Title = "작품 변동 수";
+                        LoadTrend2();
                         break;
 
                     case "작가 작품 수 누적":
@@ -200,6 +201,7 @@ namespace Koromo_Copy_UX3.Tools
                         AxisX.Title = "아이디 간격";
                         AxisX.MinValue = 1125000;
                         AxisY.Title = "작품 변동 수";
+                        LoadTrend2();
                         break;
 
                     case "그룹 누적 - 한국어":
@@ -230,6 +232,7 @@ namespace Koromo_Copy_UX3.Tools
                         AxisX.Title = "아이디 간격";
                         AxisX.MinValue = 1125000;
                         AxisY.Title = "작품 변동 수";
+                        LoadTrend2();
                         break;
 
                     case "캐릭터 누적 - 한국어":
@@ -245,6 +248,7 @@ namespace Koromo_Copy_UX3.Tools
                         AxisX.Title = "아이디 간격";
                         AxisX.MinValue = 1125000;
                         AxisY.Title = "작품 변동 수";
+                        LoadTrend2();
                         break;
                 }
             }
