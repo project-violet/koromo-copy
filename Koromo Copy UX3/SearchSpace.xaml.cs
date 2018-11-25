@@ -345,6 +345,14 @@ namespace Koromo_Copy_UX3
                 }
             }
         }
+        
+        private string DeleteInvalid(string path)
+        {
+            string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            foreach (char c in invalid)
+                path = path.Replace(c.ToString(), "");
+            return path;
+        }
 
         private async void ProcessPixivAsync(string url)
         {
@@ -359,7 +367,7 @@ namespace Koromo_Copy_UX3
             try
             {
                 string name = await PixivTool.Instance.GetUserAsync(id);
-                string dir = Path.Combine(Settings.Instance.Pixiv.Path, name);
+                string dir = Path.Combine(Settings.Instance.Pixiv.Path, DeleteInvalid(name));
                 Directory.CreateDirectory(dir);
 
                 var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();

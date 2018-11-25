@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="20">
         <StackPanel>
-            <TextBlock Text="UI 설정" FontSize="20"/>
+            <TextBlock Text="H" FontSize="20"/>
         </StackPanel>
     </Grid>
 </UserControl>
