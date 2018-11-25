@@ -380,7 +380,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            if (samples.Count > 100) samples.RemoveRange(100, samples.Count - 100);
+            if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
         }
 
         public void UpdateGroupsKoreanVariation()
@@ -471,7 +471,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            if (samples.Count > 100) samples.RemoveRange(100, samples.Count - 100);
+            if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
         }
 
         public void UpdateSeriesKoreanVariation()
@@ -561,7 +561,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            if (samples.Count > 100) samples.RemoveRange(100, samples.Count - 100);
+            if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
         }
 
         public void UpdateCharactersKoreanVariation()

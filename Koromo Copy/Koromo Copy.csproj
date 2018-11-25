@@ -227,6 +227,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Component\Gelbooru\" />
     <Folder Include="Component\Pinterest\" />
     <Folder Include="Component\SoundCloud\" />
     <Folder Include="Selenium\" />
