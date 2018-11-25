@@ -195,9 +195,6 @@
       <DependentUpon>ToolSpace.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WheelSpeedScrollViewer.cs" />
-    <Compile Include="Tools\HitomiTagAnalyzer.xaml.cs">
-      <DependentUpon>HitomiTagAnalyzer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Tools\HyperMaintainer.xaml.cs">
       <DependentUpon>HyperMaintainer.xaml</DependentUpon>
     </Compile>
@@ -328,10 +325,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ToolSpace.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tools\HitomiTagAnalyzer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
