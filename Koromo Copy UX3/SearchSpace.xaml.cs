@@ -33,11 +33,14 @@ namespace Koromo_Copy_UX3
     /// </summary>
     public partial class SearchSpace : UserControl
     {
+        public static SearchSpace Instance;
+
         public SearchSpace()
         {
             InitializeComponent();
 
             Loaded += SearchSpace_Loaded;
+            Instance = this;
         }
 
         private void Sb_Completed(object sender, EventArgs e)

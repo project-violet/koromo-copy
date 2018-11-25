@@ -18,9 +18,9 @@ namespace Koromo_Copy_UX3.Tools
     /// <summary>
     /// HitomiAnalyzer.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class HitomiAnalyzer : UserControl
+    public partial class HitomiTagAnalyzer : UserControl
     {
-        public HitomiAnalyzer()
+        public HitomiTagAnalyzer()
         {
             InitializeComponent();
         }

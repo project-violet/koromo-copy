@@ -40,8 +40,18 @@ namespace Koromo_Copy_UX3
             });
             ToolsTree.Items.Add(new TreeViewItem
             {
-                Header = "Hitomi Analyzer",
-                DataContext = new HitomiAnalyzer()
+                Header = "Hitomi Tag Analyzer",
+                DataContext = new HitomiTagAnalyzer()
+            });
+            ToolsTree.Items.Add(new TreeViewItem
+            {
+                Header = "Statistics",
+                DataContext = new Statistics()
+            });
+            ToolsTree.Items.Add(new TreeViewItem
+            {
+                Header = "Index",
+                DataContext = new Index()
             });
         }
         
