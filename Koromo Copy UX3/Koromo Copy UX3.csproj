@@ -125,6 +125,7 @@
     <Compile Include="Domain\SettingDownloaderViewModel.cs" />
     <Compile Include="Domain\SettingHitomiViewModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />
+    <Compile Include="Domain\ToolIndexDataGridViewModel.cs" />
     <Compile Include="Domain\UXConsole.cs" />
     <Compile Include="DownloadElements.xaml.cs">
       <DependentUpon>DownloadElements.xaml</DependentUpon>
@@ -194,11 +195,17 @@
       <DependentUpon>ToolSpace.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WheelSpeedScrollViewer.cs" />
-    <Compile Include="Tools\HitomiAnalyzer.xaml.cs">
-      <DependentUpon>HitomiAnalyzer.xaml</DependentUpon>
+    <Compile Include="Tools\HitomiTagAnalyzer.xaml.cs">
+      <DependentUpon>HitomiTagAnalyzer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\HyperMaintainer.xaml.cs">
       <DependentUpon>HyperMaintainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Index.xaml.cs">
+      <DependentUpon>Index.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Statistics.xaml.cs">
+      <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
     <Page Include="ArticleInfoWindow.xaml">
       <SubType>Designer</SubType>
@@ -324,11 +331,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tools\HitomiAnalyzer.xaml">
+    <Page Include="Tools\HitomiTagAnalyzer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tools\HyperMaintainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tools\Index.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tools\Statistics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
