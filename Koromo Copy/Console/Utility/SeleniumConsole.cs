@@ -10,6 +10,8 @@ using Koromo_Copy.Interface;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace Koromo_Copy.Console.Utility
@@ -28,8 +30,11 @@ namespace Koromo_Copy.Console.Utility
         public string[] Wait;
 
         [CommandLine("--printhtml", CommandType.OPTION, Help = "use '--printhtml'")]
-        public string[] PrintHtml;
-        
+        public bool PrintHtml;
+        [CommandLine("--scroll", CommandType.OPTION, Help = "use '--scroll'")]
+        public bool Scroll;
+
+
         [CommandLine("--tablist", CommandType.ARGUMENTS)]
         public string[] TabLists;
     }
@@ -63,13 +68,17 @@ namespace Koromo_Copy.Console.Utility
             {
                 ProcessNavigate(option.Navigate, option.Wait);
             }
-            else if (option.PrintHtml != null)
+            else if (option.PrintHtml)
             {
-                ProcessPrintHtml(option.PrintHtml);
+                ProcessPrintHtml();
             }
             else if (option.TabLists != null)
             {
                 ProcessTabLists(option.TabLists);
+            }
+            else if (option.Scroll)
+            {
+                ProcessScroll();
             }
 
             return true;
@@ -93,7 +102,9 @@ namespace Koromo_Copy.Console.Utility
             {
                 var chromeDriverService = ChromeDriverService.CreateDefaultService($"{Directory.GetCurrentDirectory()}");
                 chromeDriverService.HideCommandPromptWindow = true;
-                Instance.driver = new ChromeDriver(chromeDriverService, new ChromeOptions());
+                var chrome = new ChromeOptions();
+                //chrome.AddArgument("--headless");
+                Instance.driver = new ChromeDriver(chromeDriverService, chrome);
             }
         }
         
@@ -123,7 +134,7 @@ namespace Koromo_Copy.Console.Utility
         /// Html 소스를 출력합니다.
         /// </summary>
         /// <param name="args"></param>
-        static void ProcessPrintHtml(string[] args)
+        static void ProcessPrintHtml()
         {
             if (Instance.driver == null)
             {
@@ -150,6 +161,20 @@ namespace Koromo_Copy.Console.Utility
             {
                 Instance.driver.SwitchTo().Window(wh);
                 Console.Instance.WriteLine(Instance.driver.Url);
+            }
+        }
+
+        static void ProcessScroll()
+        {
+            IJavaScriptExecutor js = Instance.driver as IJavaScriptExecutor;
+            
+            while(true)
+            {
+                object s = js.ExecuteScript("return document.body.scrollHeight");
+                Console.Instance.WriteLine(s);
+                js.ExecuteScript("window.scrollTo(0,document.body.scrollHeight);");
+
+                System.Threading.Thread.Sleep(2000);
             }
         }
     }
