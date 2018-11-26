@@ -32,12 +32,7 @@ namespace Koromo_Copy_UX3
         public ToolSpace()
         {
             InitializeComponent();
-
-            ToolsTree.Items.Add(new TreeViewItem
-            {
-                Header = "Hyper Maintainer",
-                DataContext = new HyperMaintainer()
-            });
+            
             ToolsTree.Items.Add(new TreeViewItem
             {
                 Header = "Statistics",
