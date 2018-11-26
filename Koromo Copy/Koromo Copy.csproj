@@ -181,6 +181,29 @@
     <Compile Include="Utility\MetadataDownloader.Designer.cs">
       <DependentUpon>MetadataDownloader.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\RelatedTags\GraphViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\RelatedTags\GraphViewer.designer.cs">
+      <DependentUpon>GraphViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\RelatedTags\Graph\FixedString.cs" />
+    <Compile Include="Utility\RelatedTags\Graph\Graph.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utility\RelatedTags\Graph\Graph.Designer.cs">
+      <DependentUpon>Graph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\RelatedTags\Graph\GraphNode.cs" />
+    <Compile Include="Utility\RelatedTags\Graph\GraphNodeManager.cs" />
+    <Compile Include="Utility\RelatedTags\Graph\ViewManager.cs" />
+    <Compile Include="Utility\RelatedTags\RelatedTagsTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\RelatedTags\RelatedTagsTest.Designer.cs">
+      <DependentUpon>RelatedTagsTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\RelatedTags\ViewBuffer.cs" />
     <Compile Include="Utility\StringTools.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -210,6 +233,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\MetadataDownloader.resx">
       <DependentUpon>MetadataDownloader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\RelatedTags\GraphViewer.resx">
+      <DependentUpon>GraphViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\RelatedTags\RelatedTagsTest.resx">
+      <DependentUpon>RelatedTagsTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\StringTools.resx">
       <DependentUpon>StringTools.cs</DependentUpon>
