@@ -88,11 +88,11 @@ namespace Koromo_Copy_UX3.Tools
                 "작가 작품 수 누적 - 한국어",
                 "작가 작품 수 변동 - 한국어",
                 "그룹 누적 - 한국어",
-                "그룹 변동 - 한국어",
+                //"그룹 변동 - 한국어",
                 "시리즈 누적 - 한국어",
                 "시리즈 변동 - 한국어",
                 "캐릭터 누적 - 한국어",
-                "캐릭터 변동 - 한국어"   
+                //"캐릭터 변동 - 한국어"   
             };
             trends.ToList().ForEach(lang => Trend.Items.Add(new ComboBoxItem { Content = lang }));
         }
@@ -217,6 +217,7 @@ namespace Koromo_Copy_UX3.Tools
                         AxisX.Title = "아이디 간격";
                         AxisX.MinValue = 1125000;
                         AxisY.Title = "작품 변동 수";
+                        LoadTrend2();
                         break;
 
                     case "시리즈 누적 - 한국어":
