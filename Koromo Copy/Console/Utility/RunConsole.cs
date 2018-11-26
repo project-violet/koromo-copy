@@ -95,7 +95,7 @@ namespace Koromo_Copy.Console.Utility
                 return;
             }
 
-            Application.OpenForms[0].Post(() => ((Form)Activator.CreateInstance(run_dic[args[0]])).Show());
+            Global.UXInvoke(() => ((Form)Activator.CreateInstance(run_dic[args[0]])).Show());
         }
     }
 }
