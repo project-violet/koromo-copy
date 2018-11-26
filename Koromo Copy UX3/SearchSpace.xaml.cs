@@ -51,7 +51,7 @@ namespace Koromo_Copy_UX3
         private bool StartsLoading = false;
         private void SearchSpace_Loaded(object sender, RoutedEventArgs e)
         {
-#if false
+#if true
             bool loading = false;
             // Metadata 로딩
             Task.Run(async () => {
