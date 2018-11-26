@@ -6,6 +6,7 @@
 
 ***/
 
+using Hitomi_Copy_3;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Utility;
 using System;
@@ -80,7 +81,8 @@ namespace Koromo_Copy.Console.Utility
             { "fsenum", typeof(FsEnumerator) },
             { "mddown", typeof(MetadataDownloader) },
             { "strings", typeof(StringTools) },
-            { "explorer", typeof(HitomiExplorer) }
+            { "explorer", typeof(HitomiExplorer) },
+            { "tagtest", typeof(RelatedTagsTest) }
         };
 
         /// <summary>
