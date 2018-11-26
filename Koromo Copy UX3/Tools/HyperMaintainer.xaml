@@ -8,7 +8,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="20">
         <StackPanel>
-            <TextBlock Text="H" FontSize="20"/>
+            <TextBlock Text="Hyper Maintainer" FontSize="25" FontWeight="Thin"/>
+            
         </StackPanel>
     </Grid>
 </UserControl>

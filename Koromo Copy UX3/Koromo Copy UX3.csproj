@@ -121,6 +121,7 @@
     <Compile Include="Domain\Converter.cs" />
     <Compile Include="Domain\DownloadDataGridViewModel.cs" />
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
+    <Compile Include="Domain\GlobalImpl.cs" />
     <Compile Include="Domain\PatchNoteViewModel.cs" />
     <Compile Include="Domain\SettingDownloaderViewModel.cs" />
     <Compile Include="Domain\SettingHitomiViewModel.cs" />
@@ -397,7 +398,9 @@
   <ItemGroup>
     <Resource Include="TETO.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Service\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Koromo Copy\packages\Fody.3.2.12\build\Fody.targets" Condition="Exists('..\Koromo Copy\packages\Fody.3.2.12\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

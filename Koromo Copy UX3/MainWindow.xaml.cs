@@ -67,6 +67,7 @@ namespace Koromo_Copy_UX3
             ServicePointManager.DefaultConnectionLimit = 999999999;
             
             AppDomain.CurrentDomain.UnhandledException += UnhandledException;
+            GlobalImpl.InitGlobal();
         }
 
         private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
