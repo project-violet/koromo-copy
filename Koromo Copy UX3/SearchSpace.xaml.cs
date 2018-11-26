@@ -51,6 +51,7 @@ namespace Koromo_Copy_UX3
         private bool StartsLoading = false;
         private void SearchSpace_Loaded(object sender, RoutedEventArgs e)
         {
+#if false
             bool loading = false;
             // Metadata 로딩
             Task.Run(async () => {
@@ -103,7 +104,7 @@ namespace Koromo_Copy_UX3
                 Task.Run(() => CheckUpdate());
                 Task.Run(() => LoadOthersAsync());
             }, TaskScheduler.FromCurrentSynchronizationContext());
-
+#endif
             Window w = Window.GetWindow(this);
             // 이거 지우면 디자이너 오류남
             if (w != null)
@@ -271,7 +272,7 @@ namespace Koromo_Copy_UX3
             }
         }
         
-        #region Search Helper
+#region Search Helper
         AutoCompleteLogic logic;
 
         private void SearchText_KeyDown(object sender, KeyEventArgs e)
@@ -306,9 +307,9 @@ namespace Koromo_Copy_UX3
         {
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
-        #endregion
+#endregion
 
-        #region Other Downloader
+#region Other Downloader
 
         private async void LoadOthersAsync()
         {
@@ -411,6 +412,6 @@ namespace Koromo_Copy_UX3
             }
         }
 
-        #endregion
+#endregion
     }
 }
