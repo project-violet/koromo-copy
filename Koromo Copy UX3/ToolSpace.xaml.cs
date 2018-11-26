@@ -38,6 +38,11 @@ namespace Koromo_Copy_UX3
                 Header = "Statistics",
                 DataContext = new Statistics()
             });
+            //ToolsTree.Items.Add(new TreeViewItem
+            //{
+            //    Header = "Artists Map",
+            //    DataContext = new ArtistsMap()
+            //});
             ToolsTree.Items.Add(new TreeViewItem
             {
                 Header = "Index",
