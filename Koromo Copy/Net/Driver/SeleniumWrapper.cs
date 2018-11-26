@@ -31,7 +31,7 @@ namespace Koromo_Copy.Net.Driver
             driver = new ChromeDriver("chromedriver.exe", chrome);
         }
 
-        public void Naviagate(string url, int _wait = 3)
+        public void Navigate(string url, int _wait = 3)
         {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(_wait);
             driver.Url = url;
