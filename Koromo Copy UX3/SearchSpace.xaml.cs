@@ -435,7 +435,7 @@ namespace Koromo_Copy_UX3
             for (int i = 0; i < height; i += 50)
             {
                 sw.Scroll(i);
-                await Task.Delay(100);
+                await Task.Delay(1);
                 foreach (var image in PinParser.ParseImage(sw.GetHtml()))
                     if (!images.Contains(image))
                         if (!images.Contains(image))
