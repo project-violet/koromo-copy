@@ -113,5 +113,11 @@ namespace Koromo_Copy_UX3
             stay = true;
             timer.Start();
         }
+
+        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            HitomiAnalysis.Instance.FilterArtists = HideToggle.IsChecked.Value;
+            Update();
+        }
     }
 }
