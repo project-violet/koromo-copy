@@ -18,5 +18,5 @@
 |YouTube|https://www.youtube.com|0 %|
 |Twitter|https://twitter.com|0 %|
 |Facebook|https://www.facebook.com|0 %|
-|Pinterest|https://www.pinterest.com|0 %|
+|Pinterest|https://www.pinterest.com|100 %|
 |Tumblr|https://tumblr.com|0 %|
