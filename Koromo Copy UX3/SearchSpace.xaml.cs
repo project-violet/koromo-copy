@@ -8,7 +8,9 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Pinterest;
 using Koromo_Copy.Component.Pixiv;
+using Koromo_Copy.Net.Driver;
 using Koromo_Copy.Plugin;
 using Koromo_Copy_UX3.Domain;
 using System;
@@ -333,6 +335,10 @@ namespace Koromo_Copy_UX3
             {
                 ProcessPixivAsync(url);
             }
+            else if (url.Contains("pinterest.co.kr/"))
+            {
+                ProcessPinterest(url);
+            }
             else
             {
                 // Plugins
@@ -391,6 +397,72 @@ namespace Koromo_Copy_UX3
             }
         }
 
+        private async void ProcessPinterest(string url)
+        {
+            string user = Regex.Match(url, "pinterest.co.kr/(.*?)/").Groups[1].Value;
+            var sw = new SeleniumWrapper();
+
+            MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
+            sw.Navigate(url);
+            sw.WaitComplete();
+            sw.ClickXPath("//div[@data-test-id='loginButton']");
+            MainWindow.Instance.ModifyText_MiddlePopup("로그인중...");
+            sw.SendKeyId("email", Settings.Instance.Pinterest.Id);
+            sw.SendKeyId("password", Settings.Instance.Pinterest.Password);
+            sw.ClickXPath("//div[@data-test-id='registerFormSubmitButton']");
+            await Task.Delay(10000);
+            sw.WaitComplete();
+            sw.Navigate($"https://www.pinterest.co.kr/{user}/pins/");
+            sw.WaitComplete();
+
+            List<string> images = new List<string>();
+            string last;
+            do
+            {
+                last = sw.GetHeight();
+                sw.ScrollDown();
+                await Task.Delay(2000);
+
+                foreach (var image in PinParser.ParseImage(sw.GetHtml()))
+                    if (!images.Contains(image))
+                    {
+                        images.Add(image);
+                        MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중... [{images.Count}]");
+                    }
+            } while (last != sw.GetHeight());
+
+            int height = Convert.ToInt32(sw.GetHeight());
+            for (int i = 0; i < height; i += 50)
+            {
+                sw.Scroll(i);
+                await Task.Delay(100);
+                foreach (var image in PinParser.ParseImage(sw.GetHtml()))
+                    if (!images.Contains(image))
+                        if (!images.Contains(image))
+                        {
+                            images.Add(image);
+                            MainWindow.Instance.ModifyText_MiddlePopup($"재 수집중... [{images.Count}]");
+                        }
+            }
+
+            sw.Close();
+
+            string dir = Path.Combine(Settings.Instance.Pinterest.Path, DeleteInvalid(user));
+            Directory.CreateDirectory(dir);
+
+            var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
+            se.Referer = "https://www.pinterest.co.kr/";
+
+            DownloadSpace.Instance.RequestDownload($"pinterest: {user}",
+                images.ToArray(),
+                images.Select(x => Path.Combine(dir, x.Split('/').Last())).ToArray(),
+                se,
+                dir + '\\',
+                null
+                );
+            MainWindow.Instance.FadeOut_MiddlePopup($"{images.Count}개 항목 다운로드 시작...");
+        }
+        
         private async void ProcessPlugInAsync(DownloadPlugIn plugin, string url)
         {
             try

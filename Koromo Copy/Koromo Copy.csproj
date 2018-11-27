@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\Pinterest\PinSetting.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Component\Hitomi\HitomiDataSearchAdvanced.cs" />
     <Compile Include="Component\Hitomi\HitomiDate.cs" />

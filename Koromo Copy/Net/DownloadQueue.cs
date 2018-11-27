@@ -176,6 +176,10 @@ namespace Koromo_Copy.Net
         private void DownloadRemoteImageFile(string uri, string fileName, object obj, SemaphoreCallBack callback, SemaphoreExtends se)
         {
             int retry_count = 0;
+            if (retry_count > 10)
+            {
+                Monitor.Instance.Push($"[Many Retry] {uri} is auto deleted in download queue.");
+            }
         RETRY:
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             se.RunPass(ref request);
