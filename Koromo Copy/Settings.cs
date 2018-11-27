@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Pinterest;
 using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Interface;
 using Koromo_Copy.UX;
@@ -30,6 +31,9 @@ namespace Koromo_Copy
 
         [JsonProperty]
         public PixivSetting Pixiv;
+
+        [JsonProperty]
+        public PinSetting Pinterest;
 
         /// <summary>
         /// 세밀한 버전 확인을 제공합니다.
@@ -107,6 +111,13 @@ namespace Koromo_Copy
                         Path = @"C:\Pixiv\",
                         Id = "",
                         Password = ""
+                    },
+
+                    Pinterest = new PinSetting
+                    {
+                        Path = @"C:\Pinterest\",
+                        Id = "",
+                        Password = ""
                     }
                 };
             }
@@ -122,6 +133,16 @@ namespace Koromo_Copy
                     model.Pixiv = new PixivSetting
                     {
                         Path = @"C:\Pixiv\",
+                        Id = "",
+                        Password = ""
+                    };
+                }
+
+                if (Pinterest == null)
+                {
+                    model.Pinterest = new PinSetting
+                    {
+                        Path = @"C:\Pinterest\",
                         Id = "",
                         Password = ""
                     };
@@ -145,5 +166,6 @@ namespace Koromo_Copy
         public HitomiAnalysisSetting HitomiAnalysis { get { return model.HitomiAnalysis; } }
         public UXSetting UXSetting { get { return model.UXSetting; } }
         public PixivSetting Pixiv { get { return model.Pixiv; } }
+        public PinSetting Pinterest { get { return model.Pinterest; } }
     }
 }

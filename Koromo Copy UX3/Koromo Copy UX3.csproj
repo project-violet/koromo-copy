@@ -115,6 +115,9 @@
     <Compile Include="Controls\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomArtistsRecommendWindow.xaml.cs">
+      <DependentUpon>CustomArtistsRecommendWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain\ArtistDataGridViewModel.cs" />
     <Compile Include="Domain\AutoCompleteLogic.cs" />
     <Compile Include="Domain\CommentViewModel.cs" />
@@ -226,6 +229,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomArtistsRecommendWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

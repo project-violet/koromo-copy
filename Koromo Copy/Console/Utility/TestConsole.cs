@@ -113,6 +113,10 @@ namespace Koromo_Copy.Console.Utility
                 case "version_check":
                     Version.UpdateRequired();
                     break;
+
+                case "pin":
+
+                    break;
             }
         }
     }

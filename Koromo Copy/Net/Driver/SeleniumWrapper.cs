@@ -9,6 +9,7 @@
 using Koromo_Copy.Interface;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,8 +28,8 @@ namespace Koromo_Copy.Net.Driver
             var chromeDriverService = ChromeDriverService.CreateDefaultService($"{Directory.GetCurrentDirectory()}");
             chromeDriverService.HideCommandPromptWindow = true;
             var chrome = new ChromeOptions();
-            chrome.AddArgument("--headless");
-            driver = new ChromeDriver("chromedriver.exe", chrome);
+            //chrome.AddArgument("--headless");
+            driver = new ChromeDriver(chromeDriverService, chrome);
         }
 
         public void Navigate(string url, int _wait = 3)
@@ -49,11 +50,38 @@ namespace Koromo_Copy.Net.Driver
             js.ExecuteScript("window.scrollTo(0,document.body.scrollHeight);");
         }
 
+        public void Scroll(int position)
+        {
+            IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+            js.ExecuteScript($"window.scrollTo(0,{position});");
+        }
+
+        public void ClickXPath(string path)
+        {
+            driver.FindElementByXPath(path).Click();
+        }
+
+        public void ClickName(string path)
+        {
+            driver.FindElementByName(path).Click();
+        }
+
+        public void SendKeyId(string id, string content)
+        {
+            driver.FindElementById(id).SendKeys(content);
+        }
+
+        public void WaitComplete(int _wait = 3)
+        {
+            new WebDriverWait(driver, TimeSpan.FromSeconds(_wait)).Until(
+                d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
+        }
+        
         public string GetHtml()
         {
             return driver.PageSource;
         }
-
+        
         public void Close()
         {
             driver.Quit();
