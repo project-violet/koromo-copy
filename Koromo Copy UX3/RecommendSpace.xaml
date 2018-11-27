@@ -7,7 +7,7 @@
              xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
              xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="592">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,7 +15,12 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="5">
-            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="0">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="Pink"/>
@@ -40,6 +45,29 @@
                 </StackPanel.Resources>
                 <Button Content="정리" Width="120" Height="20" BorderBrush="LightPink" Foreground="White" Margin="0 0 5 0" Click="Button_Click"/>
                 <Button Content="커스텀 작가 추천" Width="120" Height="20" BorderBrush="LightPink" Foreground="White" Visibility="Collapsed"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 2 0 0" Grid.Column="1">
+                <TextBlock Text="다운로드된 작가 숨기기 ">
+                    <TextBlock.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </TextBlock.Resources>
+                </TextBlock>
+                <ToggleButton x:Name="HideToggle" Click="ToggleButton_Click">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
             </StackPanel>
         </Grid>
 
