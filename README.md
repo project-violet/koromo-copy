@@ -4,9 +4,9 @@
 
 ## 최신 릴리즈 (2018/11/20)
 
-Koromo Copy 0.6.6898.22722 Alpha
+Koromo Copy 0.7.6904.42640 Alpha
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/0.6.6898.22722
+https://github.com/dc-koromo/koromo-copy/releases/tag/0.7.6904.42640
 
 ![hitomi history](Document/Images/1.png)
 
