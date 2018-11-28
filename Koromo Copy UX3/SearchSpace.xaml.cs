@@ -7,9 +7,11 @@
 ***/
 
 using Koromo_Copy;
+using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Pinterest;
 using Koromo_Copy.Component.Pixiv;
+using Koromo_Copy.Net;
 using Koromo_Copy.Net.Driver;
 using Koromo_Copy.Plugin;
 using Koromo_Copy_UX3.Domain;
@@ -339,6 +341,10 @@ namespace Koromo_Copy_UX3
             {
                 ProcessPinterest(url);
             }
+            else if (url.Contains("gall.dcinside.com"))
+            {
+                ProcessDC(url);
+            }
             else
             {
                 // Plugins
@@ -461,6 +467,25 @@ namespace Koromo_Copy_UX3
                 null
                 );
             MainWindow.Instance.FadeOut_MiddlePopup($"{images.Count}개 항목 다운로드 시작...");
+        }
+
+        private void ProcessDC(string url)
+        {
+            var article = DCParser.ParseBoardView(NetCommon.DownloadString(url));
+            string dir = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),"dcinside"), DeleteInvalid(article.Title));
+            Directory.CreateDirectory(dir);
+
+            var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
+            se.Referer = url;
+            
+            DownloadSpace.Instance.RequestDownload(article.Title,
+                article.ImagesLink.ToArray(),
+                article.FilesName.Select(x => Path.Combine(dir, DeleteInvalid(x))).ToArray(),
+                se,
+                dir + '\\',
+                null
+                );
+            MainWindow.Instance.FadeOut_MiddlePopup($"{article.ImagesLink.Count}개 항목 다운로드 시작...");
         }
         
         private async void ProcessPlugInAsync(DownloadPlugIn plugin, string url)
