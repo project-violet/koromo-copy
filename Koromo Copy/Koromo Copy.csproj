@@ -67,6 +67,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\DC\DCArticle.cs" />
+    <Compile Include="Component\DC\DCParser.cs" />
     <Compile Include="Component\Pinterest\PinSetting.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Component\Hitomi\HitomiDataSearchAdvanced.cs" />
@@ -154,6 +156,8 @@
     <Compile Include="Plugin\PlugInManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Script\ScriptElement.cs" />
+    <Compile Include="Script\ScriptEngine.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Strings.cs" />
@@ -260,7 +264,6 @@
   <ItemGroup>
     <Folder Include="Component\Gelbooru\" />
     <Folder Include="Component\SoundCloud\" />
-    <Folder Include="Selenium\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />
