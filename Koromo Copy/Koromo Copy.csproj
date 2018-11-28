@@ -69,6 +69,8 @@
   <ItemGroup>
     <Compile Include="Component\DC\DCArticle.cs" />
     <Compile Include="Component\DC\DCParser.cs" />
+    <Compile Include="Component\Manazero\ManazeroArticle.cs" />
+    <Compile Include="Component\Manazero\ManazeroParser.cs" />
     <Compile Include="Component\Pinterest\PinSetting.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Component\Hitomi\HitomiDataSearchAdvanced.cs" />

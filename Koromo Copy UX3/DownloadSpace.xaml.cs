@@ -186,16 +186,16 @@ namespace Koromo_Copy_UX3
             {
                 for (int i = 0; i < urls.Length; i++)
                 {
-                    view_model.Items.Add(new DownloadDataGridItemViewModel
-                    {
-                        인덱스 = (++index_count).ToString(),
-                        제목 = title,
-                        경로 = paths[i]
-                    });
-
                     Application.Current.Dispatcher.Invoke(new Action(
                     delegate
                     {
+                        view_model.Items.Add(new DownloadDataGridItemViewModel
+                        {
+                            인덱스 = (++index_count).ToString(),
+                            제목 = title,
+                            경로 = paths[i]
+                        });
+
                         Progress.Maximum += 1;
                         Status.Text = $"{Progress.Value} / {Progress.Maximum}";
                     }));
