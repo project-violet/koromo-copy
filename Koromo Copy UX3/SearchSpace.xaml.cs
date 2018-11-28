@@ -472,7 +472,7 @@ namespace Koromo_Copy_UX3
         private void ProcessDC(string url)
         {
             var article = DCParser.ParseBoardView(NetCommon.DownloadString(url));
-            string dir = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),"dcinside"), DeleteInvalid(article.Title));
+            string dir = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),"dcinside"), $"[{article.GalleryName}, {article.Id}] {DeleteInvalid(article.Title)})");
             Directory.CreateDirectory(dir);
 
             var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
