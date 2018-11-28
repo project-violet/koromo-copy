@@ -139,6 +139,22 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 0.8
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 0.8 Alpha",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - Pinterest 다운로더(setting.json에서 로그인 필요)\r\n\r\n" +
+                    " - 작가 추천에 다운로드된 작가 숨기기 기능 추가\r\n\r\n" +
+                    "[수정된 기능]\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 0.7
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements

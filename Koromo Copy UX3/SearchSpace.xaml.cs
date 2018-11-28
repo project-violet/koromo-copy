@@ -9,6 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Manazero;
 using Koromo_Copy.Component.Pinterest;
 using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Net;
@@ -345,6 +346,10 @@ namespace Koromo_Copy_UX3
             {
                 ProcessDC(url);
             }
+            else if (url.Contains("manazero008h.blogspot.com"))
+            {
+                ProcessManazero(url);
+            }
             else
             {
                 // Plugins
@@ -487,7 +492,54 @@ namespace Koromo_Copy_UX3
                 );
             MainWindow.Instance.FadeOut_MiddlePopup($"{article.ImagesLink.Count}개 항목 다운로드 시작...");
         }
-        
+
+        private void ProcessManazero(string url)
+        {
+            Task.Run(() =>
+            {
+                var sw = new SeleniumWrapper();
+
+                MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
+                sw.Navigate(url);
+                sw.ClickXPath("//a[@class='maia-button maia-button-primary']");
+
+                var articles = ManazeroParser.ParseArticles(sw.GetHtml());
+                MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[0/{articles.Count}]");
+
+                for (int i = 0; i < articles.Count; i++)
+                {
+                    sw.Navigate(articles[i].ArticleLink);
+                    if (i == 0)
+                    {
+                        sw.ClickXPath("//a[@class='maia-button maia-button-primary']");
+                    }
+                    articles[i].ImagesLink = ManazeroParser.ParseImages(sw.GetHtml());
+                    MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[{i + 1}/{articles.Count}]");
+                }
+
+                int count = 0;
+                foreach (var article in articles)
+                {
+                    string dir = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "manazero"), DeleteInvalid(article.Title));
+                    Directory.CreateDirectory(dir);
+
+                    var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
+                    se.Referer = url;
+                    
+                    count += article.ImagesLink.Count;
+                    DownloadSpace.Instance.RequestDownload($"manazero: {article.Title}",
+                        article.ImagesLink.ToArray(),
+                        article.ImagesLink.Select(x => Path.Combine(dir, x.Split('/').Last())).ToArray(),
+                        se,
+                        dir + '\\',
+                        null
+                        );
+                }
+
+                MainWindow.Instance.FadeOut_MiddlePopup($"{count}개({articles.Count} 작품) 항목 다운로드 시작...");
+            });
+        }
+
         private async void ProcessPlugInAsync(DownloadPlugIn plugin, string url)
         {
             try
