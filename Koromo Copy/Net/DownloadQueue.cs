@@ -58,7 +58,7 @@ namespace Koromo_Copy.Net
         /// <summary>
         /// Request 타임아웃 관련 설정입니다.
         /// </summary>
-        public bool timeout_infinite = true;
+        public bool timeout_infinite = false;
         public int timeout_ms = 10000;
 
         /// <summary>
