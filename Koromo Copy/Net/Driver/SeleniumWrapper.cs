@@ -28,7 +28,7 @@ namespace Koromo_Copy.Net.Driver
             var chromeDriverService = ChromeDriverService.CreateDefaultService($"{Directory.GetCurrentDirectory()}");
             chromeDriverService.HideCommandPromptWindow = true;
             var chrome = new ChromeOptions();
-            //chrome.AddArgument("--headless");
+            chrome.AddArgument("--headless");
             driver = new ChromeDriver(chromeDriverService, chrome);
         }
 

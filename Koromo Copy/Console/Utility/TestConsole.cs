@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Plugin;
@@ -114,8 +115,9 @@ namespace Koromo_Copy.Console.Utility
                     Version.UpdateRequired();
                     break;
 
-                case "pin":
-
+                case "dc":
+                    var html2 = Net.NetCommon.DownloadString("http://gall.dcinside.com/board/view/?id=comic_new1&no=7118416&page=1");
+                    DCParser.ParseBoardView(html2);
                     break;
             }
         }
