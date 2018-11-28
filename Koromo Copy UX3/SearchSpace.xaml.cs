@@ -277,7 +277,7 @@ namespace Koromo_Copy_UX3
             }
         }
         
-#region Search Helper
+        #region Search Helper
         AutoCompleteLogic logic;
 
         private void SearchText_KeyDown(object sender, KeyEventArgs e)
@@ -312,9 +312,9 @@ namespace Koromo_Copy_UX3
         {
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
-#endregion
+        #endregion
 
-#region Other Downloader
+        #region Other Downloader
 
         private async void LoadOthersAsync()
         {
@@ -561,6 +561,6 @@ namespace Koromo_Copy_UX3
             }
         }
 
-#endregion
+        #endregion
     }
 }
