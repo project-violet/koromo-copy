@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX3.Domain;
 using System;
@@ -64,7 +65,7 @@ namespace Koromo_Copy_UX3
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             Instance = this;
 
-            ServicePointManager.DefaultConnectionLimit = 999999999;
+            ServicePointManager.DefaultConnectionLimit = Settings.Instance.Net.ServicePointConnectionLimit;
             
             AppDomain.CurrentDomain.UnhandledException += UnhandledException;
             GlobalImpl.InitGlobal();

@@ -10,6 +10,7 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Pinterest;
 using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Interface;
+using Koromo_Copy.Net;
 using Koromo_Copy.UX;
 using Newtonsoft.Json;
 using System;
@@ -34,6 +35,9 @@ namespace Koromo_Copy
 
         [JsonProperty]
         public PinSetting Pinterest;
+
+        [JsonProperty]
+        public NetSetting Net;
 
         /// <summary>
         /// 세밀한 버전 확인을 제공합니다.
@@ -118,38 +122,62 @@ namespace Koromo_Copy
                         Path = @"C:\Pinterest\",
                         Id = "",
                         Password = ""
-                    }
+                    },
+
+                    Net = new NetSetting
+                    {
+                        TimeoutMillisecond = 10000,
+                        DownloadBufferSize = 131072,
+                        RetryCount = 10,
+                        ServicePointConnectionLimit = 268435456
+                    },
                 };
             }
             else
             {
-                if (Hitomi.ExclusiveTag == null)
-                {
-                    Hitomi.ExclusiveTag = new string[0];
-                }
-
-                if (Pixiv == null)
-                {
-                    model.Pixiv = new PixivSetting
-                    {
-                        Path = @"C:\Pixiv\",
-                        Id = "",
-                        Password = ""
-                    };
-                }
-
-                if (Pinterest == null)
-                {
-                    model.Pinterest = new PinSetting
-                    {
-                        Path = @"C:\Pinterest\",
-                        Id = "",
-                        Password = ""
-                    };
-                }
+                FixSettings();
             }
             model.LatestAccessTime = DateTime.Now;
             Save();
+        }
+
+        public void FixSettings()
+        {
+            if (Hitomi.ExclusiveTag == null)
+            {
+                Hitomi.ExclusiveTag = new string[0];
+            }
+
+            if (Pixiv == null)
+            {
+                model.Pixiv = new PixivSetting
+                {
+                    Path = @"C:\Pixiv\",
+                    Id = "",
+                    Password = ""
+                };
+            }
+
+            if (Pinterest == null)
+            {
+                model.Pinterest = new PinSetting
+                {
+                    Path = @"C:\Pinterest\",
+                    Id = "",
+                    Password = ""
+                };
+            }
+
+            if (Net == null)
+            {
+                model.Net = new NetSetting
+                {
+                    TimeoutMillisecond = 10000,
+                    DownloadBufferSize = 131072,
+                    RetryCount = 10,
+                    ServicePointConnectionLimit = 268435456
+                };
+            }
         }
         
         public void Save()
@@ -167,5 +195,6 @@ namespace Koromo_Copy
         public UXSetting UXSetting { get { return model.UXSetting; } }
         public PixivSetting Pixiv { get { return model.Pixiv; } }
         public PinSetting Pinterest { get { return model.Pinterest; } }
+        public NetSetting Net { get { return model.Net; } }
     }
 }

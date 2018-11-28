@@ -48,7 +48,10 @@ namespace Koromo_Copy.Net
         public DownloadQueue(DownloadSizeCallBack notify_size, DownloadStatusCallBack notify_status, RetryCallBack retry)
         {
             capacity = Settings.Instance.Model.Thread;
-            ServicePointManager.DefaultConnectionLimit = 268435456;
+            ServicePointManager.DefaultConnectionLimit = Settings.Instance.Net.ServicePointConnectionLimit;
+            timeout_infinite = Settings.Instance.Net.TimeoutInfinite;
+            timeout_ms = Settings.Instance.Net.TimeoutMillisecond;
+            buffer_size = Settings.Instance.Net.DownloadBufferSize;
             download_callback = notify_size;
             status_callback = notify_status;
             retry_callback = retry;
@@ -60,6 +63,7 @@ namespace Koromo_Copy.Net
         /// </summary>
         public bool timeout_infinite = false;
         public int timeout_ms = 10000;
+        public int buffer_size = 131072;
 
         /// <summary>
         /// 이 플래그가 true면 모든 다운로드과정을 정지합니다.
@@ -177,7 +181,7 @@ namespace Koromo_Copy.Net
         {
             int retry_count = 0;
         RETRY:
-            if (retry_count > 10)
+            if (retry_count > Settings.Instance.Net.RetryCount)
             {
                 Monitor.Instance.Push($"[Many Retry] {uri} is auto deleted in download queue.");
                 return;
@@ -206,7 +210,7 @@ namespace Koromo_Copy.Net
                         using (Stream inputStream = response.GetResponseStream())
                         using (Stream outputStream = File.OpenWrite(fileName))
                         {
-                            byte[] buffer = new byte[131072];
+                            byte[] buffer = new byte[buffer_size];
                             int bytesRead;
                             lock (download_callback) download_callback(uri, response.ContentLength, obj);
                             do
