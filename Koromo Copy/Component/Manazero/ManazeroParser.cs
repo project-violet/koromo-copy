@@ -37,6 +37,14 @@ namespace Koromo_Copy.Component.Manazero
             return result;
         }
 
+        public static string ParseTitle(string html)
+        {
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(html);
+
+            return document.DocumentNode.SelectSingleNode("//h3[@class='post-title entry-title']").InnerText;
+        }
+
         public static List<string> ParseImages(string html)
         {
             HtmlDocument document = new HtmlDocument();
