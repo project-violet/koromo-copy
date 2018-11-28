@@ -148,7 +148,9 @@ namespace Koromo_Copy_UX3
                     Version = "Koromo Copy 0.8 Alpha",
                     Content =
                     "[추가된 기능]\r\n" +
-                    " - Pinterest 다운로더(setting.json에서 로그인 필요)\r\n\r\n" +
+                    " - Pinterest 다운로더 추가(setting.json에서 로그인 필요)\r\n\r\n" +
+                    " - Manazero 다운로더 추가\r\n\r\n" +
+                    " - DCInside 게시글 이미지 다운로더 추가\r\n\r\n" +
                     " - 작가 추천에 다운로드된 작가 숨기기 기능 추가\r\n\r\n" +
                     "[수정된 기능]\r\n" +
                     "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
