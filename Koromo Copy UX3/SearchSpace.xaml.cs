@@ -503,6 +503,7 @@ namespace Koromo_Copy_UX3
                 sw.Navigate(url);
                 sw.ClickXPath("//a[@class='maia-button maia-button-primary']");
 
+                var title = ManazeroParser.ParseTitle(sw.GetHtml());
                 var articles = ManazeroParser.ParseArticles(sw.GetHtml());
                 MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[0/{articles.Count}]");
 
@@ -516,11 +517,12 @@ namespace Koromo_Copy_UX3
                     articles[i].ImagesLink = ManazeroParser.ParseImages(sw.GetHtml());
                     MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[{i + 1}/{articles.Count}]");
                 }
+                sw.Close();
 
                 int count = 0;
                 foreach (var article in articles)
                 {
-                    string dir = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "manazero"), DeleteInvalid(article.Title));
+                    string dir = Path.Combine(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "manazero"), DeleteInvalid(title)), DeleteInvalid(article.Title));
                     Directory.CreateDirectory(dir);
 
                     var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
