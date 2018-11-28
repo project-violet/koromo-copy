@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
@@ -501,7 +502,7 @@ namespace Koromo_Copy_UX3
 
                 MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
                 sw.Navigate(url);
-                sw.ClickXPath("//a[@class='maia-button maia-button-primary']");
+                try { sw.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
 
                 var title = ManazeroParser.ParseTitle(sw.GetHtml());
                 var articles = ManazeroParser.ParseArticles(sw.GetHtml());
@@ -512,7 +513,7 @@ namespace Koromo_Copy_UX3
                     sw.Navigate(articles[i].ArticleLink);
                     if (i == 0)
                     {
-                        sw.ClickXPath("//a[@class='maia-button maia-button-primary']");
+                        try { sw.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
                     }
                     articles[i].ImagesLink = ManazeroParser.ParseImages(sw.GetHtml());
                     MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[{i + 1}/{articles.Count}]");
@@ -531,7 +532,7 @@ namespace Koromo_Copy_UX3
                     count += article.ImagesLink.Count;
                     DownloadSpace.Instance.RequestDownload($"manazero: {article.Title}",
                         article.ImagesLink.ToArray(),
-                        article.ImagesLink.Select(x => Path.Combine(dir, x.Split('/').Last())).ToArray(),
+                        article.ImagesLink.Select(x => Path.Combine(dir, HttpUtility.UrlDecode(HttpUtility.UrlDecode(x.Split('/').Last())))).ToArray(),
                         se,
                         dir + '\\',
                         null
