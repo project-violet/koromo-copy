@@ -175,6 +175,9 @@
     <Compile Include="SettingSpace.xaml.cs">
       <DependentUpon>SettingSpace.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingViewAdvanced.xaml.cs">
+      <DependentUpon>SettingViewAdvanced.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingViewDownloader.xaml.cs">
       <DependentUpon>SettingViewDownloader.xaml</DependentUpon>
     </Compile>
@@ -302,6 +305,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingSpace.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewAdvanced.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
