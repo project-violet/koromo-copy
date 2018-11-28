@@ -95,7 +95,7 @@ namespace Koromo_Copy_UX3
 
             Koromo_Copy.Version.RequireTidy(System.Reflection.Assembly.GetExecutingAssembly().Location);
         }
-
+        
         public void Fade_MiddlePopup(bool fade, string text = "", bool progress = true)
         {
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,

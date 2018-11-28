@@ -13,6 +13,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,17 @@ namespace Koromo_Copy.Net.Driver
 
         public SeleniumWrapper()
         {
+            var driver_path = Path.Combine(Directory.GetCurrentDirectory(), "chromedriver.exe");
+            var driver_zip_path = Path.Combine(Directory.GetCurrentDirectory(), "chromedriver.zip");
+            if (!File.Exists(driver_path))
+            {
+                NetCommon.GetDefaultClient().DownloadFile("https://chromedriver.storage.googleapis.com/2.44/chromedriver_win32.zip", driver_zip_path);
+
+                var zip = ZipFile.Open(driver_zip_path, ZipArchiveMode.Read);
+                zip.Entries[0].ExtractToFile(driver_path);
+                zip.Dispose();
+                File.Delete(driver_zip_path);
+            }
             var chromeDriverService = ChromeDriverService.CreateDefaultService($"{Directory.GetCurrentDirectory()}");
             chromeDriverService.HideCommandPromptWindow = true;
             var chrome = new ChromeOptions();
