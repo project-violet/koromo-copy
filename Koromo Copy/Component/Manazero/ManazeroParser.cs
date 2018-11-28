@@ -21,7 +21,7 @@ namespace Koromo_Copy.Component.Manazero
         {
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
-            HtmlNode node = document.DocumentNode.SelectNodes("//ul[@class='rpw']")[0];
+            HtmlNode node = document.DocumentNode.SelectNodes("//ul[@class='rpw']").Last();
 
             List<ManazeroArticle> result = new List<ManazeroArticle>(); 
 
@@ -50,8 +50,12 @@ namespace Koromo_Copy.Component.Manazero
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             HtmlNode node = document.DocumentNode.SelectNodes("//div[@class='adsbygoogle']")[1];
-            
-            return node.SelectNodes("./div[2]/div/a/img").Select(x => x.GetAttributeValue("src","")).ToList();
+
+            try
+            {
+                return node.SelectNodes("./div[2]/div/a/img").Select(x => x.GetAttributeValue("src", "")).ToList();
+            } catch { }
+            return node.SelectNodes(".//img").Select(x => x.GetAttributeValue("src", "")).ToList();
         }
     }
 }
