@@ -27,11 +27,12 @@ namespace Koromo_Copy.Component.DC
             document.LoadHtml(html);
             HtmlNode node = document.DocumentNode.SelectNodes("//div[@class='view_content_wrap']")[0];
 
+            article.Id = Regex.Match(html, @"name=""gallery_no"" value=""(\d+)""").Groups[1].Value;
+            article.GalleryName = Regex.Match(html, @"<h4 class=""block_gallname"">\[(.*?) ").Groups[1].Value;
             article.Title = node.SelectSingleNode("//span[@class='title_subject']").InnerText;
             article.ImagesLink = node.SelectNodes("//ul[@class='appending_file']/li").Select(x => x.SelectSingleNode("./a").GetAttributeValue("href","")).ToList();
             article.FilesName = node.SelectNodes("//ul[@class='appending_file']/li").Select(x => x.SelectSingleNode("./a").InnerText).ToList();
-            //Regex.Matches(node.SelectSingleNode("//div[@class='appending_file_box']").InnerHtml, @"<img.*?src=""(.*?)""").OfType<Match>().Select(x => x.Groups[1].Value).ToList();
-
+            
             return article;
         }
     }

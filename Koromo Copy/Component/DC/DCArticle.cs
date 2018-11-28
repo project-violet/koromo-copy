@@ -17,6 +17,8 @@ namespace Koromo_Copy.Component.DC
 {
     public class DCArticle : IArticle
     {
+        public string Id { get; set; }
+        public string GalleryName { get; set; }
         public string Thumbnail { get; set; }
         public string Title { get; set; }
         public List<string> ImagesLink { get; set; }
