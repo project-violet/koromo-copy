@@ -84,5 +84,10 @@ namespace Koromo_Copy.Component.Hiyobi
 
             return articles;
         }
+
+        public static List<HiyobiArticle> ParseNonHArticles(string html)
+        {
+            return null;
+        }
     }
 }
