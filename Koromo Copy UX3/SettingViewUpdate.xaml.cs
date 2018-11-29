@@ -152,7 +152,6 @@ namespace Koromo_Copy_UX3
                     " - Manazero 다운로더 추가\r\n\r\n" +
                     " - DCInside 게시글 이미지 다운로더 추가\r\n\r\n" +
                     " - 작가 추천에 다운로드된 작가 숨기기 기능 추가\r\n\r\n" +
-                    "[수정된 기능]\r\n" +
                     "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
                 }
             });

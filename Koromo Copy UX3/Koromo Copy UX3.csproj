@@ -41,6 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -147,6 +148,9 @@
     <Compile Include="Controls\NonTopmostPopup.cs" />
     <Compile Include="PatchNoteElements.xaml.cs">
       <DependentUpon>PatchNoteElements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PatchNoteWindow.xaml.cs">
+      <DependentUpon>PatchNoteWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PreviewImageElements.xaml.cs">
       <DependentUpon>PreviewImageElements.xaml</DependentUpon>
@@ -269,6 +273,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PatchNoteElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PatchNoteWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
