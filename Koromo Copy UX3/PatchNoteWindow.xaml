@@ -1,0 +1,98 @@
+﻿<Window x:Class="Koromo_Copy_UX3.PatchNoteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
+        xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
+        xmlns:local="clr-namespace:Koromo_Copy_UX3"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated"
+        Title="PatchNoteWindow" Height="349" Width="785.667">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="5"
+                      GlassFrameThickness="0,0,0,1" ResizeBorderThickness="10"/>
+    </WindowChrome.WindowChrome>
+
+
+    <Border x:Name="TopBorder" Margin="10" BorderThickness="1">
+        <Border.BorderBrush>
+            <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}" Opacity="1"/>
+        </Border.BorderBrush>
+        <Border.Effect>
+            <DropShadowEffect x:Name="DropShadow" Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"
+                                  BlurRadius="10"
+                                  ShadowDepth="0"/>
+        </Border.Effect>
+        <Grid Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button BorderThickness="0" Grid.Row="0" Width="20" Height="20" Tag="Close" Click="ThreeButton_Click" Margin="0 0 5 0" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Pink"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="HotPink"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Close" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <RichTextBox Grid.Row="1" BorderThickness="0" FontSize="15" SelectionBrush="Pink" Margin="10" IsReadOnly="True" Background="White">
+                <RichTextBox.Resources>
+                    <Style TargetType="Hyperlink">
+                        <Setter Property="Cursor" Value="Hand" />
+                        <EventSetter Event="MouseLeftButtonDown" Handler="Hyperlink_MouseLeftButtonDown" />
+                    </Style>
+                </RichTextBox.Resources>
+                <FlowDocument>
+                    <Paragraph>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 0.8 Patch Note</Run>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text=" - Pinterest 다운로더 추가(setting.json에서 로그인 필요)"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text=" - Manazero 다운로더 추가"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text=" - 작가 추천에 다운로드된 작가 숨기기 기능 추가"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text=" * x64 빌드 바이너리를 원하시면 메일로 요청해주세요."/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text=" 자세한 업데이트 내역은 커밋을 참고하세요."/>
+                        <LineBreak/>
+                        <Run Text=" 커밋 : "/>
+                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/0.7.6904.42640...master">https://github.com/dc-koromo/koromo-copy/compare/0.7.6904.42640...master</Hyperlink>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+        </Grid>
+    </Border>
+</Window>

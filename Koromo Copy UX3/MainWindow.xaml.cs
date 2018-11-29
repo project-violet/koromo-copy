@@ -93,7 +93,10 @@ namespace Koromo_Copy_UX3
 
             Fade_MiddlePopup(true);
 
-            Koromo_Copy.Version.RequireTidy(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            if (Koromo_Copy.Version.RequireTidy(System.Reflection.Assembly.GetExecutingAssembly().Location))
+            {
+                (new PatchNoteWindow()).Show();
+            }
         }
         
         public void Fade_MiddlePopup(bool fade, string text = "", bool progress = true)
@@ -161,6 +164,10 @@ namespace Koromo_Copy_UX3
                 Koromo_Copy.Console.Console.Instance.RedirectionAfterLoopInit = () => Domain.UXConsole.Register();
                 Koromo_Copy.Monitor.Instance.Push("Hello!");
                 Koromo_Copy.Monitor.Instance.Start();
+            }
+            else if (e.Key == Key.F && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                (new FinderWindow()).Show();
             }
         }
 
