@@ -125,6 +125,7 @@
     <Compile Include="Domain\CommentViewModel.cs" />
     <Compile Include="Domain\Converter.cs" />
     <Compile Include="Domain\DownloadDataGridViewModel.cs" />
+    <Compile Include="Domain\DownloaderHelper.cs" />
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
     <Compile Include="Domain\GlobalImpl.cs" />
     <Compile Include="Domain\PatchNoteViewModel.cs" />
