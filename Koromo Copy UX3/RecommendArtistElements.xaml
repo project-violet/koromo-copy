@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
+             xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -91,7 +92,7 @@
         </Grid>
 
         <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 0 0">
-            <Image x:Name="Image1" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality"
+            <Image x:Name="Image1" Height="200" Width="150" RenderOptions.BitmapScalingMode="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ImageQuality}"
                Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
                 <Image.Resources>
                     <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
@@ -103,7 +104,7 @@
                 </Image.ToolTip>
             </Image>
 
-            <Image x:Name="Image2" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0"
+            <Image x:Name="Image2" Height="200" Width="150" RenderOptions.BitmapScalingMode="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ImageQuality}" Margin="5 0 0 0"
                Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
                 <Image.Resources>
                     <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
@@ -115,7 +116,7 @@
                 </Image.ToolTip>
             </Image>
 
-            <Image x:Name="Image3" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0"
+            <Image x:Name="Image3" Height="200" Width="150" RenderOptions.BitmapScalingMode="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ImageQuality}" Margin="5 0 0 0"
                Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
                 <Image.Resources>
                     <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
@@ -127,7 +128,7 @@
                 </Image.ToolTip>
             </Image>
 
-            <Image x:Name="Image4" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0"
+            <Image x:Name="Image4" Height="200" Width="150" RenderOptions.BitmapScalingMode="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ImageQuality}" Margin="5 0 0 0"
                Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
                 <Image.Resources>
                     <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
@@ -139,7 +140,7 @@
                 </Image.ToolTip>
             </Image>
 
-            <Image x:Name="Image5" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0"
+            <Image x:Name="Image5" Height="200" Width="150" RenderOptions.BitmapScalingMode="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ImageQuality}" Margin="5 0 0 0"
                Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
                 <Image.Resources>
                     <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
+             xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" Height="204" Background="Transparent" MouseUp="SearchElements_MouseUp"
              MouseDoubleClick="UserControl_MouseDoubleClick">
@@ -119,7 +120,7 @@
 
         <Image x:Name="Image" HorizontalAlignment="Left" Grid.RowSpan="3" Grid.Column="0" Height="200" VerticalAlignment="Top" Width="150"
                Stretch="Uniform" ToolTipService.InitialShowDelay="0"
-               RenderOptions.BitmapScalingMode="Fant" Margin="4 2 2 2" MouseMove="Image_MouseMove">
+               RenderOptions.BitmapScalingMode="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ImageQuality}" Margin="4 2 2 2" MouseMove="Image_MouseMove">
             <Image.Resources>
                 <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
             </Image.Resources>

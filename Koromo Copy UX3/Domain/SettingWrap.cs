@@ -78,6 +78,16 @@ namespace Koromo_Copy_UX3.Domain
                                                                             Settings.Instance.UXSetting.ThemeColor.B)));
 #endif
 
+        public static readonly DependencyProperty ImageQualityProperty =
+            DependencyProperty.Register(nameof(ImageQualityProperty),
+                                        typeof(int),
+                                        typeof(SettingWrap),
+#if DEBUG
+                                        new PropertyMetadata(0));
+#else
+                                        new PropertyMetadata(Settings.Instance.Model.ImageQuality);
+#endif
+
         private static readonly SettingWrap _instance = new SettingWrap();
         public static SettingWrap Instance { get { return _instance; } }
         
@@ -162,6 +172,24 @@ namespace Koromo_Copy_UX3.Domain
             {
                 SetValue(ThemeColorProperty, value);
                 Settings.Instance.UXSetting.ThemeColor = System.Drawing.Color.FromArgb(value.A, value.R, value.G, value.B);
+                Settings.Instance.Save();
+            }
+        }
+
+        /// <summary>
+        /// 이미지의 화질입니다.
+        /// </summary>
+        public BitmapScalingMode ImageQuality
+        {
+            get
+            {
+                int val = (int)GetValue(ImageQualityProperty);
+                return (BitmapScalingMode)(2 - val);
+            }
+            set
+            {
+                SetValue(ImageQualityProperty, (int)value);
+                Settings.Instance.Model.ImageQuality = (int)value;
                 Settings.Instance.Save();
             }
         }

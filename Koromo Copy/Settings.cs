@@ -64,6 +64,13 @@ namespace Koromo_Copy
         /// </summary>
         [JsonProperty]
         public bool AutoZip;
+
+        /// <summary>
+        /// 표시할 이미지의 화질입니다.
+        /// 0이 가장 높으며 숫자가 높아질 수록 낮아집니다.
+        /// </summary>
+        [JsonProperty]
+        public int ImageQuality;
     }
 
     public class Settings : ILazy<Settings>

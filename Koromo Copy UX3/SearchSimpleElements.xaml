@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" Background="#F5F5F5" MouseUp="SearchSimpleElements_MouseUp"
@@ -84,7 +85,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" Height="200" Width="145">
-                        <Image x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"
+                        <Image x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ImageQuality}"
                                Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
                             <Image.Resources>
                                 <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
