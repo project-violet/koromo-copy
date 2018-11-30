@@ -8,6 +8,7 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.DC;
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Component.Manazero;
 using Koromo_Copy.Component.Pinterest;
@@ -273,11 +274,11 @@ namespace Koromo_Copy_UX3.Domain
                     var articles = HiyobiParser.ParseNonHArticles(html);
                     var title = HiyobiParser.ParseNonHTitle(html);
 
-                    MainWindow.Instance.Fade_MiddlePopup(true, $"가져오는중...[0/{articles.Count}]");
+                    MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[0/{articles.Count}]");
                     for (int i = 0; i < articles.Count; i++)
                     {
-                        articles[i].ImagesLink = HiyobiParser.ParseNonHImageList(NetCommon.DownloadString(HiyobiCommon.GetDownloadMangaImageAddress(articles[i].Magic)));
-                        MainWindow.Instance.Fade_MiddlePopup(true, $"가져오는중...[{i + 1}/{articles.Count}]");
+                        articles[i].ImagesLink = HitomiParser.GetImageLink(NetCommon.DownloadString(HiyobiCommon.GetDownloadMangaImageAddress(articles[i].Magic)));
+                        MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[{i + 1}/{articles.Count}]");
                     }
 
                     int count = 0;

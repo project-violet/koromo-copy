@@ -113,15 +113,5 @@ namespace Koromo_Copy.Component.Hiyobi
             document.LoadHtml(html);
             return document.DocumentNode.SelectSingleNode("//main[@class='container']/h3").InnerText;
         }
-
-        public class NonHModel
-        {
-            public string name;
-        }
-
-        public static List<string> ParseNonHImageList(string json)
-        {
-            return JsonConvert.DeserializeObject<List<NonHModel>>(Regex.Split(json,@"galleryinfo\=")[1]).Select(x=>x.name).ToList();
-        }
     }
 }
