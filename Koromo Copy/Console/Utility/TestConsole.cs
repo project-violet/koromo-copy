@@ -8,6 +8,7 @@
 
 using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Plugin;
 using Koromo_Copy.Utility.Develop;
@@ -118,6 +119,11 @@ namespace Koromo_Copy.Console.Utility
                 case "dc":
                     var html2 = Net.NetCommon.DownloadString("http://gall.dcinside.com/board/view/?id=comic_new1&no=7118416&page=1");
                     DCParser.ParseBoardView(html2);
+                    break;
+
+                case "non-h":
+                    var html3 = Net.NetCommon.DownloadString("https://hiyobi.me/manga/info/1848");
+                    HiyobiParser.ParseNonHArticles(html3);
                     break;
             }
         }

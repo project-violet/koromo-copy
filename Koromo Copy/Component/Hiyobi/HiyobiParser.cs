@@ -7,8 +7,10 @@
 ***/
 
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Koromo_Copy.Component.Hiyobi
 {
@@ -87,7 +89,39 @@ namespace Koromo_Copy.Component.Hiyobi
 
         public static List<HiyobiArticle> ParseNonHArticles(string html)
         {
-            return null;
+            List<HiyobiArticle> articles = new List<HiyobiArticle>();
+
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(html);
+            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes(@"//main[@class=""container""]/a[@target=""_blank""]");
+
+            foreach (var node in nodes)
+            {
+                articles.Add(new HiyobiArticle
+                {
+                    Title = node.InnerText,
+                    Magic = node.GetAttributeValue("href", "").Split('/')[3]
+                });
+            }
+
+            return articles;
+        }
+
+        public static string ParseNonHTitle(string html)
+        {
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(html);
+            return document.DocumentNode.SelectSingleNode("//main[@class='container']/h3").InnerText;
+        }
+
+        public class NonHModel
+        {
+            public string name;
+        }
+
+        public static List<string> ParseNonHImageList(string json)
+        {
+            return JsonConvert.DeserializeObject<List<NonHModel>>(Regex.Split(json,@"galleryinfo\=")[1]).Select(x=>x.name).ToList();
         }
     }
 }
