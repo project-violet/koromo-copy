@@ -4,9 +4,99 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
-        mc:Ignorable="d"
-        Title="CustomArtistsRecommendWindow" Height="300" Width="300">
-    <Grid>
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" WindowStyle="ToolWindow"
+        Title="커스텀 작가 추천" Height="503" Width="1240">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         
+        <Grid.Resources>
+            <Style x:Key="TextBlockStyleKey" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                <Setter Property="Margin" Value="5 0 0 0" />
+            </Style>
+        </Grid.Resources>
+
+        <DataGrid x:Name="TagList" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
+                  SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Margin="0 0 5 0" BorderThickness="1" Background="White"
+                  CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
+            <DataGrid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 항목}" Width="150" Header="항목" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 카운트}" Width="100" Header="카운트" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" SortDirection="Descending"/>
+            </DataGrid.Columns>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Height" Value="25"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Background" Value="Gray"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+        </DataGrid>
+
+        <DataGrid x:Name="ResultList" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
+                  SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" BorderThickness="1" Background="White" MouseDoubleClick="ResultList_MouseDoubleClick"
+                  CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
+            <DataGrid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 순위}" Width="59" Header="순위" SortDirection="Descending" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 작가}" Width="122" Header="작가" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 작품수}" Width="76" Header="작품 수" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 점수}" Width="115" Header="점수" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 태그}" Width="515" Header="태그" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+            </DataGrid.Columns>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Height" Value="25"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Background" Value="Gray"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+        </DataGrid>
+
+        <Grid Grid.Column="1" Grid.Row="1" Margin="0 8 0 0">
+            <Button Content="업데이트" Width="150" HorizontalAlignment="Right"/>
+        </Grid>
     </Grid>
 </Window>
