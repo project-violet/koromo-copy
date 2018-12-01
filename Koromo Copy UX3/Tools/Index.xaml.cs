@@ -6,12 +6,14 @@
 
 ***/
 
+using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hitomi.Translate;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,8 +40,10 @@ namespace Koromo_Copy_UX3.Tools
             Loaded += Index_Loaded;
             KoreanTagList.DataContext = new ToolIndexDataGridViewModel();
             KoreanSeriesList.DataContext = new ToolIndexDataGridViewModel();
+            KoreanTagList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<ToolIndexDataGridItemViewModel>(KoreanTagList).SortHandler);
+            KoreanSeriesList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<ToolIndexDataGridItemViewModel>(KoreanSeriesList).SortHandler);
         }
-
+        
         bool loaded = false;
         private void Index_Loaded(object sender, RoutedEventArgs e)
         {

@@ -56,6 +56,7 @@ namespace Koromo_Copy_UX3
             InitializeComponent();
 
             DataContext = new Domain.ArtistDataGridViewModel();
+            TagList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<ArtistDataGridItemViewModel>(TagList).SortHandler);
             Title += group;
 
             var dictionary = new Dictionary<string, int>();

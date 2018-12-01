@@ -165,7 +165,7 @@ namespace Koromo_Copy_UX3
 
             Loaded += SearchElements_Loaded;
         }
-
+        
         private void E_Click(object sender, RoutedEventArgs e)
         {
             var tag = (sender as Button).Tag.ToString().Replace(' ', '_');

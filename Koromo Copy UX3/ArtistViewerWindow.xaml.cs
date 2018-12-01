@@ -62,6 +62,7 @@ namespace Koromo_Copy_UX3
             InitializeComponent();
 
             DataContext = new Domain.ArtistDataGridViewModel();
+            TagList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<ArtistDataGridItemViewModel>(TagList).SortHandler);
             Title += artist;
             Artist = artist;
 
