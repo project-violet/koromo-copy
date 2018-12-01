@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" WindowStyle="ToolWindow"
-        Title="커스텀 작가 추천" Height="503" Width="1240">
+        Title="커스텀 작가 추천" Height="524" Width="1240">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -27,6 +27,7 @@
 
         <DataGrid x:Name="TagList" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
                   SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Margin="0 0 5 0" BorderThickness="1" Background="White"
+                  PreviewKeyDown="TagList_KeyDown"
                   CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
             <DataGrid.Resources>
                 <ResourceDictionary>
@@ -95,8 +96,24 @@
             </DataGrid.CellStyle>
         </DataGrid>
 
+        <Grid Grid.Column="0" Grid.Row="1" Margin="0 8 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="새로운 태그 추가" Width="120" Margin="0 0 2.5 0" Click="Button_Click_1"/>
+            <Button Grid.Column="1" Content="새로운 작가 태그 추가" Margin="2.5 0 0 0" Click="Button_Click_2"/>
+        </Grid>
+
         <Grid Grid.Column="1" Grid.Row="1" Margin="0 8 0 0">
-            <Button Content="업데이트" Width="150" HorizontalAlignment="Right"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" Margin="0 0 15 0">
+                    <TextBlock Text="시작 지점: "/>
+                    <TextBox x:Name="StartPosition" Text="1" Width="50"/>
+                </StackPanel>
+                <Button Content="업데이트" Width="150" HorizontalAlignment="Right" Click="Button_Click"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

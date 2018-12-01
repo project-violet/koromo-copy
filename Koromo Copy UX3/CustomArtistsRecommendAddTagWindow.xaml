@@ -1,0 +1,41 @@
+﻿<Window x:Class="Koromo_Copy_UX3.CustomArtistsRecommendAddTagWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX3"
+        mc:Ignorable="d"
+        WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Title="태그 추가" Height="189" Width="425">
+    <Grid Margin="20">
+
+        <Popup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=TagSearchText}">
+            <ListBox x:Name="AutoCompleteList" Width="350" Height="150" FontSize="15" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
+        </Popup>
+        
+        <StackPanel>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="태그 : " FontSize="15"/>
+                <TextBox x:Name="TagSearchText" Grid.Column="1" FontSize="15" PreviewKeyDown="SearchText_PreviewKeyDown" KeyDown="SearchText_KeyDown" KeyUp="SearchText_KeyUp" />
+            </Grid>
+
+            <Grid Margin="0 20 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="개수 : " FontSize="15"/>
+                <TextBox x:Name="TagCountText" Grid.Column="1" FontSize="15"/>
+            </Grid>
+        </StackPanel>
+
+        <Button Content="추가" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Height="25" Click="Button_Click"/>
+    </Grid>
+</Window>

@@ -56,9 +56,9 @@ namespace Koromo_Copy_UX3
         public int wait_count = 0;
         public bool stay = false;
 
-        public async void Update()
+        public async Task Update(int llc = 0)
         {
-            latest_load_count = 0;
+            latest_load_count = llc;
             Koromo_Copy.Monitor.Instance.Push("[Recommend] Start Update...");
             await Task.Run(() => HitomiAnalysis.Instance.Update());
             Koromo_Copy.Monitor.Instance.Push("[Recommend] Update Complete!");
