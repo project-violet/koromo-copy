@@ -44,7 +44,7 @@
                     </Style>
                 </StackPanel.Resources>
                 <Button Content="정리" Width="120" Height="20" BorderBrush="LightPink" Foreground="White" Margin="0 0 5 0" Click="Button_Click"/>
-                <Button Content="커스텀 작가 추천" Width="120" Height="20" BorderBrush="LightPink" Foreground="White" Visibility="Collapsed"/>
+                <Button Content="커스텀 작가 추천" Width="150" Height="20" BorderBrush="LightPink" Foreground="White" Click="Button_Click_1"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 2 0 0" Grid.Column="1">

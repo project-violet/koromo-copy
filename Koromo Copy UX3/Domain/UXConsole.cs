@@ -131,6 +131,16 @@ namespace Koromo_Copy_UX3.Domain
                     }));
                     break;
 
+                case "car":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        CustomArtistsRecommendWindow carw = new CustomArtistsRecommendWindow();
+                        carw.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;

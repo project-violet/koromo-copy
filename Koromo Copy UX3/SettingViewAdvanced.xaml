@@ -94,6 +94,19 @@
                 <TextBlock Text="  Sensitive update check"/>
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                <ToggleButton IsChecked="{Binding AutoSync}">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+                <TextBlock Text="  Low quality image"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

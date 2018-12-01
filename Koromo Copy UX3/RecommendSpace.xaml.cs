@@ -119,5 +119,10 @@ namespace Koromo_Copy_UX3
             HitomiAnalysis.Instance.FilterArtists = HideToggle.IsChecked.Value;
             Update();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            (new CustomArtistsRecommendWindow()).Show();
+        }
     }
 }

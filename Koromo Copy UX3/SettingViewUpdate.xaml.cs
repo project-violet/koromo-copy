@@ -139,6 +139,23 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 0.9
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 0.9 Alpha",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - Hiyobi Non-H 다운로더 추가\r\n\r\n" +
+                    " - 커스텀 작가 추천 기능\r\n\r\n" +
+                    "[수정된 기능]\r\n" +
+                    " - 컬럼 정렬시 옳바르게 정렬되지 않는 문제\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 0.8
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements

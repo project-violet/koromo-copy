@@ -8,6 +8,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="20">
+        <Grid.Resources>
+            <Style x:Key="TextBlockStyleKey" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                <Setter Property="Margin" Value="5 0 0 0" />
+            </Style>
+        </Grid.Resources>
+
         <StackPanel>
 
             <Grid>
@@ -32,13 +39,13 @@
                                 </ResourceDictionary>
                             </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="79" Header="인덱스"
+                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="79" Header="인덱스" ElementStyle="{StaticResource TextBlockStyleKey}"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 영어}" Width="110" Header="영어" 
+                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 영어}" Width="110" Header="영어" ElementStyle="{StaticResource TextBlockStyleKey}"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 한국어}" Width="120" Header="한국어" 
+                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 한국어}" Width="120" Header="한국어" ElementStyle="{StaticResource TextBlockStyleKey}"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 카운트}" Width="120" Header="카운트" 
+                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 카운트}" Width="120" Header="카운트" ElementStyle="{StaticResource TextBlockStyleKey}"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
                             </DataGrid.Columns>
                             <DataGrid.CellStyle>
@@ -73,13 +80,13 @@
                                 </ResourceDictionary>
                             </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="79" Header="인덱스"
+                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="79" Header="인덱스" ElementStyle="{StaticResource TextBlockStyleKey}"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 영어}" Width="110" Header="영어" 
+                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 영어}" Width="110" Header="영어" ElementStyle="{StaticResource TextBlockStyleKey}"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 한국어}" Width="120" Header="한국어" 
+                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 한국어}" Width="120" Header="한국어" ElementStyle="{StaticResource TextBlockStyleKey}"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 카운트}" Width="120" Header="카운트" 
+                                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 카운트}" Width="120" Header="카운트" ElementStyle="{StaticResource TextBlockStyleKey}"
                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
                             </DataGrid.Columns>
                             <DataGrid.CellStyle>
