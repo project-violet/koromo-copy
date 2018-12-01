@@ -24,6 +24,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Koromo_Copy_UX3
 {
@@ -51,8 +52,14 @@ namespace Koromo_Copy_UX3
                 Close();
         }
 
+        bool loaded = false;
         private void CustomArtistsRecommendWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            if (loaded) return;
+            loaded = true;
+
+            if (!SearchSpace.Instance.IsMetadataLoaded) return;
+
             Dictionary<string, int> tags_map = new Dictionary<string, int>();
 
             if (!HitomiAnalysis.Instance.UserDefined)
@@ -92,6 +99,7 @@ namespace Koromo_Copy_UX3
         {
             var list2 = HitomiAnalysis.Instance.Rank.ToList();
             var rldx = ResultList.DataContext as CustomArtistsRecommendationDataGridViewModel;
+            rldx.Items.Clear();
             for (int i = 0; i < list2.Count; i++)
             {
                 rldx.Items.Add(new CustomArtistsRecommendationDataGridItemViewModel
@@ -100,7 +108,7 @@ namespace Koromo_Copy_UX3
                     작가 = list2[i].Item1,
                     작품수 = HitomiAnalysis.Instance.ArtistCount[list2[i].Item1].ToString(),
                     점수 = list2[i].Item2.ToString(),
-                    태그 = Regex.Replace(list2[i].Item3, @"\t|\n|\r", "")
+                    태그 = Regex.Replace(list2[i].Item3, @"\r\n", ",")
                 });
             }
         }
@@ -111,6 +119,125 @@ namespace Koromo_Copy_UX3
             {
                 (new ArtistViewerWindow((ResultList.SelectedItems[0] as CustomArtistsRecommendationDataGridItemViewModel).작가)).Show();
             }
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            HitomiAnalysis.Instance.UserDefined = true;
+            HitomiAnalysis.Instance.CustomAnalysis.Clear();
+
+            foreach (var lvi in TagList.Items.OfType<ArtistDataGridItemViewModel>())
+                HitomiAnalysis.Instance.CustomAnalysis.Add(new Tuple<string, int>(lvi.항목, Convert.ToInt32(lvi.카운트)));
+
+            await RecommendSpace.Instance.Update(Convert.ToInt32(StartPosition.Text));
+            MainWindow.Instance.Activate();
+            MainWindow.Instance.FocusRecommend();
+
+            UpdateResultList();
+        }
+
+        private void TagList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (TagList.SelectedItems.Count > 0)
+            {
+                if (e.Key == Key.Delete)
+                {
+                    var list = TagList.SelectedItems.OfType<ArtistDataGridItemViewModel>().ToList();
+                    var tldx = TagList.DataContext as ArtistDataGridViewModel;
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        tldx.Items.Remove(list[i]);
+                    }
+                }
+            }
+        }
+
+        public void RequestAddTags(string tags, string score)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+               new Action(() =>
+               {
+                   foreach (var ttag in tags.Trim().Split(' '))
+                   {
+                       string tag = ttag.Replace('_', ' ');
+                       if (!TagList.Items.OfType<ArtistDataGridItemViewModel>().ToList().Any(x =>
+                       {
+                           if (x.항목 == tag)
+                               x.카운트 = Convert.ToInt32(score);
+                           return x.항목 == tag;
+                       }))
+                       {
+                           TagList.Items.Add(new ArtistDataGridItemViewModel
+                           {
+                               항목 = tag,
+                               카운트 = Convert.ToInt32(score)
+                           });
+                       }
+                   }
+               }));
+        }
+
+        public void RequestAddArtists(string artists, string score)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+               new Action(() =>
+               {
+                   Dictionary<string, int> tags = new Dictionary<string, int>();
+
+                   foreach (var artist in artists.Trim().Split(' '))
+                   {
+                       foreach (var data in HitomiData.Instance.metadata_collection)
+                       {
+                           if (!Settings.Instance.HitomiAnalysis.RecommendLanguageALL)
+                           {
+                               string lang = data.Language;
+                               if (data.Language == null) lang = "N/A";
+                               if (Settings.Instance.Hitomi.Language != "ALL" &&
+                                   Settings.Instance.Hitomi.Language != lang) continue;
+                           }
+                           if (data.Artists != null && data.Tags != null && data.Artists.Contains(artist.Replace('_', ' ')))
+                           {
+                               foreach (var tag in data.Tags)
+                               {
+                                   if (tags.ContainsKey(tag))
+                                       tags[tag] = tags[tag] + 1;
+                                   else
+                                       tags.Add(tag, 1);
+                               }
+                           }
+                       }
+                   }
+
+                   var list = tags.ToList();
+                   list.Sort((a, b) => b.Value.CompareTo(a.Value));
+
+                   foreach (var tag in list)
+                   {
+                       if (!TagList.Items.OfType<ArtistDataGridItemViewModel>().ToList().Any(x =>
+                       {
+                           if (x.항목 == tag.Key)
+                               x.카운트 = tag.Value * Convert.ToInt32(score);
+                           return x.항목 == tag.Key;
+                       }))
+                       {
+                           TagList.Items.Add(new ArtistDataGridItemViewModel
+                           {
+                               항목 = tag.Key,
+                               카운트 = tag.Value * Convert.ToInt32(score)
+                           });
+                       }
+                   }
+               }));
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            (new CustomArtistsRecommendAddTagWindow(this)).ShowDialog();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            (new CustomArtistsRecommendAddArtistWindow(this)).ShowDialog();
         }
     }
 }

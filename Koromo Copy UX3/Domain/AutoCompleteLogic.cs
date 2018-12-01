@@ -29,13 +29,17 @@ namespace Koromo_Copy_UX3.Domain
         private int global_position = 0;
         private string global_text = "";
         private bool selected_part = false;
+        private bool specific = false;
+        private bool specific_tag = false;
         public bool skip_enter = false;
 
-        public AutoCompleteLogic(TextBox SearchText, Popup AutoComplete, ListBox AutoCompleteList)
+        public AutoCompleteLogic(TextBox SearchText, Popup AutoComplete, ListBox AutoCompleteList, bool Specific = false, bool SpecificTag = false)
         {
             this.SearchText = SearchText;
             this.AutoComplete = AutoComplete;
             this.AutoCompleteList = AutoCompleteList;
+            specific = Specific;
+            specific_tag = SpecificTag;
         }
 
         public void SearchText_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -106,59 +110,63 @@ namespace Koromo_Copy_UX3.Domain
             if (word == "") { AutoComplete.IsOpen = false; return; }
 
             List<HitomiTagdata> match = new List<HitomiTagdata>();
-            if (word.Contains(":"))
-            {
-                if (word.StartsWith("artist:"))
-                {
-                    word = word.Substring("artist:".Length);
-                    position += "artist:".Length;
-                    match = HitomiDataAnalysis.GetArtistList(word);
-                }
-                else if (word.StartsWith("tag:"))
-                {
-                    word = word.Substring("tag:".Length);
-                    position += "tag:".Length;
-                    match = HitomiDataAnalysis.GetTagList(word);
-                }
-                else if (word.StartsWith("tagx:"))
-                {
-                    word = word.Substring("tagx:".Length);
-                    position += "tagx:".Length;
-                    match = HitomiDataAnalysis.GetTagList(word);
-                }
-                else if (word.StartsWith("character:"))
-                {
-                    word = word.Substring("character:".Length);
-                    position += "character:".Length;
-                    match = HitomiDataAnalysis.GetCharacterList(word);
-                }
-                else if (word.StartsWith("group:"))
-                {
-                    word = word.Substring("group:".Length);
-                    position += "group:".Length;
-                    match = HitomiDataAnalysis.GetGroupList(word);
-                }
-                else if (word.StartsWith("series:"))
-                {
-                    word = word.Substring("series:".Length);
-                    position += "series:".Length;
-                    match = HitomiDataAnalysis.GetSeriesList(word);
-                }
-                else if (word.StartsWith("type:"))
-                {
-                    word = word.Substring("type:".Length);
-                    position += "type:".Length;
-                    match = HitomiDataAnalysis.GetTypeList(word);
-                }
-                else if (word.StartsWith("lang:"))
-                {
-                    word = word.Substring("lang:".Length);
-                    position += "lang:".Length;
-                    match = HitomiDataAnalysis.GetLanguageList(word);
-                }
-            }
 
-            string[] match_target = {
+            if (!specific)
+            {
+
+                if (word.Contains(":"))
+                {
+                    if (word.StartsWith("artist:"))
+                    {
+                        word = word.Substring("artist:".Length);
+                        position += "artist:".Length;
+                        match = HitomiDataAnalysis.GetArtistList(word);
+                    }
+                    else if (word.StartsWith("tag:"))
+                    {
+                        word = word.Substring("tag:".Length);
+                        position += "tag:".Length;
+                        match = HitomiDataAnalysis.GetTagList(word);
+                    }
+                    else if (word.StartsWith("tagx:"))
+                    {
+                        word = word.Substring("tagx:".Length);
+                        position += "tagx:".Length;
+                        match = HitomiDataAnalysis.GetTagList(word);
+                    }
+                    else if (word.StartsWith("character:"))
+                    {
+                        word = word.Substring("character:".Length);
+                        position += "character:".Length;
+                        match = HitomiDataAnalysis.GetCharacterList(word);
+                    }
+                    else if (word.StartsWith("group:"))
+                    {
+                        word = word.Substring("group:".Length);
+                        position += "group:".Length;
+                        match = HitomiDataAnalysis.GetGroupList(word);
+                    }
+                    else if (word.StartsWith("series:"))
+                    {
+                        word = word.Substring("series:".Length);
+                        position += "series:".Length;
+                        match = HitomiDataAnalysis.GetSeriesList(word);
+                    }
+                    else if (word.StartsWith("type:"))
+                    {
+                        word = word.Substring("type:".Length);
+                        position += "type:".Length;
+                        match = HitomiDataAnalysis.GetTypeList(word);
+                    }
+                    else if (word.StartsWith("lang:"))
+                    {
+                        word = word.Substring("lang:".Length);
+                        position += "lang:".Length;
+                        match = HitomiDataAnalysis.GetLanguageList(word);
+                    }
+                }
+
+                string[] match_target = {
                     "artist:",
                     "character:",
                     "group:",
@@ -170,12 +178,21 @@ namespace Koromo_Copy_UX3.Domain
                     "lang:"
                 };
 
-            List<HitomiTagdata> data_col = (from ix in match_target where ix.StartsWith(word) select new HitomiTagdata { Tag = ix }).ToList();
-            if (Settings.Instance.Hitomi.CustomAutoComplete != null)
-                data_col.AddRange(from ix in Settings.Instance.Hitomi.CustomAutoComplete where ix.StartsWith(word) select new HitomiTagdata { Tag = ix });
-            if (data_col.Count > 0)
-                match.AddRange(data_col);
-            match.AddRange(HitomiDataAnalysis.GetTotalList(word));
+                List<HitomiTagdata> data_col = (from ix in match_target where ix.StartsWith(word) select new HitomiTagdata { Tag = ix }).ToList();
+                if (Settings.Instance.Hitomi.CustomAutoComplete != null)
+                    data_col.AddRange(from ix in Settings.Instance.Hitomi.CustomAutoComplete where ix.StartsWith(word) select new HitomiTagdata { Tag = ix });
+                if (data_col.Count > 0)
+                    match.AddRange(data_col);
+                match.AddRange(HitomiDataAnalysis.GetTotalList(word));
+            }
+            else if (specific_tag)
+            {
+                match = HitomiDataAnalysis.GetTagList(word, true);
+            }
+            else
+            {
+                match = HitomiDataAnalysis.GetArtistList(word, true);
+            }
 
             if (match.Count > 0)
             {
