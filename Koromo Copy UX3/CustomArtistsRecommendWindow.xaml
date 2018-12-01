@@ -102,14 +102,21 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Content="새로운 태그 추가" Width="120" Margin="0 0 2.5 0" Click="Button_Click_1"/>
-            <Button Grid.Column="1" Content="새로운 작가 태그 추가" Margin="2.5 0 0 0" Click="Button_Click_2"/>
+            <Button Grid.Column="0" Content="새로운 태그 추가" Width="110" Margin="0 0 2.5 0" Click="Button_Click_1"/>
+            <Button Grid.Column="1" Content="새로운 작가 태그 추가" Margin="2.5 0 5 0" Click="Button_Click_2"/>
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="1" Margin="0 8 0 0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="150 0 0 0">
+                <TextBlock Text="북마크 이름: " VerticalAlignment="Center"/>
+                <TextBox x:Name="BookmarkName" Text="" Width="200"/>
+                <Button Content="북마크에 추가" Margin="5 0 0 0" Width="120" HorizontalAlignment="Right" Click="Button_Click_3" Height="20" VerticalAlignment="Top"/>
+                <Button Content="불러오기" Margin="5 0 0 0" Width="70" HorizontalAlignment="Right" Click="Button_Click_4"/>
+            </StackPanel>
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal" Margin="0 0 15 0">
-                    <TextBlock Text="시작 지점: "/>
+                    <TextBlock Text="시작 지점: " VerticalAlignment="Center"/>
                     <TextBox x:Name="StartPosition" Text="1" Width="50"/>
                 </StackPanel>
                 <Button Content="업데이트" Width="150" HorizontalAlignment="Right" Click="Button_Click"/>
