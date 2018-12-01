@@ -39,6 +39,7 @@ namespace Koromo_Copy.Component.Hitomi
     public class HitomiBookmark : ILazy<HitomiBookmark>
     {
         string bk_path = $"{Environment.CurrentDirectory}\\bookmark.json";
+        string bkbu_path = $"{Environment.CurrentDirectory}\\bookmark_backup.json";
 
         HitomiBookmarkModel model;
 
@@ -46,6 +47,7 @@ namespace Koromo_Copy.Component.Hitomi
         {
             if (File.Exists(bk_path))
             {
+                File.Copy(bk_path, bkbu_path, true);
                 model = JsonConvert.DeserializeObject<HitomiBookmarkModel>(File.ReadAllText(bk_path));
             }
             if (model == null) model = new HitomiBookmarkModel();
@@ -61,14 +63,10 @@ namespace Koromo_Copy.Component.Hitomi
 
         public void Save()
         {
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            using (StreamWriter sw = new StreamWriter(bk_path))
-            using (JsonWriter writer = new JsonTextWriter(sw))
+            string json = JsonConvert.SerializeObject(model, Formatting.Indented);
+            using (var fs = new StreamWriter(new FileStream(bk_path, FileMode.Create, FileAccess.Write)))
             {
-                serializer.Serialize(writer, model);
+                fs.Write(json);
             }
         }
 
