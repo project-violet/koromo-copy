@@ -123,6 +123,9 @@
     <Compile Include="CustomArtistsRecommendAddTagWindow.xaml.cs">
       <DependentUpon>CustomArtistsRecommendAddTagWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomArtistsRecommendBookmarkWindow.xaml.cs">
+      <DependentUpon>CustomArtistsRecommendBookmarkWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomArtistsRecommendWindow.xaml.cs">
       <DependentUpon>CustomArtistsRecommendWindow.xaml</DependentUpon>
     </Compile>
@@ -130,6 +133,7 @@
     <Compile Include="Domain\AutoCompleteLogic.cs" />
     <Compile Include="Domain\CommentViewModel.cs" />
     <Compile Include="Domain\Converter.cs" />
+    <Compile Include="Domain\CustomArtistsRecommendationBookmarkDataGridViewModel.cs" />
     <Compile Include="Domain\CustomArtistsRecommendationDataGridViewModel.cs" />
     <Compile Include="Domain\DataGridSorter.cs" />
     <Compile Include="Domain\DownloadDataGridViewModel.cs" />
@@ -254,6 +258,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CustomArtistsRecommendAddTagWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomArtistsRecommendBookmarkWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

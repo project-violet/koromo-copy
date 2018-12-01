@@ -232,6 +232,24 @@ namespace Koromo_Copy_UX3
                }));
         }
 
+        public void RequestLoadCustomTags(string index)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+               new Action(() =>
+               {
+                   int ix = HitomiBookmark.Instance.GetModel().CustomTags.Count - Convert.ToInt32(index);
+                   var lvil = new List<ArtistDataGridItemViewModel>();
+                   var tldx = TagList.DataContext as ArtistDataGridViewModel;
+                   tldx.Items.Clear();
+                   foreach (var item in HitomiBookmark.Instance.GetModel().CustomTags[ix].Item2)
+                       tldx.Items.Add(new ArtistDataGridItemViewModel
+                       {
+                           항목 = item.Item1,
+                           카운트 = item.Item2
+                       });
+               }));
+        }
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             (new CustomArtistsRecommendAddTagWindow(this)).ShowDialog();
@@ -240,6 +258,29 @@ namespace Koromo_Copy_UX3
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             (new CustomArtistsRecommendAddArtistWindow(this)).ShowDialog();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            HitomiAnalysis.Instance.CustomAnalysis.Clear();
+
+            foreach (var lvi in TagList.Items.OfType<ArtistDataGridItemViewModel>())
+                HitomiAnalysis.Instance.CustomAnalysis.Add(new Tuple<string, int>(lvi.항목, Convert.ToInt32(lvi.카운트)));
+
+            if (BookmarkName.Text.Trim() != "")
+            {
+                HitomiBookmark.Instance.GetModel().CustomTags.Add(new Tuple<string, List<Tuple<string, int>>, DateTime>(BookmarkName.Text.Trim(), HitomiAnalysis.Instance.CustomAnalysis, DateTime.Now));
+                HitomiBookmark.Instance.Save();
+                BookmarkName.Text = "";
+                MessageBox.Show("북마크에 추가되었습니다!", "Hitomi Copy", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+                MessageBox.Show("북마크 이름이 비어있습니다.", "Hitomi Copy", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            (new CustomArtistsRecommendBookmarkWindow(this)).ShowDialog();
         }
     }
 }

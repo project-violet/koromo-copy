@@ -1,0 +1,55 @@
+﻿<Window x:Class="Koromo_Copy_UX3.CustomArtistsRecommendBookmarkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX3"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"
+        Title="커스텀 작가 추천 북마크" Height="390" Width="806.681">
+    <Grid Margin="10">
+
+        <Grid.Resources>
+            <Style x:Key="TextBlockStyleKey" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                <Setter Property="Margin" Value="5 0 0 0" />
+            </Style>
+        </Grid.Resources>
+
+        <DataGrid x:Name="BookmarktList" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
+                  SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" BorderThickness="1" Background="White" MouseDoubleClick="ResultList_MouseDoubleClick"
+                  CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
+            <DataGrid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="60" Header="인덱스" SortDirection="Descending" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 이름}" Width="154" Header="이름" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 날짜}" Width="147" Header="날짜" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 태그}" Width="367" Header="태그" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+            </DataGrid.Columns>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Height" Value="25"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Background" Value="Gray"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+        </DataGrid>
+    </Grid>
+</Window>
