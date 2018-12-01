@@ -1,4 +1,12 @@
-﻿using Koromo_Copy;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX3.Domain;
 using System;
@@ -32,6 +40,7 @@ namespace Koromo_Copy_UX3
 
             DataContext = new Domain.FinderDataGridViewModel();
 
+            SearchList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<FinderDataGridItemViewModel>(SearchList).SortHandler);
             Loaded += FinderWindow_Loaded;
             this.searcher = searcher;
         }

@@ -124,6 +124,7 @@
     <Compile Include="Domain\AutoCompleteLogic.cs" />
     <Compile Include="Domain\CommentViewModel.cs" />
     <Compile Include="Domain\Converter.cs" />
+    <Compile Include="Domain\DataGridSorter.cs" />
     <Compile Include="Domain\DownloadDataGridViewModel.cs" />
     <Compile Include="Domain\DownloaderHelper.cs" />
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
