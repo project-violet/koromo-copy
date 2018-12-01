@@ -129,7 +129,7 @@ namespace Koromo_Copy_UX3
             foreach (var lvi in TagList.Items.OfType<ArtistDataGridItemViewModel>())
                 HitomiAnalysis.Instance.CustomAnalysis.Add(new Tuple<string, int>(lvi.항목, Convert.ToInt32(lvi.카운트)));
 
-            await RecommendSpace.Instance.Update(Convert.ToInt32(StartPosition.Text));
+            await RecommendSpace.Instance.Update(Convert.ToInt32(StartPosition.Text) - 1);
             MainWindow.Instance.Activate();
             MainWindow.Instance.FocusRecommend();
 
@@ -157,6 +157,7 @@ namespace Koromo_Copy_UX3
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                new Action(() =>
                {
+                   var tldx = TagList.DataContext as ArtistDataGridViewModel;
                    foreach (var ttag in tags.Trim().Split(' '))
                    {
                        string tag = ttag.Replace('_', ' ');
@@ -167,7 +168,7 @@ namespace Koromo_Copy_UX3
                            return x.항목 == tag;
                        }))
                        {
-                           TagList.Items.Add(new ArtistDataGridItemViewModel
+                           tldx.Items.Add(new ArtistDataGridItemViewModel
                            {
                                항목 = tag,
                                카운트 = Convert.ToInt32(score)
@@ -211,6 +212,7 @@ namespace Koromo_Copy_UX3
                    var list = tags.ToList();
                    list.Sort((a, b) => b.Value.CompareTo(a.Value));
 
+                   var tldx = TagList.DataContext as ArtistDataGridViewModel;
                    foreach (var tag in list)
                    {
                        if (!TagList.Items.OfType<ArtistDataGridItemViewModel>().ToList().Any(x =>
@@ -220,7 +222,7 @@ namespace Koromo_Copy_UX3
                            return x.항목 == tag.Key;
                        }))
                        {
-                           TagList.Items.Add(new ArtistDataGridItemViewModel
+                           tldx.Items.Add(new ArtistDataGridItemViewModel
                            {
                                항목 = tag.Key,
                                카운트 = tag.Value * Convert.ToInt32(score)
