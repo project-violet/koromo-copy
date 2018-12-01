@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,7 +50,7 @@ namespace Koromo_Copy_UX3
                 {
                     Author = comment.Item2.Trim(),
                     Date = comment.Item1.ToString(),
-                    Content = comment.Item3
+                    Content = Regex.Replace(comment.Item3, @"<a\b[^>]+>([^<]*(?:(?!</a)<[^<]*)*)</a>", "$1")
                 };
 
                 Comments.Children.Add(new CommentElements { DataContext = cvm });
