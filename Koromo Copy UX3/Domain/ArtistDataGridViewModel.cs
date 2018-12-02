@@ -63,27 +63,12 @@ namespace Koromo_Copy_UX3.Domain
         private ObservableCollection<ArtistDataGridItemViewModel> _items;
         public ObservableCollection<ArtistDataGridItemViewModel> Items => _items;
 
-        public ArtistDataGridViewModel()
+        public ArtistDataGridViewModel(IEnumerable<ArtistDataGridItemViewModel> collection = null)
         {
-            //_items = new ObservableCollection<ArtistDataGridItemViewModel>
-            //{
-            //    new ArtistDataGridItemViewModel
-            //    {
-            //        항목="Feamle:loli",
-            //        카운트=1,
-            //    },
-            //    new ArtistDataGridItemViewModel
-            //    {
-            //        항목="Feamle:loli",
-            //        카운트=1,
-            //    },
-            //    new ArtistDataGridItemViewModel
-            //    {
-            //        항목="Feamle:loli",
-            //        카운트=1,
-            //    },
-            //};
-            _items = new ObservableCollection<ArtistDataGridItemViewModel>();
+            if (collection == null)
+                _items = new ObservableCollection<ArtistDataGridItemViewModel>();
+            else
+                _items = new ObservableCollection<ArtistDataGridItemViewModel>(collection);
         }
     }
 }

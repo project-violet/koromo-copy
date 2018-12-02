@@ -99,9 +99,12 @@ namespace Koromo_Copy_UX3.Domain
         private ObservableCollection<CustomArtistsRecommendationDataGridItemViewModel> _items;
         public ObservableCollection<CustomArtistsRecommendationDataGridItemViewModel> Items => _items;
 
-        public CustomArtistsRecommendationDataGridViewModel()
+        public CustomArtistsRecommendationDataGridViewModel(IEnumerable<CustomArtistsRecommendationDataGridItemViewModel> collection = null)
         {
-            _items = new ObservableCollection<CustomArtistsRecommendationDataGridItemViewModel>();
+            if (collection == null)
+                _items = new ObservableCollection<CustomArtistsRecommendationDataGridItemViewModel>();
+            else
+                _items = new ObservableCollection<CustomArtistsRecommendationDataGridItemViewModel>(collection);
         }
     }
 }
