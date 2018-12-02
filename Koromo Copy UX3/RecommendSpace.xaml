@@ -8,6 +8,15 @@
              xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="592">
+
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:ArtistViewerWindow.Command" Executed="CommandBinding_Executed"/>
+    </UserControl.CommandBindings>
+    <UserControl.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="local:ArtistViewerWindow.Command" CommandParameter="S"/>
+    </UserControl.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -75,7 +84,21 @@
             <controls:WheelSpeedScrollViewer x:Name="ScrollViewer" 
                                           SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}" 
                                           ScrollChanged="WheelSpeedScrollViewer_ScrollChanged">
-                <StackPanel x:Name="RecommendList"/>
+                <controls:WheelSpeedScrollViewer.ContextMenu>
+                    <ContextMenu>
+                        <ContextMenu.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </ContextMenu.Resources>
+                        <MenuItem Header="사진으로 저장" InputGestureText="Ctrl+S" Tag="S" Click="MenuItem_Click"/>
+                    </ContextMenu>
+                </controls:WheelSpeedScrollViewer.ContextMenu>
+                <StackPanel x:Name="RecommendList" Background="White"/>
             </controls:WheelSpeedScrollViewer>
         </Border>
     </Grid>

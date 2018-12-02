@@ -10,6 +10,7 @@ using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi.Analysis;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,7 +23,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Koromo_Copy_UX3
@@ -123,6 +123,51 @@ namespace Koromo_Copy_UX3
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             (new CustomArtistsRecommendWindow()).Show();
+        }
+
+        private void SnapShotPNG(UIElement source, Uri destination)
+        {
+            try
+            {
+                double actualHeight = source.RenderSize.Height;
+                double actualWidth = source.RenderSize.Width;
+                
+                RenderTargetBitmap renderTarget = new RenderTargetBitmap((int)actualWidth, (int)actualHeight, 96, 96, PixelFormats.Pbgra32);
+                source.Arrange(new Rect(source.RenderSize));
+                renderTarget.Render(source);
+
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(renderTarget));
+                using (FileStream stream = new FileStream(destination.LocalPath, FileMode.Create, FileAccess.Write))
+                {
+                    encoder.Save(stream);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void SaveToImage()
+        {
+            var filename = $"snapshot-{DateTime.Now.Ticks}.png";
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
+            SnapShotPNG((UIElement)ScrollViewer.Content, new Uri(path));
+            MainWindow.Instance.FadeOut_MiddlePopup($"저장되었습니다! {filename}", false);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            SaveToImage();
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if ((e.Parameter as string)[0] == 'S')
+            {
+                SaveToImage();
+            }
         }
     }
 }
