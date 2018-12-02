@@ -150,6 +150,7 @@ namespace Koromo_Copy_UX3
                     "[추가된 기능]\r\n" +
                     " - Hiyobi Non-H 다운로더 추가\r\n\r\n" +
                     " - 커스텀 작가 추천 기능\r\n\r\n" +
+                    " - 작가 추천 목록 이미지 저장기능 (마우스 오른쪽 클릭 메뉴에서 가능)\r\n\r\n" +
                     "[수정된 기능]\r\n" +
                     " - 컬럼 정렬시 옳바르게 정렬되지 않는 문제\r\n\r\n" +
                     "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."

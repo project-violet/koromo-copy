@@ -39,7 +39,7 @@ namespace Koromo_Copy_UX3
         {
             InitializeComponent();
 
-            VersionText.Text += Koromo_Copy.Version.Text;
+            VersionText.Text += Koromo_Copy.Version.Text + " (x64)";
             UpdateSyncDate();
         }
 
