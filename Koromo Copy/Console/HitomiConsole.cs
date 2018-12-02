@@ -7,9 +7,11 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Hitomi.Analysis;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -57,6 +59,11 @@ namespace Koromo_Copy.Console
         public bool SyncDate;
         [CommandLine("-latest", CommandType.OPTION)]
         public bool Latest;
+
+        [CommandLine("-rank", CommandType.OPTION)]
+        public bool Rank;
+        [CommandLine("-taglist", CommandType.OPTION)]
+        public bool TagList;
     }
 
     /// <summary>
@@ -144,6 +151,17 @@ namespace Koromo_Copy.Console
             {
                 ProcessLatest();
             }
+            //
+            //  작가 추천
+            //
+            else if (option.Rank)
+            {
+                ProcessRank();
+            }
+            else if (option.TagList)
+            {
+                ProcessTagList();
+            }
 
             return true;
         }
@@ -163,7 +181,9 @@ namespace Koromo_Copy.Console
                 " -downloadmetadata, -loadmetadata, -downloadhidden, -loadhidden, -sync, -load : Manage Metadata.\r\n" +
                 " -search <Search What> [-all] : Language Dependent metadata seraching.\r\n" +
                 " -setsearch <Place What> : Fix specific search token.\r\n" +
-                " -syncdate : Synchronize HitomiDate data."
+                " -syncdate : Synchronize HitomiDate data.\r\n" +
+                " -rank : Show artists recommendation artist list\r\n" +
+                " -taglist : Show downloaded article's tag list"
                 );
         }
 
@@ -328,6 +348,50 @@ namespace Koromo_Copy.Console
                 string date_text = Regex.Split(Regex.Split(target, @"<span class=""date"">")[1], @"</span>")[0];
                 Console.Instance.WriteLine(DateTime.Parse(date_text).Ticks.ToString());
                 Console.Instance.WriteLine(DateTime.Parse(date_text).ToString());
+            }
+        }
+
+        /// <summary>
+        /// 추천된 작가들을 보여줍니다.
+        /// </summary>
+        static void ProcessRank()
+        {
+            for (int i = 0; i < HitomiAnalysis.Instance.Rank.Count; i++)
+            {
+                Console.Instance.WriteLine($"{(i + 1).ToString().PadLeft(5)}: {HitomiAnalysis.Instance.Rank[i].Item1} ({HitomiAnalysis.Instance.Rank[i].Item2})");
+            }
+        }
+
+        /// <summary>
+        /// 다운로드된 작품들의 태그 리스트를 보여줍니다.
+        /// </summary>
+        static void ProcessTagList()
+        {
+            Dictionary<string, int> tags_map = new Dictionary<string, int>();
+
+            if (!HitomiAnalysis.Instance.UserDefined)
+            {
+                foreach (var log in HitomiLog.Instance.GetEnumerator().Where(log => log.Tags != null))
+                {
+                    foreach (var tag in log.Tags)
+                    {
+                        if (Settings.Instance.HitomiAnalysis.UsingOnlyFMTagsOnAnalysis &&
+                            !tag.StartsWith("female:") && !tag.StartsWith("male:")) continue;
+                        if (tags_map.ContainsKey(HitomiLegalize.LegalizeTag(tag)))
+                            tags_map[HitomiLegalize.LegalizeTag(tag)] += 1;
+                        else
+                            tags_map.Add(HitomiLegalize.LegalizeTag(tag), 1);
+                    }
+                }
+            }
+
+            var list = tags_map.ToList();
+            if (HitomiAnalysis.Instance.UserDefined)
+                list = HitomiAnalysis.Instance.CustomAnalysis.Select(x => new KeyValuePair<string, int>(x.Item1, x.Item2)).ToList();
+            list.Sort((a, b) => b.Value.CompareTo(a.Value));
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.Instance.WriteLine($"{(i + 1).ToString().PadLeft(5)}: {list[i].Key} ({list[i].Value})");
             }
         }
     }

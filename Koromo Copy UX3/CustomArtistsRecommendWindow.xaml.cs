@@ -37,7 +37,7 @@ namespace Koromo_Copy_UX3
         {
             InitializeComponent();
 
-            TagList.DataContext = new ArtistDataGridViewModel();
+            //TagList.DataContext = new ArtistDataGridViewModel();
             ResultList.DataContext = new CustomArtistsRecommendationDataGridViewModel();
             TagList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<ArtistDataGridItemViewModel>(TagList).SortHandler);
             ResultList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<CustomArtistsRecommendationDataGridItemViewModel>(ResultList).SortHandler);
@@ -82,15 +82,11 @@ namespace Koromo_Copy_UX3
             if (HitomiAnalysis.Instance.UserDefined)
                 list = HitomiAnalysis.Instance.CustomAnalysis.Select(x => new KeyValuePair<string, int>(x.Item1, x.Item2)).ToList();
             list.Sort((a, b) => b.Value.CompareTo(a.Value));
-            var tldx = TagList.DataContext as ArtistDataGridViewModel;
-            foreach (var tag in list)
+            TagList.DataContext = new ArtistDataGridViewModel(list.Select(x => new ArtistDataGridItemViewModel
             {
-                tldx.Items.Add(new ArtistDataGridItemViewModel
-                {
-                    항목 = tag.Key,
-                    카운트 = tag.Value
-                });
-            }
+                항목 = x.Key,
+                카운트 = x.Value
+            }));
 
             UpdateResultList();
         }
@@ -98,11 +94,10 @@ namespace Koromo_Copy_UX3
         private void UpdateResultList()
         {
             var list2 = HitomiAnalysis.Instance.Rank.ToList();
-            var rldx = ResultList.DataContext as CustomArtistsRecommendationDataGridViewModel;
-            rldx.Items.Clear();
+            var list = new List<CustomArtistsRecommendationDataGridItemViewModel>();
             for (int i = 0; i < list2.Count; i++)
             {
-                rldx.Items.Add(new CustomArtistsRecommendationDataGridItemViewModel
+                list.Add(new CustomArtistsRecommendationDataGridItemViewModel
                 {
                     순위 = (i + 1).ToString(),
                     작가 = list2[i].Item1,
@@ -111,6 +106,7 @@ namespace Koromo_Copy_UX3
                     태그 = Regex.Replace(list2[i].Item3, @"\r\n", ",")
                 });
             }
+            ResultList.DataContext = new CustomArtistsRecommendationDataGridViewModel(list);
         }
         
         private void ResultList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
