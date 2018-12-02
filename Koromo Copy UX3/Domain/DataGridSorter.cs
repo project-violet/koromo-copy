@@ -75,7 +75,7 @@ namespace Koromo_Copy_UX3.Domain
             
             ListCollectionView lcv = (ListCollectionView)CollectionViewSource.GetDefaultView(data_grid.ItemsSource);
             
-            comparer = new SortComparer(direction == 0 ? true : false, e.Column.SortMemberPath);
+            comparer = new SortComparer(direction == 0 ? false : true, e.Column.SortMemberPath);
             lcv.CustomSort = comparer;
 
             e.Handled = true;
