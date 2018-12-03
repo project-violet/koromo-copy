@@ -214,7 +214,7 @@ namespace Koromo_Copy_UX3
                        if (!TagList.Items.OfType<ArtistDataGridItemViewModel>().ToList().Any(x =>
                        {
                            if (x.항목 == tag.Key)
-                               x.카운트 = tag.Value * Convert.ToInt32(score);
+                               x.카운트 += tag.Value * Convert.ToInt32(score);
                            return x.항목 == tag.Key;
                        }))
                        {
