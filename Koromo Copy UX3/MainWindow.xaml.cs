@@ -8,6 +8,7 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Console;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,7 @@ namespace Koromo_Copy_UX3
             VersionText.Text += Koromo_Copy.Version.SimpleText;
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             Instance = this;
+            InternalConsole.instances.Add("mainwindow", Instance);
 
             ServicePointManager.DefaultConnectionLimit = Settings.Instance.Net.ServicePointConnectionLimit;
             
