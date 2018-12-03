@@ -74,9 +74,9 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Popup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=SearchText}">
+                <controls:NonTopmostPopup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=SearchText}">
                     <ListBox x:Name="AutoCompleteList" Width="350" Height="150" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
-                </Popup>
+                </controls:NonTopmostPopup>
                 <Button x:Name="SearchButton" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="78" Click="Button_Click" 
                         Grid.ColumnSpan="2" Tag="Search" BorderBrush="LightPink" Foreground="White" Content="검색">
                     <Button.Resources>
