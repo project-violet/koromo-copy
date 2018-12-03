@@ -70,15 +70,15 @@ namespace Koromo_Copy
             return get_recursion(obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj), bb, ptr + 1);
         }
         
-        public static void set_recursion(object obj, string[] bb, int ptr)
+        public static void set_recursion(object obj, string[] bb, int ptr, object val)
         {
-            if (bb.Length - 2 == ptr)
+            if (bb.Length - 1 == ptr)
             {
                 obj.GetType().GetField(bb[ptr]).SetValue(obj,
-                    Convert.ChangeType(bb[ptr + 1], obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj).GetType()));
+                    Convert.ChangeType(val, obj.GetType().GetField(bb[ptr], DefaultBinding).GetValue(obj).GetType()));
                 return;
             }
-            set_recursion(obj.GetType().GetField(bb[ptr]).GetValue(obj), bb, ptr + 1);
+            set_recursion(obj.GetType().GetField(bb[ptr]).GetValue(obj), bb, ptr + 1, val);
         }
 
         public static List<MethodInfo> enum_methods(object obj, string[] bb, int ptr, BindingFlags option)

@@ -108,6 +108,10 @@ namespace Koromo_Copy.Console
             {
                 ProcessGet(option.Get, option.EnumerateWithForms, option.EnumerateWithInstances, option.EnumerateWithPrivate);
             }
+            else if (option.Set != null)
+            {
+                ProcessSet(option.Set, option.EnumerateWithForms, option.EnumerateWithInstances);
+            }
             else if (option.Call != null)
             {
                 ProcessCall(option.Call, option.EnumerateWithForms, option.EnumerateWithInstances, option.CallWithReturn, option.CallOnAnotherThread);
@@ -245,7 +249,7 @@ namespace Koromo_Copy.Console
             }
             
             object target = split[0] == "<latest>" ? latest_target : e_form ? get_window(split[0]).Result : instances[split[0]];
-            Internal.set_recursion(target, split, 1);
+            Internal.set_recursion(target, split, 1, args[1]);
         }
 
         /// <summary>
