@@ -13,6 +13,7 @@ using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Component.Manazero;
 using Koromo_Copy.Component.Pinterest;
 using Koromo_Copy.Component.Pixiv;
+using Koromo_Copy.Console;
 using Koromo_Copy.Net;
 using Koromo_Copy.Net.Driver;
 using Koromo_Copy.Plugin;
@@ -48,6 +49,7 @@ namespace Koromo_Copy_UX3
 
             Loaded += SearchSpace_Loaded;
             Instance = this;
+            InternalConsole.instances.Add("searchspace", Instance);
         }
 
         private void Sb_Completed(object sender, EventArgs e)

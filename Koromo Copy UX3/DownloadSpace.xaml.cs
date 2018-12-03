@@ -8,6 +8,7 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Koromo_Copy_UX3.Domain;
@@ -45,6 +46,7 @@ namespace Koromo_Copy_UX3
             InitializeComponent();
 
             Instance = this;
+            InternalConsole.instances.Add("downloadspace", Instance);
             DataContext = view_model = new DownloadDataGridViewModel();
 
             DownloadGroup.Instance.Complete += Instance_Complete;

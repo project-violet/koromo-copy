@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Koromo_Copy.Console
@@ -75,14 +76,14 @@ namespace Koromo_Copy.Console
             arguments = CommandLineUtil.InsertWeirdArguments<InternalConsoleOption>(arguments, true, "-e");
             InternalConsoleOption option = CommandLineParser<InternalConsoleOption>.Parse(arguments);
 
-            if (instances == null)
+            if (!Initialized)
             {
-                instances = new Dictionary<string, object> {
-                    {"setting", Settings.Instance},
-                    {"data", HitomiData.Instance},
-                    {"monitor", Monitor.Instance},
-                    {"console", Console.Instance},
-                };
+                instances.Add("setting", Settings.Instance);
+                instances.Add("data", HitomiData.Instance);
+                instances.Add("monitor", Monitor.Instance);
+                instances.Add("console", Console.Instance);
+
+                Initialized = true;
             }
 
             if (option.Error)
@@ -127,7 +128,10 @@ namespace Koromo_Copy.Console
                 );
         }
 
-        static public Dictionary<string, object> instances = null;
+        static private bool Initialized = false;
+        static public Dictionary<string, object> instances = new Dictionary<string, object>();
+        static public Func<Task<object[]>> get_windows;
+        static public Func<string, Task<object>> get_window;
 
         /// <summary>
         /// 특정 클래스의 내용을 나열합니다.
@@ -166,7 +170,7 @@ namespace Koromo_Copy.Console
             {
                 if (e_form)
                 {
-                    foreach (var f in Application.OpenForms)
+                    foreach (var f in get_windows().Result)
                         list.Add(f.GetType().Name);
                 }
                 else if (e_instance)
@@ -177,7 +181,7 @@ namespace Koromo_Copy.Console
             }
             else
             {
-                object target = split[0] == "<latest>" ? latest_target : e_form ? Application.OpenForms[split[0]] : instances[split[0]];
+                object target = split[0] == "<latest>" ? latest_target : e_form ? get_window(split[0]).Result : instances[split[0]];
 
                 if (!e_method)
                 {
@@ -212,7 +216,7 @@ namespace Koromo_Copy.Console
                     e_form = true;
             }
 
-            object target = split[0] == "<latest>" ? latest_target : e_form ? Application.OpenForms[split[0]] : instances[split[0]];
+            object target = split[0] == "<latest>" ? latest_target : e_form ? get_window(split[0]).Result : instances[split[0]];
             string result = null;
             
             result = Monitor.SerializeObject(Internal.get_recursion(target, split, 1));
@@ -260,7 +264,7 @@ namespace Koromo_Copy.Console
                     e_form = true;
             }
 
-            object target = split[0] == "<latest>" ? latest_target : e_form ? Application.OpenForms[split[0]] : instances[split[0]];
+            object target = split[0] == "<latest>" ? latest_target : e_form ? get_window(split[0]).Result : instances[split[0]];
             object[] param = null;
 
             if (args[1] != "")
