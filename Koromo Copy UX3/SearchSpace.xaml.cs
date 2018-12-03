@@ -289,6 +289,7 @@ namespace Koromo_Copy_UX3
                 ButtonAutomationPeer peer = new ButtonAutomationPeer(SearchButton);
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
+                logic.ClosePopup();
             }
             logic.skip_enter = false;
         }
@@ -315,5 +316,6 @@ namespace Koromo_Copy_UX3
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
         #endregion
+
     }
 }

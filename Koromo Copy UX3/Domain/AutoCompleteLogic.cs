@@ -8,6 +8,7 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -33,6 +34,8 @@ namespace Koromo_Copy_UX3.Domain
         private bool specific_tag = false;
         public bool skip_enter = false;
 
+        public bool IsOpen => AutoComplete.IsOpen;
+
         public AutoCompleteLogic(TextBox SearchText, Popup AutoComplete, ListBox AutoCompleteList, bool Specific = false, bool SpecificTag = false)
         {
             this.SearchText = SearchText;
@@ -40,6 +43,11 @@ namespace Koromo_Copy_UX3.Domain
             this.AutoCompleteList = AutoCompleteList;
             specific = Specific;
             specific_tag = SpecificTag;
+        }
+
+        public void ClosePopup()
+        {
+            AutoComplete.IsOpen = false;
         }
 
         public void SearchText_PreviewKeyDown(object sender, KeyEventArgs e)
