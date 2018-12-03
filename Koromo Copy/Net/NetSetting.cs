@@ -24,6 +24,9 @@ namespace Koromo_Copy.Net
         public bool TimeoutInfinite;
 
         [JsonProperty]
+        public bool UsingFirefoxWebDriver;
+
+        [JsonProperty]
         public int TimeoutMillisecond;
 
         [JsonProperty]

@@ -85,9 +85,9 @@ namespace Koromo_Copy_UX3.Domain
 #if DEBUG
                                         new PropertyMetadata(0));
 #else
-                                        new PropertyMetadata(Settings.Instance.Model.ImageQuality);
+                                        new PropertyMetadata(Settings.Instance.Model.ImageQuality));
 #endif
-
+        
         private static readonly SettingWrap _instance = new SettingWrap();
         public static SettingWrap Instance { get { return _instance; } }
         
