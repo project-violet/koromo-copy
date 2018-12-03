@@ -52,6 +52,8 @@ namespace Koromo_Copy.Console
         public string[] Call;
         [CommandLine("-R", CommandType.OPTION)]
         public bool CallWithReturn;
+        [CommandLine("-A", CommandType.OPTION)]
+        public bool CallOnAnotherThread;
     }
 
     /// <summary>
@@ -108,7 +110,7 @@ namespace Koromo_Copy.Console
             }
             else if (option.Call != null)
             {
-                ProcessCall(option.Call, option.EnumerateWithForms, option.EnumerateWithInstances, option.CallWithReturn);
+                ProcessCall(option.Call, option.EnumerateWithForms, option.EnumerateWithInstances, option.CallWithReturn, option.CallOnAnotherThread);
             }
 
             return true;
@@ -252,7 +254,7 @@ namespace Koromo_Copy.Console
         /// <param name="args"></param>
         /// <param name="e_form"></param>
         /// <param name="e_instance"></param>
-        static void ProcessCall(string[] args, bool e_form, bool e_instance, bool e_return)
+        static void ProcessCall(string[] args, bool e_form, bool e_instance, bool e_return, bool e_another)
         {
             var split = args[0].Split('.');
 
@@ -285,8 +287,19 @@ namespace Koromo_Copy.Console
                     }
                 }
             }
-            
-            var returns = Internal.call_method(target, split, 1, Internal.DefaultBinding, param);
+
+            object returns = null;
+            if (!e_another)
+            {
+                returns = Internal.call_method(target, split, 1, Internal.DefaultBinding, param);
+            }
+            else
+            {
+                Global.UXWaitInvoke(() =>
+                {
+                    returns = Internal.call_method(target, split, 1, Internal.DefaultBinding, param);
+                }).Wait();
+            }
 
             if (e_return)
             {

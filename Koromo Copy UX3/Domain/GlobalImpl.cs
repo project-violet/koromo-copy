@@ -30,7 +30,14 @@ namespace Koromo_Copy_UX3.Domain
                         x();
                     }));
             };
-
+            Global.UXWaitInvoke = async (Action x) =>
+            {
+                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    new Action(() =>
+                    {
+                        x();
+                    }));
+            };
             InternalConsole.get_windows = async () =>
             {
                 object[] result = null;

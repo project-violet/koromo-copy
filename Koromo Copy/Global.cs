@@ -16,6 +16,7 @@ namespace Koromo_Copy
 {
     public class Global
     {
-        public static Action<Action> UXInvoke; 
+        public static Action<Action> UXInvoke;
+        public static Func<Action,Task> UXWaitInvoke;
     }
 }
