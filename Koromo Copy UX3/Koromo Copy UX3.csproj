@@ -141,6 +141,7 @@
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
     <Compile Include="Domain\GlobalImpl.cs" />
     <Compile Include="Domain\PatchNoteViewModel.cs" />
+    <Compile Include="Domain\SettingAdvancedViewModel.cs" />
     <Compile Include="Domain\SettingDownloaderViewModel.cs" />
     <Compile Include="Domain\SettingHitomiViewModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />

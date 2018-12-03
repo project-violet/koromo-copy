@@ -127,7 +127,7 @@ namespace Koromo_Copy.Console
                 );
         }
 
-        static Dictionary<string, object> instances = null;
+        static public Dictionary<string, object> instances = null;
 
         /// <summary>
         /// 특정 클래스의 내용을 나열합니다.

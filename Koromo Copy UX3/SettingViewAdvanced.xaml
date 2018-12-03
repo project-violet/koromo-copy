@@ -25,7 +25,7 @@
             <TextBlock Text="Advanced Settings" FontSize="20" FontWeight="Thin"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
-                <ToggleButton IsChecked="{Binding AutoSync}">
+                <ToggleButton IsChecked="{Binding DisableSeleniumHeadless}">
                     <ToggleButton.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -39,7 +39,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
-                <ToggleButton IsChecked="{Binding AutoSync}">
+                <ToggleButton IsChecked="{Binding UseFirefoxDriver}">
                     <ToggleButton.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -53,7 +53,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
-                <ToggleButton IsChecked="{Binding AutoSync}">
+                <ToggleButton IsChecked="{Binding WaitInfinity}">
                     <ToggleButton.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -67,21 +67,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
-                <ToggleButton IsChecked="{Binding AutoSync}">
-                    <ToggleButton.Resources>
-                        <ResourceDictionary>
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                            </ResourceDictionary.MergedDictionaries>
-                        </ResourceDictionary>
-                    </ToggleButton.Resources>
-                </ToggleButton>
-                <TextBlock Text="  To collapse tool tab"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
-                <ToggleButton IsChecked="{Binding AutoSync}">
+                <ToggleButton IsChecked="{Binding SensitiveUpdateCheck}">
                     <ToggleButton.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -95,7 +81,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
-                <ToggleButton IsChecked="{Binding AutoSync}">
+                <ToggleButton IsChecked="{Binding LowQualityImage}">
                     <ToggleButton.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>

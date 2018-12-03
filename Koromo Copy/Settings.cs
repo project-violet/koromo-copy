@@ -71,6 +71,12 @@ namespace Koromo_Copy
         /// </summary>
         [JsonProperty]
         public int ImageQuality;
+
+        /// <summary>
+        /// 해상도가 낮은 이미지를 불러옵니다.
+        /// </summary>
+        [JsonProperty]
+        public bool LowQualityImage;
     }
 
     public class Settings : ILazy<Settings>
