@@ -243,9 +243,9 @@ namespace Koromo_Copy.Console
                 else
                     e_form = true;
             }
-
-            object target = e_form ? Application.OpenForms[split[0]] : instances[split[0]];
-            Internal.set_recursion(args[0], split, 1);
+            
+            object target = split[0] == "<latest>" ? latest_target : e_form ? get_window(split[0]).Result : instances[split[0]];
+            Internal.set_recursion(target, split, 1);
         }
 
         /// <summary>
