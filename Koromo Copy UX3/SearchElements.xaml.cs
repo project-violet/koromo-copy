@@ -189,6 +189,8 @@ namespace Koromo_Copy_UX3
                 {
                     BitmapImage.BeginInit();
                     BitmapImage.UriSource = new Uri(ha.Thumbnail);
+                    if (Settings.Instance.Model.LowQualityImage)
+                        BitmapImage.DecodePixelWidth = 100;
                     BitmapImage.EndInit();
                     BitmapImage.DownloadCompleted += B_DownloadCompleted;
                     Page.Text = ha.ImagesLink.Count + " Pages";

@@ -59,7 +59,7 @@ namespace Koromo_Copy_UX3
                 DataContext = new SettingViewPixiv {  }
             });
             SettingsTree.Items.Add(downloader);
-            
+
             //SettingsTree.Items.Add(new TreeViewItem
             //{
             //    Header = "유저 인터페이스",
@@ -76,6 +76,12 @@ namespace Koromo_Copy_UX3
             {
                 Header = "업데이트",
                 DataContext = new SettingViewUpdate()
+            });
+
+            SettingsTree.Items.Add(new TreeViewItem
+            {
+                Header = "고급설정",
+                DataContext = new SettingViewAdvanced()
             });
 
             ContentControl.Content = (SettingsTree.Items[0] as TreeViewItem).DataContext;
