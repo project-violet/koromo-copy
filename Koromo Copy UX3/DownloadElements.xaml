@@ -9,8 +9,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="2">
         <materialDesign:Card>
-            <Expander HorizontalAlignment="Stretch">
-                <!--<Expander.Resources>
+            <Expander HorizontalAlignment="Stretch" Background="Black" Opacity=".7">
+                <Expander.Resources>
                     <ResourceDictionary>
                         <ResourceDictionary.MergedDictionaries>
                             <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
@@ -18,7 +18,7 @@
                             <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Expander.xaml"/>
                         </ResourceDictionary.MergedDictionaries>
                     </ResourceDictionary>
-                </Expander.Resources>-->
+                </Expander.Resources>
                 <Expander.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -40,10 +40,10 @@
                                 </ToolTip>
                             </Image.ToolTip>
                         </Image>
-                        <TextBlock x:Name="Title" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="다운로드항목" FontSize="20"/>
+                        <TextBlock x:Name="Title" Foreground="White" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="다운로드항목" FontSize="20"/>
                         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
                             <ProgressBar x:Name="Progress" Margin="5 20" Grid.Column="1" Grid.Row="1" Width="100" Height="20" VerticalAlignment="Top" />
-                            <TextBlock x:Name="Status" Margin="5 20" Text="[200/200]"/>
+                            <TextBlock x:Name="Status" Foreground="White" Margin="5 20" Text="[200/200]"/>
                         </StackPanel>
                         <!---->
                     </Grid>

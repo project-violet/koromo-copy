@@ -70,23 +70,23 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 0.8 Patch Note</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 0.9 Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - Pinterest 다운로더 추가(setting.json에서 로그인 필요)"/>
+                        <Run Text=" - Hiyobi Non-H 다운로더 추가"/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - Manazero 다운로더 추가"/>
+                        <Run Text=" - Mangashow-me 추가"/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 작가 추천에 다운로드된 작가 숨기기 기능 추가"/>
+                        <Run Text=" - 커스텀 작가 추천 기능"/>
                         <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" * x64 빌드 바이너리를 원하시면 메일로 요청해주세요."/>
+                        <Run Text=" * 32bit 빌드 바이너리를 원하시면 메일로 요청해주세요."/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" 자세한 업데이트 내역은 커밋을 참고하세요."/>
+                        <Run Text=" 자세한 업데이트 내역은 커밋이나 설정->업데이트를 참고하세요."/>
                         <LineBreak/>
                         <Run Text=" 커밋 : "/>
                         <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/0.7.6904.42640...master">https://github.com/dc-koromo/koromo-copy/compare/0.7.6904.42640...master</Hyperlink>
