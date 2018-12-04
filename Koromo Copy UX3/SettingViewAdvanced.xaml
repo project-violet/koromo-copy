@@ -38,7 +38,7 @@
                 <TextBlock Text="  Disable selenium driver headless"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Visibility="Collapsed">
                 <ToggleButton IsChecked="{Binding UseFirefoxDriver}">
                     <ToggleButton.Resources>
                         <ResourceDictionary>
