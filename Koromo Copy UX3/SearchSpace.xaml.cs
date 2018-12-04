@@ -110,6 +110,10 @@ namespace Koromo_Copy_UX3
                 sb.Completed += Sb_Completed;
                 if (sb != null) { BeginStoryboard(sb); }
                 RecommendSpace.Instance.Update();
+                if (Koromo_Copy.Version.RequireTidy(System.Reflection.Assembly.GetExecutingAssembly().Location))
+                {
+                    (new PatchNoteWindow()).Show();
+                }
                 Task.Run(() => CheckUpdate());
                 Task.Run(() => DownloaderHelper.LoadOthersAsync());
             }, TaskScheduler.FromCurrentSynchronizationContext());
