@@ -9,6 +9,7 @@
 using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hiyobi;
+using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Plugin;
 using Koromo_Copy.Utility.Develop;
@@ -124,6 +125,13 @@ namespace Koromo_Copy.Console.Utility
                 case "non-h":
                     var html3 = Net.NetCommon.DownloadString("https://hiyobi.me/manga/info/1848");
                     HiyobiParser.ParseNonHArticles(html3);
+                    break;
+
+                case "msm":
+                    var html4 = Net.NetCommon.DownloadString("http://mangashow.me/detail.php?manga_id=4969");
+                    MangashowmeParser.ParseSeries(html4);
+                    var html5 = Net.NetCommon.DownloadString("http://mangashow.me/viewer.php?chapter_id=79688");
+                    MangashowmeParser.ParseImages(html5);
                     break;
             }
         }
