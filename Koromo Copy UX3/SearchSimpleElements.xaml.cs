@@ -131,6 +131,8 @@ namespace Koromo_Copy_UX3
                 {
                     BitmapImage.BeginInit();
                     BitmapImage.UriSource = new Uri(ha.Thumbnail);
+                    if (Settings.Instance.Model.LowQualityImage)
+                        BitmapImage.DecodePixelWidth = 100;
                     BitmapImage.EndInit();
                     Title.Text = ha.Title;
                     Image.Source = BitmapImage;

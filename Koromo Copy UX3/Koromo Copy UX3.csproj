@@ -108,6 +108,9 @@
     <Compile Include="ArtistViewerWindow.xaml.cs">
       <DependentUpon>ArtistViewerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BookmarkWindow.xaml.cs">
+      <DependentUpon>BookmarkWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommentElements.xaml.cs">
       <DependentUpon>CommentElements.xaml</DependentUpon>
     </Compile>
@@ -239,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ArtistViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BookmarkWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

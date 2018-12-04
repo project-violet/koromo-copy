@@ -93,6 +93,8 @@ namespace Koromo_Copy_UX3
                         BitmapImage[j] = new BitmapImage();
                         BitmapImage[j].BeginInit();
                         BitmapImage[j].UriSource = new Uri(thumbnail);
+                        if (Settings.Instance.Model.LowQualityImage)
+                            BitmapImage[j].DecodePixelWidth = 100;
                         BitmapImage[j].EndInit();
                         BitmapImage[j].DownloadCompleted += BitmapImage_DownloadCompleted;
                     }));
