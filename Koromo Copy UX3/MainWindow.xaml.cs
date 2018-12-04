@@ -94,11 +94,6 @@ namespace Koromo_Copy_UX3
             }
 
             Fade_MiddlePopup(true);
-
-            if (Koromo_Copy.Version.RequireTidy(System.Reflection.Assembly.GetExecutingAssembly().Location))
-            {
-                (new PatchNoteWindow()).Show();
-            }
         }
         
         public void Fade_MiddlePopup(bool fade, string text = "", bool progress = true)
