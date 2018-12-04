@@ -11,6 +11,7 @@ using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Component.Manazero;
+using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Component.Pinterest;
 using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Net;
@@ -66,6 +67,10 @@ namespace Koromo_Copy_UX3.Domain
             else if (url.Contains("hiyobi.me"))
             {
                 ProcessHiyobi(url);
+            }
+            else if (url.Contains("mangashow.me"))
+            {
+                ProcessMangashowme(url);
             }
             else
             {
@@ -306,6 +311,45 @@ namespace Koromo_Copy_UX3.Domain
                 {
                     MainWindow.Instance.FadeOut_MiddlePopup("해당 hiyobi.me 주소는 다운로드를 지원하지 않아요");
                 }
+            });
+        }
+
+        public static void ProcessMangashowme(string url)
+        {
+            Task.Run(() =>
+            {
+                MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
+                var html = NetCommon.DownloadString(url);
+                var articles = MangashowmeParser.ParseSeries(html);
+                var title = MangashowmeParser.ParseTitle(html);
+
+                MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[0/{articles.Count}]");
+                for (int i = 0; i < articles.Count; i++)
+                {
+                    articles[i].ImagesLink = MangashowmeParser.ParseImages(NetCommon.DownloadString(MangashowmeCommon.GetDownloadMangaImageAddress(articles[i].ArticleLink)));
+                    MainWindow.Instance.ModifyText_MiddlePopup($"가져오는중...[{i + 1}/{articles.Count}]");
+                }
+
+                int count = 0;
+                foreach (var article in articles)
+                {
+                    string dir = Path.Combine(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "mangashowme"), DeleteInvalid(title)), DeleteInvalid(article.Title));
+                    Directory.CreateDirectory(dir);
+
+                    var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
+                    se.Referer = url;
+
+                    count += article.ImagesLink.Count;
+                    DownloadSpace.Instance.RequestDownload($"mangashow-me: {article.Title}",
+                        article.ImagesLink.ToArray(),
+                        article.ImagesLink.Select(x => Path.Combine(dir, HttpUtility.UrlDecode(HttpUtility.UrlDecode(x.Split('/').Last())))).ToArray(),
+                        se,
+                        dir + '\\',
+                        null
+                        );
+                }
+
+                MainWindow.Instance.FadeOut_MiddlePopup($"{count}개({articles.Count} 작품) 항목 다운로드 시작...");
             });
         }
 
