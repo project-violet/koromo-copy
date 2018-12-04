@@ -149,6 +149,22 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Development.md#콘
 
 ---
 
+# 3. 다운로더 지원 목록
+
+```
+Hitomi
+E-Hentai
+Ex-Hentai
+Pinterest
+Hiyobi
+Manazero
+DCInside
+Pixiv
+Mangashowme
+```
+
+---
+
 # 기타
 
 ## 문의
