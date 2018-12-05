@@ -20,13 +20,16 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-user", CommandType.ARGUMENTS, DefaultArgument = true)]
+        [CommandLine("-user", CommandType.ARGUMENTS, DefaultArgument = true,
+            Info = "Get user data.")]
         public string[] User;
 
-        [CommandLine("-login", CommandType.ARGUMENTS, ArgumentsCount = 2)]
+        [CommandLine("-login", CommandType.ARGUMENTS, ArgumentsCount = 2, 
+            Info = "Login Pixiv.")]
         public string[] Login;
         
-        [CommandLine("-image", CommandType.ARGUMENTS)]
+        [CommandLine("-image", CommandType.ARGUMENTS,
+            Info = "Download article images link list.")]
         public string[] ImageLink;
     }
 

@@ -22,10 +22,12 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Exhentai address>")]
+        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Exhentai address>",
+            Info = "Download article page and parse html.")]
         public string[] Article;
 
-        [CommandLine("-addr", CommandType.ARGUMENTS, Help = "use -addr <Hitomi Article>", Pipe = true)]
+        [CommandLine("-addr", CommandType.ARGUMENTS, Help = "use -addr <Hitomi Article>", Pipe = true,
+            Info = "Get ex-hentai address using hitomi article.")]
         public string[] Address;
     }
 

@@ -26,33 +26,39 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
         
-        [CommandLine("-e", CommandType.ARGUMENTS, ArgumentsCount = 1)]
+        [CommandLine("-e", CommandType.ARGUMENTS, ArgumentsCount = 1,
+            Info = "Enumerate metadata from implements classes.")]
         public string[] Enumerate;
 
-        [CommandLine("-F", CommandType.OPTION)]
+        [CommandLine("-F", CommandType.OPTION, Info = "Set enumerate based on forms, windows")]
         public bool EnumerateWithForms;
-        [CommandLine("-P", CommandType.OPTION)]
+        [CommandLine("-P", CommandType.OPTION, Info = "Set enumerate with private members.")]
         public bool EnumerateWithPrivate;
-        [CommandLine("-I", CommandType.OPTION)]
+        [CommandLine("-I", CommandType.OPTION, Info = "Set enumerate based on instances")]
         public bool EnumerateWithInstances;
-        [CommandLine("-S", CommandType.OPTION)]
+        [CommandLine("-S", CommandType.OPTION, Info = "Set enumerate with static members.")]
         public bool EnumerateWithStatic;
-        [CommandLine("-E", CommandType.OPTION)]
+        [CommandLine("-E", CommandType.OPTION, Info = "Set enumerate with methods.")]
         public bool EnumerateWithMethod;
 
-        [CommandLine("--get", CommandType.ARGUMENTS, ArgumentsCount = 1, Help = "--get \"<path1>.<path2> ...\" ")]
+        [CommandLine("--get", CommandType.ARGUMENTS, ArgumentsCount = 1, Help = "--get \"<path1>.<path2> ...\" ",
+            Info = "Get memory data using metadata path information.")]
         public string[] Get;
         //[CommandLine("-P", CommandType.OPTION)]
         //public bool GetWithProperty;
 
-        [CommandLine("--set", CommandType.ARGUMENTS, ArgumentsCount = 2, Pipe = true)]
+        [CommandLine("--set", CommandType.ARGUMENTS, ArgumentsCount = 2, Pipe = true,
+            Info = "Set to memory data using metadata path information.")]
         public string[] Set;
 
-        [CommandLine("--call", CommandType.ARGUMENTS, ArgumentsCount = 2, Pipe = true)]
+        [CommandLine("--call", CommandType.ARGUMENTS, ArgumentsCount = 2, Pipe = true,
+            Info = "Call method using metadata path information and parameters.")]
         public string[] Call;
-        [CommandLine("-R", CommandType.OPTION)]
+        [CommandLine("-R", CommandType.OPTION,
+            Info = "Save return result after calling.")]
         public bool CallWithReturn;
-        [CommandLine("-A", CommandType.OPTION)]
+        [CommandLine("-A", CommandType.OPTION,
+            Info = "Call method on another thread. This option is used controlling ui/ux.")]
         public bool CallOnAnotherThread;
     }
 

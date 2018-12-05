@@ -19,10 +19,11 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-o", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true)]
+        [CommandLine("-o", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true,
+            Info = "Set output file name.")]
         public string[] Output;
 
-        [CommandLine("-i", CommandType.OPTION)]
+        [CommandLine("-i", CommandType.OPTION, Info = "Set overwrite regardless of file existing.")]
         public bool Overwrite;
     }
 

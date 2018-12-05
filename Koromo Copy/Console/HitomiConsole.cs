@@ -26,43 +26,50 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Hitomi Number>")]
+        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Hitomi Number>", 
+            Info = "Download article page and parse html.")]
         public string[] Article;
-        [CommandLine("-image", CommandType.ARGUMENTS, Help = "use -image <Hitomi Number> [-type=small | big]")]
+        [CommandLine("-image", CommandType.ARGUMENTS, Help = "use -image <Hitomi Number> [-type=small | big]", 
+            Info = "Download article images link list.")]
         public string[] ImageLink;
-        [CommandLine("-type", CommandType.EQUAL)]
+        [CommandLine("-type", CommandType.EQUAL, Help = "use [-type=small | big], must be used with -image", 
+            Info = "Set download image size type.")]
         public string Type;
 
-        [CommandLine("-downloadmetadata", CommandType.OPTION)]
+        [CommandLine("-downloadmetadata", CommandType.OPTION, Info = "Download metadata and save with json file.")]
         public bool DownloadMetadata;
-        [CommandLine("-loadmetadata", CommandType.OPTION)]
+        [CommandLine("-loadmetadata", CommandType.OPTION, Info = "Load metadata.json file for hitomi metadata.")]
         public bool LoadMetadata;
 
-        [CommandLine("-downloadhidden", CommandType.OPTION)]
+        [CommandLine("-downloadhidden", CommandType.OPTION, 
+            Info = "Download hidden metadata and save with json file. After processing, rebuild tag datas (used for auto complete).")]
         public bool DownloadHidden;
-        [CommandLine("-loadhidden", CommandType.OPTION)]
+        [CommandLine("-loadhidden", CommandType.OPTION, Info = "Load hiddendata.json file for hitomi metadata.")]
         public bool LoadHidden;
 
-        [CommandLine("-sync", CommandType.OPTION)]
+        [CommandLine("-sync", CommandType.OPTION, 
+            Info = "Syncronize hitomi metadatas. This command is equivalent to -metadata + -hiddendata.")]
         public bool Sync;
-        [CommandLine("-load", CommandType.OPTION)]
+        [CommandLine("-load", CommandType.OPTION, Info = "Load metadata by metadata.json, hiddendata.json.")]
         public bool Load;
 
-        [CommandLine("-all", CommandType.OPTION)]
+        [CommandLine("-all", CommandType.OPTION, 
+            Info = "Show search list with detail informations. This commend must be used with -search.")]
         public bool ShowAllSearchList;
-        [CommandLine("-search", CommandType.ARGUMENTS)]
+        [CommandLine("-search", CommandType.ARGUMENTS, Help = "use -search <Search Content>",
+            Info = "Search on hitomi articles. The search method depends on settings algorithm.")]
         public string[] Search;
-        [CommandLine("-setsearch", CommandType.ARGUMENTS)]
+        [CommandLine("-setsearch", CommandType.ARGUMENTS, Info = "Search token include automatically in searching.")]
         public string[] SetSearchToken;
 
-        [CommandLine("-syncdate", CommandType.OPTION)]
+        [CommandLine("-syncdate", CommandType.OPTION, Info = "Synchronize hitomi article upload dates based on magic number.")]
         public bool SyncDate;
-        [CommandLine("-latest", CommandType.OPTION)]
+        [CommandLine("-latest", CommandType.OPTION, Info = "Get latest article uploaded dates.")]
         public bool Latest;
 
-        [CommandLine("-rank", CommandType.OPTION)]
+        [CommandLine("-rank", CommandType.OPTION, Info = "Show artists recommendation artist ranking list.")]
         public bool Rank;
-        [CommandLine("-taglist", CommandType.OPTION)]
+        [CommandLine("-taglist", CommandType.OPTION, Info = "Show downloaded articles tags list.")]
         public bool TagList;
     }
 

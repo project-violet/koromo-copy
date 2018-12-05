@@ -31,6 +31,11 @@ namespace Koromo_Copy.Console
         public string Option { get; private set; }
 
         /// <summary>
+        /// 해당 명령어의 사용법 정보입니다.
+        /// </summary>
+        public string Info { get; set; }
+
+        /// <summary>
         /// 인자 규칙이 맞지 않을 경우에 삽입할 기본 인자입니다.
         /// </summary>
         public bool DefaultArgument { get; set; }

@@ -14,15 +14,16 @@ using System.Linq;
 
 namespace Koromo_Copy.Console
 {
-
     public class HiyobiConsoleOption : IConsoleOption
     {
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Hitomi Number>")]
+        [CommandLine("-article", CommandType.ARGUMENTS, Help = "use -article <Hitomi Number>",
+            Info = "Download article page and parse html.")]
         public string[] Article;
-        [CommandLine("-image", CommandType.ARGUMENTS, Help = "use -image <Hitomi Number>")]
+        [CommandLine("-image", CommandType.ARGUMENTS, Help = "use -image <Hitomi Number>",
+            Info = "Download article images link list.")]
         public string[] ImageLink;
     }
 
