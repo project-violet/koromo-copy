@@ -46,7 +46,7 @@ namespace Koromo_Copy_UX3
             InitializeComponent();
 
             Instance = this;
-            InternalConsole.instances.Add("downloadspace", Instance);
+            InstanceMonitor.Instances.Add("downloadspace", Instance);
             DataContext = view_model = new DownloadDataGridViewModel();
 
             DownloadGroup.Instance.Complete += Instance_Complete;

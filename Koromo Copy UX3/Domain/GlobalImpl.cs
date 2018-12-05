@@ -45,7 +45,15 @@ namespace Koromo_Copy_UX3.Domain
                 await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                     new Action(() =>
                     {
-                        result = App.Current.Windows.OfType<Window>().ToArray();
+                        try
+                        {
+                            result = App.Current.Windows.OfType<Window>().ToArray();
+                        }
+                        catch (Exception e)
+                        {
+                            Koromo_Copy.Console.Console.Instance.WriteLine(e.Message);
+                            Koromo_Copy.Console.Console.Instance.WriteLine(e.StackTrace);
+                        }
                     }));
 
                 return result;
@@ -57,7 +65,15 @@ namespace Koromo_Copy_UX3.Domain
                 await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                     new Action(() =>
                     {
-                        result = App.Current.Windows.OfType<Window>().Where(x => x.GetType().Name == name).ElementAt(0);
+                        try
+                        {
+                            result = App.Current.Windows.OfType<Window>().Where(x => x.GetType().Name == name).ElementAt(0);
+                        }
+                        catch (Exception e)
+                        {
+                            Koromo_Copy.Console.Console.Instance.WriteLine(e.Message);
+                            Koromo_Copy.Console.Console.Instance.WriteLine(e.StackTrace);
+                        }
                     }));
 
                 return result;
