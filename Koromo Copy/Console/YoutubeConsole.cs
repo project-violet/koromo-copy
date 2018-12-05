@@ -25,7 +25,8 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-info", CommandType.ARGUMENTS, Help = "use -article <Exhentai address>")]
+        [CommandLine("-info", CommandType.ARGUMENTS, Help = "use -article <Exhentai address>",
+            Info = "Get information data")]
         public string[] Info;
     }
 

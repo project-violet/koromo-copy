@@ -25,7 +25,8 @@ namespace Koromo_Copy.Console.Utility
         public bool Help;
 
         [CommandLine("--name", CommandType.ARGUMENTS, DefaultArgument = true, 
-            Help = "--name <Utility>|<Program> : Set sepecific program to run.")]
+            Help = "--name <Utility>|<Program>", 
+            Info = "Set sepecific program to run.")]
         public string[] RunProgramName;
     }
     

@@ -19,7 +19,8 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("-i", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true)]
+        [CommandLine("-i", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true,
+            Info = "Set load file name.")]
         public string[] Input;
     }
 

@@ -20,17 +20,17 @@ namespace Koromo_Copy.Console
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
 
-        [CommandLine("--input", CommandType.ARGUMENTS, Pipe = true)]
+        [CommandLine("--input", CommandType.ARGUMENTS, Pipe = true, Info = "Set input text.")]
         public string[] Input;
 
-        [CommandLine("--p", CommandType.ARGUMENTS, DefaultArgument = true)]
+        [CommandLine("--p", CommandType.ARGUMENTS, DefaultArgument = true, Info = "Set pattern text.")]
         public string[] Pattern;
 
-        [CommandLine("-i", CommandType.OPTION)]
+        [CommandLine("-i", CommandType.OPTION, Info = "Ignore case. Case insensitive search.")]
         public bool IgnoreCase;
-        [CommandLine("-r", CommandType.OPTION)]
+        [CommandLine("-r", CommandType.OPTION, Info = "Search using regular expression.")]
         public bool UsingRegex;
-        [CommandLine("-n", CommandType.OPTION)]
+        [CommandLine("-n", CommandType.OPTION, Info = "Show line numbers on results.")]
         public bool ShowNumber;
     }
     
