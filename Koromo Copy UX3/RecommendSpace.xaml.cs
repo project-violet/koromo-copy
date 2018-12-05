@@ -9,6 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi.Analysis;
 using Koromo_Copy.Console;
+using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,7 +43,7 @@ namespace Koromo_Copy_UX3
             InitializeComponent();
 
             Instance = this;
-            InternalConsole.instances.Add("recommendspace", Instance);
+            InstanceMonitor.Instances.Add("recommendspace", Instance);
             timer.Interval = new TimeSpan(0,0,2);
             timer.Tick += Timer_Tick;
         }

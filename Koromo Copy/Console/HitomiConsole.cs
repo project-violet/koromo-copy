@@ -13,6 +13,7 @@ using Koromo_Copy.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -182,16 +183,27 @@ namespace Koromo_Copy.Console
         {
             Console.Instance.WriteLine(
                 "Hitomi Console Core\r\n" + 
-                "\r\n" +
-                " -article <Hitomi Number> : Show article info.\r\n" +
-                " -image <Hitomi Number> [-type=small | big]: Get Image Link.\r\n" +
-                " -downloadmetadata, -loadmetadata, -downloadhidden, -loadhidden, -sync, -load : Manage Metadata.\r\n" +
-                " -search <Search What> [-all] : Language Dependent metadata seraching.\r\n" +
-                " -setsearch <Place What> : Fix specific search token.\r\n" +
-                " -syncdate : Synchronize HitomiDate data.\r\n" +
-                " -rank : Show artists recommendation artist list\r\n" +
-                " -taglist : Show downloaded article's tag list"
+                "\r\n"
+                //" -article <Hitomi Number> : Show article info.\r\n" +
+                //" -image <Hitomi Number> [-type=small | big]: Get Image Link.\r\n" +
+                //" -downloadmetadata, -loadmetadata, -downloadhidden, -loadhidden, -sync, -load : Manage Metadata.\r\n" +
+                //" -search <Search What> [-all] : Language Dependent metadata seraching.\r\n" +
+                //" -setsearch <Place What> : Fix specific search token.\r\n" +
+                //" -syncdate : Synchronize HitomiDate data.\r\n" +
+                //" -rank : Show artists recommendation artist list\r\n" +
+                //" -taglist : Show downloaded article's tag list"
                 );
+
+            var builder = new StringBuilder();
+            CommandLineParser<HitomiConsoleOption>.GetFields().ToList().ForEach(
+                x =>
+                {
+                    if (!string.IsNullOrEmpty(x.Value.Item2.Help))
+                        builder.Append($" {x.Key} ({x.Value.Item2.Help}) : {x.Value.Item2.Info} [{x.Value.Item1}]\r\n");
+                    else
+                        builder.Append($" {x.Key} : {x.Value.Item2.Info} [{x.Value.Item1}]\r\n");
+                });
+            Console.Instance.WriteLine(builder.ToString());
         }
 
         /// <summary>
