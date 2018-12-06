@@ -22,7 +22,7 @@
 
     <Grid Margin="20">
         <StackPanel HorizontalAlignment="Stretch">
-            <TextBlock Text="Advanced Settings" FontSize="20" FontWeight="Thin"/>
+            <TextBlock Text="고급 설정" FontSize="20" FontWeight="Thin"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
                 <ToggleButton IsChecked="{Binding DisableSeleniumHeadless}">
@@ -35,7 +35,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  Disable selenium driver headless"/>
+                <TextBlock Text="  셀레니움 드라이버를 Headless 모드로 실행하지 않습니다"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Visibility="Collapsed">
@@ -63,7 +63,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  Wait infinity when download request"/>
+                <TextBlock Text="  다운로드 리퀘스트를 무한정 기다립니다"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
@@ -77,7 +77,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  Sensitive update check"/>
+                <TextBlock Text="  최신버전을 확인할때 Build와 Revision을 함께 확인합니다"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
@@ -91,7 +91,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  Low quality image"/>
+                <TextBlock Text="  이미지 해상도를 낮춰 메모리를 절약합니다"/>
             </StackPanel>
         </StackPanel>
     </Grid>
