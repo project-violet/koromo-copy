@@ -113,12 +113,22 @@ namespace Koromo_Copy.Console
             SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW);
             ShowWindow(Handle, SW_SHOW);
 
+            System.Console.Out.WriteLine(@" _  __                                                _____                         ");
+            System.Console.Out.WriteLine(@"| |/ /                                               / ____|                        ");
+            System.Console.Out.WriteLine(@"| ' /    ___    _ __    ___    _ __ ___     ___     | |        ___    _ __    _   _ ");
+            System.Console.Out.WriteLine(@"|  <    / _ \  | '__|  / _ \  | '_ ` _ \   / _ \    | |       / _ \  | '_ \  | | | |");
+            System.Console.Out.WriteLine(@"| . \  | (_) | | |    | (_) | | | | | | | | (_) |   | |____  | (_) | | |_) | | |_| |");
+            System.Console.Out.WriteLine(@"|_|\_\  \___/  |_|     \___/  |_| |_| |_|  \___/     \_____|  \___/  | .__/   \__, |");
+            System.Console.Out.WriteLine(@"                                                                     | |       __/ |");
+            System.Console.Out.WriteLine(@"                                                                     |_|      |___/ ");
+
             System.Console.Title = "Koromo Copy Console";
             System.Console.Out.WriteLine($"Koromo Copy {Version.Text}");
             System.Console.Out.WriteLine("Copyright (C) 2018. Koromo Copy Developer");
             System.Console.Out.WriteLine("E-Mail: koromo.software@gmail.com");
             System.Console.Out.WriteLine("Source-code : https://github.com/dc-koromo/koromo-copy");
             System.Console.Out.WriteLine("");
+
         }
 
         /// <summary>
