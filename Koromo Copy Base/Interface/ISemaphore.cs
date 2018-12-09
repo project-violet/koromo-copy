@@ -63,6 +63,16 @@ namespace Koromo_Copy.Interface
         void Abort();
 
         /// <summary>
+        /// 모든 작업을 일시중지합니다.
+        /// </summary>
+        void Preempt();
+
+        /// <summary>
+        /// 일시정지된 작업을 재개합니다.
+        /// </summary>
+        void Reactivation();
+
+        /// <summary>
         /// 다운로드 작업을 세마포어에 추가합니다.
         /// </summary>
         /// <param name="url"></param>
