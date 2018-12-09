@@ -15,7 +15,7 @@ namespace Koromo_Copy.Net
 {
     public class DownloadGroup : ILazy<DownloadGroup>
     {
-        DownloadQueue queue;
+        EmiliaQueue queue;
         int remain_contents;
         int index_count;
         int mutex_count;
@@ -58,11 +58,11 @@ namespace Koromo_Copy.Net
         List<int> download_file_count;
         List<int> file_count;
         
-        public DownloadQueue Queue { get { return queue; } }
-        
+        public EmiliaQueue Queue { get { return queue; } }
+
         public DownloadGroup()
         {
-            queue = new DownloadQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback);
+            queue = new EmiliaQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback);
             remain_contents = 0;
             index_count = 0;
             jobs = new List<Tuple<int, object, SemaphoreCallBack, DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>>();
