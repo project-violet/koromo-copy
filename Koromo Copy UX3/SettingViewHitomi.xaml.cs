@@ -55,7 +55,7 @@ namespace Koromo_Copy_UX3
 
             var ss = "";
             foreach (var s in value.ToString().Split('\\'))
-                if (s.StartsWith("{")) break;
+                if (s.Contains("{")) break;
                 else ss += s + "\\";
             if (!Directory.Exists(ss))
             {
