@@ -37,5 +37,8 @@ namespace Koromo_Copy.Net
 
         [JsonProperty]
         public int ServicePointConnectionLimit;
+
+        [JsonProperty]
+        public bool UseEmiliaQueue;
     }
 }
