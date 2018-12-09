@@ -60,7 +60,7 @@ namespace Koromo_Copy_UX3.Domain
             {
                 ProcessDC(url);
             }
-            else if (url.Contains("manazero008h.blogspot.com"))
+            else if (url.Contains("manazero009i.blogspot.com"))
             {
                 ProcessManazero(url);
             }
