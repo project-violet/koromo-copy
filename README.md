@@ -2,11 +2,11 @@
 
 `Koromo Copy`는 각종 웹 사이트의 이미지, 동영상 다운로드 및 다운로드된 파일의 관리를 도와주는 프로그램입니다.
 
-## 최신 릴리즈 (2018/12/04)
+## 최신 릴리즈 (2018/12/09)
 
-Koromo Copy 0.9.6912.21688 Alpha
+Koromo Copy 1.0.6917.21506 Alpha
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/0.9.6912.21688
+https://github.com/dc-koromo/koromo-copy/releases/tag/1.0.6917.21506
 
 ![hitomi history](Document/Images/1.png)
 
