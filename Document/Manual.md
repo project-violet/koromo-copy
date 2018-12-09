@@ -38,9 +38,19 @@
 
 `Koromo Copy`에 새로 추가된 `고급 검색`은 집합연산을 사용하는 검색 방법입니다. 가령, `artist:michiking - (male:shota lang:japanes)`를 검색하면, `michiking` 작가의 작품 중 `male:shota`태그가 없고, 일본어가 아닌 작품들을 모두 가져옵니다. 집합 연산 중 차집합 연산은 사칙연산이 아니기 때문에 다음과 같은 해석의 오류가 있을 수 있습니다. 가령, `artist:michiking - (male:shota - lang:korean)`를 검색할 때 이 검색어를  `artist:michiking - male:shota + lang:korean`와 동치로 보면 안됩니다. 정확한 해석은 `michiking` 작가의 작품 중 `male:shota` 태그가 없거나, 언어가 한국어인 작품을 가져오는 것입니다. `고급 검색`에선 `or`, `and`, `~`, `-`, `+`, `&`, `|` 토큰을 사용할 수 있습니다.
 
-## 1.2. 검색기(Finder) 사용 방법
+## 1.2. 기타 사이트 다운로더
 
-`Ctrl + F`키를 누르거나, 검색결과에서 태그 버튼을 누르면 `Finder`가 나타납니다.
+검색창에 주소를 붙여넣으면 알아서 다운로드 됩니다. 현재까지 구현된 사이트 목록은 다음과 같습니다.
+
+| 사이트 이름 | 검증 Url                    |
+| --------- | ------------------------- |
+| Pixiv     | pixiv.net                 |
+| Pinterest | pinterest.co.kr           |
+| DCInside  | gall.dcinside.com         |
+| 마나제로   | manazero009i.blogspot.com |
+| hiyobi.me | hiyobi.me                 |
+| 망가쇼미   | mangashow.me              |
+
 
 ## 1.3. 작품/작가/그룹/댓글/미리보기 창
 
@@ -110,16 +120,16 @@
 
 ## 1.6. 생성되는 모든 파일 목록
 
-| 파일 이름             | 설명                                |
+| 파일 이름                | 설명                                  |
 | -------------------- | ----------------------------------- |
-| setting.json         | 사용자 설정 파일입니다.|
-| metadata.json        | 히토미 사이트에서 다운로드한 작품 목록입니다. |
-| hiddendata.json      | 403 Forbidden 데이터 목록입니다.|
-| log.json             | 다운로드 기록을 저장하는 파일입니다.|
-| bookmark.json        | 북마크를 저장하는 파일입니다.|
-| bookmark_backup.json | 프로그램 시작시 자동으로 백업한 bookmark.json입니다.|
-| isotest.log          | 고립 태그 분석시 생성되는 결과 파일입니다.|
-| tagdata.json         | 현재 사용하지 않습니다.|
+| setting.json         | 사용자 설정 파일입니다.                       |
+| metadata.json        | 히토미 사이트에서 다운로드한 작품 목록입니다.           |
+| hiddendata.json      | 403 Forbidden 데이터 목록입니다.            |
+| log.json             | 다운로드 기록을 저장하는 파일입니다.                |
+| bookmark.json        | 북마크를 저장하는 파일입니다.                    |
+| bookmark_backup.json | 프로그램 시작시 자동으로 백업한 bookmark.json입니다. |
+| isotest.log          | 고립 태그 분석시 생성되는 결과 파일입니다.            |
+| tagdata.json         | 현재 사용하지 않습니다.                       |
 
 ## 1.x. 콘솔
 
