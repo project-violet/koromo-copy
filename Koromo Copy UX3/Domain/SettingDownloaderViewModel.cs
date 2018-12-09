@@ -51,5 +51,17 @@ namespace Koromo_Copy_UX3.Domain
                 OnPropertyChanged();
             }
         }
+
+        public bool UseEmiliaQueue
+        {
+            get { return Settings.Instance.Net.UseEmiliaQueue; }
+            set
+            {
+                if (Settings.Instance.Net.UseEmiliaQueue == value) return;
+                Settings.Instance.Net.UseEmiliaQueue = value;
+                Settings.Instance.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }
