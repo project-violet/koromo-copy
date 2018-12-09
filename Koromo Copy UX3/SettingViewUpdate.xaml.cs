@@ -139,6 +139,25 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 1.0
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.0 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - Emilia Queue 추가\r\n\r\n" +
+                    " - Instance level monitor 구현\r\n\r\n" +
+                    "[수정된 기능]\r\n" +
+                    " - Manazero 다운로드가 인식안되는 오류 수정\r\n\r\n" +
+                    " - Mangashow.me 사이트 개편에 따른 다운로더 오류 수정\r\n\r\n" +
+                    " - 경로 설정 중 \\문자 다음에 토큰이 나오지 않을때 경로 토큰으로 인식되지 않던 오류 수정\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 0.9
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements
