@@ -23,7 +23,7 @@ namespace Koromo_Copy.Component.Mangashow
         {
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
-            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes("//div[@class='slot ']");
+            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes("//div[@class='slot ' or @class='slot display-none']");
 
             List<MangashowmeArticle> articles = new List<MangashowmeArticle>();
 
