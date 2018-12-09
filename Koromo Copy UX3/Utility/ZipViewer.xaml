@@ -1,0 +1,17 @@
+﻿<Window x:Class="Koromo_Copy_UX3.Utility.ZipViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
+        xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
+        mc:Ignorable="d"
+        Title="Zip Viewer - Koromo Copy" Height="751" Width="1280"  Drop="ImagePanel_Drop" AllowDrop="True">
+    <Grid>
+        <Image x:Name="WaterMark" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" RenderOptions.BitmapScalingMode="Fant" Stretch="Uniform" MaxHeight="400"/>
+        <controls:WheelSpeedScrollViewer>
+
+            <local:PackPanel x:Name="ImagePanel"/>
+        </controls:WheelSpeedScrollViewer>
+    </Grid>
+</Window>

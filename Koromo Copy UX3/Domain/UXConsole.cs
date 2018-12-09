@@ -9,6 +9,7 @@
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy_UX3.Controls;
+using Koromo_Copy_UX3.Utility;
 using System.Windows;
 
 namespace Koromo_Copy_UX3.Domain
@@ -140,6 +141,17 @@ namespace Koromo_Copy_UX3.Domain
                         carw.Show();
                     }));
                     break;
+
+                case "zip_viewer":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        ZipViewer zv = new ZipViewer();
+                        zv.Show();
+                    }));
+                    break;
+
 
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
