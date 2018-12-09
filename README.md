@@ -4,7 +4,7 @@
 
 ## 최신 릴리즈 (2018/12/09)
 
-Koromo Copy 1.0.6917.21506 Alpha
+Koromo Copy 1.0.6917.21506 Beta
 
 https://github.com/dc-koromo/koromo-copy/releases/tag/1.0.6917.21506
 

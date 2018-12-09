@@ -48,7 +48,7 @@
 | Pinterest | pinterest.co.kr           |
 | DCInside  | gall.dcinside.com         |
 | 마나제로   | manazero009i.blogspot.com |
-| hiyobi.me | hiyobi.me                 |
+| Hiyobi | hiyobi.me                 |
 | 망가쇼미   | mangashow.me              |
 
 
