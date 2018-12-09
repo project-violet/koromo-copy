@@ -16,6 +16,6 @@ namespace Koromo_Copy.Component.Mangashow
 {
     public class MangashowmeCommon
     {
-        public static string GetDownloadMangaImageAddress(string x) => $"https://mangashow.me/viewer.php?chapter_id={x}";
+        public static string GetDownloadMangaImageAddress(string x) => $"https://mangashow.me/bbs/board.php?bo_table=msm_manga&wr_id={x}";
     }
 }

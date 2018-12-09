@@ -23,7 +23,7 @@ namespace Koromo_Copy.Component.Mangashow
         {
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
-            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes("//div[@class='slot']");
+            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes("//div[@class='slot ']");
 
             List<MangashowmeArticle> articles = new List<MangashowmeArticle>();
 
@@ -32,7 +32,7 @@ namespace Koromo_Copy.Component.Mangashow
                 articles.Add(new MangashowmeArticle
                 {
                     Title = node.SelectSingleNode(".//div[@class='title']").InnerText.Split('\n').Last(),
-                    ArticleLink = node.GetAttributeValue("data-chapter", ""),
+                    ArticleLink = node.GetAttributeValue("data-wrid", ""),
                 });
             }
 
@@ -48,7 +48,7 @@ namespace Koromo_Copy.Component.Mangashow
         {
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
-            return document.DocumentNode.SelectNodes("//img[@class='manga_img']").Select(x => x.GetAttributeValue("src", "")).ToList();
+            return document.DocumentNode.SelectNodes("//div[@class='view-content scroll-viewer']//img").Select(x => x.GetAttributeValue("src", "")).ToList();
         }
     }
 }
