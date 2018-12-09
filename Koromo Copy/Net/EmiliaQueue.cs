@@ -171,7 +171,7 @@ namespace Koromo_Copy.Net
         private void remote_download_thread_handler(object i)
         {
             int index = (int)i;
-            Monitor.Instance.Push($"[Emilia Queue] Starts download thread [{i}]");
+            //Monitor.Instance.Push($"[Emilia Queue] Starts download thread [{i}]");
             while (true)
             {
                 interrupt[index].WaitOne();
@@ -187,7 +187,7 @@ namespace Koromo_Copy.Net
                     }
                     else
                     {
-                        Monitor.Instance.Push($"[Emilia Queue] Suspends download thread [{i}]");
+                        //Monitor.Instance.Push($"[Emilia Queue] Suspends download thread [{i}]");
                         interrupt[index].Reset();
                         continue;
                     }
