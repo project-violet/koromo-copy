@@ -78,6 +78,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -232,6 +233,13 @@
     </Compile>
     <Compile Include="Tools\Statistics.xaml.cs">
       <DependentUpon>Statistics.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\PackPanel.cs" />
+    <Compile Include="Utility\ZipViewer.xaml.cs">
+      <DependentUpon>ZipViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\ZipViewerElements.xaml.cs">
+      <DependentUpon>ZipViewerElements.xaml</DependentUpon>
     </Compile>
     <Page Include="ArticleInfoWindow.xaml">
       <SubType>Designer</SubType>
@@ -394,6 +402,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tools\Statistics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipViewerElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

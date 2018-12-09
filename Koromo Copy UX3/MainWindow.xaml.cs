@@ -11,6 +11,7 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy_UX3.Domain;
+using Koromo_Copy_UX3.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -166,6 +167,10 @@ namespace Koromo_Copy_UX3
             else if (e.Key == Key.F && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 (new FinderWindow()).Show();
+            }
+            else if (e.Key == Key.E && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                (new ZipViewer()).Show();
             }
         }
 
