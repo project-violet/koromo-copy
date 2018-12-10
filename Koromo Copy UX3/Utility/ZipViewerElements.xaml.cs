@@ -50,14 +50,26 @@ namespace Koromo_Copy_UX3.Utility
                 try
                 {
                     var zipFile = ZipFile.Open(zip_file_name, ZipArchiveMode.Read);
-
-                    var model = JsonConvert.DeserializeObject<HitomiJsonModel>(new StreamReader(zipFile.GetEntry("Info.json").Open()).ReadToEnd());
-                    Application.Current.Dispatcher.BeginInvoke(new Action(
-                    delegate
+                    
+                    try
                     {
-                        Title.Text = model.Title;
-                        Artist.Text = model.Artists[0];
-                    }));
+                        var model = JsonConvert.DeserializeObject<HitomiJsonModel>(new StreamReader(zipFile.GetEntry("Info.json").Open()).ReadToEnd());
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            Title.Text = model.Title;
+                            Artist.Text = model.Artists[0] ?? "";
+                        }));
+                    }
+                    catch (Exception ex)
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            Title.Text = Path.GetFileNameWithoutExtension(zip_file_name);
+                            Artist.Visibility = Visibility.Collapsed;
+                        }));
+                    }
 
                     var zipEntry = !zipFile.Entries[0].Name.EndsWith(".json") ? zipFile.Entries[0] : zipFile.Entries[1];
                     var zipStream = zipEntry.Open();
