@@ -8,7 +8,7 @@
         Title="CommentWindow" Height="427" Width="733" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>
         <ScrollViewer>
-            <StackPanel x:Name="Comments"/>
+            <StackPanel x:Name="Comments" HorizontalAlignment="Stretch"/>
         </ScrollViewer>
     </Grid>
 </Window>
