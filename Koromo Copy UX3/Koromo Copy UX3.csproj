@@ -234,7 +234,11 @@
     <Compile Include="Tools\Statistics.xaml.cs">
       <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ArrangePanel.cs" />
     <Compile Include="Utility\PackPanel.cs" />
+    <Compile Include="Utility\SeriesManager.xaml.cs">
+      <DependentUpon>SeriesManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ZipViewer.xaml.cs">
       <DependentUpon>ZipViewer.xaml</DependentUpon>
     </Compile>
@@ -402,6 +406,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tools\Statistics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\SeriesManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -11,7 +11,7 @@
         <Image x:Name="WaterMark" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" RenderOptions.BitmapScalingMode="Fant" Stretch="Uniform" MaxHeight="400"/>
         <controls:WheelSpeedScrollViewer>
 
-            <local:PackPanel x:Name="ImagePanel"/>
+            <local:ArrangePanel x:Name="ImagePanel"/>
         </controls:WheelSpeedScrollViewer>
     </Grid>
 </Window>
