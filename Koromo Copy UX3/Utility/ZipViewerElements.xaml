@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" MaxWidth="250" Padding="5" MouseDoubleClick="UserControl_MouseDoubleClick">
+             d:DesignHeight="300" d:DesignWidth="300" MaxWidth="250" MinWidth="250" MinHeight="300" Padding="5" MouseDoubleClick="UserControl_MouseDoubleClick">
 
     <UserControl.Resources>
         <ResourceDictionary>
