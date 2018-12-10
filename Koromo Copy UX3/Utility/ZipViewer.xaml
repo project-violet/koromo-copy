@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
-        Title="Zip Viewer - Koromo Copy" Height="751" Width="1280"  Drop="ImagePanel_Drop" AllowDrop="True">
+        Title="Zip Viewer - Koromo Copy" Height="751" Width="1303"  Drop="ImagePanel_Drop" AllowDrop="True">
     <Grid>
         <Image x:Name="WaterMark" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" RenderOptions.BitmapScalingMode="Fant" Stretch="Uniform" MaxHeight="400"/>
         <controls:WheelSpeedScrollViewer>

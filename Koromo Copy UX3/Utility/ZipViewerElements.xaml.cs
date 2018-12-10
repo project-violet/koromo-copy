@@ -45,43 +45,44 @@ namespace Koromo_Copy_UX3.Utility
 
         private void ZipViewerElements_Loaded(object sender, RoutedEventArgs e)
         {
-            try
+            Task.Run(() =>
             {
-                var zipFile = ZipFile.Open(zip_file_name, ZipArchiveMode.Read);
-                var zipEntry = !zipFile.Entries[0].Name.EndsWith(".json") ? zipFile.Entries[0] : zipFile.Entries[1];
-                var zipStream = zipEntry.Open();
+                try
+                {
+                    var zipFile = ZipFile.Open(zip_file_name, ZipArchiveMode.Read);
 
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.DecodePixelWidth = 250;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.StreamSource = zipStream;
-                bitmap.EndInit();
-                bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
+                    var model = JsonConvert.DeserializeObject<HitomiJsonModel>(new StreamReader(zipFile.GetEntry("Info.json").Open()).ReadToEnd());
+                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                    delegate
+                    {
+                        Title.Text = model.Title;
+                        Artist.Text = model.Artists[0];
+                    }));
 
-                Image.Source = bitmap;
-            }
-            catch
-            {
-            }
+                    var zipEntry = !zipFile.Entries[0].Name.EndsWith(".json") ? zipFile.Entries[0] : zipFile.Entries[1];
+                    var zipStream = zipEntry.Open();
+
+                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                    delegate
+                    {
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.DecodePixelWidth = 250;
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = zipStream;
+                        bitmap.EndInit();
+
+                        Image.Source = bitmap;
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Instance.Push(ex.Message);
+                    Monitor.Instance.Push(ex.StackTrace);
+                }
+            });
         }
-
-        private void Bitmap_DownloadCompleted(object sender, EventArgs e)
-        {
-            try
-            {
-                var zipFile = ZipFile.Open(zip_file_name, ZipArchiveMode.Read);
-                var model = JsonConvert.DeserializeObject<HitomiJsonModel>(new StreamReader(zipFile.GetEntry("Info.json").Open()).ReadToEnd());
-                Title.Text = model.Title;
-                Artist.Text = model.Artists[0];
-            }
-            catch (Exception ex)
-            {
-                Monitor.Instance.Push(ex.Message);
-                Monitor.Instance.Push(ex.StackTrace);
-            }
-        }
-
+        
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Process.Start(zip_file_name);
