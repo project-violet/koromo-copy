@@ -191,6 +191,8 @@ internal --call console.Write "asdf"
 
 `Net/DownloadQueue.cs` 코드가 파일다운로드를 총괄하는 클래스입니다. 이 클래스는 지정된 개수의 태스크를 생성해 다운로드를 진행합니다. 다운로드 큐는 일시적인 선점이 가능합니다. 선점 기능을 이용하면 일시적으로 모든 바이트블록 갱신을 멈추고 재활성화될 때까지 기다립니다.
 
+`Net/EmiliaQueue.cs` 코드는 `DownloadQueue`와는 달리 `Thread`를 사용하여 구현한 클래스입니다. 사용방법은 `DownloadQueue`와 동일합니다.
+
 `Net/DownloadGroup.cs`는 일괄 다운로드 클래스입니다. `Net/DownloadQueue.cs`를 이용하여 구현되었습니다. 이 클래스를 이용하면 여러 파일을 그룹화하여 다운로드시킬 수 있습니다.
 
 ## 고급 검색 (Advanced Search)
