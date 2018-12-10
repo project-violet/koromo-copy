@@ -21,6 +21,7 @@ namespace Koromo_Copy.Component.Hitomi
     {
         public static Tuple<string, DateTime>[] date_data =
         {
+            new Tuple<string, DateTime> ("1327007", new DateTime(636800286600000000)),
             new Tuple<string, DateTime> ("1321257", new DateTime(636790276200000000)),
             new Tuple<string, DateTime> ("1318876", new DateTime(636786394200000000)),
             new Tuple<string, DateTime> ("1317006", new DateTime(636782575800000000)),
