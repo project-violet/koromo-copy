@@ -78,6 +78,7 @@
     <Compile Include="Component\Mangashow\MangashowmeCommon.cs" />
     <Compile Include="Component\Mangashow\MangashowmeParser.cs" />
     <Compile Include="Component\Pinterest\PinSetting.cs" />
+    <Compile Include="Component\SeriesLog.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Component\Hitomi\HitomiDataSearchAdvanced.cs" />
     <Compile Include="Component\Hitomi\HitomiDate.cs" />
