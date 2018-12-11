@@ -93,7 +93,7 @@ namespace Koromo_Copy.Component.Hiyobi
 
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
-            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes(@"//main[@class=""container""]/a[@target=""_blank""]");
+            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes(@"//main[@class=""container""]//a[@target=""_blank""]");
 
             foreach (var node in nodes)
             {
