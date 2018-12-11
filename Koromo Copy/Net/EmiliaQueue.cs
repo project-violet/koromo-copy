@@ -64,9 +64,9 @@ namespace Koromo_Copy.Net
 
             for (int i = 0; i < capacity; i++)
             {
+                interrupt.Add(new ManualResetEvent(false));
                 threads.Add(new Thread(new ParameterizedThreadStart(remote_download_thread_handler)));
                 threads.Last().Start(i);
-                interrupt.Add(new ManualResetEvent(false));
             }
         }
 
