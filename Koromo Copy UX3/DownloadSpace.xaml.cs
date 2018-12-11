@@ -106,7 +106,7 @@ namespace Koromo_Copy_UX3
                 view_model.Items.Remove(view_model.Items.Where(x => x.경로 == e.Item2).ToList()[0]);
             }));
             
-            Monitor.Instance.Push("[Complete File] " + e.Item2);
+            Monitor.Instance.Push("[Complete File] " + e.Item2 + " " + e.Item1);
         }
 
         object log_lock = new object();
