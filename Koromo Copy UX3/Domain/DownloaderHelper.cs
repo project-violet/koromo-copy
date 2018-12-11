@@ -297,7 +297,7 @@ namespace Koromo_Copy_UX3.Domain
 
                         count += article.ImagesLink.Count;
                         DownloadSpace.Instance.RequestDownload($"hiyobi-nonh: {article.Title}",
-                            article.ImagesLink.ToArray(),
+                            article.ImagesLink.Select(x => x.StartsWith("http://") || x.StartsWith("https://") ? x : $"https://aa.hiyobi.me/data_m/{article.Magic}/{x}").ToArray(),
                             article.ImagesLink.Select(x => Path.Combine(dir, HttpUtility.UrlDecode(HttpUtility.UrlDecode(x.Split('/').Last())))).ToArray(),
                             se,
                             dir + '\\',
