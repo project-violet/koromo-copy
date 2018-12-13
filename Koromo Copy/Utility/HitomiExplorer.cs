@@ -13,6 +13,8 @@ using Koromo_Copy.Fs;
 using Koromo_Copy.Fs.FileIcon;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -49,6 +51,7 @@ namespace Koromo_Copy.Utility
         private void HitomiExplorer_Load(object sender, EventArgs e)
         {
             ColumnSorter.InitListView(AvailableList);
+            ColumnSorter.InitListView(listView1);
 
             string[] splits = Settings.Instance.Hitomi.Path.Split('\\');
             string path = "";
@@ -124,6 +127,7 @@ namespace Koromo_Copy.Utility
 
         List<Tuple<string, string, HitomiMetadata?>> metadatas = new List<Tuple<string, string, HitomiMetadata?>>();
         List<KeyValuePair<string, int>> artist_rank;
+        Dictionary<string, int> artist_rank_dic;
         int visit_count = 0;
         int available_count = 0;
 
@@ -193,6 +197,22 @@ namespace Koromo_Copy.Utility
 
             artist_rank = artist_count.ToList();
             artist_rank.Sort((a, b) => b.Value.CompareTo(a.Value));
+
+            artist_rank_dic = new Dictionary<string, int>();
+
+            lvil.Clear();
+            for (int i = 0; i < artist_rank.Count; i++)
+            {
+                lvil.Add(new ListViewItem(new string[]
+                {
+                    (i+1).ToString(),
+                    artist_rank[i].Key,
+                    artist_rank[i].Value.ToString()
+                }));
+                artist_rank_dic.Add(artist_rank[i].Key, i);
+            }
+            lvArtistPriority.Items.Clear();
+            lvArtistPriority.Items.AddRange(lvil.ToArray());
         }
 
         private void RecursiveVisit(TreeNode node, List<Regex> regex)
@@ -218,5 +238,249 @@ namespace Koromo_Copy.Utility
 
         #endregion
 
+        #region 재배치 도구
+
+        private string MakeDownloadDirectory(string source, string artists, HitomiMetadata metadata, string extension)
+        {
+            string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            string title = metadata.Name ?? "";
+            string type = metadata.Type ?? "";
+            string series = "";
+            //if (HitomiSetting.Instance.GetModel().ReplaceArtistsWithTitle)
+            //{
+            //    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            //    artists = textInfo.ToTitleCase(artists);
+            //}
+            if (metadata.Parodies != null) series = metadata.Parodies[0];
+            if (title != null)
+                foreach (char c in invalid) title = title.Replace(c.ToString(), "");
+            if (artists != null)
+                foreach (char c in invalid) artists = artists.Replace(c.ToString(), "");
+            if (series != null)
+                foreach (char c in invalid) series = series.Replace(c.ToString(), "");
+            if (artists.StartsWith("group:"))
+                artists = artists.Substring("group:".Length);
+
+            string path = source;
+            path = Regex.Replace(path, "{Title}", title, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Artists}", artists, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Id}", metadata.ID.ToString(), RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Type}", type, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Date}", DateTime.Now.ToString(), RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Series}", series, RegexOptions.IgnoreCase);
+            path += extension;
+            return path;
+        }
+
+        private List<Tuple<string, string>> GetResult(string source, bool rename = false)
+        {
+            List<Tuple<string, string>> result = new List<Tuple<string, string>>();
+
+            foreach (var md in metadatas)
+            {
+                if (!md.Item3.HasValue) continue;
+                string extension = Path.GetExtension(md.Item1);
+                string dir = rename ? Path.GetDirectoryName(md.Item1) + '\\' : "";
+                if (md.Item3.Value.Artists == null && md.Item3.Value.Groups == null)
+                {
+                    result.Add(new Tuple<string, string>(md.Item1, dir + MakeDownloadDirectory(source, "", md.Item3.Value, extension)));
+                    continue;
+                }
+
+                List<string> artist_group = new List<string>();
+                if (md.Item3.Value.Artists != null)
+                    foreach (var artist in md.Item3.Value.Artists)
+                        artist_group.Add(artist);
+                else if (md.Item3.Value.Groups != null)
+                    foreach (var group in md.Item3.Value.Groups)
+                        artist_group.Add(group);
+                //if (tgAEG.Checked == true && md.Item3.Value.Groups != null)
+                //    foreach (var group in md.Item3.Value.Groups)
+                //        artist_group.Add("group:" + group);
+
+                int top_rank = 0;
+                //if (md.Item3.Value.Artists != null)
+                //{
+                //    for (int i = 1; i < artist_group.Count; i++)
+                //    {
+                //        if (artist_rank_dic[artist_group[top_rank]] > artist_rank_dic[artist_group[i]])
+                //            top_rank = i;
+                //    }
+                //}
+
+                result.Add(new Tuple<string, string>(md.Item1, dir + MakeDownloadDirectory(source, artist_group[top_rank], md.Item3.Value, extension)));
+            }
+            return result;
+        }
+
+        private void bReplaceTest_Click(object sender, EventArgs e)
+        {
+            var result = GetResult(tbDownloadPath.Text);
+            List<ListViewItem> lvil = new List<ListViewItem>();
+            HashSet<string> overlapping_check = new HashSet<string>();
+            for (int i = 0; i < result.Count; i++)
+            {
+                bool err = false;
+                string err_msg = "Already exists";
+                if (File.Exists(result[i].Item2)) err = true;
+                else if (Directory.Exists(result[i].Item2)) err = true;
+                if (overlapping_check.Contains(result[i].Item2)) { err = true; err_msg = "Overlapping"; }
+                else overlapping_check.Add(result[i].Item2);
+                lvil.Add(new ListViewItem(new string[]
+                {
+                    (i+1).ToString(),
+                    result[i].Item1,
+                    result[i].Item2,
+                    (err ? err_msg : "")
+                }));
+                if (err)
+                {
+                    lvil[i].BackColor = Color.Orange;
+                    lvil[i].ForeColor = Color.White;
+                }
+            }
+            lvReplacerTestResult.Items.Clear();
+            lvReplacerTestResult.Items.AddRange(lvil.ToArray());
+        }
+
+        private void bMove_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("이 과정은 되돌릴 수 없습니다. 계속하시겠습니까?", "Hitomi Copy Article Replacer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                return;
+
+            var result = GetResult(tbDownloadPath.Text);
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                try
+                {
+                    string src = Path.Combine(indexor.RootDirectory, result[i].Item1);
+                    string dest = result[i].Item2;
+                    string dir = Path.GetDirectoryName(result[i].Item2);
+                    Directory.CreateDirectory(dir);
+                    if (File.Exists(src))
+                        File.Move(src, dest);
+                    else
+                        Directory.Move(src, dest);
+                    Monitor.Instance.Push($"[Replacer] Move '{src}' => '{dest}'");
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Instance.Push($"[Replacer] Error occurred! {Path.Combine(indexor.RootDirectory, result[i].Item1)} => {result[i].Item2}");
+                    Monitor.Instance.Push(ex);
+                }
+            }
+        }
+
+        #endregion
+
+        #region 이름 바꾸기 도구
+
+        private void bRenameTest_Click(object sender, EventArgs e)
+        {
+            var result = GetResult(tbRenameRule.Text, true);
+            List<ListViewItem> lvil = new List<ListViewItem>();
+            HashSet<string> overlapping_check = new HashSet<string>();
+            for (int i = 0; i < result.Count; i++)
+            {
+                bool err = false;
+                string err_msg = "Alread exists";
+                string dest = Path.Combine(indexor.RootDirectory, result[i].Item2);
+                if (File.Exists(dest)) err = true;
+                else if (Directory.Exists(dest)) err = true;
+                if (overlapping_check.Contains(dest)) { err = true; err_msg = "Overlapping"; }
+                else overlapping_check.Add(dest);
+                lvil.Add(new ListViewItem(new string[]
+                {
+                    (i+1).ToString(),
+                    result[i].Item1,
+                    result[i].Item2,
+                    (err ? err_msg : "")
+                }));
+                if (err)
+                {
+                    lvil[i].BackColor = Color.Orange;
+                    lvil[i].ForeColor = Color.White;
+                }
+            }
+            lvRenamerTestResult.Items.Clear();
+            lvRenamerTestResult.Items.AddRange(lvil.ToArray());
+        }
+
+        private void bRename_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("이 과정은 되돌릴 수 없습니다. 계속하시겠습니까?", "Hitomi Copy Article Renamer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                return;
+
+            var result = GetResult(tbRenameRule.Text, true);
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                try
+                {
+                    string src = Path.Combine(indexor.RootDirectory, result[i].Item1);
+                    string dest = Path.Combine(indexor.RootDirectory, result[i].Item2);
+                    string dir = Path.GetDirectoryName(result[i].Item2);
+                    Directory.CreateDirectory(dir);
+                    if (File.Exists(src))
+                        File.Move(src, dest);
+                    else
+                        Directory.Move(src, dest);
+                    Monitor.Instance.Push($"[Renamer] Move '{src}' => '{dest}'");
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Instance.Push($"[Renamer] Error occurred! {Path.Combine(indexor.RootDirectory, result[i].Item1)} => {result[i].Item2}");
+                    Monitor.Instance.Push(ex);
+                }
+            }
+        }
+
+        #endregion
+
+        #region 로그 매칭 도구
+
+        private void bExtract_Click(object sender, EventArgs e)
+        {
+            Dictionary<int, HitomiMetadata?> map = new Dictionary<int, HitomiMetadata?>();
+            
+            foreach (var tuple in metadatas)
+            {
+                int key = Convert.ToInt32(tuple.Item2);
+                if (!map.ContainsKey(key))
+                    map.Add(key, tuple.Item3);
+                else
+                {
+                }
+            }
+            
+            List<ListViewItem> lvil = new List<ListViewItem>();
+            int i = 0;
+            foreach (var h in HitomiLog.Instance.DownloadTable)
+            {
+                if (!map.ContainsKey(h))
+                {
+                    var md = HitomiDataAnalysis.GetMetadataFromMagic(h.ToString());
+                    List<string> artists = new List<string>();
+                    if (md.HasValue)
+                    {
+                        if (md.Value.Artists != null)
+                            md.Value.Artists.ToList().ForEach(x => artists.Add(x));
+                    }
+
+                    lvil.Add(new ListViewItem(new string[]
+                    {
+                            (i+1).ToString(),
+                            h.ToString(),
+                            string.Join(",", artists)
+                    }));
+                    i++;
+                }
+            }
+            listView1.Items.Clear();
+            listView1.Items.AddRange(lvil.ToArray());
+        }
+
+        #endregion
     }
 }
