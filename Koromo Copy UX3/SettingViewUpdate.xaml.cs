@@ -139,6 +139,22 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 1.1
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.0 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - Zip Viewer 기능 추가 (Ctrl + E 로 실행 가능)\r\n\r\n" +
+                    "[수정된 기능]\r\n" +
+                    " - Emilia Queue 활성화된 상태에서 프로그램실행시 간헐적으로 발생하는 오류 수정\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.0
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements

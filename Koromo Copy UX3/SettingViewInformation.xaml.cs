@@ -151,7 +151,7 @@ namespace Koromo_Copy_UX3
 
         long download_size = 0;
         long status_size = 0;
-        int load_count = 0;
+        volatile int load_count = 0;
         int complete_count = 0;
 
         private void WaitThread()

@@ -134,7 +134,7 @@ namespace Koromo_Copy_UX3
             init = true;
             Task.Run(() =>
             {
-                HitomiArticle ha = Article as HitomiArticle;
+                HitomiArticle ha = Article;
                 ha.Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
                     $"{HitomiCommon.HitomiGalleryBlock}{ha.Magic}.html")).Thumbnail;
                 ha.ImagesLink = HitomiParser.GetImageLink(Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic)));
