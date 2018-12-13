@@ -41,6 +41,8 @@ namespace Koromo_Copy.Component.Hitomi
         List<HitomiLogModel> model;
         HashSet<int> downloaded = new HashSet<int>();
 
+        public HashSet<int> DownloadTable { get { return downloaded; } }
+
         public HitomiLog()
         {
             if (File.Exists(log_path)) model = JsonConvert.DeserializeObject<List<HitomiLogModel>>(File.ReadAllText(log_path));
