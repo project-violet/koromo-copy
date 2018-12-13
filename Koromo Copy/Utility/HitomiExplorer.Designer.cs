@@ -33,6 +33,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.PathTree = new Koromo_Copy.Controls.NativeTreeView();
             this.metroLabel4 = new System.Windows.Forms.Label();
             this.AvailableList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -49,6 +50,10 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader18 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader20 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.bExtract = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -78,11 +83,6 @@
             this.tbRenameRule = new System.Windows.Forms.TextBox();
             this.bRename = new System.Windows.Forms.Button();
             this.bRenameTest = new System.Windows.Forms.Button();
-            this.PathTree = new Koromo_Copy.Controls.NativeTreeView();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader18 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader20 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -160,6 +160,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(1094, 371);
             this.splitContainer1.SplitterDistance = 318;
             this.splitContainer1.TabIndex = 16;
+            // 
+            // PathTree
+            // 
+            this.PathTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PathTree.Location = new System.Drawing.Point(3, 22);
+            this.PathTree.Name = "PathTree";
+            this.PathTree.ShowLines = false;
+            this.PathTree.Size = new System.Drawing.Size(312, 346);
+            this.PathTree.TabIndex = 15;
             // 
             // metroLabel4
             // 
@@ -312,6 +323,40 @@
             this.tabPage3.Text = "로그에는 있으나 실제로 다운로드되지 않은 작품";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // listView1
+            // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader16,
+            this.columnHeader18,
+            this.columnHeader20});
+            this.listView1.FullRowSelect = true;
+            this.listView1.GridLines = true;
+            this.listView1.Location = new System.Drawing.Point(134, 65);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(888, 348);
+            this.listView1.TabIndex = 14;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
+            // 
+            // columnHeader16
+            // 
+            this.columnHeader16.Text = "인덱스";
+            this.columnHeader16.Width = 78;
+            // 
+            // columnHeader18
+            // 
+            this.columnHeader18.Text = "Magic";
+            this.columnHeader18.Width = 137;
+            // 
+            // columnHeader20
+            // 
+            this.columnHeader20.Text = "작가";
+            this.columnHeader20.Width = 619;
+            // 
             // bExtract
             // 
             this.bExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -344,7 +389,7 @@
             this.groupBox1.Controls.Add(this.lvArtistPriority);
             this.groupBox1.Location = new System.Drawing.Point(33, 165);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1064, 254);
+            this.groupBox1.Size = new System.Drawing.Size(1064, 256);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "시험 결과";
@@ -363,7 +408,7 @@
             this.lvReplacerTestResult.GridLines = true;
             this.lvReplacerTestResult.Location = new System.Drawing.Point(275, 22);
             this.lvReplacerTestResult.Name = "lvReplacerTestResult";
-            this.lvReplacerTestResult.Size = new System.Drawing.Size(783, 226);
+            this.lvReplacerTestResult.Size = new System.Drawing.Size(783, 228);
             this.lvReplacerTestResult.TabIndex = 1;
             this.lvReplacerTestResult.UseCompatibleStateImageBehavior = false;
             this.lvReplacerTestResult.View = System.Windows.Forms.View.Details;
@@ -399,7 +444,7 @@
             this.lvArtistPriority.GridLines = true;
             this.lvArtistPriority.Location = new System.Drawing.Point(6, 22);
             this.lvArtistPriority.Name = "lvArtistPriority";
-            this.lvArtistPriority.Size = new System.Drawing.Size(263, 226);
+            this.lvArtistPriority.Size = new System.Drawing.Size(263, 228);
             this.lvArtistPriority.TabIndex = 0;
             this.lvArtistPriority.UseCompatibleStateImageBehavior = false;
             this.lvArtistPriority.View = System.Windows.Forms.View.Details;
@@ -498,7 +543,7 @@
             this.groupBox2.Controls.Add(this.bRenameTest);
             this.groupBox2.Location = new System.Drawing.Point(30, 39);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1064, 373);
+            this.groupBox2.Size = new System.Drawing.Size(1064, 375);
             this.groupBox2.TabIndex = 24;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "이름 바꾸기 규칙";
@@ -520,7 +565,7 @@
             this.groupBox4.Controls.Add(this.lvRenamerTestResult);
             this.groupBox4.Location = new System.Drawing.Point(132, 108);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(802, 259);
+            this.groupBox4.Size = new System.Drawing.Size(802, 261);
             this.groupBox4.TabIndex = 23;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "시험 결과";
@@ -539,7 +584,7 @@
             this.lvRenamerTestResult.GridLines = true;
             this.lvRenamerTestResult.Location = new System.Drawing.Point(6, 22);
             this.lvRenamerTestResult.Name = "lvRenamerTestResult";
-            this.lvRenamerTestResult.Size = new System.Drawing.Size(790, 231);
+            this.lvRenamerTestResult.Size = new System.Drawing.Size(790, 233);
             this.lvRenamerTestResult.TabIndex = 22;
             this.lvRenamerTestResult.UseCompatibleStateImageBehavior = false;
             this.lvRenamerTestResult.View = System.Windows.Forms.View.Details;
@@ -595,50 +640,6 @@
             this.bRenameTest.Text = "이름 바꾸기 시험";
             this.bRenameTest.UseVisualStyleBackColor = true;
             this.bRenameTest.Click += new System.EventHandler(this.bRenameTest_Click);
-            // 
-            // PathTree
-            // 
-            this.PathTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PathTree.Location = new System.Drawing.Point(3, 22);
-            this.PathTree.Name = "PathTree";
-            this.PathTree.ShowLines = false;
-            this.PathTree.Size = new System.Drawing.Size(312, 346);
-            this.PathTree.TabIndex = 15;
-            // 
-            // listView1
-            // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader16,
-            this.columnHeader18,
-            this.columnHeader20});
-            this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(134, 65);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(888, 346);
-            this.listView1.TabIndex = 14;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader16
-            // 
-            this.columnHeader16.Text = "인덱스";
-            this.columnHeader16.Width = 78;
-            // 
-            // columnHeader18
-            // 
-            this.columnHeader18.Text = "Magic";
-            this.columnHeader18.Width = 137;
-            // 
-            // columnHeader20
-            // 
-            this.columnHeader20.Text = "작가";
-            this.columnHeader20.Width = 619;
             // 
             // HitomiExplorer
             // 

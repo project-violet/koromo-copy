@@ -38,6 +38,14 @@ namespace Koromo_Copy_UX3.Domain
                         x();
                     }));
             };
+            Global.ShowArtistView = (string x) =>
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    new Action(() =>
+                    {
+                        (new ArtistViewerWindow(x)).Show();
+                    }));
+            };
             InternalConsole.get_windows = async () =>
             {
                 object[] result = null;

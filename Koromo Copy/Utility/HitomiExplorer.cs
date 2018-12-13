@@ -481,6 +481,18 @@ namespace Koromo_Copy.Utility
             listView1.Items.AddRange(lvil.ToArray());
         }
 
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 0)
+            {
+                string artist = listView1.SelectedItems[0].SubItems[2].Text.Split(',')[0].Trim();
+
+                if (!string.IsNullOrEmpty(artist))
+                    Global.ShowArtistView(artist);
+            }
+        }
+
         #endregion
+
     }
 }

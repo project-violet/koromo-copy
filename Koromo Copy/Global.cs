@@ -18,5 +18,7 @@ namespace Koromo_Copy
     {
         public static Action<Action> UXInvoke;
         public static Func<Action,Task> UXWaitInvoke;
+
+        public static Action<string> ShowArtistView;
     }
 }
