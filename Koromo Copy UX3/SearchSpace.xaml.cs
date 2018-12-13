@@ -108,8 +108,11 @@ namespace Koromo_Copy_UX3
                 TotalProgress.Value = 0;
                 IsMetadataLoaded = true;
                 Storyboard sb = TotalProgress.FindResource("FadeProgressStoryboard") as Storyboard;
-                sb.Completed += Sb_Completed;
-                if (sb != null) { BeginStoryboard(sb); }
+                if (sb != null)
+                {
+                    sb.Completed += Sb_Completed;
+                    BeginStoryboard(sb);
+                }
                 RecommendSpace.Instance.Update();
                 if (Koromo_Copy.Version.RequireTidy(System.Reflection.Assembly.GetExecutingAssembly().Location))
                 {

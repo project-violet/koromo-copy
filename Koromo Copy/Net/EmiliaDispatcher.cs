@@ -168,7 +168,7 @@ namespace Koromo_Copy.Net
     /// <summary>
     /// 단일 시리즈에 대한 다운로드관리를 지원하는 다운로드 큐 관리자 입니다.
     /// </summary>
-    public class EmiliaDispatcher : ILazy<DownloadGroup>
+    public class EmiliaDispatcher
     {
         ISemaphore queue;
         int mutex_count;
@@ -188,10 +188,15 @@ namespace Koromo_Copy.Net
             {
                 queue = new EmiliaQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback);
             }
+
+            series_dictionary = new Dictionary<int, EmiliaSeriesSegment>();
+            dispatcher_dictionary = new Dictionary<int, DispatchInformation>();
+            check_dictionary = new Dictionary<int, List<bool[]>>();
         }
 
         Dictionary<int, EmiliaSeriesSegment> series_dictionary;
         Dictionary<int, DispatchInformation> dispatcher_dictionary;
+        Dictionary<int, List<bool[]>> check_dictionary;
 
         #region Global Event
 
@@ -234,14 +239,28 @@ namespace Koromo_Copy.Net
 
         private void downloadSizeCallback(string uri, long size, object obj)
         {
+            var file_seg = (EmiliaFileSegment)obj;
+            if (DownloadSize != null)
+                DownloadSize.Invoke(null, file_seg);
         }
 
         private void downloadStatusCallback(string uri, int size, object obj)
         {
+            var file_seg = (EmiliaFileSegment)obj;
+            if (DownloadStatus != null)
+                DownloadStatus.Invoke(null, new EmilieFileStatusSegment
+                {
+                    ArticleIndex = file_seg.ArticleIndex,
+                    DownloadSize = size,
+                    Index = file_seg.Index
+                });
         }
 
         private void downloadRetryCallback(string uri, object obj)
         {
+            var file_seg = (EmiliaFileSegment)obj;
+            if (DownloadRetry != null)
+                DownloadRetry.Invoke(null, file_seg);
         }
 
         private void downloadCallback(string url, string filename, object obj)
@@ -293,6 +312,11 @@ namespace Koromo_Copy.Net
             {
                 series_dictionary.Add(series.Index, series);
                 dispatcher_dictionary.Add(series.Index, dispatcher);
+
+                var check_list = new List<bool[]>();
+                for (int i = 0; i < series.Articles.Count; i++)
+                    check_list.Add(new bool[series.Articles[i].Files.Count]);
+                check_dictionary.Add(series.Index, check_list);
             }
 
             lock (add_lock)
