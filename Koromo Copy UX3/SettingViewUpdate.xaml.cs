@@ -145,7 +145,7 @@ namespace Koromo_Copy_UX3
             {
                 DataContext = new PatchNoteViewModel
                 {
-                    Version = "Koromo Copy 1.0 Beta",
+                    Version = "Koromo Copy 1.1 Beta",
                     Content =
                     "[추가된 기능]\r\n" +
                     " - Zip Viewer 기능 추가 (Ctrl + E 로 실행 가능)\r\n\r\n" +
