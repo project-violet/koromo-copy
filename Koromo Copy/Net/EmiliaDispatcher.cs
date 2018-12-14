@@ -33,6 +33,11 @@ namespace Koromo_Copy.Net
         public int ArticleIndex;
 
         /// <summary>
+        /// 파일이 속한 시리즈의 고유번호입니다.
+        /// </summary>
+        public int SeriesIndex;
+
+        /// <summary>
         /// 다운로드 Url입니다.
         /// </summary>
         public string Url;
@@ -53,7 +58,7 @@ namespace Koromo_Copy.Net
         public long Size;
     }
 
-    public class EmilieFileStatusSegment
+    public class EmiliaFileStatusSegment
     {
         /// <summary>
         /// 다운로드할 파일의 고유번호입니다.
@@ -137,32 +142,32 @@ namespace Koromo_Copy.Net
         /// <summary>
         /// 다운로드할 파일의 사이즈를 얻었을 때 발생합니다.
         /// </summary>
-        public event EventHandler<EmiliaFileSegment> DownloadSize;
+        public Action<EmiliaFileSegment> DownloadSize;
 
         /// <summary>
         /// 다운로드한 바이트 수를 알립니다.
         /// </summary>
-        public event EventHandler<EmilieFileStatusSegment> DownloadStatus;
+        public Action<EmiliaFileStatusSegment> DownloadStatus;
 
         /// <summary>
         /// 재시도한 파일을 알립니다.
         /// </summary>
-        public event EventHandler<EmiliaFileSegment> DownloadRetry;
+        public Action<EmiliaFileSegment> DownloadRetry;
 
         /// <summary>
         /// 어떤 파일의 다운로드가 끝났을때 발생합니다.
         /// </summary>
-        public event EventHandler<EmiliaFileSegment> CompleteFile;
+        public Action<EmiliaFileSegment> CompleteFile;
 
         /// <summary>
         /// 어떤 아티클의 다운로드가 끝났을때 발생합니다.
         /// </summary>
-        public event EventHandler<EmiliaArticleSegment> CompleteArticle;
+        public Action<EmiliaArticleSegment> CompleteArticle;
 
         /// <summary>
         /// 시리즈 다운로드가 끝났을때 발생합니다.
         /// </summary>
-        public event EventHandler CompleteSeries;
+        public Action CompleteSeries;
     }
 
     /// <summary>
@@ -171,10 +176,20 @@ namespace Koromo_Copy.Net
     public class EmiliaDispatcher
     {
         ISemaphore queue;
+
+        /// <summary>
+        /// 선점 연속 요청 횟수
+        /// </summary>
         int mutex_count;
+
+        /// <summary>
+        /// 남은 다운로드할 파일 수
+        /// </summary>
+        int remain_contents;
 
         object add_lock = new object();
         object job_lock = new object();
+        object complete_lock = new object();
 
         public ISemaphore Queue { get { return queue; } }
 
@@ -192,11 +207,14 @@ namespace Koromo_Copy.Net
             series_dictionary = new Dictionary<int, EmiliaSeriesSegment>();
             dispatcher_dictionary = new Dictionary<int, DispatchInformation>();
             check_dictionary = new Dictionary<int, List<bool[]>>();
+            downloaded_count_dictionary = new Dictionary<int, int[]>();
         }
 
         Dictionary<int, EmiliaSeriesSegment> series_dictionary;
         Dictionary<int, DispatchInformation> dispatcher_dictionary;
         Dictionary<int, List<bool[]>> check_dictionary;
+        Dictionary<int, int[]> downloaded_count_dictionary;
+        Dictionary<int, int> downloaded_articles_count_dictionary;
 
         #region Global Event
 
@@ -208,7 +226,7 @@ namespace Koromo_Copy.Net
         /// <summary>
         /// 다운로드한 바이트 수를 알립니다.
         /// </summary>
-        public event EventHandler<EmilieFileStatusSegment> DownloadStatus;
+        public event EventHandler<EmiliaFileStatusSegment> DownloadStatus;
 
         /// <summary>
         /// 재시도한 파일을 알립니다.
@@ -240,31 +258,62 @@ namespace Koromo_Copy.Net
         private void downloadSizeCallback(string uri, long size, object obj)
         {
             var file_seg = (EmiliaFileSegment)obj;
-            if (DownloadSize != null)
-                DownloadSize.Invoke(null, file_seg);
+            DownloadSize?.Invoke(null, file_seg);
+            dispatcher_dictionary[file_seg.SeriesIndex].DownloadSize.Invoke(file_seg);
         }
 
         private void downloadStatusCallback(string uri, int size, object obj)
         {
             var file_seg = (EmiliaFileSegment)obj;
-            if (DownloadStatus != null)
-                DownloadStatus.Invoke(null, new EmilieFileStatusSegment
-                {
-                    ArticleIndex = file_seg.ArticleIndex,
-                    DownloadSize = size,
-                    Index = file_seg.Index
-                });
+            var status_seg = new EmiliaFileStatusSegment
+            {
+                ArticleIndex = file_seg.ArticleIndex,
+                DownloadSize = size,
+                Index = file_seg.Index
+            };
+            DownloadStatus?.Invoke(null, status_seg);
+            dispatcher_dictionary[file_seg.SeriesIndex].DownloadStatus.Invoke(status_seg);
         }
 
         private void downloadRetryCallback(string uri, object obj)
         {
             var file_seg = (EmiliaFileSegment)obj;
-            if (DownloadRetry != null)
-                DownloadRetry.Invoke(null, file_seg);
+            DownloadRetry?.Invoke(null, file_seg);
+            dispatcher_dictionary[file_seg.SeriesIndex].DownloadRetry.Invoke(file_seg);
         }
 
         private void downloadCallback(string url, string filename, object obj)
         {
+            var file_seg = (EmiliaFileSegment)obj;
+            CompleteFile?.Invoke(null, file_seg);
+
+            lock (complete_lock)
+            {
+                int article_status = downloaded_count_dictionary[file_seg.SeriesIndex][file_seg.ArticleIndex] += 1;
+                check_dictionary[file_seg.SeriesIndex][file_seg.ArticleIndex][file_seg.Index] = true;
+
+                // 아티클 다운로드 완료
+                if (article_status == series_dictionary[file_seg.SeriesIndex].Articles[file_seg.ArticleIndex].Files.Count)
+                {
+                    int series_status = downloaded_articles_count_dictionary[file_seg.SeriesIndex] += 1;
+                    dispatcher_dictionary[file_seg.SeriesIndex].CompleteArticle.Invoke(series_dictionary[file_seg.SeriesIndex].Articles[file_seg.ArticleIndex]);
+                    CompleteArticle?.Invoke(null, series_dictionary[file_seg.SeriesIndex].Articles[file_seg.ArticleIndex]);
+
+                    // 시리즈 다운로드 완료
+                    if (series_status == series_dictionary[file_seg.SeriesIndex].Articles.Count)
+                    {
+                        dispatcher_dictionary[file_seg.SeriesIndex].CompleteSeries();
+                        CompleteSeries?.Invoke(null, series_dictionary[file_seg.SeriesIndex]);
+                    }
+                }
+            }
+            
+            lock (add_lock)
+            {
+                remain_contents--;
+                if (remain_contents == 0 && DownloadComplete != null)
+                    DownloadComplete.Invoke(null, null);
+            }
         }
 
         /// <summary>
@@ -317,6 +366,9 @@ namespace Koromo_Copy.Net
                 for (int i = 0; i < series.Articles.Count; i++)
                     check_list.Add(new bool[series.Articles[i].Files.Count]);
                 check_dictionary.Add(series.Index, check_list);
+
+                downloaded_count_dictionary.Add(series.Index, new int[series.Articles.Count]);
+                downloaded_articles_count_dictionary.Add(series.Index, 0);
             }
 
             lock (add_lock)
@@ -324,6 +376,7 @@ namespace Koromo_Copy.Net
                 foreach (var article in series.Articles)
                 {
                     var article_folder = Path.Combine(series.Path, article.FolderName);
+                    remain_contents += article.Files.Count;
                     foreach (var file in article.Files)
                     {
                         var file_path = Path.Combine(article_folder, file.FileName);

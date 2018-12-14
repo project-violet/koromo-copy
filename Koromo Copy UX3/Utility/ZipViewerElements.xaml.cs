@@ -58,7 +58,7 @@ namespace Koromo_Copy_UX3.Utility
                         delegate
                         {
                             Title.Text = model.Title;
-                            Artist.Text = model.Artists[0] ?? "";
+                            Artist.Text = model.Artists != null ? model.Artists[0] : "";
                         }));
                     }
                     catch (Exception ex)

@@ -113,6 +113,7 @@ namespace Koromo_Copy.Fs
             }
             catch (Exception ex)
             {
+                lock (error_list)
                 error_list.Add(new Tuple<string, string>(path, ex.ToString()));
                 Monitor.Instance.Push($"{path} {ex.Message}");
             }

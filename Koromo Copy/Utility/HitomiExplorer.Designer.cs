@@ -83,6 +83,7 @@
             this.tbRenameRule = new System.Windows.Forms.TextBox();
             this.bRename = new System.Windows.Forms.Button();
             this.bRenameTest = new System.Windows.Forms.Button();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -305,6 +306,7 @@
             this.tabControl2.Controls.Add(this.tabPage3);
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage5);
+            this.tabControl2.Controls.Add(this.tabPage6);
             this.tabControl2.Location = new System.Drawing.Point(6, 6);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -336,7 +338,7 @@
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(134, 65);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(888, 348);
+            this.listView1.Size = new System.Drawing.Size(888, 350);
             this.listView1.TabIndex = 14;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -389,7 +391,7 @@
             this.groupBox1.Controls.Add(this.lvArtistPriority);
             this.groupBox1.Location = new System.Drawing.Point(33, 165);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1064, 256);
+            this.groupBox1.Size = new System.Drawing.Size(1064, 258);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "시험 결과";
@@ -408,7 +410,7 @@
             this.lvReplacerTestResult.GridLines = true;
             this.lvReplacerTestResult.Location = new System.Drawing.Point(275, 22);
             this.lvReplacerTestResult.Name = "lvReplacerTestResult";
-            this.lvReplacerTestResult.Size = new System.Drawing.Size(783, 228);
+            this.lvReplacerTestResult.Size = new System.Drawing.Size(783, 230);
             this.lvReplacerTestResult.TabIndex = 1;
             this.lvReplacerTestResult.UseCompatibleStateImageBehavior = false;
             this.lvReplacerTestResult.View = System.Windows.Forms.View.Details;
@@ -444,7 +446,7 @@
             this.lvArtistPriority.GridLines = true;
             this.lvArtistPriority.Location = new System.Drawing.Point(6, 22);
             this.lvArtistPriority.Name = "lvArtistPriority";
-            this.lvArtistPriority.Size = new System.Drawing.Size(263, 228);
+            this.lvArtistPriority.Size = new System.Drawing.Size(263, 230);
             this.lvArtistPriority.TabIndex = 0;
             this.lvArtistPriority.UseCompatibleStateImageBehavior = false;
             this.lvArtistPriority.View = System.Windows.Forms.View.Details;
@@ -543,7 +545,7 @@
             this.groupBox2.Controls.Add(this.bRenameTest);
             this.groupBox2.Location = new System.Drawing.Point(30, 39);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1064, 375);
+            this.groupBox2.Size = new System.Drawing.Size(1064, 377);
             this.groupBox2.TabIndex = 24;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "이름 바꾸기 규칙";
@@ -565,7 +567,7 @@
             this.groupBox4.Controls.Add(this.lvRenamerTestResult);
             this.groupBox4.Location = new System.Drawing.Point(132, 108);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(802, 261);
+            this.groupBox4.Size = new System.Drawing.Size(802, 263);
             this.groupBox4.TabIndex = 23;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "시험 결과";
@@ -584,7 +586,7 @@
             this.lvRenamerTestResult.GridLines = true;
             this.lvRenamerTestResult.Location = new System.Drawing.Point(6, 22);
             this.lvRenamerTestResult.Name = "lvRenamerTestResult";
-            this.lvRenamerTestResult.Size = new System.Drawing.Size(790, 233);
+            this.lvRenamerTestResult.Size = new System.Drawing.Size(790, 235);
             this.lvRenamerTestResult.TabIndex = 22;
             this.lvRenamerTestResult.UseCompatibleStateImageBehavior = false;
             this.lvRenamerTestResult.View = System.Windows.Forms.View.Details;
@@ -640,6 +642,16 @@
             this.bRenameTest.Text = "이름 바꾸기 시험";
             this.bRenameTest.UseVisualStyleBackColor = true;
             this.bRenameTest.Click += new System.EventHandler(this.bRenameTest_Click);
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Location = new System.Drawing.Point(4, 24);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(1130, 459);
+            this.tabPage6.TabIndex = 3;
+            this.tabPage6.Text = "작품별 마지막 다운로드 날짜";
+            this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // HitomiExplorer
             // 
@@ -737,5 +749,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader16;
         private System.Windows.Forms.ColumnHeader columnHeader18;
         private System.Windows.Forms.ColumnHeader columnHeader20;
+        private System.Windows.Forms.TabPage tabPage6;
     }
 }
