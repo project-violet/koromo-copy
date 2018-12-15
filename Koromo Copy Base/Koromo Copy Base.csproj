@@ -45,6 +45,7 @@
     <Compile Include="Interface\IArticle.cs" />
     <Compile Include="Interface\IConsole.cs" />
     <Compile Include="Interface\ILazy.cs" />
+    <Compile Include="Interface\IManager.cs" />
     <Compile Include="Interface\ISemaphore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
