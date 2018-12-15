@@ -57,7 +57,7 @@ namespace Koromo_Copy.Interface
     /// <summary>
     /// 하나의 사이트를 총괄하는 인터페이스입니다.
     /// </summary>
-    public interface IManager<T> where T : IArticle
+    public interface IManager
     {
         ManagerType Type { get; }
         ManagerEngineType EngineType { get; }
@@ -86,7 +86,7 @@ namespace Koromo_Copy.Interface
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>
-        ISeries<T> ParseSeries(string html);
+        ISeries ParseSeries(string html);
         
         /// <summary>
         /// 가장 기본적인 아티클 정보를 가져옵니다.
@@ -94,6 +94,13 @@ namespace Koromo_Copy.Interface
         /// <param name="html"></param>
         /// <returns></returns>
         IArticle ParseArticle(string html);
+
+        /// <summary>
+        /// 가장 기본적인 아티클 정보를 가져옵니다.
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        void ParseArticle(string html, ref IArticle article);
 
         /// <summary>
         /// 다운로드할 파일들이 저장될 이름을 가져옵니다. 확장자도 같이 포함해야합니다.
