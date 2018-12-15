@@ -22,6 +22,13 @@ namespace Koromo_Copy_UX3.Utility
         public SeriesManager()
         {
             InitializeComponent();
+
+            Loaded += SeriesManager_Loaded;
+        }
+
+        private void SeriesManager_Loaded(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

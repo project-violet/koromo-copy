@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="SeriesManager" Height="508.831" Width="425">
     <Grid>
-
+        <StackPanel x:Name="SeriesPanel"/>
     </Grid>
 </Window>
