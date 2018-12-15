@@ -239,6 +239,9 @@
     <Compile Include="Utility\SeriesManager.xaml.cs">
       <DependentUpon>SeriesManager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\SeriesManagerElements.xaml.cs">
+      <DependentUpon>SeriesManagerElements.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ZipViewer.xaml.cs">
       <DependentUpon>ZipViewer.xaml</DependentUpon>
     </Compile>
@@ -410,6 +413,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\SeriesManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\SeriesManagerElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
