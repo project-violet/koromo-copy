@@ -7,7 +7,9 @@
 ***/
 
 using Koromo_Copy.Component;
+using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Interface;
+using Koromo_Copy.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,7 @@ namespace Koromo_Copy_UX3.Utility
     {
         string url;
         SeriesInfo series_info;
+        IManager manager;
 
         public SeriesManagerElements(string url)
         {
@@ -46,6 +49,23 @@ namespace Koromo_Copy_UX3.Utility
             Task.Run(() =>
             {
                 series_info = new SeriesInfo(url);
+                manager = MangashowmeManager.Instance;
+
+                ISeries article = manager.ParseSeries(NetCommon.DownloadString(url));
+
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(article.Thumbnail);
+                    //bitmap.DecodePixelWidth = 250;
+                    //bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+                    Image.Source = bitmap;
+
+                    Title.Text = article.Title;
+                }));
             });
         }
         

@@ -25,7 +25,7 @@ namespace Koromo_Copy.Component.Mangashow
         public List<IArticle> Articles { get; set; }
     }
 
-    public class MangashowmeManager : IManager
+    public class MangashowmeManager : ILazy<MangashowmeManager>, IManager
     {
         public ManagerType Type => ManagerType.SingleSeriesMultipleArticles;
         public ManagerEngineType EngineType => ManagerEngineType.None;

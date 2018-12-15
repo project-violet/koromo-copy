@@ -28,7 +28,7 @@ namespace Koromo_Copy_UX3.Utility
 
         private void SeriesManager_Loaded(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            SeriesPanel.Children.Add(new SeriesManagerElements("https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%EC%84%B8%EA%B3%84+%EC%A2%85%EC%96%B8%EC%9D%98+%EC%84%B8%EA%B3%84%EB%A1%9D"));
         }
     }
 }
