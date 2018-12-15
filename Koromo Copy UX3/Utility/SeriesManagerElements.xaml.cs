@@ -1,4 +1,14 @@
-﻿using System;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Component;
+using Koromo_Copy.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +30,30 @@ namespace Koromo_Copy_UX3.Utility
     /// </summary>
     public partial class SeriesManagerElements : UserControl
     {
-        public SeriesManagerElements()
+        string url;
+        SeriesInfo series_info;
+
+        public SeriesManagerElements(string url)
         {
             InitializeComponent();
+
+            this.url = url;
+            Loaded += SeriesManagerElements_Loaded;
         }
 
+        private void SeriesManagerElements_Loaded(object sender, RoutedEventArgs e)
+        {
+            Task.Run(() =>
+            {
+                series_info = new SeriesInfo(url);
+            });
+        }
+        
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {
-
+            ImageToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Relative;
+            ImageToolTip.HorizontalOffset = e.GetPosition((IInputElement)sender).X + 10;
+            ImageToolTip.VerticalOffset = e.GetPosition((IInputElement)sender).Y;
         }
     }
 }
