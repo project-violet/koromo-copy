@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
+        xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
+        xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
         Title="SeriesManager" Height="508.831" Width="425">
     <Grid>
-        <StackPanel x:Name="SeriesPanel"/>
+        <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+            <StackPanel x:Name="SeriesPanel" Background="#121212"/>
+        </controls:WheelSpeedScrollViewer>
     </Grid>
 </Window>
