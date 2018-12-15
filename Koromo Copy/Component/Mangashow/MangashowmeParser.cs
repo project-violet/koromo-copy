@@ -44,6 +44,13 @@ namespace Koromo_Copy.Component.Mangashow
             return Regex.Match(html, @"class=""red"">(.*?)<").Groups[1].Value;
         }
 
+        public static string ParseThumbnail(string html)
+        {
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(html);
+            return document.DocumentNode.SelectSingleNode("//div[@class='manga-thumbnail']").GetAttributeValue("style", "").Split('(')[1].Split(')')[0];
+        }
+
         public static List<string> ParseImages(string html)
         {
             HtmlDocument document = new HtmlDocument();
