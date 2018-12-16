@@ -6,11 +6,26 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
         xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="SeriesManager" Height="508.831" Width="653">
+        Title="시리즈 매니져" Height="508.831" Width="653">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Purple.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid>
         <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
             <StackPanel x:Name="SeriesPanel" Background="#121212"/>
         </controls:WheelSpeedScrollViewer>
+
+        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Click="Button_Click" Margin="0 0 30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <materialDesign:PackIcon x:Name="PauseButtonIcon" Kind="Pause" Height="24" Width="24"/>
+        </Button>
     </Grid>
 </Window>
