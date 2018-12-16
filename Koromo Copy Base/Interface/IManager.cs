@@ -96,11 +96,11 @@ namespace Koromo_Copy.Interface
         IArticle ParseArticle(string html);
 
         /// <summary>
-        /// 가장 기본적인 아티클 정보를 가져옵니다.
+        /// 이미지 정보를 가져옵니다.
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>
-        void ParseArticle(string html, ref IArticle article);
+        List<string> ParseImages(string html, IArticle article);
 
         /// <summary>
         /// 다운로드할 파일들이 저장될 이름을 가져옵니다. 확장자도 같이 포함해야합니다.

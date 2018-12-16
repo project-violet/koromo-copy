@@ -173,7 +173,7 @@ namespace Koromo_Copy.Net
     /// <summary>
     /// 단일 시리즈에 대한 다운로드관리를 지원하는 다운로드 큐 관리자 입니다.
     /// </summary>
-    public class EmiliaDispatcher
+    public class EmiliaDispatcher : ILazy<EmiliaDispatcher>
     {
         ISemaphore queue;
 

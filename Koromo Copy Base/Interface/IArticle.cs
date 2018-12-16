@@ -17,6 +17,7 @@ namespace Koromo_Copy.Interface
     {
         string Thumbnail { get; set; }
         string Title { get; set; }
+        string Archive { get; set; }
         List<string> ImagesLink { get; set; }
     }
 
