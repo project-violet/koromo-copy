@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -53,6 +54,7 @@ namespace Koromo_Copy_UX3.Utility
         private void LoadFolder(string path)
         {
             var list = Directory.GetFiles(path).ToList();
+            list.Sort((x, y) => SortAlgorithm.ComparePath(x, y));
             ImagePanel.Children.Clear();
             list.ForEach(x => {
                 if (x.EndsWith(".zip"))
