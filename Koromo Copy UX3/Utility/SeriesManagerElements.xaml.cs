@@ -307,12 +307,20 @@ namespace Koromo_Copy_UX3.Utility
                         download_folder = series_seg.Path = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title));
 
                         List<EmiliaArticleSegment> article_segs = new List<EmiliaArticleSegment>();
+                        HashSet<string> folder_names = new HashSet<string>();
+                        int ov = 0;
                         for (int i = 0; i < series.Articles.Count; i++)
                         {
                             EmiliaArticleSegment article_seg = new EmiliaArticleSegment();
                             article_seg.Index = i;
                             article_seg.Name = series.Articles[i].Title;
-                            article_seg.FolderName = DeleteInvalid(series.Articles[i].Title).Trim();
+
+                            string folder_name = DeleteInvalid(series.Articles[i].Title).Trim();
+                            if (!folder_names.Contains(folder_name))
+                                article_seg.FolderName = DeleteInvalid(series.Articles[i].Title).Trim();
+                            else
+                                article_seg.FolderName = DeleteInvalid(series.Articles[i].Title).Trim() + $" [OV{++ov}]";
+                            folder_names.Add(article_seg.FolderName);
                             article_seg.SereisIndex = series_seg.Index;
 
                             Directory.CreateDirectory(Path.Combine(series_seg.Path, article_seg.FolderName));
@@ -507,9 +515,17 @@ namespace Koromo_Copy_UX3.Utility
                 address = address.Remove(address.Length - 1);
             if (File.Exists($"{address}.zip"))
                 File.Delete($"{address}.zip");
-            ZipFile.CreateFromDirectory(address, $"{address}.zip");
-            Directory.Delete(address, true);
-            Monitor.Instance.Push("[Zip End] " + address);
+
+            try
+            {
+                ZipFile.CreateFromDirectory(address, $"{address}.zip");
+                Directory.Delete(address, true);
+                Monitor.Instance.Push("[Zip End] " + address);
+            }
+            catch
+            {
+                Monitor.Instance.Push("[Zip Error] " + address);
+            }
             MainWindow.Instance.ZipCountDown();
 
             int v = System.Threading.Interlocked.Decrement(ref zip_count);

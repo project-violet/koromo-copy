@@ -204,6 +204,7 @@ namespace Koromo_Copy.Net
                 if (retry_count > Settings.Instance.Net.RetryCount)
                 {
                     Monitor.Instance.Push($"[Many Retry] {uri} is auto deleted in download queue.");
+                    lock (callback) callback(uri, fileName, obj);
                     return;
                 }
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
