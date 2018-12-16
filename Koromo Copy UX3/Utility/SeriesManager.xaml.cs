@@ -59,26 +59,14 @@ namespace Koromo_Copy_UX3.Utility
 
         private void SeriesManager_Loaded(object sender, RoutedEventArgs e)
         {
+            SeriesCount.Text = $"시리즈 {SeriesLog.Instance.Model.Count}개";
+            ArticleCount.Text = $"작품 {SeriesLog.Instance.Model.Select(x => x.Archive.Length).Sum()}개";
             foreach (var log in SeriesLog.Instance.Model)
             {
                 SeriesPanel.Children.Insert(0, new SeriesManagerElements(log));
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (PauseButtonIcon.Kind == MaterialDesignThemes.Wpf.PackIconKind.Pause)
-            {
-                EmiliaDispatcher.Instance.Preempt();
-                PauseButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
-            }
-            else
-            {
-                EmiliaDispatcher.Instance.Reactivation();
-                PauseButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
-            }
-        }
-
+        
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
             DownloadIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0x9A, 0x9A));
@@ -116,6 +104,22 @@ namespace Koromo_Copy_UX3.Utility
                 {
                     SeriesPanel.Children.Insert(0, new SeriesManagerElements(DownloadText.Text));
                 }
+            }
+        }
+
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (PauseButtonIcon.Kind == MaterialDesignThemes.Wpf.PackIconKind.Pause)
+            {
+                EmiliaDispatcher.Instance.Preempt();
+                PauseButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
+                PauseButton.Text = "다시 실행";
+            }
+            else
+            {
+                EmiliaDispatcher.Instance.Reactivation();
+                PauseButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
+                PauseButton.Text = "일시정지";
             }
         }
     }
