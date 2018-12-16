@@ -8,12 +8,13 @@
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="시리즈 매니져" Height="542.831" Width="644">
+        Title="시리즈 매니져" Height="542.831" Width="1038">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -53,14 +54,76 @@
         </Grid>
 
         <Grid Grid.Row="1" Background="#121212">
-            
-            <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
-                <StackPanel x:Name="SeriesPanel" MaxWidth="800"/>
-            </controls:WheelSpeedScrollViewer>
 
-            <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Click="Button_Click" Margin="0 0 30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="LightGray">
-                <materialDesign:PackIcon x:Name="PauseButtonIcon" Kind="Pause" Height="24" Width="24"/>
-            </Button>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Width="200" Background="#1C1C1C">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <ListBox x:Name="FunctionList" Grid.Row="0" Background="#1C1C1C" BorderBrush="#1C1C1C" Foreground="#E2E2E2" materialDesign:ColorZoneAssist.Mode="Light">
+                    <ListBox.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ListBox.Resources>
+
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="House" Height="24" Width="24" Margin="10 0 0 0"/>
+                        <TextBlock Text="홈" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Sync" Height="24" Width="24" Margin="10 0 0 0"/>
+                        <TextBlock Text="모두 동기화" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Separator/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Images" Height="24" Width="24" Margin="10 0 0 0"/>
+                        <TextBlock x:Name="SeriesCount" Text="시리즈 0개" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Image" Height="24" Width="24" Margin="10 0 0 0"/>
+                        <TextBlock x:Name="ArticleCount" Text="작품 0개" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Separator/>
+
+                    <ListBoxItem MouseDown="StackPanel_MouseDown" PreviewMouseDown="StackPanel_MouseDown">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon x:Name="PauseButtonIcon" Kind="Pause" Height="24" Width="24" Margin="10 0 0 0"/>
+                            <TextBlock x:Name="PauseButton" Text="일시정지" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ListBoxItem>
+
+                </ListBox>
+
+                <Grid Grid.Row="1" >
+                    <StackPanel Margin="10 0 0 10" VerticalAlignment="Bottom" >
+                        <TextBlock Text="이 프로그램은 Koromo Copy의 일부입니다." VerticalAlignment="Bottom" Foreground="#AAAAAA" Margin="0 0 10 10" FontSize="12" TextWrapping="Wrap"/>
+
+                        <TextBlock Text="© 2018 Koromo Copy" Foreground="#6F6B6B"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+                    <StackPanel x:Name="SeriesPanel" MaxWidth="800"/>
+                </controls:WheelSpeedScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
