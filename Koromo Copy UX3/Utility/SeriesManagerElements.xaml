@@ -52,7 +52,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock x:Name="Title" Grid.Row="0" Margin="0 10 0 0" Text="Title" FontSize="20" FontWeight="Medium" Foreground="White" TextWrapping="WrapWithOverflow"/>
@@ -63,6 +63,8 @@
                 <TextBlock x:Name="InnerSitesCount" Grid.Row="1" Text="InnerSites" FontSize="13" Foreground="#AAAAAA"/>
                 <TextBlock Text="•" Foreground="#AAAAAA" FontSize="13" Margin="2 0 2 0"/>
                 <TextBlock x:Name="LatestSyncDate" Grid.Row="1" Text="LatestSyncDate" FontSize="13" Foreground="#AAAAAA"/>
+                <TextBlock Text="•" Foreground="#AAAAAA" FontSize="13" Margin="2 0 2 0"/>
+                <TextBlock x:Name="DownloadState" Grid.Row="1" Text="DownloadState" FontSize="13" Foreground="#AAAAAA"/>
             </WrapPanel>
 
             <WrapPanel x:Name="CollectStatusPanel" Orientation="Horizontal" Grid.Row="2" Margin="0 10 0 0">
@@ -90,7 +92,12 @@
                 </WrapPanel.Resources>
                 <ProgressBar x:Name="Progress" IsIndeterminate="False" Value="0" Height="20" Width="150" Style="{StaticResource AnimationStyle}"/>
                 <TextBlock x:Name="ProgressStatus" Text="[0/20]" Margin="5 0 0 0" FontSize="13" Foreground="White"/>
+                <TextBlock x:Name="ProgressSize" Text="" Margin="5 0 0 0" FontSize="13" Foreground="White"/>
             </WrapPanel>
+
+            <Grid x:Name="ErrorMessageGrid"  Grid.Row="3" Margin="0 5 0 0" Visibility="Collapsed">
+                <TextBlock x:Name="ErrorMessage" Text="" Margin="5 0 0 0" FontSize="13" Foreground="White"/>
+            </Grid>
 
         </Grid>
     </Grid>
