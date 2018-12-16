@@ -7,7 +7,7 @@
         xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
-        Title="SeriesManager" Height="508.831" Width="425">
+        Title="SeriesManager" Height="508.831" Width="653">
     <Grid>
         <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
             <StackPanel x:Name="SeriesPanel" Background="#121212"/>

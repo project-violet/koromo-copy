@@ -88,7 +88,7 @@
                         </Style.Triggers>
                     </Style>
                 </WrapPanel.Resources>
-                <ProgressBar x:Name="Progress" IsIndeterminate="False" Value="20" Height="20" Width="150" Style="{StaticResource AnimationStyle}"/>
+                <ProgressBar x:Name="Progress" IsIndeterminate="False" Value="0" Height="20" Width="150" Style="{StaticResource AnimationStyle}"/>
                 <TextBlock x:Name="ProgressStatus" Text="[0/20]" Margin="5 0 0 0" FontSize="13" Foreground="White"/>
             </WrapPanel>
 

@@ -208,6 +208,8 @@ namespace Koromo_Copy.Net
             dispatcher_dictionary = new Dictionary<int, DispatchInformation>();
             check_dictionary = new Dictionary<int, List<bool[]>>();
             downloaded_count_dictionary = new Dictionary<int, int[]>();
+            downloaded_articles_count_dictionary = new Dictionary<int, int>();
+            series_count = -1;
         }
 
         Dictionary<int, EmiliaSeriesSegment> series_dictionary;
@@ -215,6 +217,17 @@ namespace Koromo_Copy.Net
         Dictionary<int, List<bool[]>> check_dictionary;
         Dictionary<int, int[]> downloaded_count_dictionary;
         Dictionary<int, int> downloaded_articles_count_dictionary;
+
+        int series_count;
+
+        /// <summary>
+        /// 시리즈들을 구별할 수 있는 인덱스를 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public int GetSeriesIndex()
+        {
+            return Interlocked.Increment(ref series_count);
+        }
 
         #region Global Event
 
@@ -286,6 +299,7 @@ namespace Koromo_Copy.Net
         {
             var file_seg = (EmiliaFileSegment)obj;
             CompleteFile?.Invoke(null, file_seg);
+            dispatcher_dictionary[file_seg.SeriesIndex].CompleteFile.Invoke(file_seg);
 
             lock (complete_lock)
             {
