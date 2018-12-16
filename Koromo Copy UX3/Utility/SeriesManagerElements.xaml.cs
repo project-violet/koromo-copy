@@ -97,7 +97,7 @@ namespace Koromo_Copy_UX3.Utility
                         Image.Source = bitmap;
                     }
 
-                    Task.Run(() => Sync());
+                    Task.Run(() => PrepareSync());
                 }));
             });
         }
@@ -623,6 +623,12 @@ namespace Koromo_Copy_UX3.Utility
 
                 SeriesLog.Instance.Add(series_log);
                 SeriesLog.Instance.Save();
+
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    SyncButton.IsEnabled = false;
+                }));
             }
         }
 
@@ -674,7 +680,7 @@ namespace Koromo_Copy_UX3.Utility
 
             if (button.Tag.ToString() == "Sync")
             {
-
+                Task.Run(() => Sync());
             }
             else if (button.Tag.ToString() == "Detail")
             {
@@ -695,7 +701,7 @@ namespace Koromo_Copy_UX3.Utility
             Popup.Visibility = Visibility.Collapsed;
         }
 
-        private void Sync()
+        private void PrepareSync()
         {
             string top_html = "";
             string inner_counts = "";
@@ -755,6 +761,32 @@ namespace Koromo_Copy_UX3.Utility
                     SyncPanel.Visibility = Visibility.Collapsed;
                 }));
             }
+        }
+
+        private void Sync()
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                RequireSyncPanel.Visibility = Visibility.Collapsed;
+            }));
+            List<string> archive = series.Archive.ToList();
+            List<IArticle> articles = series.Articles;
+            for (int j = 0; j < series_log.Archive.Length; j++)
+            {
+                for (int i = 0; i < archive.Count; i++)
+                {
+                    if (archive[i] == series_log.Archive[j])
+                    {
+                        archive.RemoveAt(i);
+                        articles.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+            series.Archive = archive.ToArray();
+            series.Articles = articles;
+            StartFirstDownloads();
         }
     }
 }

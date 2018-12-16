@@ -54,7 +54,7 @@ namespace Koromo_Copy_UX3.Utility
 
         private void SeriesManager_Closed(object sender, EventArgs e)
         {
-            EmiliaDispatcher.Instance.Abort();
+            //EmiliaDispatcher.Instance.Abort();
         }
 
         private void SeriesManager_Loaded(object sender, RoutedEventArgs e)
