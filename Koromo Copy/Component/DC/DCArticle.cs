@@ -23,5 +23,6 @@ namespace Koromo_Copy.Component.DC
         public string Title { get; set; }
         public List<string> ImagesLink { get; set; }
         public List<string> FilesName { get; set; }
+        public string Archive { get; set; }
     }
 }

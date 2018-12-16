@@ -42,5 +42,6 @@ namespace Koromo_Copy.Component.EH
 
         public Tuple<DateTime, string, string>[] comment;
         public List<string> ImagesLink { get; set; }
+        public string Archive { get; set; }
     }
 }

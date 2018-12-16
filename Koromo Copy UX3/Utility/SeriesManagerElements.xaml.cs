@@ -61,19 +61,27 @@ namespace Koromo_Copy_UX3.Utility
                 {
                     manager = SeriesInfo.Instance.SelectManager(url);
 
+                    if (manager == null)
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            Title.Foreground = Brushes.Red;
+                            Title.Text = "오류 - 만족하는 URL 유형을 찾을 수 없습니다.\r\n옳바른 URL인지 확인해주세요.\r\nURL: " + url;
+                        }));
+                        return;
+                    }
+
                     string title = "";
                     string thumbnail = "";
-
-                    var wc = manager.GetWebClient();
-
                     string top_html = "";
-
+                    string inner_counts = "";
+                    
+                    var wc = manager.GetWebClient();
                     if (wc != null)
                         top_html = wc.DownloadString(url);
                     else
                         top_html = NetCommon.DownloadString(url);
-
-                    string inner_counts = "";
 
                     switch (manager.Type)
                     {
@@ -107,7 +115,7 @@ namespace Koromo_Copy_UX3.Utility
                             }
                             break;
                     }
-
+                    
                     Application.Current.Dispatcher.BeginInvoke(new Action(
                     delegate
                     {
@@ -134,7 +142,65 @@ namespace Koromo_Copy_UX3.Utility
 
         private void StartFirstDownloads()
         {
+            DispatchInformation dispatch_info = new DispatchInformation();
 
+            switch (manager.EngineType)
+            {
+                case ManagerEngineType.None:
+                    
+                    // Collect 시작
+
+                    if (manager.Type == ManagerType.SingleArticleMultipleImages)
+                    {
+                        article.ImagesLink = manager.ParseImages(NetCommon.DownloadString(article.Archive), article);
+                    }
+                    else if (manager.Type == ManagerType.SingleSeriesMultipleArticles)
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            ProgressText.Text = $"가져오는 중... [0/{series.Articles.Count}]";
+                        }));
+
+                        int file_count = 0;
+
+                        for (int i = 0; i < series.Articles.Count; i++)
+                        {
+                            series.Articles[i].ImagesLink = manager.ParseImages(NetCommon.DownloadString(series.Archive[i]), series.Articles[i]);
+                            file_count += series.Articles[i].ImagesLink.Count;
+
+                            int k = i;
+                            Application.Current.Dispatcher.BeginInvoke(new Action(
+                            delegate
+                            {
+                                ProgressText.Text = $"가져오는 중... [{i}/{series.Articles.Count}] (파일 {file_count}개)";
+                                if (k == 0 && string.IsNullOrEmpty(series.Thumbnail))
+                                {
+                                    var bitmap = new BitmapImage();
+                                    bitmap.BeginInit();
+                                    bitmap.UriSource = new Uri(series.Articles[0].ImagesLink[0]);
+                                    bitmap.EndInit();
+                                    Image.Source = bitmap;
+                                }
+                            }));
+                        }
+                    }
+                    
+                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                    delegate
+                    {
+                        CollectStatusPanel.Visibility = Visibility.Collapsed;
+                        DownloadStatusPanel.Visibility = Visibility.Visible;
+                    }));
+
+                    // 다운로드 시작
+
+                    break;
+
+                case ManagerEngineType.UsingDriver:
+
+                    break;
+            }
         }
 
         private string MakeSyncDate(TimeSpan gap)

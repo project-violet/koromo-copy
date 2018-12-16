@@ -43,5 +43,6 @@ namespace Koromo_Copy.Component.Hiyobi
         public string Title { get { return title; } set { title = value; } }
 
         public List<string> ImagesLink { get { return images_link; } set { images_link = value; } }
+        public string Archive { get; set; }
     }
 }

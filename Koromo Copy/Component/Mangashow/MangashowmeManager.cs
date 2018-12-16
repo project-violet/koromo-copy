@@ -48,9 +48,9 @@ namespace Koromo_Copy.Component.Mangashow
             return null;
         }
 
-        public void ParseArticle(string html, ref IArticle article)
+        public List<string> ParseImages(string html, IArticle article)
         {
-            article.ImagesLink = MangashowmeParser.ParseImages(html);
+            return MangashowmeParser.ParseImages(html);
         }
 
         public List<string> GetDownloadFileNames(IArticle article)

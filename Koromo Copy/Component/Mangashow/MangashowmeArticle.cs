@@ -21,5 +21,6 @@ namespace Koromo_Copy.Component.Mangashow
         public string Title { get; set; }
         public List<string> ImagesLink { get; set; }
         public string ArticleLink { get; set; }
+        public string Archive { get; set; }
     }
 }
