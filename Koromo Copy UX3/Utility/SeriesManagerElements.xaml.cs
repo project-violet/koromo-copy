@@ -13,6 +13,7 @@ using Koromo_Copy.Net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Koromo_Copy_UX3.Utility
 {
@@ -144,11 +144,22 @@ namespace Koromo_Copy_UX3.Utility
         {
             DispatchInformation dispatch_info = new DispatchInformation();
 
+            dispatch_info.DownloadSize = DownloadSize;
+            dispatch_info.DownloadStatus = DownloadStatus;
+            dispatch_info.DownloadRetry = DownloadRetry;
+            dispatch_info.CompleteFile = CompleteFile;
+            dispatch_info.CompleteArticle = CompleteArticle;
+            dispatch_info.CompleteSeries = CompleteSeries;
+
             switch (manager.EngineType)
             {
                 case ManagerEngineType.None:
-                    
+
+                    //
                     // Collect 시작
+                    //
+
+                    int file_count = 0;
 
                     if (manager.Type == ManagerType.SingleArticleMultipleImages)
                     {
@@ -161,8 +172,6 @@ namespace Koromo_Copy_UX3.Utility
                         {
                             ProgressText.Text = $"가져오는 중... [0/{series.Articles.Count}]";
                         }));
-
-                        int file_count = 0;
 
                         for (int i = 0; i < series.Articles.Count; i++)
                         {
@@ -191,10 +200,54 @@ namespace Koromo_Copy_UX3.Utility
                     {
                         CollectStatusPanel.Visibility = Visibility.Collapsed;
                         DownloadStatusPanel.Visibility = Visibility.Visible;
+                        Progress.Maximum = file_count;
+                        ProgressStatus.Text = $"[0/{file_count}]";
                     }));
 
+                    //
                     // 다운로드 시작
+                    //
 
+                    EmiliaSeriesSegment series_seg = new EmiliaSeriesSegment();
+                    series_seg.Index = EmiliaDispatcher.Instance.GetSeriesIndex();
+                    series_seg.Title = series.Title;
+                    series_seg.Path = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title));
+
+                    List<EmiliaArticleSegment> article_segs = new List<EmiliaArticleSegment>();
+                    for (int i = 0; i < series.Articles.Count; i++)
+                    {
+                        EmiliaArticleSegment article_seg = new EmiliaArticleSegment();
+                        article_seg.Index = i;
+                        article_seg.Name = series.Articles[i].Title;
+                        article_seg.FolderName = DeleteInvalid(series.Articles[i].Title).Trim();
+                        article_seg.SereisIndex = series_seg.Index;
+
+                        Directory.CreateDirectory(Path.Combine(series_seg.Path, article_seg.FolderName));
+
+                        List<EmiliaFileSegment> file_segs = new List<EmiliaFileSegment>();
+                        List<string> file_names = manager.GetDownloadFileNames(series.Articles[i]);
+                        for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
+                        {
+                            EmiliaFileSegment file_seg = new EmiliaFileSegment();
+                            file_seg.Index = j;
+                            file_seg.ArticleIndex = i;
+                            file_seg.SeriesIndex = series_seg.Index;
+                            file_seg.FileName = file_names[j];
+                            file_seg.Url = series.Articles[i].ImagesLink[j];
+
+                            SemaphoreExtends se = SemaphoreExtends.MakeDefault();
+                            se.Referer = url;
+
+                            file_seg.Extends = se;
+                            file_segs.Add(file_seg);
+                        }
+
+                        article_seg.Files = file_segs;
+                        article_segs.Add(article_seg);
+                    }
+                    series_seg.Articles = article_segs;
+
+                    EmiliaDispatcher.Instance.Add(series_seg, dispatch_info);
                     break;
 
                 case ManagerEngineType.UsingDriver:
@@ -203,7 +256,56 @@ namespace Koromo_Copy_UX3.Utility
             }
         }
 
-        private string MakeSyncDate(TimeSpan gap)
+        private void DownloadSize(EmiliaFileSegment efs)
+        {
+
+        }
+
+        private void DownloadStatus(EmiliaFileStatusSegment efss)
+        {
+
+        }
+
+        private void DownloadRetry(EmiliaFileSegment efs)
+        {
+
+        }
+
+        private void CompleteFile(EmiliaFileSegment efs)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                CollectStatusPanel.Visibility = Visibility.Collapsed;
+                DownloadStatusPanel.Visibility = Visibility.Visible;
+                Progress.Value += 1;
+                ProgressStatus.Text = $"[{Progress.Value}/{Progress.Maximum}]";
+            }));
+        }
+
+        private void CompleteArticle(EmiliaArticleSegment efs)
+        {
+
+        }
+
+        private void CompleteSeries()
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                DownloadStatusPanel.Visibility = Visibility.Collapsed;
+            }));
+        }
+
+        private static string DeleteInvalid(string path)
+        {
+            string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            foreach (char c in invalid)
+                path = path.Replace(c.ToString(), "");
+            return path;
+        }
+
+        private static string MakeSyncDate(TimeSpan gap)
         {
             if (gap.Days >= 730) return "2년 전";
             if (gap.Days >= 365) return "1년 전";

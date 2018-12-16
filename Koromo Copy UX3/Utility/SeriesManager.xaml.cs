@@ -35,8 +35,8 @@ namespace Koromo_Copy_UX3.Utility
             SeriesPanel.Children.Add(new SeriesManagerElements("https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%EB%9F%AC%EC%8A%A4%ED%8A%B8%20%EA%B8%B0%EC%95%84%EC%8A%A4"));
             SeriesPanel.Children.Add(new Separator());
 
-            SeriesPanel.Children.Add(new SeriesManagerElements("https://hiyobi.me/manga/info/1346"));
-            SeriesPanel.Children.Add(new Separator());
+            //SeriesPanel.Children.Add(new SeriesManagerElements("https://hiyobi.me/manga/info/1346"));
+            //SeriesPanel.Children.Add(new Separator());
 
 
         }
