@@ -793,7 +793,7 @@ namespace Koromo_Copy_UX3.Utility
 
         private void Title_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Process.Start(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title)));
+            (new ZipViewer(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title)))).Show();
         }
     }
 }

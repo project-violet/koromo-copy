@@ -28,11 +28,14 @@ namespace Koromo_Copy_UX3.Utility
     /// </summary>
     public partial class ZipViewer : Window
     {
-        public ZipViewer()
+        public ZipViewer(string url = "")
         {
             InitializeComponent();
 
             Loaded += ZipViewer_Loaded;
+
+            if (url != "")
+                LoadFolder(url);
         }
 
         private void ZipViewer_Loaded(object sender, RoutedEventArgs e)
