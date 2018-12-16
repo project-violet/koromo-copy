@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy;
 using Koromo_Copy.Component;
 using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Interface;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,6 +135,7 @@ namespace Koromo_Copy_UX3.Utility
                         SiteName.Text = manager.Name;
                         LatestSyncDate.Text = MakeSyncDate(new TimeSpan(0, 1, 0, 0));
                         InnerSitesCount.Text = inner_counts;
+                        DownloadState.Text = "다운로드 중";
                     }));
                     
                     Task.Run(() => StartFirstDownloads());
@@ -158,6 +161,12 @@ namespace Koromo_Copy_UX3.Utility
                     //
                     // Collect 시작
                     //
+
+                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                    delegate
+                    {
+                        DownloadState.Text = $"수집 중";
+                    }));
 
                     int file_count = 0;
 
@@ -211,7 +220,7 @@ namespace Koromo_Copy_UX3.Utility
                     EmiliaSeriesSegment series_seg = new EmiliaSeriesSegment();
                     series_seg.Index = EmiliaDispatcher.Instance.GetSeriesIndex();
                     series_seg.Title = series.Title;
-                    series_seg.Path = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title));
+                    download_folder = series_seg.Path = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title));
 
                     List<EmiliaArticleSegment> article_segs = new List<EmiliaArticleSegment>();
                     for (int i = 0; i < series.Articles.Count; i++)
@@ -258,17 +267,29 @@ namespace Koromo_Copy_UX3.Utility
 
         private void DownloadSize(EmiliaFileSegment efs)
         {
-
         }
 
+        long downloaded_size = 0;
         private void DownloadStatus(EmiliaFileStatusSegment efss)
         {
-
+            downloaded_size += efss.DownloadSize;
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                ProgressSize.Text = ((double)downloaded_size / 1000 / 1000).ToString("#,#.#") + " MB";
+            }));
         }
 
         private void DownloadRetry(EmiliaFileSegment efs)
         {
+            Monitor.Instance.Push($"[Retry SME] {manager.Name} {series.Title} {series.Articles[efs.ArticleIndex].Title} {efs.Url}");
 
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                ErrorMessageGrid.Visibility = Visibility.Visible;
+                ErrorMessage.Text = $"재시도 : {efs.Url}";
+            }));
         }
 
         private void CompleteFile(EmiliaFileSegment efs)
@@ -283,17 +304,67 @@ namespace Koromo_Copy_UX3.Utility
             }));
         }
 
+        int zip_count = 0;
+        string download_folder;
         private void CompleteArticle(EmiliaArticleSegment efs)
         {
-
+            if (Settings.Instance.Model.AutoZip)
+            {
+                Monitor.Instance.Push("[Zip Start] " + Path.Combine(download_folder, efs.FolderName));
+                MainWindow.Instance.ZipCountUp();
+                System.Threading.Interlocked.Increment(ref zip_count);
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    DownloadState.Text = $"{zip_count}개 압축 중";
+                }));
+                Task.Run(() => Zip(Path.Combine(download_folder, efs.FolderName)));
+            }
         }
 
+        private void Zip(string address)
+        {
+            if (address.EndsWith("\\"))
+                address = address.Remove(address.Length - 1);
+            if (File.Exists($"{address}.zip"))
+                File.Delete($"{address}.zip");
+            ZipFile.CreateFromDirectory(address, $"{address}.zip");
+            Directory.Delete(address, true);
+            Monitor.Instance.Push("[Zip End] " + address);
+            MainWindow.Instance.ZipCountDown();
+
+            int v = System.Threading.Interlocked.Decrement(ref zip_count);
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                DownloadState.Text = $"{v}개 압축 중";
+            }));
+
+            if (v == 0 && complete_download)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    DownloadState.Text = "압축 완료";
+                }));
+            }
+        }
+
+        bool complete_download = false;
         private void CompleteSeries()
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(
             delegate
             {
                 DownloadStatusPanel.Visibility = Visibility.Collapsed;
+                ErrorMessageGrid.Visibility = Visibility.Collapsed;
+
+                if (!Settings.Instance.Model.AutoZip)
+                {
+                    DownloadState.Text = "다운로드 완료";
+                }
+                complete_download = true;
             }));
         }
 
