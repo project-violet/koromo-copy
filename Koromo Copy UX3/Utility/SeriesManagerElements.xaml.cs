@@ -133,7 +133,7 @@ namespace Koromo_Copy_UX3.Utility
 
                         Title.Text = title;
                         SiteName.Text = manager.Name;
-                        LatestSyncDate.Text = MakeSyncDate(new TimeSpan(0, 1, 0, 0));
+                        LatestSyncDate.Text = MakeSyncDate(new TimeSpan(0, 0, 0, 0));
                         InnerSitesCount.Text = inner_counts;
                         DownloadState.Text = "다운로드 중";
                     }));
