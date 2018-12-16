@@ -115,7 +115,6 @@ namespace Koromo_Copy_UX3.Utility
                 if (!string.IsNullOrEmpty(DownloadText.Text) && DownloadText.Text != "다운로드")
                 {
                     SeriesPanel.Children.Insert(0, new SeriesManagerElements(DownloadText.Text));
-                    DownloadText.Text = "다운로드";
                 }
             }
         }
