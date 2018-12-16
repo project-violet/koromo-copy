@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" Background="Transparent"
-             d:DesignHeight="300" d:DesignWidth="300" Height="170">
+             d:DesignHeight="300" d:DesignWidth="300" Height="170" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -54,6 +54,32 @@
 
             <TextBlock x:Name="Title" Grid.Row="0" Margin="0 10 0 0" Text="Title" FontSize="20" FontWeight="Medium" Foreground="White" TextWrapping="WrapWithOverflow"/>
 
+            <materialDesign:PopupBox x:Name="Popup" Visibility="Collapsed" Foreground="White" Background="#232323" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 5 10 0">
+                <materialDesign:PopupBox.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </materialDesign:PopupBox.Resources>
+                <StackPanel>
+                    <Button Click="MenuPopupButton_OnClick" Tag="Detail">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">자세히 보기</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="MenuPopupButton_OnClick" Tag="Delete">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Trash" Opacity=".56" />
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">삭제</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+
             <WrapPanel Orientation="Horizontal" Grid.Row="1">
                 <TextBlock x:Name="SiteName" FontSize="13" Foreground="#AAAAAA" Cursor="Hand" Text="SiteName" MouseEnter="SiteName_MouseEnter" MouseLeave="SiteName_MouseLeave" MouseLeftButtonDown="SiteName_MouseLeftButtonDown"/>
                 <TextBlock Text="•" Foreground="#AAAAAA" FontSize="13" Margin="2 0 2 0"/>
@@ -97,5 +123,6 @@
             </Grid>
 
         </Grid>
+
     </Grid>
 </UserControl>

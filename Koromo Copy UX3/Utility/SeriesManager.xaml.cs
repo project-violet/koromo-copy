@@ -1,4 +1,12 @@
-﻿using Koromo_Copy.Net;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +34,21 @@ namespace Koromo_Copy_UX3.Utility
 
             Loaded += SeriesManager_Loaded;
             Closed += SeriesManager_Closed;
+
+            DownloadText.GotFocus += DownloadText_GotFocus;
+            DownloadText.LostFocus += DownloadText_LostFocus;
+        }
+
+        private void DownloadText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(DownloadText.Text))
+                DownloadText.Text = "다운로드";
+        }
+
+        private void DownloadText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (DownloadText.Text == "다운로드")
+                DownloadText.Text = "";
         }
 
         private void SeriesManager_Closed(object sender, EventArgs e)
@@ -35,16 +58,6 @@ namespace Koromo_Copy_UX3.Utility
 
         private void SeriesManager_Loaded(object sender, RoutedEventArgs e)
         {
-            //SeriesPanel.Children.Add(new SeriesManagerElements("https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%EC%84%B8%EA%B3%84+%EC%A2%85%EC%96%B8%EC%9D%98+%EC%84%B8%EA%B3%84%EB%A1%9D"));
-            //SeriesPanel.Children.Add(new Separator());
-            //SeriesPanel.Children.Add(new SeriesManagerElements("https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%EC%BF%A0%EB%A1%9C%ED%95%98%EC%99%80%20%EB%8B%88%EC%A7%80%EC%8A%A4%EC%BC%80"));
-            //SeriesPanel.Children.Add(new Separator());
-            //SeriesPanel.Children.Add(new SeriesManagerElements("https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%EB%9F%AC%EC%8A%A4%ED%8A%B8%20%EA%B8%B0%EC%95%84%EC%8A%A4"));
-            //SeriesPanel.Children.Add(new Separator());
-            //
-            //SeriesPanel.Children.Add(new SeriesManagerElements("https://hiyobi.me/manga/info/1346"));
-            //SeriesPanel.Children.Add(new Separator());
-
 
         }
 
@@ -59,6 +72,47 @@ namespace Koromo_Copy_UX3.Utility
             {
                 EmiliaDispatcher.Instance.Reactivation();
                 PauseButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
+            }
+        }
+
+        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            DownloadIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0x9A, 0x9A));
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs e)
+        {
+            DownloadIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x71, 0x71, 0x71));
+        }
+
+        private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DownloadIcon.Margin = new Thickness(2, 0, 0, 0);
+        }
+
+        private void Button_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            DownloadIcon.Margin = new Thickness(0, 0, 0, 0);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(DownloadText.Text) && DownloadText.Text != "다운로드")
+            {
+                SeriesPanel.Children.Insert(0, new SeriesManagerElements(DownloadText.Text));
+                DownloadText.Text = "다운로드";
+            }
+        }
+
+        private void DownloadText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (!string.IsNullOrEmpty(DownloadText.Text) && DownloadText.Text != "다운로드")
+                {
+                    SeriesPanel.Children.Insert(0, new SeriesManagerElements(DownloadText.Text));
+                    DownloadText.Text = "다운로드";
+                }
             }
         }
     }

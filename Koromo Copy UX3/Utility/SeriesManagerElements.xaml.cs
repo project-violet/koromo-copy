@@ -70,6 +70,7 @@ namespace Koromo_Copy_UX3.Utility
                         {
                             Title.Foreground = Brushes.Red;
                             Title.Text = "오류 - 만족하는 URL 유형을 찾을 수 없습니다.\r\n옳바른 URL인지 확인해주세요.\r\nURL: " + url;
+                            CollectStatusPanel.Visibility = Visibility.Collapsed;
                         }));
                         return;
                     }
@@ -408,6 +409,29 @@ namespace Koromo_Copy_UX3.Utility
         private void SiteName_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Process.Start(url);
+        }
+
+        private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+
+            if (button.Tag.ToString() == "Detail")
+            {
+            }
+            else if (button.Tag.ToString() == "Delete")
+            {
+                (Parent as Panel).Children.Remove(this);
+            }
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Popup.Visibility = Visibility.Visible;
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Popup.Visibility = Visibility.Collapsed;
         }
     }
 }

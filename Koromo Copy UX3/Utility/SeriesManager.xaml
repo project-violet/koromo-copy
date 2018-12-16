@@ -8,24 +8,59 @@
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="시리즈 매니져" Height="508.831" Width="653">
+        Title="시리즈 매니져" Height="508.831" Width="644">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Purple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
-        <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
-            <StackPanel x:Name="SeriesPanel" Background="#121212"/>
-        </controls:WheelSpeedScrollViewer>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Click="Button_Click" Margin="0 0 30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <materialDesign:PackIcon x:Name="PauseButtonIcon" Kind="Pause" Height="24" Width="24"/>
-        </Button>
+        <Grid Grid.Row="0" Background="#232323" Height="60">
+            <Grid MaxHeight="50" MaxWidth="570" Margin="50 0 50 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="DownloadText" KeyDown="DownloadText_KeyDown" Grid.Column="0" Height="30" BorderBrush="#303030" Background="#121212" Text="다운로드" Foreground="#E2E2E2" FontSize="15" Padding="3"/>
+                <Button MinWidth="70" Height="30" Cursor="Hand" Grid.Column="1" BorderBrush="#303030" Background="#303030" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" PreviewMouseLeftButtonDown="Button_MouseDown" PreviewMouseLeftButtonUp="Button_MouseUp" Click="Button_Click_1">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                    <materialDesign:PackIcon x:Name="DownloadIcon" Kind="Download" Height="24" Width="24" Foreground="#717171"/>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Background="#121212">
+            
+            <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+                <StackPanel x:Name="SeriesPanel" MaxWidth="800"/>
+            </controls:WheelSpeedScrollViewer>
+
+            <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Click="Button_Click" Margin="0 0 30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="LightGray">
+                <materialDesign:PackIcon x:Name="PauseButtonIcon" Kind="Pause" Height="24" Width="24"/>
+            </Button>
+        </Grid>
     </Grid>
 </Window>
