@@ -172,6 +172,10 @@ namespace Koromo_Copy_UX3
             {
                 (new ZipViewer()).Show();
             }
+            else if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                (new SeriesManager()).Show();
+            }
         }
 
         int zip_status = 0;

@@ -74,6 +74,7 @@
     <Compile Include="Component\Hitomi\HitomiBookmark.cs" />
     <Compile Include="Component\Hiyobi\HiyobiNonHManager.cs" />
     <Compile Include="Component\Manazero\ManazeroArticle.cs" />
+    <Compile Include="Component\Manazero\ManazeroManager.cs" />
     <Compile Include="Component\Manazero\ManazeroParser.cs" />
     <Compile Include="Component\Mangashow\MangashowmeArticle.cs" />
     <Compile Include="Component\Mangashow\MangashowmeCommon.cs" />

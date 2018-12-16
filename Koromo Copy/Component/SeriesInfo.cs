@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Component.Hiyobi;
+using Koromo_Copy.Component.Manazero;
 using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Interface;
 using System;
@@ -26,6 +27,7 @@ namespace Koromo_Copy.Component
             managers = new List<IManager>();
             managers.Add(MangashowmeManager.Instance);
             managers.Add(HiyobiNonHManager.Instance);
+            managers.Add(ManazeroManager.Instance);
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ using Koromo_Copy.Component;
 using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
+using Koromo_Copy.Net.Driver;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,6 +43,7 @@ namespace Koromo_Copy_UX3.Utility
         ISeries series;
         IArticle article;
         SeriesLogModel series_log;
+        SeleniumWrapper wrapper;
 
         public SeriesManagerElements(SeriesLogModel series_log)
         {
@@ -59,6 +61,7 @@ namespace Koromo_Copy_UX3.Utility
                 delegate
                 {
                     CollectStatusPanel.Visibility = Visibility.Collapsed;
+                    SyncPanel.Visibility = Visibility.Visible;
                     url = series_log.URL;
                     manager = SeriesInfo.Instance.SelectManager(url);
                     title = Title.Text = series_log.Title;
@@ -93,6 +96,8 @@ namespace Koromo_Copy_UX3.Utility
                         bitmap.EndInit();
                         Image.Source = bitmap;
                     }
+
+                    Task.Run(() => Sync());
                 }));
             });
         }
@@ -126,14 +131,23 @@ namespace Koromo_Copy_UX3.Utility
                         return;
                     }
 
+                    if (manager.EngineType == ManagerEngineType.UsingDriver)
+                    {
+                        wrapper = new SeleniumWrapper();
+                    }
+
                     string top_html = "";
                     string inner_counts = "";
                     
                     var wc = manager.GetWebClient();
-                    if (wc != null)
-                        top_html = wc.DownloadString(url);
-                    else
-                        top_html = NetCommon.DownloadString(url);
+
+                    if (wrapper == null)
+                    {
+                        if (wc != null)
+                            top_html = wc.DownloadString(url);
+                        else
+                            top_html = NetCommon.DownloadString(url);
+                    }
 
                     switch (manager.Type)
                     {
@@ -151,7 +165,17 @@ namespace Koromo_Copy_UX3.Utility
 
                         case ManagerType.SingleArticleMultipleImages:
                             {
-                                article = manager.ParseArticle(top_html);
+                                if (wrapper == null)
+                                {
+                                    article = manager.ParseArticle(top_html);
+                                }
+                                else
+                                {
+                                    wrapper.Navigate(url);
+                                    try { wrapper.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
+
+                                    article = manager.ParseArticle(wrapper.GetHtml());
+                                }
                                 title = article.Title;
                                 thumbnail = article.Thumbnail;
                                 inner_counts = $"사진 {article.ImagesLink.Count}장";
@@ -160,7 +184,17 @@ namespace Koromo_Copy_UX3.Utility
 
                         case ManagerType.SingleSeriesMultipleArticles:
                             {
-                                series = manager.ParseSeries(top_html);
+                                if (wrapper == null)
+                                {
+                                    series = manager.ParseSeries(top_html);
+                                }
+                                else
+                                {
+                                    wrapper.Navigate(url);
+                                    try { wrapper.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
+
+                                    series = manager.ParseSeries(wrapper.GetHtml());
+                                }
                                 title = series.Title;
                                 thumbnail = series.Thumbnail;
                                 inner_counts = $"작품 {series.Articles.Count}개";
@@ -204,113 +238,208 @@ namespace Koromo_Copy_UX3.Utility
             dispatch_info.CompleteArticle = CompleteArticle;
             dispatch_info.CompleteSeries = CompleteSeries;
 
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                DownloadState.Text = $"수집 중";
+            }));
+
             switch (manager.EngineType)
             {
                 case ManagerEngineType.None:
-
-                    //
-                    // Collect 시작
-                    //
-
-                    Application.Current.Dispatcher.BeginInvoke(new Action(
-                    delegate
                     {
-                        DownloadState.Text = $"수집 중";
-                    }));
+                        //
+                        // Collect 시작
+                        //
 
-                    int file_count = 0;
+                        int file_count = 0;
 
-                    if (manager.Type == ManagerType.SingleArticleMultipleImages)
-                    {
-                        article.ImagesLink = manager.ParseImages(NetCommon.DownloadString(article.Archive), article);
-                    }
-                    else if (manager.Type == ManagerType.SingleSeriesMultipleArticles)
-                    {
-                        Application.Current.Dispatcher.BeginInvoke(new Action(
-                        delegate
+                        if (manager.Type == ManagerType.SingleArticleMultipleImages)
                         {
-                            ProgressText.Text = $"가져오는 중... [0/{series.Articles.Count}]";
-                        }));
-
-                        for (int i = 0; i < series.Articles.Count; i++)
+                            article.ImagesLink = manager.ParseImages(NetCommon.DownloadString(article.Archive), article);
+                        }
+                        else if (manager.Type == ManagerType.SingleSeriesMultipleArticles)
                         {
-                            series.Articles[i].ImagesLink = manager.ParseImages(NetCommon.DownloadString(series.Archive[i]), series.Articles[i]);
-                            file_count += series.Articles[i].ImagesLink.Count;
-
-                            int k = i;
                             Application.Current.Dispatcher.BeginInvoke(new Action(
                             delegate
                             {
-                                ProgressText.Text = $"가져오는 중... [{i}/{series.Articles.Count}] (파일 {file_count}개)";
-                                if (k == 0 && string.IsNullOrEmpty(series.Thumbnail))
-                                {
-                                    var bitmap = new BitmapImage();
-                                    bitmap.BeginInit();
-                                    bitmap.UriSource = new Uri(thumbnail = series.Articles[0].ImagesLink[0]);
-                                    bitmap.EndInit();
-                                    Image.Source = bitmap;
-                                }
+                                ProgressText.Text = $"가져오는 중... [0/{series.Articles.Count}]";
                             }));
+
+                            for (int i = 0; i < series.Articles.Count; i++)
+                            {
+                                series.Articles[i].ImagesLink = manager.ParseImages(NetCommon.DownloadString(series.Archive[i]), series.Articles[i]);
+                                file_count += series.Articles[i].ImagesLink.Count;
+
+                                int k = i;
+                                Application.Current.Dispatcher.BeginInvoke(new Action(
+                                delegate
+                                {
+                                    ProgressText.Text = $"가져오는 중... [{i}/{series.Articles.Count}] (파일 {file_count}개)";
+                                    if (k == 0 && string.IsNullOrEmpty(series.Thumbnail))
+                                    {
+                                        var bitmap = new BitmapImage();
+                                        bitmap.BeginInit();
+                                        bitmap.UriSource = new Uri(thumbnail = series.Articles[0].ImagesLink[0]);
+                                        bitmap.EndInit();
+                                        Image.Source = bitmap;
+                                    }
+                                }));
+                            }
                         }
-                    }
-                    
-                    Application.Current.Dispatcher.BeginInvoke(new Action(
-                    delegate
-                    {
-                        CollectStatusPanel.Visibility = Visibility.Collapsed;
-                        DownloadStatusPanel.Visibility = Visibility.Visible;
-                        Progress.Maximum = file_count;
-                        ProgressStatus.Text = $"[0/{file_count}]";
-                    }));
 
-                    //
-                    // 다운로드 시작
-                    //
-
-                    EmiliaSeriesSegment series_seg = new EmiliaSeriesSegment();
-                    series_seg.Index = EmiliaDispatcher.Instance.GetSeriesIndex();
-                    series_seg.Title = series.Title;
-                    download_folder = series_seg.Path = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title));
-
-                    List<EmiliaArticleSegment> article_segs = new List<EmiliaArticleSegment>();
-                    for (int i = 0; i < series.Articles.Count; i++)
-                    {
-                        EmiliaArticleSegment article_seg = new EmiliaArticleSegment();
-                        article_seg.Index = i;
-                        article_seg.Name = series.Articles[i].Title;
-                        article_seg.FolderName = DeleteInvalid(series.Articles[i].Title).Trim();
-                        article_seg.SereisIndex = series_seg.Index;
-
-                        Directory.CreateDirectory(Path.Combine(series_seg.Path, article_seg.FolderName));
-
-                        List<EmiliaFileSegment> file_segs = new List<EmiliaFileSegment>();
-                        List<string> file_names = manager.GetDownloadFileNames(series.Articles[i]);
-                        for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
                         {
-                            EmiliaFileSegment file_seg = new EmiliaFileSegment();
-                            file_seg.Index = j;
-                            file_seg.ArticleIndex = i;
-                            file_seg.SeriesIndex = series_seg.Index;
-                            file_seg.FileName = file_names[j];
-                            file_seg.Url = series.Articles[i].ImagesLink[j];
+                            CollectStatusPanel.Visibility = Visibility.Collapsed;
+                            DownloadStatusPanel.Visibility = Visibility.Visible;
+                            Progress.Maximum = file_count;
+                            ProgressStatus.Text = $"[0/{file_count}]";
+                        }));
 
-                            SemaphoreExtends se = SemaphoreExtends.MakeDefault();
-                            se.Referer = url;
+                        //
+                        // 다운로드 시작
+                        //
 
-                            file_seg.Extends = se;
-                            file_segs.Add(file_seg);
+                        EmiliaSeriesSegment series_seg = new EmiliaSeriesSegment();
+                        series_seg.Index = EmiliaDispatcher.Instance.GetSeriesIndex();
+                        series_seg.Title = series.Title;
+                        download_folder = series_seg.Path = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title));
+
+                        List<EmiliaArticleSegment> article_segs = new List<EmiliaArticleSegment>();
+                        for (int i = 0; i < series.Articles.Count; i++)
+                        {
+                            EmiliaArticleSegment article_seg = new EmiliaArticleSegment();
+                            article_seg.Index = i;
+                            article_seg.Name = series.Articles[i].Title;
+                            article_seg.FolderName = DeleteInvalid(series.Articles[i].Title).Trim();
+                            article_seg.SereisIndex = series_seg.Index;
+
+                            Directory.CreateDirectory(Path.Combine(series_seg.Path, article_seg.FolderName));
+
+                            List<EmiliaFileSegment> file_segs = new List<EmiliaFileSegment>();
+                            List<string> file_names = manager.GetDownloadFileNames(series.Articles[i]);
+                            for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
+                            {
+                                EmiliaFileSegment file_seg = new EmiliaFileSegment();
+                                file_seg.Index = j;
+                                file_seg.ArticleIndex = i;
+                                file_seg.SeriesIndex = series_seg.Index;
+                                file_seg.FileName = file_names[j];
+                                file_seg.Url = series.Articles[i].ImagesLink[j];
+
+                                SemaphoreExtends se = SemaphoreExtends.MakeDefault();
+                                se.Referer = url;
+
+                                file_seg.Extends = se;
+                                file_segs.Add(file_seg);
+                            }
+
+                            article_seg.Files = file_segs;
+                            article_segs.Add(article_seg);
                         }
+                        series_seg.Articles = article_segs;
 
-                        article_seg.Files = file_segs;
-                        article_segs.Add(article_seg);
+                        EmiliaDispatcher.Instance.Add(series_seg, dispatch_info);
                     }
-                    series_seg.Articles = article_segs;
-
-                    EmiliaDispatcher.Instance.Add(series_seg, dispatch_info);
                     break;
 
                 case ManagerEngineType.UsingDriver:
+                    {
+                        int file_count = 0;
 
+                        if (manager.Type == ManagerType.SingleArticleMultipleImages)
+                        {
+                            wrapper.Navigate(article.Archive);
+                            try { wrapper.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
+                            article.ImagesLink = manager.ParseImages(wrapper.GetHtml(), article);
+                        }
+                        else if (manager.Type == ManagerType.SingleSeriesMultipleArticles)
+                        {
+                            Application.Current.Dispatcher.BeginInvoke(new Action(
+                            delegate
+                            {
+                                ProgressText.Text = $"가져오는 중... [0/{series.Articles.Count}]";
+                            }));
+
+                            for (int i = 0; i < series.Articles.Count; i++)
+                            {
+                                wrapper.Navigate(series.Archive[i]);
+                                try { wrapper.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
+                                series.Articles[i].ImagesLink = manager.ParseImages(wrapper.GetHtml(), series.Articles[i]);
+                                file_count += series.Articles[i].ImagesLink.Count;
+
+                                int k = i;
+                                Application.Current.Dispatcher.BeginInvoke(new Action(
+                                delegate
+                                {
+                                    ProgressText.Text = $"가져오는 중... [{i}/{series.Articles.Count}] (파일 {file_count}개)";
+                                    if (k == 0 && string.IsNullOrEmpty(series.Thumbnail))
+                                    {
+                                        var bitmap = new BitmapImage();
+                                        bitmap.BeginInit();
+                                        bitmap.UriSource = new Uri(thumbnail = series.Articles[0].ImagesLink[0]);
+                                        bitmap.EndInit();
+                                        Image.Source = bitmap;
+                                    }
+                                }));
+                            }
+                        }
+
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            CollectStatusPanel.Visibility = Visibility.Collapsed;
+                            DownloadStatusPanel.Visibility = Visibility.Visible;
+                            Progress.Maximum = file_count;
+                            ProgressStatus.Text = $"[0/{file_count}]";
+                        }));
+
+                        //
+                        // 다운로드 시작
+                        //
+
+                        EmiliaSeriesSegment series_seg = new EmiliaSeriesSegment();
+                        series_seg.Index = EmiliaDispatcher.Instance.GetSeriesIndex();
+                        series_seg.Title = series.Title;
+                        download_folder = series_seg.Path = Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title));
+
+                        List<EmiliaArticleSegment> article_segs = new List<EmiliaArticleSegment>();
+                        for (int i = 0; i < series.Articles.Count; i++)
+                        {
+                            EmiliaArticleSegment article_seg = new EmiliaArticleSegment();
+                            article_seg.Index = i;
+                            article_seg.Name = series.Articles[i].Title;
+                            article_seg.FolderName = DeleteInvalid(series.Articles[i].Title).Trim();
+                            article_seg.SereisIndex = series_seg.Index;
+
+                            Directory.CreateDirectory(Path.Combine(series_seg.Path, article_seg.FolderName));
+
+                            List<EmiliaFileSegment> file_segs = new List<EmiliaFileSegment>();
+                            List<string> file_names = manager.GetDownloadFileNames(series.Articles[i]);
+                            for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
+                            {
+                                EmiliaFileSegment file_seg = new EmiliaFileSegment();
+                                file_seg.Index = j;
+                                file_seg.ArticleIndex = i;
+                                file_seg.SeriesIndex = series_seg.Index;
+                                file_seg.FileName = file_names[j];
+                                file_seg.Url = series.Articles[i].ImagesLink[j];
+
+                                SemaphoreExtends se = SemaphoreExtends.MakeDefault();
+                                se.Referer = url;
+
+                                file_seg.Extends = se;
+                                file_segs.Add(file_seg);
+                            }
+
+                            article_seg.Files = file_segs;
+                            article_segs.Add(article_seg);
+                        }
+                        series_seg.Articles = article_segs;
+
+                        EmiliaDispatcher.Instance.Add(series_seg, dispatch_info);
+                    }
                     break;
             }
         }
@@ -449,16 +578,36 @@ namespace Koromo_Copy_UX3.Utility
                     break;
             }
             
-            SeriesLog.Instance.Add(new SeriesLogModel
+            if (series_log == null)
             {
-                URL = url,
-                Title = title,
-                Thumbnail = thumbnail,
-                Archive = archive.ToArray(),
-                Subtitle = subtitle.ToArray(),
-                LatestUpdateTime = DateTime.Now
-            });
-            SeriesLog.Instance.Save();
+                SeriesLog.Instance.Add(new SeriesLogModel
+                {
+                    URL = url,
+                    Title = title,
+                    Thumbnail = thumbnail,
+                    Archive = archive.ToArray(),
+                    Subtitle = subtitle.ToArray(),
+                    LatestUpdateTime = DateTime.Now
+                });
+                SeriesLog.Instance.Save();
+            }
+            else
+            {
+                SeriesLog.Instance.Model.Remove(series_log);
+
+                var v = series_log.Archive.ToList();
+                v.AddRange(archive);
+                series_log.Archive = v.ToArray();
+
+                var s = series_log.Subtitle.ToList();
+                s.AddRange(subtitle);
+                series_log.Subtitle = s.ToArray();
+
+                series_log.LatestUpdateTime = DateTime.Now;
+
+                SeriesLog.Instance.Add(series_log);
+                SeriesLog.Instance.Save();
+            }
         }
 
         private static string DeleteInvalid(string path)
@@ -507,7 +656,11 @@ namespace Koromo_Copy_UX3.Utility
         {
             var button = sender as Button;
 
-            if (button.Tag.ToString() == "Detail")
+            if (button.Tag.ToString() == "Sync")
+            {
+
+            }
+            else if (button.Tag.ToString() == "Detail")
             {
             }
             else if (button.Tag.ToString() == "Delete")
@@ -524,6 +677,68 @@ namespace Koromo_Copy_UX3.Utility
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             Popup.Visibility = Visibility.Collapsed;
+        }
+
+        private void Sync()
+        {
+            string top_html = "";
+            string inner_counts = "";
+
+            var wc = manager.GetWebClient();
+
+            if (wrapper == null)
+            {
+                if (wc != null)
+                    top_html = wc.DownloadString(url);
+                else
+                    top_html = NetCommon.DownloadString(url);
+            }
+
+            bool require_sync = false;
+
+            switch (manager.Type)
+            {
+                case ManagerType.SingleSeriesMultipleArticles:
+                    {
+                        if (wrapper == null)
+                        {
+                            series = manager.ParseSeries(top_html);
+                        }
+                        else
+                        {
+                            wrapper.Navigate(url);
+                            try { wrapper.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
+
+                            series = manager.ParseSeries(wrapper.GetHtml());
+                        }
+                        title = series.Title;
+                        thumbnail = series.Thumbnail;
+                        inner_counts = $"작품 {series.Articles.Count}개";
+
+                        if (series_log.Archive.Length < series.Articles.Count)
+                        {
+                            require_sync = true;
+                            Application.Current.Dispatcher.BeginInvoke(new Action(
+                            delegate
+                            {
+                                SyncPanel.Visibility = Visibility.Collapsed;
+                                SyncButton.IsEnabled = true;
+                                RequireSyncPanel.Visibility = Visibility.Visible;
+                                SyncText.Text = $"{series.Articles.Count - series_log.Archive.Length}개의 새로운 항목";
+                            }));
+                        }
+                    }
+                    break;
+            }
+
+            if (!require_sync)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    SyncPanel.Visibility = Visibility.Collapsed;
+                }));
+            }
         }
     }
 }
