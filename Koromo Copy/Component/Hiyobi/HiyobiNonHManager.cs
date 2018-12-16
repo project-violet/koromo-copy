@@ -52,7 +52,7 @@ namespace Koromo_Copy.Component.Hiyobi
         public List<string> ParseImages(string html, IArticle article)
         {
             var article_to = article as HiyobiArticle;
-            return HitomiParser.GetImageLink(html).Select(x => x.StartsWith("http://") || x.StartsWith("https://") ? x : $"https://aa.hiyobi.me/data_m/{article_to.Magic}/{x}").ToList();
+            return HitomiParser.GetImageLink(html).Select(x => x.StartsWith("http://") || x.StartsWith("https://") ? $"https://aa.hiyobi.me/data_m/{article_to.Magic}/{Uri.EscapeDataString(x.Split('/').Last())}" : $"https://aa.hiyobi.me/data_m/{article_to.Magic}/{x}").ToList();
         }
 
         public List<string> GetDownloadFileNames(IArticle article)
