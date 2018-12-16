@@ -43,23 +43,29 @@ namespace Koromo_Copy_UX3.Utility
             Loaded += ZipViewerElements_Loaded;
         }
 
+        ZipArchive zipFile;
+        Stream zipStream;
+
         private void ZipViewerElements_Loaded(object sender, RoutedEventArgs e)
         {
             Task.Run(() =>
             {
                 try
                 {
-                    var zipFile = ZipFile.Open(zip_file_name, ZipArchiveMode.Read);
+                    zipFile = ZipFile.Open(zip_file_name, ZipArchiveMode.Read);
                     
                     try
                     {
-                        var model = JsonConvert.DeserializeObject<HitomiJsonModel>(new StreamReader(zipFile.GetEntry("Info.json").Open()).ReadToEnd());
-                        Application.Current.Dispatcher.BeginInvoke(new Action(
-                        delegate
+                        using (var reader = new StreamReader(zipFile.GetEntry("Info.json").Open()))
                         {
-                            Title.Text = model.Title;
-                            Artist.Text = model.Artists != null ? model.Artists[0] : "";
-                        }));
+                            var model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
+                            Application.Current.Dispatcher.BeginInvoke(new Action(
+                            delegate
+                            {
+                                Title.Text = model.Title;
+                                Artist.Text = model.Artists != null ? model.Artists[0] : "";
+                            }));
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -72,7 +78,7 @@ namespace Koromo_Copy_UX3.Utility
                     }
 
                     var zipEntry = !zipFile.Entries[0].Name.EndsWith(".json") ? zipFile.Entries[0] : zipFile.Entries[1];
-                    var zipStream = zipEntry.Open();
+                    zipStream = zipEntry.Open();
 
                     Application.Current.Dispatcher.BeginInvoke(new Action(
                     delegate
@@ -83,6 +89,7 @@ namespace Koromo_Copy_UX3.Utility
                         bitmap.CacheOption = BitmapCacheOption.OnLoad;
                         bitmap.StreamSource = zipStream;
                         bitmap.EndInit();
+                        bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
 
                         Image.Source = bitmap;
                     }));
@@ -94,7 +101,13 @@ namespace Koromo_Copy_UX3.Utility
                 }
             });
         }
-        
+
+        private void Bitmap_DownloadCompleted(object sender, EventArgs e)
+        {
+            zipStream.Close();
+            zipFile.Dispose();
+        }
+
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Process.Start(zip_file_name);
