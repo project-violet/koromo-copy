@@ -687,6 +687,8 @@ namespace Koromo_Copy_UX3.Utility
             }
             else if (button.Tag.ToString() == "Delete")
             {
+                SeriesLog.Instance.Model.Remove(series_log);
+                SeriesLog.Instance.Save();
                 (Parent as Panel).Children.Remove(this);
             }
         }
@@ -787,6 +789,11 @@ namespace Koromo_Copy_UX3.Utility
             series.Archive = archive.ToArray();
             series.Articles = articles;
             StartFirstDownloads();
+        }
+
+        private void Title_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title)));
         }
     }
 }
