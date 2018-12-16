@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy.Component;
 using Koromo_Copy.Net;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,10 @@ namespace Koromo_Copy_UX3.Utility
 
         private void SeriesManager_Loaded(object sender, RoutedEventArgs e)
         {
-
+            foreach (var log in SeriesLog.Instance.Model)
+            {
+                SeriesPanel.Children.Insert(0, new SeriesManagerElements(log));
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

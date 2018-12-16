@@ -36,14 +36,65 @@ namespace Koromo_Copy_UX3.Utility
     public partial class SeriesManagerElements : UserControl
     {
         string url;
+        string title = "";
+        string thumbnail = "";
         IManager manager;
         ISeries series;
         IArticle article;
+        SeriesLogModel series_log;
 
-        public SeriesManagerElements(SeriesInfo info)
+        public SeriesManagerElements(SeriesLogModel series_log)
         {
             InitializeComponent();
 
+            this.series_log = series_log;
+            Loaded += SeriesManagerElements_Loaded1;
+        }
+
+        private void SeriesManagerElements_Loaded1(object sender, RoutedEventArgs e)
+        {
+            Task.Run(() =>
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    CollectStatusPanel.Visibility = Visibility.Collapsed;
+                    url = series_log.URL;
+                    manager = SeriesInfo.Instance.SelectManager(url);
+                    title = Title.Text = series_log.Title;
+                    SiteName.Text = manager.Name;
+                    thumbnail = series_log.Thumbnail;
+
+                    switch (manager.Type)
+                    {
+                        case ManagerType.SingleArticleSingleImage:
+                            break;
+
+                        case ManagerType.SingleArticleSingleMovie:
+                            break;
+
+                        case ManagerType.SingleArticleMultipleImages:
+                            InnerSitesCount.Text = $"사진 {series_log.Archive.Length}장";
+                            break;
+
+                        case ManagerType.SingleSeriesMultipleArticles:
+                            InnerSitesCount.Text = $"작품 {series_log.Archive.Length}개";
+                            break;
+                    }
+
+                    LatestSyncDate.Text = MakeSyncDate(DateTime.Now - series_log.LatestUpdateTime);
+                    SiteName.Text = manager.Name;
+                    DownloadState.Text = "완료됨";
+                    if (!string.IsNullOrEmpty(thumbnail))
+                    {
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.UriSource = new Uri(thumbnail);
+                        bitmap.EndInit();
+                        Image.Source = bitmap;
+                    }
+                }));
+            });
         }
 
         public SeriesManagerElements(string url)
@@ -75,8 +126,6 @@ namespace Koromo_Copy_UX3.Utility
                         return;
                     }
 
-                    string title = "";
-                    string thumbnail = "";
                     string top_html = "";
                     string inner_counts = "";
                     
@@ -197,7 +246,7 @@ namespace Koromo_Copy_UX3.Utility
                                 {
                                     var bitmap = new BitmapImage();
                                     bitmap.BeginInit();
-                                    bitmap.UriSource = new Uri(series.Articles[0].ImagesLink[0]);
+                                    bitmap.UriSource = new Uri(thumbnail = series.Articles[0].ImagesLink[0]);
                                     bitmap.EndInit();
                                     Image.Source = bitmap;
                                 }
@@ -367,6 +416,49 @@ namespace Koromo_Copy_UX3.Utility
                 }
                 complete_download = true;
             }));
+
+            List<string> archive = new List<string>();
+            List<string> subtitle = new List<string>();
+
+            switch (manager.Type)
+            {
+                case ManagerType.SingleArticleSingleImage:
+                    {
+
+                    }
+                    break;
+
+                case ManagerType.SingleArticleSingleMovie:
+                    {
+
+                    }
+                    break;
+
+                case ManagerType.SingleArticleMultipleImages:
+                    {
+                        archive.AddRange(article.ImagesLink);
+                        subtitle.Add(title);
+                    }
+                    break;
+
+                case ManagerType.SingleSeriesMultipleArticles:
+                    {
+                        archive.AddRange(series.Archive);
+                        series.Articles.ForEach(x => subtitle.Add(x.Title));
+                    }
+                    break;
+            }
+            
+            SeriesLog.Instance.Add(new SeriesLogModel
+            {
+                URL = url,
+                Title = title,
+                Thumbnail = thumbnail,
+                Archive = archive.ToArray(),
+                Subtitle = subtitle.ToArray(),
+                LatestUpdateTime = DateTime.Now
+            });
+            SeriesLog.Instance.Save();
         }
 
         private static string DeleteInvalid(string path)
