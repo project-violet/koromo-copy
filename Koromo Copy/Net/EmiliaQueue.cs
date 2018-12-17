@@ -260,6 +260,16 @@ namespace Koromo_Copy.Net
                 }
                 catch (Exception e)
                 {
+                    if (e is WebException we)
+                    {
+                        HttpWebResponse webResponse = (HttpWebResponse)we.Response;
+                        if (webResponse != null && webResponse.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            Monitor.Instance.Push($"[Emilia Queue] 404 error {uri}");
+                            goto END;
+                        }
+                    }
+                    
                     Monitor.Instance.Push($"[{retry_count}] {e.Message}");
                     lock (aborted)
                         if (!aborted.Contains(uri))
@@ -277,7 +287,8 @@ namespace Koromo_Copy.Net
                             return;
                         }
                 }
-                
+                END:
+
                 lock (callback) callback(uri, fileName, obj);
             }
         }
