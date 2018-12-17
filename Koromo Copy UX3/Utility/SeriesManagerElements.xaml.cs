@@ -743,7 +743,7 @@ namespace Koromo_Copy_UX3.Utility
 
         private void Title_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!init_error)
+            if (!init_error && series_log != null)
                 (new ZipViewer(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title)))).Show();
         }
 
