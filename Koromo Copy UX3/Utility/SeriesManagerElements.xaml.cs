@@ -723,6 +723,11 @@ namespace Koromo_Copy_UX3.Utility
             else if (button.Tag.ToString() == "Detail")
             {
             }
+            else if (button.Tag.ToString() == "Folder")
+            {
+                if (!init_error && series_log != null)
+                    Process.Start(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title)));
+            }
             else if (button.Tag.ToString() == "Delete")
             {
                 SeriesLog.Instance.Model.Remove(series_log);
