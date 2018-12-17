@@ -82,10 +82,19 @@
                         <TextBlock Text="홈" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Sync" Height="24" Width="24" Margin="10 0 0 0"/>
-                        <TextBlock Text="모두 동기화" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
-                    </StackPanel>
+                    <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="Refresh">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24" Margin="10 0 0 0"/>
+                            <TextBlock Text="새로고침" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ListBoxItem>
+
+                    <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="SyncAll">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Sync" Height="24" Width="24" Margin="10 0 0 0"/>
+                            <TextBlock Text="모두 동기화" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ListBoxItem>
 
                     <Separator/>
 
@@ -101,7 +110,7 @@
 
                     <Separator/>
 
-                    <ListBoxItem MouseDown="StackPanel_MouseDown" PreviewMouseDown="StackPanel_MouseDown">
+                    <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="Pause">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon x:Name="PauseButtonIcon" Kind="Pause" Height="24" Width="24" Margin="10 0 0 0"/>
                             <TextBlock x:Name="PauseButton" Text="일시정지" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
@@ -112,17 +121,47 @@
 
                 <Grid Grid.Row="1" >
                     <StackPanel Margin="10 0 0 10" VerticalAlignment="Bottom" >
-                        <TextBlock Text="이 프로그램은 Koromo Copy의 일부입니다." VerticalAlignment="Bottom" Foreground="#AAAAAA" Margin="0 0 10 10" FontSize="12" TextWrapping="Wrap"/>
+                        <TextBlock Text="이 프로그램은 Koromo Copy 프로젝트의 일부입니다." VerticalAlignment="Bottom" Foreground="#AAAAAA" Margin="0 0 10 10" FontSize="13" TextWrapping="Wrap"/>
 
-                        <TextBlock Text="© 2018 Koromo Copy" Foreground="#6F6B6B"/>
+                        <TextBlock Text="Koromo Copy Project" Foreground="#6F6B6B"/>
                     </StackPanel>
                 </Grid>
             </Grid>
 
             <Grid Grid.Column="1">
-                <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
-                    <StackPanel x:Name="SeriesPanel" MaxWidth="800"/>
-                </controls:WheelSpeedScrollViewer>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Image x:Name="WaterMark" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.5" RenderOptions.BitmapScalingMode="Fant" Stretch="Uniform" MaxHeight="400"/>
+                    <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+                        <StackPanel x:Name="SeriesPanel" MaxWidth="800"/>
+                    </controls:WheelSpeedScrollViewer>
+                </Grid>
+
+                <Grid Grid.Row="1" Height="40" Background="#232323">
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="FilterText" TextChanged="FilterText_TextChanged" Height="30" BorderBrush="#303030" Margin="5 0 0 0" Width="200" HorizontalAlignment="Left" Background="#121212" Text="필터링" Foreground="#E2E2E2" FontSize="15" Padding="3"/>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10 0 0 0">
+                            <ToggleButton Click="ToggleButton_Click">
+                                <ToggleButton.Resources>
+                                    <ResourceDictionary>
+                                        <ResourceDictionary.MergedDictionaries>
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                        </ResourceDictionary.MergedDictionaries>
+                                    </ResourceDictionary>
+                                </ToggleButton.Resources>
+                            </ToggleButton>
+                            <TextBlock Text="  동기화 대상만 표시" VerticalAlignment="Center" Foreground="#E2E2E2"  FontSize="14"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

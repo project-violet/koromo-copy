@@ -45,6 +45,18 @@ namespace Koromo_Copy_UX3.Utility
         SeriesLogModel series_log;
         SeleniumWrapper wrapper;
 
+        bool init_error = false;
+
+        #region 프로퍼티
+
+        public bool RequireSync { get { return require_sync; } }
+        public string RawTitle { get { return title; } }
+        public string URLSource { get { return manager.Name; } }
+
+        #endregion
+
+        #region 초기화
+
         public SeriesManagerElements(SeriesLogModel series_log)
         {
             InitializeComponent();
@@ -57,6 +69,7 @@ namespace Koromo_Copy_UX3.Utility
         {
             Task.Run(() =>
             {
+
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
@@ -127,6 +140,7 @@ namespace Koromo_Copy_UX3.Utility
                             Title.Foreground = Brushes.Red;
                             Title.Text = "오류 - 만족하는 URL 유형을 찾을 수 없습니다.\r\n옳바른 URL인지 확인해주세요.\r\nURL: " + url;
                             CollectStatusPanel.Visibility = Visibility.Collapsed;
+                            init_error = true;
                         }));
                         return;
                     }
@@ -226,6 +240,8 @@ namespace Koromo_Copy_UX3.Utility
                 }
             });
         }
+
+        #endregion
 
         private void StartFirstDownloads()
         {
@@ -450,7 +466,15 @@ namespace Koromo_Copy_UX3.Utility
                     }
                     break;
             }
+            
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                DownloadState.Text = $"대기 중";
+            }));
         }
+
+        #region Emilia Dispatcher 이벤트
 
         private void DownloadSize(EmiliaFileSegment efs)
         {
@@ -606,6 +630,12 @@ namespace Koromo_Copy_UX3.Utility
                     LatestUpdateTime = DateTime.Now
                 });
                 SeriesLog.Instance.Save();
+
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    LatestSyncDate.Text = MakeSyncDate(DateTime.Now - series_log.LatestUpdateTime);
+                }));
             }
             else
             {
@@ -627,10 +657,13 @@ namespace Koromo_Copy_UX3.Utility
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
+                    LatestSyncDate.Text = MakeSyncDate(DateTime.Now - series_log.LatestUpdateTime);
                     SyncButton.IsEnabled = false;
                 }));
             }
         }
+
+        #endregion
 
         private static string DeleteInvalid(string path)
         {
@@ -651,7 +684,9 @@ namespace Koromo_Copy_UX3.Utility
             if (gap.Minutes >= 1) return $"{gap.Minutes}분 전";
             return "방금";
         }
-        
+
+        #region 상호작용
+
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {
             ImageToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Relative;
@@ -671,7 +706,8 @@ namespace Koromo_Copy_UX3.Utility
 
         private void SiteName_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Process.Start(url);
+            if (!init_error)
+                Process.Start(url);
         }
 
         private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
@@ -703,6 +739,17 @@ namespace Koromo_Copy_UX3.Utility
             Popup.Visibility = Visibility.Collapsed;
         }
 
+        private void Title_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!init_error)
+                (new ZipViewer(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title)))).Show();
+        }
+
+        #endregion
+
+        #region 동기화
+
+        bool require_sync = false;
         private void PrepareSync()
         {
             string top_html = "";
@@ -717,8 +764,6 @@ namespace Koromo_Copy_UX3.Utility
                 else
                     top_html = NetCommon.DownloadString(url);
             }
-
-            bool require_sync = false;
 
             switch (manager.Type)
             {
@@ -765,7 +810,7 @@ namespace Koromo_Copy_UX3.Utility
             }
         }
 
-        private void Sync()
+        public void Sync()
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(
             delegate
@@ -789,11 +834,21 @@ namespace Koromo_Copy_UX3.Utility
             series.Archive = archive.ToArray();
             series.Articles = articles;
             StartFirstDownloads();
+            require_sync = false;
         }
 
-        private void Title_MouseDown(object sender, MouseButtonEventArgs e)
+        public void RePrepareSync()
         {
-            (new ZipViewer(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), manager.Name.Trim()), DeleteInvalid(series.Title)))).Show();
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                SyncPanel.Visibility = Visibility.Visible;
+                LatestSyncDate.Text = MakeSyncDate(DateTime.Now - series_log.LatestUpdateTime);
+            }));
+            Task.Run(() => PrepareSync());
         }
+
+        #endregion
+
     }
 }
