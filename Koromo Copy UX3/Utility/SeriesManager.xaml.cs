@@ -209,6 +209,7 @@ namespace Koromo_Copy_UX3.Utility
 
         private void FilterText_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (FilterText.Text == "필터링") return;
             string text = string.Join("", FilterText.Text.Select(x => hangul_disassembly(x)));
             foreach (var control in SeriesPanel.Children)
                 if (string.Join("", (control as SeriesManagerElements).RawTitle.ToLower().Select(x => hangul_disassembly(x))).Contains(text) || (control as SeriesManagerElements).URLSource.ToLower().Contains(text))
