@@ -759,55 +759,68 @@ namespace Koromo_Copy_UX3.Utility
 
             var wc = manager.GetWebClient();
 
-            if (wrapper == null)
+            try
             {
-                if (wc != null)
-                    top_html = wc.DownloadString(url);
-                else
-                    top_html = NetCommon.DownloadString(url);
-            }
+                if (wrapper == null)
+                {
+                    if (wc != null)
+                        top_html = wc.DownloadString(url);
+                    else
+                        top_html = NetCommon.DownloadString(url);
+                }
 
-            switch (manager.Type)
-            {
-                case ManagerType.SingleSeriesMultipleArticles:
-                    {
-                        if (wrapper == null)
+                switch (manager.Type)
+                {
+                    case ManagerType.SingleSeriesMultipleArticles:
                         {
-                            series = manager.ParseSeries(top_html);
-                        }
-                        else
-                        {
-                            wrapper.Navigate(url);
-                            try { wrapper.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
-
-                            series = manager.ParseSeries(wrapper.GetHtml());
-                        }
-                        title = series.Title;
-                        thumbnail = series.Thumbnail;
-                        inner_counts = $"작품 {series.Articles.Count}개";
-
-                        if (series_log.Archive.Length < series.Articles.Count)
-                        {
-                            require_sync = true;
-                            Application.Current.Dispatcher.BeginInvoke(new Action(
-                            delegate
+                            if (wrapper == null)
                             {
-                                SyncPanel.Visibility = Visibility.Collapsed;
-                                SyncButton.IsEnabled = true;
-                                RequireSyncPanel.Visibility = Visibility.Visible;
-                                SyncText.Text = $"{series.Articles.Count - series_log.Archive.Length}개의 새로운 항목";
-                            }));
-                        }
-                    }
-                    break;
-            }
+                                series = manager.ParseSeries(top_html);
+                            }
+                            else
+                            {
+                                wrapper.Navigate(url);
+                                try { wrapper.ClickXPath("//a[@class='maia-button maia-button-primary']"); } catch { }
 
-            if (!require_sync)
+                                series = manager.ParseSeries(wrapper.GetHtml());
+                            }
+                            title = series.Title;
+                            thumbnail = series.Thumbnail;
+                            inner_counts = $"작품 {series.Articles.Count}개";
+
+                            if (series_log.Archive.Length < series.Articles.Count)
+                            {
+                                require_sync = true;
+                                Application.Current.Dispatcher.BeginInvoke(new Action(
+                                delegate
+                                {
+                                    SyncPanel.Visibility = Visibility.Collapsed;
+                                    SyncButton.IsEnabled = true;
+                                    RequireSyncPanel.Visibility = Visibility.Visible;
+                                    SyncText.Text = $"{series.Articles.Count - series_log.Archive.Length}개의 새로운 항목";
+                                }));
+                            }
+                        }
+                        break;
+                }
+
+                if (!require_sync)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                    delegate
+                    {
+                        SyncPanel.Visibility = Visibility.Collapsed;
+                    }));
+                }
+            }
+            catch (Exception e)
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
                     SyncPanel.Visibility = Visibility.Collapsed;
+                    RequireSyncPanel.Visibility = Visibility.Visible;
+                    SyncText.Text = $"동기화를 계속 진행할 수 없음\r\n" + e.Message;
                 }));
             }
         }
