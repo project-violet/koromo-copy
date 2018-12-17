@@ -187,11 +187,18 @@ namespace Koromo_Copy.Net
         /// </summary>
         int remain_contents;
 
+        /// <summary>
+        /// 전체 파일 수
+        /// </summary>
+        int total_contents;
+
         object add_lock = new object();
         object job_lock = new object();
         object complete_lock = new object();
 
         public ISemaphore Queue { get { return queue; } }
+
+        public int TotalContents { get { return total_contents; } }
 
         public EmiliaDispatcher()
         {
@@ -391,6 +398,7 @@ namespace Koromo_Copy.Net
                 {
                     var article_folder = Path.Combine(series.Path, article.FolderName);
                     remain_contents += article.Files.Count;
+                    total_contents += article.Files.Count;
                     foreach (var file in article.Files)
                     {
                         var file_path = Path.Combine(article_folder, file.FileName);

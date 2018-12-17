@@ -622,7 +622,7 @@ namespace Koromo_Copy_UX3.Utility
             
             if (series_log == null)
             {
-                SeriesLog.Instance.Add(new SeriesLogModel
+                SeriesLog.Instance.Add(series_log = new SeriesLogModel
                 {
                     URL = url,
                     Title = title,

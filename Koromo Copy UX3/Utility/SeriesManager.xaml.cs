@@ -21,6 +21,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Koromo_Copy_UX3.Utility
 {
@@ -29,6 +30,8 @@ namespace Koromo_Copy_UX3.Utility
     /// </summary>
     public partial class SeriesManager : Window
     {
+        DispatcherTimer timer;
+
         public SeriesManager()
         {
             InitializeComponent();
@@ -41,6 +44,66 @@ namespace Koromo_Copy_UX3.Utility
 
             FilterText.GotFocus += FilterText_GotFocus;
             FilterText.LostFocus += FilterText_LostFocus;
+
+            EmiliaDispatcher.Instance.DownloadSize += Instance_DownloadSize;
+            EmiliaDispatcher.Instance.DownloadStatus += Instance_DownloadStatus;
+            EmiliaDispatcher.Instance.DownloadComplete += Instance_DownloadComplete;
+            EmiliaDispatcher.Instance.CompleteFile += Instance_CompleteFile;
+
+            timer = new DispatcherTimer();
+            timer.Tick += Timer_Tick;
+            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Start();
+        }
+
+        long latest_status_size = 0;
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(new Action(
+            delegate
+            {
+                if (status_size == latest_status_size)
+                    TotalSpeed.Text = "0 KB/S";
+                else
+                    TotalSpeed.Text = ((double)(status_size - latest_status_size) / 1000).ToString("#,#.#") + " KB/S";
+                latest_status_size = status_size;
+            }));
+        }
+
+        private void Instance_CompleteFile(object sender, EmiliaFileSegment e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                TotalProgress.Value += 1;
+            }));
+        }
+
+        private void Instance_DownloadComplete(object sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                StatusPanel.Visibility = Visibility.Collapsed;
+            }));
+        }
+
+        long status_size = 0;
+        object status_lock = new object();
+        private void Instance_DownloadStatus(object sender, EmiliaFileStatusSegment e)
+        {
+            System.Threading.Interlocked.Add(ref status_size, e.DownloadSize);
+        }
+
+        private void Instance_DownloadSize(object sender, EmiliaFileSegment e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                if (StatusPanel.Visibility == Visibility.Collapsed)
+                    StatusPanel.Visibility = Visibility.Visible;
+                TotalProgress.Maximum = EmiliaDispatcher.Instance.TotalContents;
+            }));
         }
 
         private void FilterText_LostFocus(object sender, RoutedEventArgs e)
@@ -162,7 +225,7 @@ namespace Koromo_Copy_UX3.Utility
                     AlignIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.SortNumeric;
                     Align.Text = "작품순 정렬";
 
-                    list.Sort((x, y) => x.NumberOfArticles.CompareTo(y.NumberOfArticles));
+                    list.Sort((x, y) => y.NumberOfArticles.CompareTo(x.NumberOfArticles));
                 }
                 else if (AlignIcon.Kind == MaterialDesignThemes.Wpf.PackIconKind.SortNumeric)
                 {
