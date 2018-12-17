@@ -68,13 +68,17 @@ namespace Koromo_Copy.Net
             }
             else
             {
-                queue = new EmiliaQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback);
+                queue = new EmiliaQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback, downloadErrorCallback);
             }
             remain_contents = 0;
             index_count = 0;
             jobs = new List<Tuple<int, object, SemaphoreCallBack, DownloadQueue.DownloadSizeCallBack, DownloadQueue.DownloadStatusCallBack, DownloadQueue.RetryCallBack>>();
             download_file_count = new List<int>();
             file_count = new List<int>();
+        }
+
+        private void downloadErrorCallback(string uri, string msg, object obj)
+        {
         }
 
         private void downloadSizeCallback(string uri, long size, object obj)

@@ -135,6 +135,22 @@ namespace Koromo_Copy.Net
     }
 
     /// <summary>
+    /// 오류 정보를 담는 세그먼트입니다.
+    /// </summary>
+    public class EmiliaErrorSegment
+    {
+        /// <summary>
+        /// 다운로드 Url입니다.
+        /// </summary>
+        public string Url;
+
+        /// <summary>
+        /// 오류내용입니다.
+        /// </summary>
+        public string Message;
+    }
+
+    /// <summary>
     /// 디스패쳐에 맡길 정보들 입니다.
     /// </summary>
     public class DispatchInformation
@@ -163,6 +179,11 @@ namespace Koromo_Copy.Net
         /// 어떤 아티클의 다운로드가 끝났을때 발생합니다.
         /// </summary>
         public Action<EmiliaArticleSegment> CompleteArticle;
+
+        /// <summary>
+        /// 어떤 아티클의 다운로드가 끝났을때 발생합니다.
+        /// </summary>
+        public Action<EmiliaErrorSegment> ErrorOccured;
 
         /// <summary>
         /// 시리즈 다운로드가 끝났을때 발생합니다.
@@ -208,7 +229,7 @@ namespace Koromo_Copy.Net
             }
             else
             {
-                queue = new EmiliaQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback);
+                queue = new EmiliaQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback, downloadErrorCallback);
             }
 
             series_dictionary = new Dictionary<int, EmiliaSeriesSegment>();
@@ -335,6 +356,12 @@ namespace Koromo_Copy.Net
                 if (remain_contents == 0 && DownloadComplete != null)
                     DownloadComplete.Invoke(null, null);
             }
+        }
+
+        private void downloadErrorCallback(string url, string msg, object obj)
+        {
+            var file_seg = (EmiliaFileSegment)obj;
+            dispatcher_dictionary[file_seg.SeriesIndex].ErrorOccured.Invoke(new EmiliaErrorSegment { Message = msg, Url = url });
         }
 
         /// <summary>

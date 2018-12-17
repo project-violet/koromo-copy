@@ -161,7 +161,7 @@ namespace Koromo_Copy_UX3.Domain
                         sm.Show();
                     }));
                     break;
-
+                    
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;
