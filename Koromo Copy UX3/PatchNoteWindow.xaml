@@ -70,17 +70,17 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.0 Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.1 Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - Manazero, Manashow-me 다운로더 수정"/>
+                        <Run Text=" - Zip Viewer 기능 추가 (Ctrl + E로 실행 가능)"/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 새로운 다운로더 큐인 Emilia Queue 추가 (설정->다운로더에서 변경가능)"/>
+                        <Run Text=" - 새로운 독립 다운로더 시리즈 매니저 추가 (Ctrl + S로 실행 가능)"/>
                         <LineBreak/>
-                        <Run Text="   이 설정을 사용하면 최대 세 배 빠른 다운로더를 사용할 수 있습니다."/>
+                        <Run Text="   Hiyobi-NonH, MangashowMe의 다운로드 및 동기화를 도와주는 새로운 다운로더입니다."/>
                         <LineBreak/>
-                        <Run Text="   (안정화되면 다음 버전에 기본 다운로더 큐로 적용할 예정)"/>
+                        <Run Text="   (이거 만드느라 업데이트 늦었던 거예요. 꼭 써보세요!)"/>
                         <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
@@ -90,7 +90,7 @@
                         <Run Text=" 자세한 업데이트 내역은 커밋이나 설정->업데이트를 참고하세요."/>
                         <LineBreak/>
                         <Run Text=" 커밋 : "/>
-                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/0.9.6912.21688...master">https://github.com/dc-koromo/koromo-copy/compare/0.9.6912.21688...master</Hyperlink>
+                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.0.6917.21506...master">https://github.com/dc-koromo/koromo-copy/compare/1.0.6917.21506...master</Hyperlink>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>

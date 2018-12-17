@@ -8,19 +8,15 @@
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
-## 최신 릴리즈 (2018/12/09)
+## 최신 릴리즈 (2018/12/17)
 
-Koromo Copy 1.0.6917.21506 Beta
+Koromo Copy 1.1.6925.32714 Beta
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/1.0.6917.21506
+https://github.com/dc-koromo/koromo-copy/releases/tag/1.1.6925.32714
 
 ![hitomi history](Document/Images/1.png)
 
 ![hitomi history](Document/Images/2.png)
-
-## 업데이트 지연 안내 (2018/12/16)
-
-이전 버전에선 일주일 단위로 새로운 버전을 업로드했지만, `1.1`버전은 많은 기능들을 보수하고, 새로 추가할 기능들이 많아 2주정도 걸릴 예정입니다. 예상 업로드 날짜는 `2018-12-21` 입니다.
 
 ## 개발 관련
 
