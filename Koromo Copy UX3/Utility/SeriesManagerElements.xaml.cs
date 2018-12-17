@@ -731,42 +731,49 @@ namespace Koromo_Copy_UX3.Utility
             else if (button.Tag.ToString() == "Detail")
             {
                 var build = new StringBuilder();
-                build.Append("[Manager Info]\r\n");
-                build.Append("url: " + url + "\r\n");
-                build.Append("site-magic: " + manager.Name.ToLower() + "\r\n");
-                build.Append("type: " + manager.Type + "\r\n");
-                build.Append("engine-type: " + manager.EngineType + "\r\n");
-                build.Append("\r\n");
-                build.Append("[Series Info]\r\n");
-                build.Append("title: " + series.Title + "\r\n");
-                build.Append("thumbnail: " + thumbnail + "\r\n");
-                build.Append("archive-count: " + series.Archive.Length + "\r\n");
-                build.Append("\r\n");
 
-                int image_count = 0;
-                for (int i = 0; i < series.Archive.Length; i++)
+                try
                 {
-                    build.Append($"[{i.ToString().PadLeft(3,'0')}] archive: " + series.Archive[i] + "\r\n");
-                    build.Append($"sub-title: " + series.Articles[i].Title + "\r\n");
 
-                    if (series.Articles[i].ImagesLink != null)
+                    build.Append("[Manager Info]\r\n");
+                    build.Append("url: " + url + "\r\n");
+                    build.Append("site-magic: " + manager.Name.ToLower() + "\r\n");
+                    build.Append("type: " + manager.Type + "\r\n");
+                    build.Append("engine-type: " + manager.EngineType + "\r\n");
+                    build.Append("\r\n");
+                    build.Append("[Series Info]\r\n");
+                    build.Append("title: " + series.Title + "\r\n");
+                    build.Append("thumbnail: " + thumbnail + "\r\n");
+                    build.Append("archive-count: " + series.Archive.Length + "\r\n");
+                    build.Append("\r\n");
+
+                    int image_count = 0;
+                    for (int i = 0; i < series.Archive.Length; i++)
                     {
-                        for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
-                        {
-                            build.Append($"[{image_count.ToString().PadLeft(4, '0')}] {series.Articles[i].ImagesLink[j]}\r\n");
-                            image_count++;
-                        }
-                    }
+                        build.Append($"[{i.ToString().PadLeft(3, '0')}] archive: " + series.Archive[i] + "\r\n");
+                        build.Append($"sub-title: " + series.Articles[i].Title + "\r\n");
 
-                    build.Append("\r\n");
+                        if (series.Articles[i].ImagesLink != null)
+                        {
+                            for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
+                            {
+                                build.Append($"[{image_count.ToString().PadLeft(4, '0')}] {series.Articles[i].ImagesLink[j]}\r\n");
+                                image_count++;
+                            }
+                        }
+
+                        build.Append("\r\n");
+                    }
+                    build.Append("[Error Info]\r\n");
+                    for (int i = 0; i < errors.Count; i++)
+                    {
+                        build.Append($"[{i.ToString().PadLeft(4, '0')}] {errors[i].Item1}\r\n");
+                        build.Append($"{errors[i].Item2}\r\n");
+                        build.Append("\r\n");
+                    }
                 }
-                build.Append("[Error Info]\r\n");
-                for (int i = 0; i < errors.Count; i++)
-                {
-                    build.Append($"[{i.ToString().PadLeft(4, '0')}] {errors[i].Item1}\r\n");
-                    build.Append($"{errors[i].Item2}\r\n");
-                    build.Append("\r\n");
-                }
+                catch
+                { }
 
                 (new SeriesManagerElementsInfo(build.ToString())).Show();
             }
