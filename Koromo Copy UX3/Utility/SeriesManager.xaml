@@ -8,13 +8,14 @@
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="시리즈 매니져" Height="542.831" Width="1038">
+        Title="시리즈 매니져" Height="666.831" Width="1038">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -167,6 +168,27 @@
                             <TextBlock Text="  동기화 대상만 표시" VerticalAlignment="Center" Foreground="#E2E2E2"  FontSize="14"/>
                         </StackPanel>
 
+                        <StackPanel x:Name="StatusPanel" VerticalAlignment="Center" Margin="40 0 0 0" Visibility="Collapsed" Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style x:Key="AnimationStyle" TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignLinearProgressBar}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsVisible" Value="False">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             From="1.0" To="0.1"
+                                             Duration="0:0:0.5" AutoReverse="True" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Resources>
+                            <ProgressBar x:Name="TotalProgress" Maximum="0" Value="0" Width="150" Height="20" Style="{StaticResource AnimationStyle}"/>
+                            <TextBlock x:Name="TotalSpeed" Text="0 KB/S" Margin="10 0 0 0" VerticalAlignment="Center" Foreground="#E2E2E2"  FontSize="12"/>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </Grid>
