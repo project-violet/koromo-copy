@@ -147,6 +147,33 @@ namespace Koromo_Copy_UX3.Utility
                     if ((control as SeriesManagerElements).RequireSync)
                         Task.Run(() => (control as SeriesManagerElements).Sync());
             }
+            else if (item.Tag.ToString() == "Align")
+            {
+                var list = SeriesPanel.Children.OfType<SeriesManagerElements>().ToList();
+                if (AlignIcon.Kind == MaterialDesignThemes.Wpf.PackIconKind.CalendarExport)
+                {
+                    AlignIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.SortAlphabetical;
+                    Align.Text = "이름순 정렬";
+
+                    list.Sort((x, y) => Domain.SortAlgorithm.ComparePath(x.RawTitle, y.RawTitle));
+                }
+                else if (AlignIcon.Kind == MaterialDesignThemes.Wpf.PackIconKind.SortAlphabetical)
+                {
+                    AlignIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.SortNumeric;
+                    Align.Text = "작품순 정렬";
+
+                    list.Sort((x, y) => x.NumberOfArticles.CompareTo(y.NumberOfArticles));
+                }
+                else if (AlignIcon.Kind == MaterialDesignThemes.Wpf.PackIconKind.SortNumeric)
+                {
+                    AlignIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.CalendarExport;
+                    Align.Text = "다운로드순 정렬";
+
+                    list.Sort((x, y) => y.LatestUpdate.CompareTo(x.LatestUpdate));
+                }
+                SeriesPanel.Children.Clear();
+                list.ForEach(x => SeriesPanel.Children.Add(x));
+            }
             else if(item.Tag.ToString() == "Pause")
             {
                 if (PauseButtonIcon.Kind == MaterialDesignThemes.Wpf.PackIconKind.Pause)

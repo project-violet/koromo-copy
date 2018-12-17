@@ -49,9 +49,11 @@ namespace Koromo_Copy_UX3.Utility
 
         #region 프로퍼티
 
+        public int NumberOfArticles { get { return series.Archive.Length; } }
         public bool RequireSync { get { return require_sync; } }
         public string RawTitle { get { return title; } }
         public string URLSource { get { return manager.Name; } }
+        public DateTime LatestUpdate { get { return series_log == null ? DateTime.Now : series_log.LatestUpdateTime; } }
 
         #endregion
 
