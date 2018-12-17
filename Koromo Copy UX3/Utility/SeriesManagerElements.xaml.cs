@@ -841,6 +841,7 @@ namespace Koromo_Copy_UX3.Utility
 
         public void RePrepareSync()
         {
+            if (series_log == null) return;
             Application.Current.Dispatcher.BeginInvoke(new Action(
             delegate
             {
