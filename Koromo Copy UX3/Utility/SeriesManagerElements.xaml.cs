@@ -47,6 +47,8 @@ namespace Koromo_Copy_UX3.Utility
 
         bool init_error = false;
 
+        List<Tuple<string, string>> errors = new List<Tuple<string, string>>();
+
         #region 프로퍼티
 
         public int NumberOfArticles { get { return series.Archive.Length; } }
@@ -255,6 +257,7 @@ namespace Koromo_Copy_UX3.Utility
             dispatch_info.CompleteFile = CompleteFile;
             dispatch_info.CompleteArticle = CompleteArticle;
             dispatch_info.CompleteSeries = CompleteSeries;
+            dispatch_info.ErrorOccured = ErrorOcurred;
 
             Application.Current.Dispatcher.BeginInvoke(new Action(
             delegate
@@ -665,6 +668,11 @@ namespace Koromo_Copy_UX3.Utility
             }
         }
 
+        private void ErrorOcurred(EmiliaErrorSegment ees)
+        {
+            errors.Add(Tuple.Create(ees.Url, ees.Message));
+        }
+
         #endregion
 
         private static string DeleteInvalid(string path)
@@ -722,6 +730,45 @@ namespace Koromo_Copy_UX3.Utility
             }
             else if (button.Tag.ToString() == "Detail")
             {
+                var build = new StringBuilder();
+                build.Append("[Manager Info]\r\n");
+                build.Append("url: " + url + "\r\n");
+                build.Append("site-magic: " + manager.Name.ToLower() + "\r\n");
+                build.Append("type: " + manager.Type + "\r\n");
+                build.Append("engine-type: " + manager.EngineType + "\r\n");
+                build.Append("\r\n");
+                build.Append("[Series Info]\r\n");
+                build.Append("title: " + series.Title + "\r\n");
+                build.Append("thumbnail: " + thumbnail + "\r\n");
+                build.Append("archive-count: " + series.Archive.Length + "\r\n");
+                build.Append("\r\n");
+
+                int image_count = 0;
+                for (int i = 0; i < series.Archive.Length; i++)
+                {
+                    build.Append($"[{i.ToString().PadLeft(3,'0')}] archive: " + series.Archive[i] + "\r\n");
+                    build.Append($"sub-title: " + series.Articles[i].Title + "\r\n");
+
+                    if (series.Articles[i].ImagesLink != null)
+                    {
+                        for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
+                        {
+                            build.Append($"[{image_count.ToString().PadLeft(4, '0')}] {series.Articles[i].ImagesLink[j]}\r\n");
+                            image_count++;
+                        }
+                    }
+
+                    build.Append("\r\n");
+                }
+                build.Append("[Error Info]\r\n");
+                for (int i = 0; i < errors.Count; i++)
+                {
+                    build.Append($"[{i.ToString().PadLeft(4, '0')}] {errors[i].Item1}\r\n");
+                    build.Append($"{errors[i].Item2}\r\n");
+                    build.Append("\r\n");
+                }
+
+                (new SeriesManagerElementsInfo(build.ToString())).Show();
             }
             else if (button.Tag.ToString() == "Folder")
             {

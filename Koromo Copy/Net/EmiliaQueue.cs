@@ -34,10 +34,12 @@ namespace Koromo_Copy.Net
         public delegate void DownloadSizeCallBack(string uri, long size, object obj);
         public delegate void DownloadStatusCallBack(string uri, int size, object obj);
         public delegate void RetryCallBack(string uri, object obj);
+        public delegate void ErrorCallBack(string uri, string msg, object obj);
 
         DownloadSizeCallBack download_callback;
         DownloadStatusCallBack status_callback;
         RetryCallBack retry_callback;
+        ErrorCallBack err_callback;
 
         object notify_lock = new object();
         object shutdown_lock = new object();
@@ -50,7 +52,7 @@ namespace Koromo_Copy.Net
         /// <param name="notify_size">다운로드가 시작되기전 파일의 크기를 알릴때 호출됩니다.</param>
         /// <param name="notify_status">다운로드 중인 파일의 </param>
         /// <param name="retry"></param>
-        public EmiliaQueue(DownloadSizeCallBack notify_size, DownloadStatusCallBack notify_status, RetryCallBack retry)
+        public EmiliaQueue(DownloadSizeCallBack notify_size, DownloadStatusCallBack notify_status, RetryCallBack retry, ErrorCallBack err)
         {
             capacity = Settings.Instance.Model.Thread;
             ServicePointManager.DefaultConnectionLimit = Settings.Instance.Net.ServicePointConnectionLimit;
@@ -60,6 +62,7 @@ namespace Koromo_Copy.Net
             download_callback = notify_size;
             status_callback = notify_status;
             retry_callback = retry;
+            err_callback = err;
             proxy = null;
 
             for (int i = 0; i < capacity; i++)
@@ -204,6 +207,7 @@ namespace Koromo_Copy.Net
                 if (retry_count > Settings.Instance.Net.RetryCount)
                 {
                     Monitor.Instance.Push($"[Many Retry] {uri} is auto deleted in download queue.");
+                    lock (err_callback) err_callback(uri, "[Emilia Queue] Many retry. auto deleted in download queue.", obj);
                     lock (callback) callback(uri, fileName, obj);
                     return;
                 }
@@ -266,6 +270,7 @@ namespace Koromo_Copy.Net
                         if (webResponse != null && webResponse.StatusCode == HttpStatusCode.NotFound)
                         {
                             Monitor.Instance.Push($"[Emilia Queue] 404 error {uri}");
+                            lock (err_callback) err_callback(uri, "[Emilia Queue] 404 error. auto deleted in download queue.", obj);
                             goto END;
                         }
                     }

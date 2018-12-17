@@ -39,6 +39,13 @@ namespace Koromo_Copy_UX3.Utility
                 LoadFolder(url);
         }
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key == Key.Escape)
+                Close();
+        }
+
         private void ZipViewer_Loaded(object sender, RoutedEventArgs e)
         {
             string path = "https://cdn.clien.net/web/api/file/F01/5117849/e7482ad23fa6428693a.PNG?thumb=true";

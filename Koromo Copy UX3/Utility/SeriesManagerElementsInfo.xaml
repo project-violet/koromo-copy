@@ -1,0 +1,12 @@
+﻿<Window x:Class="Koromo_Copy_UX3.Utility.SeriesManagerElementsInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
+        mc:Ignorable="d" Background="#121212" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen"
+        Title="시리즈 정보" Height="456" Width="433">
+    <Grid>
+        <TextBox x:Name="TextBox" Margin="10" Foreground="White" Background="#232323" BorderBrush="Transparent" VerticalScrollBarVisibility="Visible"/>
+    </Grid>
+</Window>
