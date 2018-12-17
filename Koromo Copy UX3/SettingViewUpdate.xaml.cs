@@ -149,8 +149,10 @@ namespace Koromo_Copy_UX3
                     Content =
                     "[추가된 기능]\r\n" +
                     " - Zip Viewer 기능 추가 (Ctrl + E 로 실행 가능)\r\n\r\n" +
+                    " - 시리즈 매니저 기능 추가 (Ctrl + S 로 실행 가능)\r\n\r\n" +
                     "[수정된 기능]\r\n" +
-                    " - Emilia Queue 활성화된 상태에서 프로그램실행시 간헐적으로 발생하는 오류 수정\r\n\r\n" +
+                    " - Emilia Queue가 활성화된 상태에서 프로그램실행시 간헐적으로 발생하는 오류 수정\r\n\r\n" +
+                    " - Hiyobi Non-H 다운로더 버그 수정\r\n\r\n" +
                     "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
                 }
             });
