@@ -153,6 +153,7 @@
 | Statistics | 도구 탭   | 히토미 데이터들을 분석하여 간단한 통계목록을 만듭니다. |
 | Index      | 도구 탭   | Koromo Copy에 내장된 번역 태그와 번역 시리즈를 모두 보여줍니다.                      |
 | Zip Viewer | Ctrl + E | Zip 파일들이 들어있는 폴더를 끌어오면 해당 Zip파일들을 분석해 썸네일을 보여줍니다.              |
+| Series Manager | Ctrl + S | Hiyobi-NonH, Mangashowme 등 만화데이터를 관리하는 독립적인 프로그램입니다.|
 
 
 ## 1.x. 콘솔
