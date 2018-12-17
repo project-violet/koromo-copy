@@ -112,16 +112,22 @@
                         </ResourceDictionary>
                     </materialDesign:PopupBox.Resources>
                     <StackPanel>
-                        <Button Click="MenuPopupButton_OnClick" Tag="Sync" IsEnabled="False" x:Name="SyncButton">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Sync" Opacity=".56"/>
-                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">동기화</TextBlock>
-                            </StackPanel>
-                        </Button>
                         <Button Click="MenuPopupButton_OnClick" Tag="Detail">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Magnify" Opacity=".56"/>
                                 <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">자세히 보기</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Click="MenuPopupButton_OnClick" Tag="Folder">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Folder" Opacity=".56"/>
+                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">폴더 열기</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Click="MenuPopupButton_OnClick" Tag="Sync" IsEnabled="False" x:Name="SyncButton">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Sync" Opacity=".56"/>
+                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">동기화</TextBlock>
                             </StackPanel>
                         </Button>
                         <Separator/>
