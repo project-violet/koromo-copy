@@ -77,6 +77,12 @@ namespace Koromo_Copy
         /// </summary>
         [JsonProperty]
         public bool LowQualityImage;
+
+        /// <summary>
+        /// 다운로드할 파일이름을 업로드된 이름으로 지정합니다.
+        /// </summary>
+        [JsonProperty]
+        public bool DownloadWithRawFileName;
     }
 
     public class Settings : ILazy<Settings>

@@ -16,7 +16,7 @@ namespace Koromo_Copy_UX3.Utility
             {
                 child.Measure(availableSize);
             }
-
+            
             var positions = new Point[InternalChildren.Count];
             var desiredHeight = ArrangeChildren(positions, availableSize.Width);
 
