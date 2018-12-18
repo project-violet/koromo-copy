@@ -12,6 +12,7 @@ using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Koromo_Copy.Net.Driver;
+using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -348,6 +349,8 @@ namespace Koromo_Copy_UX3.Utility
 
                             List<EmiliaFileSegment> file_segs = new List<EmiliaFileSegment>();
                             List<string> file_names = manager.GetDownloadFileNames(series.Articles[i]);
+                            if (!Settings.Instance.Model.DownloadWithRawFileName)
+                                file_names = PathFilenameSorter.SortOnlyFilename(file_names.ToArray()).ToList();
                             for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
                             {
                                 EmiliaFileSegment file_seg = new EmiliaFileSegment();
@@ -446,6 +449,8 @@ namespace Koromo_Copy_UX3.Utility
 
                             List<EmiliaFileSegment> file_segs = new List<EmiliaFileSegment>();
                             List<string> file_names = manager.GetDownloadFileNames(series.Articles[i]);
+                            if (!Settings.Instance.Model.DownloadWithRawFileName)
+                                file_names = PathFilenameSorter.SortOnlyFilename(file_names.ToArray()).ToList();
                             for (int j = 0; j < series.Articles[i].ImagesLink.Count; j++)
                             {
                                 EmiliaFileSegment file_seg = new EmiliaFileSegment();

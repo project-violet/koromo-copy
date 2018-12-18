@@ -186,6 +186,8 @@ namespace Koromo_Copy_UX3
         {
             lock (count_lock)
             {
+                if (!Settings.Instance.Model.DownloadWithRawFileName)
+                    paths = PathFilenameSorter.Sort(paths);
                 for (int i = 0; i < urls.Length; i++)
                 {
                     Application.Current.Dispatcher.Invoke(new Action(
