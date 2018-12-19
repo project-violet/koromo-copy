@@ -52,7 +52,14 @@
                     </Button.Style>
                     <materialDesign:PackIcon x:Name="DownloadIcon" Kind="Download" Height="24" Width="24" Foreground="#717171"/>
                 </Button>
+
             </Grid>
+
+            <WrapPanel x:Name="CollectStatusPanel" Orientation="Horizontal" Margin="0 20 20 0" HorizontalAlignment="Right">
+                <TextBlock x:Name="ProgressText" Text="가져오는 중..." FontSize="13" Foreground="White"/>
+                <ProgressBar Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
+            </WrapPanel>
+
         </Grid>
 
         <Grid Grid.Row="1" Background="#121212">
