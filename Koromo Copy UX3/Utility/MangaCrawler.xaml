@@ -1,0 +1,96 @@
+﻿<Window x:Class="Koromo_Copy_UX3.Utility.MangaCrawler"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
+        xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
+        mc:Ignorable="d"
+        Title="Manga Crawler" Height="647" Width="903">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="#232323" Height="60">
+            <Grid MaxHeight="50" MaxWidth="570" Margin="50 0 50 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="SearchText" KeyDown="SearchText_KeyDown" Grid.Column="0" Height="30" BorderBrush="#303030" Background="#121212" Text="검색" Foreground="#E2E2E2" FontSize="15" Padding="3"/>
+                <Button MinWidth="70" Height="30" Cursor="Hand" Grid.Column="1" BorderBrush="#303030" Background="#303030" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" PreviewMouseLeftButtonDown="Button_MouseDown" PreviewMouseLeftButtonUp="Button_MouseUp" Click="Button_Click_1">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                    <materialDesign:PackIcon x:Name="DownloadIcon" Kind="Download" Height="24" Width="24" Foreground="#717171"/>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Background="#121212">
+            <Image x:Name="WaterMark" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.5" RenderOptions.BitmapScalingMode="Fant" Stretch="Uniform" MaxHeight="400"/>
+            <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+                <StackPanel x:Name="SeriesPanel" MaxWidth="800"/>
+            </controls:WheelSpeedScrollViewer>
+        </Grid>
+
+        <Grid Grid.Row="2" Background="#232323" Height="35">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Tag="LeftLeft" Click="PageFunction_Click">
+                    <materialDesign:PackIcon Kind="ChevronDoubleLeft" Height="28" Width="28" Foreground="#717171"/>
+                </Button>
+                <Button BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Tag="Left" Click="PageFunction_Click">
+                    <materialDesign:PackIcon Kind="ChevronLeft" Height="28" Width="28" Foreground="#717171"/>
+                </Button>
+
+                <StackPanel x:Name="PageNumberPanel" Orientation="Horizontal">
+                    <Button Tag="0" BorderBrush="#363636" Background="#808080" BorderThickness="1 0 0 0" Foreground="#171717" Content="1"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="1" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="2"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="2" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="3"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="3" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="4"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="4" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="5"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="5" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="6"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="6" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="7"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="7" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="8"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="8" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="9"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                    <Button Tag="9" BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Foreground="#717171" Content="10" MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                </StackPanel>
+
+                <Button BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Tag="Right" Click="PageFunction_Click">
+                    <materialDesign:PackIcon Kind="ChevronRight" Height="28" Width="28" Foreground="#717171"/>
+                </Button>
+                <Button BorderBrush="#363636" Background="#303030" BorderThickness="1 0 1 0" Tag="RightRight" Click="PageFunction_Click">
+                    <materialDesign:PackIcon Kind="ChevronDoubleRight" Height="28" Width="28" Foreground="#717171"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

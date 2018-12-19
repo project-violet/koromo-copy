@@ -139,10 +139,19 @@ namespace Koromo_Copy_UX3.Utility
         {
             SeriesCount.Text = $"시리즈 {SeriesLog.Instance.Model.Count}개";
             ArticleCount.Text = $"작품 {SeriesLog.Instance.Model.Select(x => x.Archive.Length).Sum()}개";
-            foreach (var log in SeriesLog.Instance.Model)
+
+            Task.Run(() =>
             {
-                SeriesPanel.Children.Insert(0, new SeriesManagerElements(log));
-            }
+                foreach (var log in SeriesLog.Instance.Model)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                    delegate
+                    {
+                        SeriesPanel.Children.Insert(0, new SeriesManagerElements(log));
+                    }));
+                    System.Threading.Thread.Sleep(50);
+                }
+            });
 
             string path = "https://vignette.wikia.nocookie.net/inoubattlewanichijoukeinonakade/images/f/ff/Hatokochan.png/revision/latest?cb=20150121165834";
 
