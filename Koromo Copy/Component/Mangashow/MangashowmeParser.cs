@@ -57,5 +57,20 @@ namespace Koromo_Copy.Component.Mangashow
             document.LoadHtml(html);
             return document.DocumentNode.SelectNodes("//div[@class='view-content scroll-viewer']//img").Select(x => x.GetAttributeValue("src", "")).ToList();
         }
+
+        public static List<Tuple<string,string>> ParseIndex(string html)
+        {
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(html);
+
+            List<Tuple<string, string>> result = new List<Tuple<string, string>>();
+
+            foreach (var article in document.DocumentNode.SelectNodes("//div[@class='post-row']"))
+            {
+                result.Add(Tuple.Create(article.SelectSingleNode(".//img").GetAttributeValue("src", ""), article.SelectSingleNode(".//a").GetAttributeValue("href", "")));
+            }
+
+            return result;
+        }
     }
 }

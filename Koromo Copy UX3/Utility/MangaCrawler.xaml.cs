@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Koromo_Copy.Component.Mangashow;
+using Koromo_Copy.Net;
+using Koromo_Copy_UX3.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,11 +31,72 @@ namespace Koromo_Copy_UX3.Utility
                 page_number_buttons.Add(page_number as Button);
             }
             initialize_page();
+
+            SearchText.GotFocus += SearchText_GotFocus;
+            SearchText.LostFocus += SearchText_LostFocus;
+
+            Loaded += MangaCrawler_Loaded;
+        }
+
+        private void SearchText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchText.Text))
+                SearchText.Text = "검색";
+        }
+
+        private void SearchText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (SearchText.Text == "검색")
+                SearchText.Text = "";
+        }
+
+        List<Tuple<string, string, string>> mangas = new List<Tuple<string, string, string>>();
+        private void MangaCrawler_Loaded(object sender, RoutedEventArgs e)
+        {
+            Task.Run(() =>
+            {
+                string base_url = "https://mangashow.me/bbs/page.php?hid=manga_list&page=";
+
+                List<Tuple<string, string>> articles = new List<Tuple<string, string>>();
+                for (int i = 0; i < 62; i++)
+                {
+                    articles.AddRange(MangashowmeParser.ParseIndex(NetCommon.DownloadString(base_url + i)));
+
+                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                    delegate
+                    {
+                        ProgressText.Text = $"가져오는 중...[{i + 1}/62]";
+                    }));
+                }
+
+                foreach (var article in articles)
+                {
+                    mangas.Add(Tuple.Create(article.Item1, article.Item2, article.Item2.Split('=').Last().Trim()));
+                }
+
+                mangas.Sort((x, y) => SortAlgorithm.ComparePath(x.Item3, y.Item3));
+
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    CollectStatusPanel.Visibility = Visibility.Collapsed;
+
+                    max_page = mangas.Count / 36 + 1;
+                    initialize_page();
+                }));
+
+            });
         }
 
         private void SearchText_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Enter)
+            {
+                if (!string.IsNullOrEmpty(SearchText.Text) && SearchText.Text != "검색")
+                {
+                    //SeriesPanel.Children.Insert(0, new SeriesManagerElements(SearchText.Text));
+                }
+            }
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
@@ -57,16 +121,16 @@ namespace Koromo_Copy_UX3.Utility
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(SearchText.Text) && SearchText.Text != "다운로드")
+            if (!string.IsNullOrEmpty(SearchText.Text) && SearchText.Text != "검색")
             {
                 SeriesPanel.Children.Insert(0, new SeriesManagerElements(SearchText.Text));
-                SearchText.Text = "다운로드";
+                SearchText.Text = "검색";
             }
         }
 
         #region Pager
 
-        int max_page = 47; // 1 ~ 250
+        int max_page = 0; // 1 ~ 250
         int current_page_segment = 0;
 
         List<Button> page_number_buttons = new List<Button>();
