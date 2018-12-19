@@ -236,6 +236,9 @@
       <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ArrangePanel.cs" />
+    <Compile Include="Utility\MangaCrawler.xaml.cs">
+      <DependentUpon>MangaCrawler.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\PackPanel.cs" />
     <Compile Include="Utility\SeriesManager.xaml.cs">
       <DependentUpon>SeriesManager.xaml</DependentUpon>
@@ -413,6 +416,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tools\Statistics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\MangaCrawler.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

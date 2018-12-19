@@ -161,7 +161,17 @@ namespace Koromo_Copy_UX3.Domain
                         sm.Show();
                     }));
                     break;
-                    
+
+                case "crawler":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        MangaCrawler mc = new MangaCrawler();
+                        mc.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;
