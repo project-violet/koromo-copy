@@ -263,6 +263,7 @@ namespace Koromo_Copy_UX3.Utility
             Application.Current.Dispatcher.BeginInvoke(new Action(
             delegate
             {
+                CollectStatusPanel.Visibility = Visibility.Visible;
                 DownloadState.Text = $"수집 중";
             }));
 

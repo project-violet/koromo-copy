@@ -211,6 +211,15 @@ namespace Koromo_Copy.Net
                     lock (callback) callback(uri, fileName, obj);
                     return;
                 }
+
+                if (!uri.StartsWith("http"))
+                {
+                    Monitor.Instance.Push($"[Url Error] {uri} is not corret url");
+                    lock (err_callback) err_callback(uri, "[Emilia Queue] Url Error. not corret url.", obj);
+                    lock (callback) callback(uri, fileName, obj);
+                    return;
+                }
+
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
                 se.RunPass(ref request);
 
