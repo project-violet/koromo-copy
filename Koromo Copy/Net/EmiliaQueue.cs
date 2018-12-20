@@ -146,7 +146,7 @@ namespace Koromo_Copy.Net
         /// <param name="se"></param>
         public void Add(string url, string path, object obj, SemaphoreCallBack callback, SemaphoreExtends se = null)
         {
-            queue.Add(new Tuple<string, string, object, SemaphoreCallBack, SemaphoreExtends>(url, path, obj, callback, se));
+            lock (queue) queue.Add(new Tuple<string, string, object, SemaphoreCallBack, SemaphoreExtends>(url, path, obj, callback, se));
             lock (notify_lock) Notify();
         }
 
