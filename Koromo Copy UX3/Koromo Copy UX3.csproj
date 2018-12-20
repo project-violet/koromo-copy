@@ -239,6 +239,9 @@
     <Compile Include="Utility\MangaCrawler.xaml.cs">
       <DependentUpon>MangaCrawler.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\MangaCrawlerElements.xaml.cs">
+      <DependentUpon>MangaCrawlerElements.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\PackPanel.cs" />
     <Compile Include="Utility\SeriesManager.xaml.cs">
       <DependentUpon>SeriesManager.xaml</DependentUpon>
@@ -420,6 +423,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\MangaCrawler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\MangaCrawlerElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
-        Title="Manga Crawler" Height="647" Width="903">
+        Title="Manga Crawler" Height="679" Width="993">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -50,7 +50,7 @@
                             </Setter>
                         </Style>
                     </Button.Style>
-                    <materialDesign:PackIcon x:Name="DownloadIcon" Kind="Download" Height="24" Width="24" Foreground="#717171"/>
+                    <materialDesign:PackIcon x:Name="SearchIcon" Kind="Search" Height="24" Width="24" Foreground="#717171"/>
                 </Button>
 
             </Grid>
@@ -65,7 +65,7 @@
         <Grid Grid.Row="1" Background="#121212">
             <Image x:Name="WaterMark" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.5" RenderOptions.BitmapScalingMode="Fant" Stretch="Uniform" MaxHeight="400"/>
             <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
-                <StackPanel x:Name="SeriesPanel" MaxWidth="800"/>
+                <local:ArrangePanel x:Name="SeriesPanel" MaxWidth="800"/>
             </controls:WheelSpeedScrollViewer>
         </Grid>
 
