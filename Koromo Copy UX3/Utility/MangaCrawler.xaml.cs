@@ -1,4 +1,12 @@
-﻿using Koromo_Copy.Component.Mangashow;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Net;
 using Koromo_Copy_UX3.Domain;
 using System;
@@ -57,16 +65,22 @@ namespace Koromo_Copy_UX3.Utility
             {
                 string base_url = "https://mangashow.me/bbs/page.php?hid=manga_list&page=";
 
-                List<Tuple<string, string>> articles = new List<Tuple<string, string>>();
-                for (int i = 0; i < 62; i++)
-                {
-                    articles.AddRange(MangashowmeParser.ParseIndex(NetCommon.DownloadString(base_url + i)));
-
-                    Application.Current.Dispatcher.BeginInvoke(new Action(
-                    delegate
+                int max = MangashowmeParser.ParseMaxPage(NetCommon.DownloadString(base_url));
+                var result = EmiliaJob.Instance.AddJob(Enumerable.Range(0, max).Select(x => base_url + x).ToList(),
+                    (count) =>
                     {
-                        ProgressText.Text = $"가져오는 중...[{i + 1}/62]";
-                    }));
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            ProgressText.Text = $"가져오는 중...[{count}/{max}]";
+                        }));
+                    });
+
+                List<Tuple<string, string>> articles = new List<Tuple<string, string>>();
+
+                for (int i = 0; i < result.Count; i++)
+                {
+                    articles.AddRange(MangashowmeParser.ParseIndex(result[i]));
                 }
 
                 foreach (var article in articles)
@@ -81,8 +95,8 @@ namespace Koromo_Copy_UX3.Utility
                 {
                     CollectStatusPanel.Visibility = Visibility.Collapsed;
 
-                    max_page = mangas.Count / 36 + 1;
-                    initialize_page();
+                    max_page = mangas.Count / 36;
+                    set_page_segment(0);
                 }));
 
             });

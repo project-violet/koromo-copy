@@ -156,6 +156,7 @@
     <Compile Include="Net\Driver\SeleniumWrapper.cs" />
     <Compile Include="Net\EmiliaDispatcher.cs" />
     <Compile Include="Net\EmiliaQueue.cs" />
+    <Compile Include="Net\EmiliaJob.cs" />
     <Compile Include="Net\NetCommon.cs" />
     <Compile Include="Component\Pixiv\Pixeez\Objects\Authorize.cs" />
     <Compile Include="Component\Pixiv\Pixeez\Objects\MyFeed.cs" />
