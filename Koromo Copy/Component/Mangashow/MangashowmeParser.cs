@@ -72,5 +72,13 @@ namespace Koromo_Copy.Component.Mangashow
 
             return result;
         }
+
+        public static int ParseMaxPage(string html)
+        {
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(html);
+
+            return Convert.ToInt32(document.DocumentNode.SelectNodes("//ul[@class='pagination']/li").Last().SelectSingleNode("./a").GetAttributeValue("href", "").Split('(')[1].Split(')')[0]);
+        }
     }
 }
