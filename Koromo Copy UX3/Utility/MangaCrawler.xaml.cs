@@ -90,15 +90,23 @@ namespace Koromo_Copy_UX3.Utility
 
                 mangas.Sort((x, y) => SortAlgorithm.ComparePath(x.Item3, y.Item3));
 
+                foreach (var manga in mangas)
+                {
+                    elems.Add(new Lazy<MangaCrawlerElements>(() =>
+                    {
+                        return new MangaCrawlerElements(manga.Item1, manga.Item2, manga.Item3);
+                    }));
+                }
+
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
                     CollectStatusPanel.Visibility = Visibility.Collapsed;
 
-                    max_page = mangas.Count / 36;
+                    max_page = (mangas.Count - 1) / 36;
                     set_page_segment(0);
+                    show_page(0);
                 }));
-
             });
         }
 
@@ -115,22 +123,22 @@ namespace Koromo_Copy_UX3.Utility
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
-            DownloadIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0x9A, 0x9A));
+            SearchIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0x9A, 0x9A));
         }
 
         private void Button_MouseLeave(object sender, MouseEventArgs e)
         {
-            DownloadIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x71, 0x71, 0x71));
+            SearchIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x71, 0x71, 0x71));
         }
 
         private void Button_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DownloadIcon.Margin = new Thickness(2, 0, 0, 0);
+            SearchIcon.Margin = new Thickness(2, 0, 0, 0);
         }
 
         private void Button_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            DownloadIcon.Margin = new Thickness(0, 0, 0, 0);
+            SearchIcon.Margin = new Thickness(0, 0, 0, 0);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -168,7 +176,7 @@ namespace Koromo_Copy_UX3.Utility
             page_number_buttons[i % 10].Background = new SolidColorBrush(Color.FromRgb(0x80, 0x80, 0x80));
             page_number_buttons[i % 10].Foreground = new SolidColorBrush(Color.FromRgb(0x17, 0x17, 0x17));
 
-            // ?
+            show_page_impl(i);
         }
 
         private void set_page_segment(int seg)
@@ -230,5 +238,17 @@ namespace Koromo_Copy_UX3.Utility
         }
 
         #endregion
+
+        List<Lazy<MangaCrawlerElements>> elems = new List<Lazy<MangaCrawlerElements>>();
+
+        private void show_page_impl(int page)
+        {
+            SeriesPanel.Children.Clear();
+
+            for (int i = page * 36; i < (page + 1) * 36 && i < elems.Count; i++)
+            {
+                SeriesPanel.Children.Add(elems[i].Value);
+            }
+        }
     }
 }
