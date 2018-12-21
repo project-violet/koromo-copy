@@ -67,7 +67,7 @@ namespace Koromo_Copy.Component.Mangashow
 
             foreach (var article in document.DocumentNode.SelectNodes("//div[@class='post-row']"))
             {
-                result.Add(Tuple.Create(article.SelectSingleNode(".//img").GetAttributeValue("src", ""), article.SelectSingleNode(".//a").GetAttributeValue("href", "")));
+                result.Add(Tuple.Create(article.SelectSingleNode(".//div[@class='img-wrap-back']").GetAttributeValue("style", "").Split('(')[1].Split(')')[0], article.SelectSingleNode(".//a").GetAttributeValue("href", "")));
             }
 
             return result;
