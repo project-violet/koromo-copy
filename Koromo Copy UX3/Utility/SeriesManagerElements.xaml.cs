@@ -288,17 +288,27 @@ namespace Koromo_Copy_UX3.Utility
                             {
                                 ProgressText.Text = $"가져오는 중... [0/{series.Articles.Count}]";
                             }));
+                            
+                            var result = EmiliaJob.Instance.AddJob(series.Archive.ToList(),
+                                (count) =>
+                                {
+                                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                                    delegate
+                                    {
+                                        ProgressText.Text = $"가져오는 중...[{count}/{series.Articles.Count}]";
+                                    }));
+                                });
 
                             for (int i = 0; i < series.Articles.Count; i++)
                             {
-                                series.Articles[i].ImagesLink = manager.ParseImages(NetCommon.DownloadString(series.Archive[i]), series.Articles[i]);
+                                series.Articles[i].ImagesLink = manager.ParseImages(result[i], series.Articles[i]);
                                 file_count += series.Articles[i].ImagesLink.Count;
 
                                 int k = i;
                                 Application.Current.Dispatcher.BeginInvoke(new Action(
                                 delegate
                                 {
-                                    ProgressText.Text = $"가져오는 중... [{i}/{series.Articles.Count}] (파일 {file_count}개)";
+                                    //ProgressText.Text = $"가져오는 중... [{i}/{series.Articles.Count}] (파일 {file_count}개)";
                                     if (k == 0 && string.IsNullOrEmpty(series.Thumbnail))
                                     {
                                         var bitmap = new BitmapImage();
