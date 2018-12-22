@@ -139,6 +139,25 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 1.2
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.2 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - Manga Crawler 기능 시험 추가 (콘솔에서 ux -window crawler 명령으로 실행 가능)\r\n\r\n" +
+                    " - 만화 다운로드전 이미지 정보 수집시 병렬로 수집합니다 (시리즈 매니져에서만 가능)\r\n\r\n" +
+                    "[수정된 기능]\r\n" +
+                    " - Mangashowme 사이트 변경에따른 다운로더 수정\r\n\r\n" +
+                    "[삭제된 기능]\r\n" +
+                    " - 기존의 Task 기반의 다운로드큐가 삭제되고, Emilia Queue를 기본 다운로드큐로 대체됩니다.\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.1
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements

@@ -11,7 +11,7 @@
         WindowStyle="None"
         AllowsTransparency="True" Background="Transparent"
         WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated"
-        Title="PatchNoteWindow" Height="349" Width="785.667">
+        Title="PatchNoteWindow" Height="349" Width="832.667">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="5"
@@ -70,17 +70,17 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.1 Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.2 Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - Zip Viewer 기능 추가 (Ctrl + E로 실행 가능)"/>
+                        <Run Text=" - 이제부터 기본 다운로드큐로 Emilia Queue를 적용합니다."/>
+                        <LineBreak/>
+                        <Run Text="   Emilia Queue는 저수준 쓰레드 기반의 다운로더로 기존의 다운로더보다 높은 성능을 가집니다."/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 새로운 독립 다운로더 시리즈 매니저 추가 (Ctrl + S로 실행 가능)"/>
+                        <Run Text=" - 시리즈 매니져에서 만화 정보를 빠르게 가져옵니다. 최대 10배 이상의 다운로드 시간을 절약할 수 있습니다."/>
                         <LineBreak/>
-                        <Run Text="   Hiyobi-NonH, MangashowMe의 다운로드 및 동기화를 도와주는 새로운 다운로더입니다."/>
-                        <LineBreak/>
-                        <Run Text="   (이거 만드느라 업데이트 늦었던 거예요. 꼭 써보세요!)"/>
+                        <Run Text="   시리즈 매니져는 Ctrl + S 단축키를 통해 실행가능합니다."/>
                         <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
@@ -90,7 +90,7 @@
                         <Run Text=" 자세한 업데이트 내역은 커밋이나 설정->업데이트를 참고하세요."/>
                         <LineBreak/>
                         <Run Text=" 커밋 : "/>
-                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.0.6917.21506...master">https://github.com/dc-koromo/koromo-copy/compare/1.0.6917.21506...master</Hyperlink>
+                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.1.6925.32714...master">https://github.com/dc-koromo/koromo-copy/compare/1.1.6925.32714...master</Hyperlink>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
