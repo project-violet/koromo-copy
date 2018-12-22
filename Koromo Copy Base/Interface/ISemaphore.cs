@@ -32,9 +32,17 @@ namespace Koromo_Copy.Interface
         /// <param name="request"></param>
         public virtual void RunPass(ref HttpWebRequest request)
         {
-            if (Accept != null) request.Accept = Accept;
-            if (UserAgent != null) request.UserAgent = UserAgent;
-            if (Referer != null) request.Referer = Referer;
+            try
+            {
+                if (Accept != null) request.Accept = Accept;
+                if (UserAgent != null) request.UserAgent = UserAgent;
+
+                // Referer의 URL이 접속가능한 정상적인 URL인데도,
+                // 옳바른 형식의 URL이 아니라며 예외를 던질때가 있다.
+                // 현재 해결방법을 찾지 못하여 try-catch로 감싸놓은 상태이다.
+                if (Referer != null) request.Referer = Referer;
+            }
+            catch { }
         }
     }
 
