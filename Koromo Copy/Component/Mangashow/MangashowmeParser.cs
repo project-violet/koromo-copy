@@ -41,7 +41,7 @@ namespace Koromo_Copy.Component.Mangashow
 
         public static string ParseTitle(string html)
         {
-            return Regex.Match(html, @"class=""red"">(.*?)<").Groups[1].Value;
+            return Regex.Match(html, @"class=""red title"">(.*?)<").Groups[1].Value;
         }
 
         public static string ParseThumbnail(string html)
