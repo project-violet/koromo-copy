@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koromo Copy UX3", "..\Korom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koromo Copy UX4", "..\Koromo Copy UX4\Koromo Copy UX4.csproj", "{D62B0E4A-2A61-41DC-BB26-75470976785B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koromo Copy Core", "..\Koromo Copy Core\Koromo Copy Core.csproj", "{3074A27B-4C3C-4111-8A56-01B4F9166F3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{D62B0E4A-2A61-41DC-BB26-75470976785B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D62B0E4A-2A61-41DC-BB26-75470976785B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D62B0E4A-2A61-41DC-BB26-75470976785B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3074A27B-4C3C-4111-8A56-01B4F9166F3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3074A27B-4C3C-4111-8A56-01B4F9166F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3074A27B-4C3C-4111-8A56-01B4F9166F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3074A27B-4C3C-4111-8A56-01B4F9166F3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
