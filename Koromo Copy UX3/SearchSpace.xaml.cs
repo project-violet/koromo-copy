@@ -33,6 +33,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace Koromo_Copy_UX3
@@ -49,6 +50,7 @@ namespace Koromo_Copy_UX3
             InitializeComponent();
 
             Loaded += SearchSpace_Loaded;
+            initialize_page();
             Instance = this;
             InstanceMonitor.Instances.Add("searchspace", Instance);
         }
@@ -325,6 +327,101 @@ namespace Koromo_Copy_UX3
         {
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
+        #endregion
+
+
+        #region Pager
+
+        int max_page = 249; // 1 ~ 250
+        int current_page_segment = 0;
+
+        List<Button> page_number_buttons = new List<Button>();
+
+        private void initialize_page()
+        {
+            foreach (var page_number in PageNumberPanel.Children)
+            {
+                page_number_buttons.Add(page_number as Button);
+            }
+
+            if (max_page < 10)
+            {
+                for (int i = max_page + 1; i < 10; i++)
+                    page_number_buttons[i].Visibility = Visibility.Collapsed;
+            }
+            show_page(0);
+        }
+
+        private void show_page(int i)
+        {
+            page_number_buttons.ForEach(x => {
+                x.Background = Brushes.Pink;
+                x.Foreground = Brushes.White;
+            });
+            page_number_buttons[i % 10].Background = new SolidColorBrush(Color.FromRgb(0xED, 0x97, 0xA4));
+            //page_number_buttons[i % 10].Foreground = new SolidColorBrush(Color.FromRgb(0x17, 0x17, 0x17));
+
+            //show_page_impl(i);
+        }
+
+        private void set_page_segment(int seg)
+        {
+            for (int i = 0, j = current_page_segment * 10; i < 10; i++, j++)
+            {
+                page_number_buttons[i].Content = (j + 1).ToString();
+
+                if (j <= max_page)
+                    page_number_buttons[i].Visibility = Visibility.Visible;
+                else
+                    page_number_buttons[i].Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void PageNumber_Click(object sender, RoutedEventArgs e)
+        {
+            show_page(Convert.ToInt32((string)(sender as Button).Content) - 1);
+        }
+
+        private void PageFunction_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as Button).Tag.ToString())
+            {
+                case "LeftLeft":
+                    if (current_page_segment == 0) break;
+
+                    current_page_segment = 0;
+                    set_page_segment(0);
+                    show_page(0);
+                    break;
+
+                case "Left":
+                    if (current_page_segment == 0) break;
+
+                    current_page_segment--;
+                    set_page_segment(current_page_segment);
+                    show_page(current_page_segment * 10);
+                    break;
+
+                case "Right":
+                    if (max_page < 10) break;
+                    if (current_page_segment == max_page / 10) break;
+
+                    current_page_segment++;
+                    set_page_segment(current_page_segment);
+                    show_page(current_page_segment * 10);
+                    break;
+
+                case "RightRight":
+                    if (max_page < 10) break;
+                    if (current_page_segment == max_page / 10) break;
+
+                    current_page_segment = max_page / 10;
+                    set_page_segment(current_page_segment);
+                    show_page(max_page);
+                    break;
+            }
+        }
+
         #endregion
 
     }

@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
              xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
              xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
-             mc:Ignorable="d">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" d:DesignWidth="1110">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -150,50 +151,72 @@
                     <!--</Border>
                 </Border>-->
                 </controls:WheelSpeedScrollViewer>
+
             </Border>
 
-            <!--<Separator Grid.Row="3" Background="Pink"></Separator>-->
+            <Grid Grid.Row="3" Height="35" HorizontalAlignment="Stretch">
 
-            <Grid Grid.Row="4" Margin="5">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" x:Name="SearchCount" VerticalAlignment="Center">
+                <TextBlock Grid.Column="0" x:Name="SearchCount" VerticalAlignment="Center">
                         검색된 항목: 0개
-                    </TextBlock>
+                </TextBlock>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <StackPanel.Resources>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Background" Value="Pink"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Border Background="{TemplateBinding Background}">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#FDAEBB"/>
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="Background" Value="#F98498"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Resources>
-                        <Button Click="Button_Click" Grid.Column="1" HorizontalAlignment="Center"  BorderBrush="LightPink" Foreground="White" Width="100" Tag="Tidy">정리</Button>
-                        <Button Click="Button_Click" Width="100" Margin="20 0 3 0" BorderBrush="LightPink" Foreground="White" Tag="SelectAll">모두 선택</Button>
-                        <Button Click="Button_Click" Height="20" Width="100" Tag="DeSelectAll" BorderBrush="LightPink" Foreground="White" >모두 선택 취소</Button>
-                        <Button Click="Button_Click" Grid.Column="1" Margin="20 0 0 0" Width="100" BorderBrush="LightPink" Foreground="White" Tag="Download">다운로드</Button>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Tag="LeftLeft" Click="PageFunction_Click">
+                        <materialDesign:PackIcon Kind="ChevronDoubleLeft" Height="28" Width="28" Foreground="White"/>
+                    </Button>
+                    <Button BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Tag="Left" Click="PageFunction_Click">
+                        <materialDesign:PackIcon Kind="ChevronLeft" Height="28" Width="28" Foreground="White"/>
+                    </Button>
+
+                    <StackPanel x:Name="PageNumberPanel" Orientation="Horizontal">
+                        <Button Tag="0" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="1"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="1" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="2"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="2" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="3"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="3" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="4"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="4" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="5"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="5" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="6"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="6" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="7"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="7" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="8"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="8" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="9"  MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
+                        <Button Tag="9" BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Foreground="White" Content="10" MinWidth="35" FontSize="15" Click="PageNumber_Click"/>
                     </StackPanel>
-                </Grid>
+
+                    <Button BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Tag="Right" Click="PageFunction_Click">
+                        <materialDesign:PackIcon Kind="ChevronRight" Height="28" Width="28" Foreground="White"/>
+                    </Button>
+                    <Button BorderBrush="LightPink" Background="Pink" BorderThickness="0 0 0 0" Tag="RightRight" Click="PageFunction_Click">
+                        <materialDesign:PackIcon Kind="ChevronDoubleRight" Height="28" Width="28" Foreground="White"/>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Height="25" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Pink"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FDAEBB"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#F98498"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Resources>
+                    <!--<Button Click="Button_Click" Grid.Column="1" HorizontalAlignment="Center"  BorderBrush="LightPink" Foreground="White" Width="100" Tag="Tidy">정리</Button>-->
+                    <Button Click="Button_Click" Width="100" Margin="0 0 2 0" BorderBrush="LightPink" Foreground="White" Tag="SelectAll">모두 선택</Button>
+                    <Button Click="Button_Click" Width="100" Tag="DeSelectAll" BorderBrush="LightPink" Foreground="White" >모두 선택 취소</Button>
+                    <Button Click="Button_Click" Grid.Column="1" Margin="10 0 0 0" Width="100" BorderBrush="LightPink" Foreground="White" Tag="Download">다운로드</Button>
+                </StackPanel>
             </Grid>
         </Grid>
 
