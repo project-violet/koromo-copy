@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Koromo_Copy_Core
 {
-    public class Class1
+    class EmiliaQueue
     {
     }
 }
