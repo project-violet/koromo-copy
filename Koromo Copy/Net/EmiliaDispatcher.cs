@@ -223,15 +223,7 @@ namespace Koromo_Copy.Net
 
         public EmiliaDispatcher()
         {
-            if (!Settings.Instance.Net.UseEmiliaQueue)
-            {
-                queue = new DownloadQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback);
-            }
-            else
-            {
-                queue = new EmiliaQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback, downloadErrorCallback);
-            }
-
+            queue = new EmiliaQueue(downloadSizeCallback, downloadStatusCallback, downloadRetryCallback, downloadErrorCallback);
             series_dictionary = new Dictionary<int, EmiliaSeriesSegment>();
             dispatcher_dictionary = new Dictionary<int, DispatchInformation>();
             check_dictionary = new Dictionary<int, List<bool[]>>();
