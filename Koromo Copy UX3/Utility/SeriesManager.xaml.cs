@@ -133,6 +133,11 @@ namespace Koromo_Copy_UX3.Utility
         private void SeriesManager_Closed(object sender, EventArgs e)
         {
             //EmiliaDispatcher.Instance.Abort();
+            foreach (var elem in SeriesPanel.Children.OfType<SeriesManagerElements>())
+                elem.Dispose();
+            SeriesPanel.Children.Clear();
+            UpdateLayout();
+            GC.Collect();
         }
 
         private void SeriesManager_Loaded(object sender, RoutedEventArgs e)

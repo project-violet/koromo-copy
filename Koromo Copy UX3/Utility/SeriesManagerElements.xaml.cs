@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -240,20 +241,33 @@ namespace Koromo_Copy_UX3.Utility
 
         #endregion
 
-        private void LoadThumbnail(string url)
+        private async void LoadThumbnail(string url)
         {
-            bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.UriSource = new Uri(url);
-            bitmap.EndInit();
-            bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
-            Image.Source = bitmap;
+            using (var wc = new WebClient())
+            {
+                var bytes = await wc.DownloadDataTaskAsync(url);
+                bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                //bitmap.UriSource = new Uri(url);
+                bitmap.StreamSource = new MemoryStream(bytes);
+                bitmap.EndInit();
+                bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
+                Image.Source = bitmap;
+            }
+
         }
 
         private void Bitmap_DownloadCompleted(object sender, EventArgs e)
         {
+            bitmap.StreamSource.Dispose();
             bitmap.Freeze();
+        }
+
+        public void Dispose()
+        {
+            Image.Source = null;
+            bitmap = null;
         }
 
         private void StartFirstDownloads()
