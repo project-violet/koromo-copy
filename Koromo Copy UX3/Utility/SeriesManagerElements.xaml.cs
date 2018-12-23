@@ -45,6 +45,7 @@ namespace Koromo_Copy_UX3.Utility
         IArticle article;
         SeriesLogModel series_log;
         SeleniumWrapper wrapper;
+        BitmapImage bitmap;
 
         bool init_error = false;
 
@@ -108,11 +109,7 @@ namespace Koromo_Copy_UX3.Utility
                     DownloadState.Text = "완료됨";
                     if (!string.IsNullOrEmpty(thumbnail))
                     {
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(thumbnail);
-                        bitmap.EndInit();
-                        Image.Source = bitmap;
+                        LoadThumbnail(thumbnail);
                     }
 
                     Task.Run(() => PrepareSync());
@@ -226,12 +223,7 @@ namespace Koromo_Copy_UX3.Utility
                     {
                         if (!string.IsNullOrEmpty(thumbnail))
                         {
-                            var bitmap = new BitmapImage();
-                            bitmap.BeginInit();
-                            bitmap.UriSource = new Uri(thumbnail);
-                            //bitmap.DecodePixelHeight = 160;
-                            bitmap.EndInit();
-                            Image.Source = bitmap;
+                            LoadThumbnail(thumbnail);
                         }
 
                         Title.Text = title;
@@ -247,6 +239,22 @@ namespace Koromo_Copy_UX3.Utility
         }
 
         #endregion
+
+        private void LoadThumbnail(string url)
+        {
+            bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.UriSource = new Uri(url);
+            bitmap.EndInit();
+            bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
+            Image.Source = bitmap;
+        }
+
+        private void Bitmap_DownloadCompleted(object sender, EventArgs e)
+        {
+            bitmap.Freeze();
+        }
 
         private void StartFirstDownloads()
         {
@@ -311,11 +319,7 @@ namespace Koromo_Copy_UX3.Utility
                                     //ProgressText.Text = $"가져오는 중... [{i}/{series.Articles.Count}] (파일 {file_count}개)";
                                     if (k == 0 && string.IsNullOrEmpty(series.Thumbnail))
                                     {
-                                        var bitmap = new BitmapImage();
-                                        bitmap.BeginInit();
-                                        bitmap.UriSource = new Uri(thumbnail = series.Articles[0].ImagesLink[0]);
-                                        bitmap.EndInit();
-                                        Image.Source = bitmap;
+                                        LoadThumbnail(thumbnail = series.Articles[0].ImagesLink[0]);
                                     }
                                 }));
                             }
@@ -419,11 +423,7 @@ namespace Koromo_Copy_UX3.Utility
                                     ProgressText.Text = $"가져오는 중... [{i}/{series.Articles.Count}] (파일 {file_count}개)";
                                     if (k == 0 && string.IsNullOrEmpty(series.Thumbnail))
                                     {
-                                        var bitmap = new BitmapImage();
-                                        bitmap.BeginInit();
-                                        bitmap.UriSource = new Uri(thumbnail = series.Articles[0].ImagesLink[0]);
-                                        bitmap.EndInit();
-                                        Image.Source = bitmap;
+                                        LoadThumbnail(thumbnail = series.Articles[0].ImagesLink[0]);
                                     }
                                 }));
                             }
