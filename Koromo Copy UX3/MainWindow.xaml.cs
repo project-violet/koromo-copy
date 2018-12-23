@@ -183,7 +183,7 @@ namespace Koromo_Copy_UX3
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             Process proc = Process.GetCurrentProcess();
-            MemoryStatus.Text = "Memory Usage :  " + (proc.PrivateMemorySize64 / 1000).ToString("#,#") + " KB";
+            MemoryStatus.Text = "Memory Usage :  " + (proc.PrivateMemorySize64 / 1024).ToString("#,#") + " KB";
             lock (zip_lock)
                 if (zip_status > 0)
                     MemoryStatus.Text += $" ({zip_status})";
