@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace Koromo_Copy_UX3.Utility
 {
@@ -22,6 +23,77 @@ namespace Koromo_Copy_UX3.Utility
     /// </summary>
     public class FallsPanel : Panel
     {
+        #region 애니메이션
+        public static readonly DependencyProperty PositionProperty;
+        public static readonly DependencyProperty DesiredPositionProperty;
+
+        static FallsPanel()
+        {
+            PositionProperty = DependencyProperty.RegisterAttached(
+                "Position",
+                typeof(Rect),
+                typeof(FallsPanel),
+                new FrameworkPropertyMetadata(
+                    new Rect(double.NaN, double.NaN, double.NaN, double.NaN),
+                    FrameworkPropertyMetadataOptions.AffectsParentArrange));
+
+            DesiredPositionProperty = DependencyProperty.RegisterAttached(
+                "DesiredPosition",
+                typeof(Rect),
+                typeof(FallsPanel),
+                new FrameworkPropertyMetadata(
+                    new Rect(double.NaN, double.NaN, double.NaN, double.NaN),
+                    OnDesiredPositionChanged));
+
+        }
+
+        public static Rect GetPosition(DependencyObject obj)
+        {
+            return (Rect)obj.GetValue(PositionProperty);
+        }
+
+        public static void SetPosition(DependencyObject obj, Rect value)
+        {
+            obj.SetValue(PositionProperty, value);
+        }
+
+        private static void OnDesiredPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var desiredPosition = (Rect)e.NewValue;
+            AnimateToPosition(d, desiredPosition);
+        }
+
+        public static Rect GetDesiredPosition(DependencyObject obj)
+        {
+            return (Rect)obj.GetValue(DesiredPositionProperty);
+        }
+
+        public static void SetDesiredPosition(DependencyObject obj, Rect value)
+        {
+            obj.SetValue(DesiredPositionProperty, value);
+        }
+
+        private static void AnimateToPosition(DependencyObject d, Rect desiredPosition)
+        {
+            var position = GetPosition(d);
+            if (double.IsNaN(position.X))
+            {
+                SetPosition(d, desiredPosition);
+                return;
+            }
+
+            var distance = Math.Max(
+                (desiredPosition.TopLeft - position.TopLeft).Length,
+                (desiredPosition.BottomRight - position.BottomRight).Length);
+
+            var animationTime = TimeSpan.FromMilliseconds(distance * 2);
+            var animation = new RectAnimation(position, desiredPosition, new Duration(animationTime));
+            animation.DecelerationRatio = 1;
+            ((UIElement)d).BeginAnimation(PositionProperty, animation);
+        }
+        #endregion
+
+        #region 측정 정렬
         protected override Size MeasureOverride(Size availableSize)
         {
             foreach (UIElement child in InternalChildren)
@@ -32,18 +104,23 @@ namespace Koromo_Copy_UX3.Utility
             var positions = new Point[InternalChildren.Count];
             var desiredHeight = ArrangeChildren(positions, availableSize.Width);
 
+            int j = 0;
+            foreach (UIElement child in InternalChildren)
+            {
+                SetDesiredPosition(child, new Rect(positions[j++], child.DesiredSize));
+            }
+
             return new Size(availableSize.Width, desiredHeight);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var positions = new Point[InternalChildren.Count];
-            ArrangeChildren(positions, finalSize.Width);
-
-            for (int i = 0; i < InternalChildren.Count; i++)
+            foreach (UIElement child in InternalChildren)
             {
-                var child = InternalChildren[i];
-                child.Arrange(new Rect(positions[i], child.DesiredSize));
+                var position = GetPosition(child);
+                if (double.IsNaN(position.Top))
+                    position = GetDesiredPosition(child);
+                child.Arrange(position);
             }
 
             return finalSize;
@@ -87,5 +164,7 @@ namespace Koromo_Copy_UX3.Utility
 
             return desired_height;
         }
+
+        #endregion
     }
 }
