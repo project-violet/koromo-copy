@@ -172,6 +172,16 @@ namespace Koromo_Copy_UX3.Domain
                     }));
                     break;
 
+                case "zip-listing":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        ZipListing zl = new ZipListing();
+                        zl.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;

@@ -46,7 +46,6 @@ namespace Koromo_Copy_UX3.Utility
         IArticle article;
         SeriesLogModel series_log;
         SeleniumWrapper wrapper;
-        BitmapImage bitmap;
 
         bool init_error = false;
 
@@ -243,31 +242,34 @@ namespace Koromo_Copy_UX3.Utility
 
         private async void LoadThumbnail(string url)
         {
-            using (var wc = new WebClient())
+            try
             {
-                var bytes = await wc.DownloadDataTaskAsync(url);
-                bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                //bitmap.UriSource = new Uri(url);
-                bitmap.StreamSource = new MemoryStream(bytes);
-                bitmap.EndInit();
-                bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
-                Image.Source = bitmap;
+
+                using (var wc = new WebClient())
+                {
+                    var bytes = await wc.DownloadDataTaskAsync(url);
+                    using (var stream = new MemoryStream(bytes))
+                    {
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.DecodePixelHeight = 170;
+                        //bitmap.UriSource = new Uri(url);
+                        bitmap.StreamSource = new MemoryStream(bytes);
+                        bitmap.EndInit();
+                        bitmap.Freeze();
+                        //bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
+                        Image.Source = bitmap;
+                    }
+                }
             }
+            catch { }
 
         }
-
-        private void Bitmap_DownloadCompleted(object sender, EventArgs e)
-        {
-            bitmap.StreamSource.Dispose();
-            bitmap.Freeze();
-        }
-
+        
         public void Dispose()
         {
             Image.Source = null;
-            bitmap = null;
         }
 
         private void StartFirstDownloads()

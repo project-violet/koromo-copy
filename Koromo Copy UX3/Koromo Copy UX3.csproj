@@ -237,6 +237,7 @@
       <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ArrangePanel.cs" />
+    <Compile Include="Utility\FallsPanel.cs" />
     <Compile Include="Utility\MangaCrawler.xaml.cs">
       <DependentUpon>MangaCrawler.xaml</DependentUpon>
     </Compile>
@@ -252,6 +253,12 @@
     </Compile>
     <Compile Include="Utility\SeriesManagerElementsInfo.xaml.cs">
       <DependentUpon>SeriesManagerElementsInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\ZipListing.xaml.cs">
+      <DependentUpon>ZipListing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\ZipListingElements.xaml.cs">
+      <DependentUpon>ZipListingElements.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ZipViewer.xaml.cs">
       <DependentUpon>ZipViewer.xaml</DependentUpon>
@@ -440,6 +447,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\SeriesManagerElementsInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipListing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipListingElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

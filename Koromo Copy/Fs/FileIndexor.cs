@@ -29,6 +29,7 @@ namespace Koromo_Copy.Fs
         public FileIndexorNode Node { get { return node?.Nodes?[0]; } }
         public int Count { get { return directory_list.Count; } }
         public bool OnlyListing { get; set; }
+        public List<Tuple<string, UInt64, FileInfo[]>> Directories { get { return directory_list; } }
 
         /// <summary>
         /// 파일인덱서를 초기화합니다.
