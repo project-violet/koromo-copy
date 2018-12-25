@@ -8,6 +8,7 @@
 
 using HtmlAgilityPack;
 using Koromo_Copy.Interface;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,9 +54,10 @@ namespace Koromo_Copy.Component.Mangashow
 
         public static List<string> ParseImages(string html)
         {
-            HtmlDocument document = new HtmlDocument();
-            document.LoadHtml(html);
-            return document.DocumentNode.SelectNodes("//div[@class='view-content scroll-viewer']//img").Select(x => x.GetAttributeValue("src", "")).ToList();
+            //HtmlDocument document = new HtmlDocument();
+            //document.LoadHtml(html);
+            return JsonConvert.DeserializeObject<List<string>>(html.Split(new string[] { @"var img_list = " }, StringSplitOptions.None)[1].Split(';')[0]);
+            //return document.DocumentNode.SelectNodes("//div[@class='view-content scroll-viewer']//img").Select(x => x.GetAttributeValue("src", "")).ToList();
         }
 
         public static List<Tuple<string,string>> ParseIndex(string html)
