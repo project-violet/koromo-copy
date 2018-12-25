@@ -113,5 +113,23 @@ namespace Koromo_Copy_UX3.Utility
         {
             Process.Start(zip_file_name);
         }
+        
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = (StackPanel)sender;
+            if (item.Tag.ToString() == "OpenFolder")
+            {
+                Process.Start("explorer", "/select, \"" + zip_file_name + "\"");
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (MenuItem)sender;
+            if (item.Tag.ToString() == "OpenFolder")
+            {
+                Process.Start("explorer", "/select, \"" + zip_file_name + "\"");
+            }
+        }
     }
 }

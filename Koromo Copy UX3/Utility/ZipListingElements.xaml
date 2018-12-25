@@ -62,10 +62,28 @@
         </EventTrigger>
     </UserControl.Triggers>
 
-    <materialDesign:Card Background="#2C2C2C">
-        <materialDesign:Card.Resources>
-
-        </materialDesign:Card.Resources>
+    <materialDesign:Card Background="#2C2C2C" x:Name="Card">
+        <materialDesign:Card.ContextMenu>
+            <ContextMenu Background="#282828" Foreground="White">
+                <ContextMenu.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </ContextMenu.Resources>
+                <MenuItem Click="MenuItem_Click" Tag="OpenFolder">
+                    <MenuItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Folder" Opacity=".56"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">폴더 열기</TextBlock>
+                        </StackPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+            </ContextMenu>
+        </materialDesign:Card.ContextMenu>
 
         <Grid>
             <Grid.RowDefinitions>

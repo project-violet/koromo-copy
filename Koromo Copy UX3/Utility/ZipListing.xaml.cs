@@ -43,7 +43,7 @@ namespace Koromo_Copy_UX3.Utility
                 page_number_buttons.Add(page_number as Button);
             }
             initialize_page();
-
+            
             PathText.GotFocus += PathText_GotFocus;
             PathText.LostFocus += PathText_LostFocus;
         }
@@ -149,6 +149,7 @@ namespace Koromo_Copy_UX3.Utility
                 fs.Write(json);
             }
             article_list = article_dic.ToList();
+            elems.Clear();
             article_list.ForEach(x => elems.Add(new Lazy<ZipListingElements>(() =>
             {
                 return new ZipListingElements(x.Key);
@@ -178,6 +179,7 @@ namespace Koromo_Copy_UX3.Utility
                     article_list = article_dic.ToList();
                     article_list.Sort((x, y) => y.Value.Pages.CompareTo(x.Value.Pages));
                     article_list = article_list.Where(x => x.Value.Tags != null && x.Value.Tags.Contains("tankoubon")).ToList();
+                    elems.Clear();
                     article_list.ForEach(x => elems.Add(new Lazy<ZipListingElements>(() =>
                     {
                         return new ZipListingElements(x.Key);
