@@ -20,6 +20,18 @@ using System.Windows;
 
 namespace Koromo_Copy_UX3.Utility
 {
+    public class ZipListingArticleModel
+    {
+        [JsonProperty]
+        public HitomiJsonModel ArticleData;
+
+        [JsonProperty]
+        public string CreatedDate;
+
+        [JsonProperty]
+        public long Size;
+    }
+
     /// <summary>
     /// Zip Listing Tool Data Model
     /// </summary>
@@ -41,7 +53,7 @@ namespace Koromo_Copy_UX3.Utility
         /// 튜플의 첫 번째 요소는 해당 파일의 상대경로이며, 두 번째 요소는 작품의 정보입니다.
         /// </summary>
         [JsonProperty]
-        public KeyValuePair<string, HitomiJsonModel>[] ArticleList;
+        public KeyValuePair<string, ZipListingArticleModel>[] ArticleList;
     }
 
     public class ZipListingModelManager

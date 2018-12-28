@@ -9,6 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Fs;
+using Koromo_Copy_UX3.Domain;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -115,7 +116,7 @@ namespace Koromo_Copy_UX3.Utility
 
         #region UI / IO
 
-        List<KeyValuePair<string, HitomiJsonModel>> article_list;
+        List<KeyValuePair<string, ZipListingArticleModel>> article_list;
         ZipListingModel model;
 
         int show_elem_per_page = 20;
@@ -127,8 +128,7 @@ namespace Koromo_Copy_UX3.Utility
 
             string root_directory = fi.RootDirectory;
 
-            Dictionary<string, HitomiJsonModel> article_dic;
-            article_dic = new Dictionary<string, HitomiJsonModel>();
+            Dictionary<string, ZipListingArticleModel> article_dic = new Dictionary<string, ZipListingArticleModel>();
             foreach (var x in fi.Directories)
             {
                 await Application.Current.Dispatcher.BeginInvoke(new Action(
@@ -146,7 +146,7 @@ namespace Koromo_Copy_UX3.Utility
                         using (var reader = new StreamReader(zipFile.GetEntry("Info.json").Open()))
                         {
                             var json_model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
-                            article_dic.Add(file.FullName.Substring(root_directory.Length), json_model);
+                            article_dic.Add(file.FullName.Substring(root_directory.Length), new ZipListingArticleModel { ArticleData = json_model, Size = file.Length, CreatedDate = file.CreationTime.ToString() });
                         }
                     }
                     catch (Exception e)
@@ -164,22 +164,25 @@ namespace Koromo_Copy_UX3.Utility
 
             article_list = article_dic.ToList();
             elems.Clear();
-            article_list.ForEach(x => elems.Add(new Lazy<ZipListingElements>(() =>
+            article_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
             {
                 return new ZipListingElements(root_directory + x.Key);
-            })));
-            
+            }))));
+            sort_data(align_column, align_row);
+
             await Application.Current.Dispatcher.BeginInvoke(new Action(
             delegate
             {
                 CollectStatusPanel.Visibility = Visibility.Collapsed;
                 ArticleCount.Text = $"작품 {article_dic.Count.ToString("#,#")}개";
-                PageCount.Text = $"이미지 {article_list.Select(x => x.Value.Pages).Sum().ToString("#,#")}장";
+                PageCount.Text = $"이미지 {article_list.Select(x => x.Value.ArticleData.Pages).Sum().ToString("#,#")}장";
                 max_page = article_dic.Count / show_elem_per_page;
                 initialize_page();
             }));
         }
 
+        int align_row = 0;
+        int align_column = 0;
         private async void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListBoxItem;
@@ -192,8 +195,11 @@ namespace Koromo_Copy_UX3.Utility
                 if (ofd.ShowDialog() == true)
                 {
                     // 열기
-                    model = ZipListingModelManager.OpenModel(ofd.FileName);
-                    if (model == null || model.ArticleList == null)
+                    try
+                    {
+                        model = ZipListingModelManager.OpenModel(ofd.FileName);
+                    }
+                    catch
                     {
                         MessageBox.Show("옳바른 파일이 아닙니다!", "Zip Listing", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
@@ -206,41 +212,79 @@ namespace Koromo_Copy_UX3.Utility
                     }
 
                     article_list = model.ArticleList.ToList();
-
-                    // 기본 필터링
-                    //article_list.Sort((x, y) => y.Value.Pages.CompareTo(x.Value.Pages));
-                    //article_list = article_list.Where(x => x.Value.Tags != null && x.Value.Tags.Contains("tankoubon")).ToList();
-
+                    
                     // 초기화
                     elems.Clear();
-                    article_list.ForEach(x => elems.Add(new Lazy<ZipListingElements>(() =>
+                    article_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
                     {
                         return new ZipListingElements(model.RootDirectory + x.Key);
-                    })));
+                    }))));
+                    sort_data(align_column, align_row);
                     ArticleCount.Text = $"작품 {article_list.Count.ToString("#,#")}개";
-                    PageCount.Text = $"이미지 {article_list.Select(x=>x.Value.Pages).Sum().ToString("#,#")}장";
+                    PageCount.Text = $"이미지 {article_list.Select(x=>x.Value.ArticleData.Pages).Sum().ToString("#,#")}장";
                     max_page = article_list.Count / show_elem_per_page;
                     initialize_page();
                 }
             }
-            else
+            else if (item.Tag.ToString() == "Align")
             {
-                var sampleMessageDialog = new ZipListingSorting
+                var dialog = new ZipListingSorting(align_column, align_row);
+                if ((bool)(await DialogHost.Show(dialog, "RootDialog")))
                 {
-                };
+                    int column = dialog.AlignColumnIndex;
+                    int row = dialog.AlignRowIndex;
 
-                await DialogHost.Show(sampleMessageDialog, "RootDialog");
+                    if (column == align_column && row == align_row) return;
+                    sort_data(column, row);
+                    align_column = column;
+                    align_row = row;
+                    initialize_page();
+                }
+            }
+            else if (item.Tag.ToString() == "Filter")
+            {
+
             }
         }
 
-        List<Lazy<ZipListingElements>> elems = new List<Lazy<ZipListingElements>>();
+        private void sort_data(int column, int row)
+        {
+            if (column == 0)
+            {
+                elems.Sort((x, y) => SortAlgorithm.ComparePath(x.Item1.Key, y.Item1.Key));
+            }
+            else if (column == 1)
+            {
+                elems.Sort((x, y) => DateTime.Parse(x.Item1.Value.CreatedDate).CompareTo(DateTime.Parse(y.Item1.Value.CreatedDate)));
+            }
+            else if (column == 2)
+            {
+                elems.Sort((x, y) => x.Item1.Value.Size.CompareTo(y.Item1.Value.Size));
+            }
+            else if (column == 3)
+            {
+                elems.Sort((x, y) => x.Item1.Value.ArticleData.Title.CompareTo(y.Item1.Value.ArticleData.Title));
+            }
+            else if (column == 4)
+            {
+                elems.Sort((x, y) => x.Item1.Value.ArticleData.Id.CompareTo(y.Item1.Value.ArticleData.Id));
+            }
+            else if (column == 5)
+            {
+                elems.Sort((x, y) => x.Item1.Value.ArticleData.Pages.CompareTo(y.Item1.Value.ArticleData.Pages));
+            }
+
+            if (row == 1) elems.Reverse();
+        }
+
+        List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> elems = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();
         private void show_page_impl(int page)
         {
             SeriesPanel.Children.Clear();
 
             for (int i = page * show_elem_per_page; i < (page + 1) * show_elem_per_page && i < elems.Count; i++)
             {
-                SeriesPanel.Children.Add(elems[i].Value);
+                SeriesPanel.Children.Add(elems[i].Item2.Value);
             }
         }
 
@@ -255,12 +299,9 @@ namespace Koromo_Copy_UX3.Utility
 
         private void initialize_page()
         {
+            current_page_segment = 0;
             page_number_buttons.ForEach(x => x.Visibility = Visibility.Visible);
-            if (max_page < 10)
-            {
-                for (int i = max_page + 1; i < 10; i++)
-                    page_number_buttons[i].Visibility = Visibility.Collapsed;
-            }
+            set_page_segment(0);
             show_page(0);
         }
 

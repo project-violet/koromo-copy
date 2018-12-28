@@ -1,4 +1,12 @@
-﻿using System;
+﻿/***
+
+   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+
+   Author: Koromo Copy Developer
+
+***/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +28,24 @@ namespace Koromo_Copy_UX3.Utility
     /// </summary>
     public partial class ZipListingSorting : UserControl
     {
-        public ZipListingSorting()
+        public ZipListingSorting(int c, int r)
         {
             InitializeComponent();
+
+            AlignColumn.SelectedIndex = c;
+            AlignRow.SelectedIndex = r;
+        }
+        
+        public int AlignColumnIndex = 0;
+        private void AlignColumn_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AlignColumnIndex = AlignColumn.SelectedIndex;
+        }
+
+        public int AlignRowIndex = 0;
+        private void AlignRow_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AlignRowIndex = AlignRow.SelectedIndex;
         }
     }
 }
