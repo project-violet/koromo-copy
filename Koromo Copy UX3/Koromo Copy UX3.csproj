@@ -260,6 +260,7 @@
     <Compile Include="Utility\ZipListingElements.xaml.cs">
       <DependentUpon>ZipListingElements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ZipListingModel.cs" />
     <Compile Include="Utility\ZipViewer.xaml.cs">
       <DependentUpon>ZipViewer.xaml</DependentUpon>
     </Compile>
