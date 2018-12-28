@@ -47,7 +47,9 @@ namespace Koromo_Copy_UX3.Utility
             PathText.GotFocus += PathText_GotFocus;
             PathText.LostFocus += PathText_LostFocus;
         }
-        
+
+        #region UI
+
         private void PathText_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(PathText.Text))
@@ -108,13 +110,23 @@ namespace Koromo_Copy_UX3.Utility
 
         }
 
-        Dictionary<string, HitomiJsonModel> article_dic;
+        #endregion
+
+        #region UI / IO
+
         List<KeyValuePair<string, HitomiJsonModel>> article_list;
+        ZipListingModel model;
+
+        int show_elem_per_page = 20;
 
         private async void ProcessPath(string path)
         {
             FileIndexor fi = new FileIndexor();
             await fi.ListingDirectoryAsync(path);
+
+            string root_directory = fi.RootDirectory;
+
+            Dictionary<string, HitomiJsonModel> article_dic;
             article_dic = new Dictionary<string, HitomiJsonModel>();
             foreach (var x in fi.Directories)
             {
@@ -132,8 +144,8 @@ namespace Koromo_Copy_UX3.Utility
                         if (zipFile.GetEntry("Info.json") == null) continue;
                         using (var reader = new StreamReader(zipFile.GetEntry("Info.json").Open()))
                         {
-                            var model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
-                            article_dic.Add(file.FullName, model);
+                            var json_model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
+                            article_dic.Add(file.FullName.Substring(root_directory.Length), json_model);
                         }
                     }
                     catch (Exception e)
@@ -143,24 +155,25 @@ namespace Koromo_Copy_UX3.Utility
                 }
             }
 
-            string json = JsonConvert.SerializeObject(article_dic, Formatting.Indented);
-            using (var fs = new StreamWriter(new FileStream($"ziplist-result-{DateTime.Now.Ticks}.json", FileMode.Create, FileAccess.Write)))
-            {
-                fs.Write(json);
-            }
+            model = new ZipListingModel();
+            model.RootDirectory = root_directory;
+            model.Tag = path;
+            model.ArticleList = article_dic.ToArray();
+            ZipListingModelManager.SaveModel($"ziplist-result-{DateTime.Now.Ticks}.json", model);
+
             article_list = article_dic.ToList();
             elems.Clear();
             article_list.ForEach(x => elems.Add(new Lazy<ZipListingElements>(() =>
             {
-                return new ZipListingElements(x.Key);
+                return new ZipListingElements(root_directory + x.Key);
             })));
-
+            
             await Application.Current.Dispatcher.BeginInvoke(new Action(
             delegate
             {
                 CollectStatusPanel.Visibility = Visibility.Collapsed;
                 ArticleCount.Text = $"작품 {article_dic.Count.ToString("#,#")}개";
-                max_page = article_dic.Count / 20;
+                max_page = article_dic.Count / show_elem_per_page;
                 initialize_page();
             }));
         }
@@ -173,19 +186,31 @@ namespace Koromo_Copy_UX3.Utility
             {
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                ofd.Filter = "데이터 파일 (*.json)|*.json";
                 if (ofd.ShowDialog() == true)
                 {
-                    article_dic = JsonConvert.DeserializeObject<Dictionary<string, HitomiJsonModel>>(File.ReadAllText(ofd.FileName));
-                    article_list = article_dic.ToList();
+                    // 열기
+                    model = ZipListingModelManager.OpenModel(ofd.FileName);
+                    if (model == null || model.RootDirectory == null)
+                    {
+                        MessageBox.Show("옳바른 파일이 아닙니다!", "Zip Listing", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    article_list = model.ArticleList.ToList();
                     article_list.Sort((x, y) => y.Value.Pages.CompareTo(x.Value.Pages));
+
+                    // 기본 필터링
                     article_list = article_list.Where(x => x.Value.Tags != null && x.Value.Tags.Contains("tankoubon")).ToList();
+
+                    // 초기화
                     elems.Clear();
                     article_list.ForEach(x => elems.Add(new Lazy<ZipListingElements>(() =>
                     {
-                        return new ZipListingElements(x.Key);
+                        return new ZipListingElements(model.RootDirectory + x.Key);
                     })));
                     ArticleCount.Text = $"작품 {article_list.Count.ToString("#,#")}개";
-                    max_page = article_list.Count / 20;
+                    max_page = article_list.Count / show_elem_per_page;
                     initialize_page();
                 }
             }
@@ -196,11 +221,13 @@ namespace Koromo_Copy_UX3.Utility
         {
             SeriesPanel.Children.Clear();
 
-            for (int i = page * 20; i < (page + 1) * 20 && i < elems.Count; i++)
+            for (int i = page * show_elem_per_page; i < (page + 1) * show_elem_per_page && i < elems.Count; i++)
             {
                 SeriesPanel.Children.Add(elems[i].Value);
             }
         }
+
+        #endregion
 
         #region Pager
 
