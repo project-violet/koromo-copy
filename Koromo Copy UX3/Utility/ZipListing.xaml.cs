@@ -9,6 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Fs;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -173,12 +174,13 @@ namespace Koromo_Copy_UX3.Utility
             {
                 CollectStatusPanel.Visibility = Visibility.Collapsed;
                 ArticleCount.Text = $"작품 {article_dic.Count.ToString("#,#")}개";
+                PageCount.Text = $"이미지 {article_list.Select(x => x.Value.Pages).Sum().ToString("#,#")}장";
                 max_page = article_dic.Count / show_elem_per_page;
                 initialize_page();
             }));
         }
 
-        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        private async void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListBoxItem;
 
@@ -191,17 +193,23 @@ namespace Koromo_Copy_UX3.Utility
                 {
                     // 열기
                     model = ZipListingModelManager.OpenModel(ofd.FileName);
-                    if (model == null || model.RootDirectory == null)
+                    if (model == null || model.ArticleList == null)
                     {
                         MessageBox.Show("옳바른 파일이 아닙니다!", "Zip Listing", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
 
+                    if (!Directory.Exists(model.RootDirectory))
+                    {
+                        MessageBox.Show($"루트 디렉토리 {model.RootDirectory}를 찾을 수 없습니다! 루트 디렉토리를 수정해주세요!", "Zip Listing", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
                     article_list = model.ArticleList.ToList();
-                    article_list.Sort((x, y) => y.Value.Pages.CompareTo(x.Value.Pages));
 
                     // 기본 필터링
-                    article_list = article_list.Where(x => x.Value.Tags != null && x.Value.Tags.Contains("tankoubon")).ToList();
+                    //article_list.Sort((x, y) => y.Value.Pages.CompareTo(x.Value.Pages));
+                    //article_list = article_list.Where(x => x.Value.Tags != null && x.Value.Tags.Contains("tankoubon")).ToList();
 
                     // 초기화
                     elems.Clear();
@@ -210,9 +218,18 @@ namespace Koromo_Copy_UX3.Utility
                         return new ZipListingElements(model.RootDirectory + x.Key);
                     })));
                     ArticleCount.Text = $"작품 {article_list.Count.ToString("#,#")}개";
+                    PageCount.Text = $"이미지 {article_list.Select(x=>x.Value.Pages).Sum().ToString("#,#")}장";
                     max_page = article_list.Count / show_elem_per_page;
                     initialize_page();
                 }
+            }
+            else
+            {
+                var sampleMessageDialog = new ZipListingSorting
+                {
+                };
+
+                await DialogHost.Show(sampleMessageDialog, "RootDialog");
             }
         }
 
