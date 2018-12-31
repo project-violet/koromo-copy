@@ -9,7 +9,7 @@
     <Grid Margin="20">
         <StackPanel>
             <TextBlock x:Name="VersionText" FontSize="25" Text="Koromo Copy " FontWeight="Thin"/>
-            <TextBlock Text="Copyright (C) 2018. dc-koromo. All Rights Reserved."/>
+            <TextBlock Text="Copyright (C) 2018-2019. dc-koromo. All Rights Reserved."/>
 
             <TextBlock Text="E-mail: koromo.software@gmail.com"/>
             <TextBlock>
