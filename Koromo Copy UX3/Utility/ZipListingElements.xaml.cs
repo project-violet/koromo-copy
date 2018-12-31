@@ -46,8 +46,11 @@ namespace Koromo_Copy_UX3.Utility
         ZipArchive zipFile;
         Stream zipStream;
 
+        bool loaded = false;
         private void ZipViewerElements_Loaded(object sender, RoutedEventArgs e)
         {
+            if (loaded) return;
+            loaded = true;
             if (!File.Exists(zip_file_name))
             {
                 Title.Text = $"파일을 찾을 수 없음";
