@@ -34,13 +34,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tbPath = new System.Windows.Forms.TextBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tbFileIndexing = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tbFileIndexing = new System.Windows.Forms.TextBox();
+            this.tbPath = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -53,7 +52,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -80,6 +78,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "정렬";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox1
             // 
@@ -109,36 +108,38 @@
             this.tabPage2.Text = "파일목록";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tbPath
+            // checkBox4
             // 
-            this.tbPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPath.Location = new System.Drawing.Point(6, 6);
-            this.tbPath.Name = "tbPath";
-            this.tbPath.Size = new System.Drawing.Size(915, 23);
-            this.tbPath.TabIndex = 0;
-            this.tbPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPath_KeyDownAsync);
+            this.checkBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(6, 410);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(74, 19);
+            this.checkBox4.TabIndex = 5;
+            this.checkBox4.Text = "절대경로";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
+            // checkBox3
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(927, 435);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "글자수";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.checkBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(815, 410);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(50, 19);
+            this.checkBox3.TabIndex = 4;
+            this.checkBox3.Text = "파일";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
-            // tbFileIndexing
+            // checkBox2
             // 
-            this.tbFileIndexing.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFileIndexing.Location = new System.Drawing.Point(6, 35);
-            this.tbFileIndexing.Multiline = true;
-            this.tbFileIndexing.Name = "tbFileIndexing";
-            this.tbFileIndexing.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbFileIndexing.Size = new System.Drawing.Size(915, 369);
-            this.tbFileIndexing.TabIndex = 1;
+            this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(735, 410);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(74, 19);
+            this.checkBox2.TabIndex = 3;
+            this.checkBox2.Text = "하위폴더";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // checkBox1
             // 
@@ -153,38 +154,27 @@
             this.checkBox1.Text = "폴더";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // tbFileIndexing
             // 
-            this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(735, 410);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(74, 19);
-            this.checkBox2.TabIndex = 3;
-            this.checkBox2.Text = "하위폴더";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.tbFileIndexing.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbFileIndexing.Location = new System.Drawing.Point(6, 35);
+            this.tbFileIndexing.Multiline = true;
+            this.tbFileIndexing.Name = "tbFileIndexing";
+            this.tbFileIndexing.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbFileIndexing.Size = new System.Drawing.Size(915, 369);
+            this.tbFileIndexing.TabIndex = 1;
             // 
-            // checkBox3
+            // tbPath
             // 
-            this.checkBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(815, 410);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(50, 19);
-            this.checkBox3.TabIndex = 4;
-            this.checkBox3.Text = "파일";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(6, 410);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(74, 19);
-            this.checkBox4.TabIndex = 5;
-            this.checkBox4.Text = "절대경로";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.tbPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPath.Location = new System.Drawing.Point(6, 6);
+            this.tbPath.Name = "tbPath";
+            this.tbPath.Size = new System.Drawing.Size(915, 23);
+            this.tbPath.TabIndex = 0;
+            this.tbPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPath_KeyDownAsync);
             // 
             // StringTools
             // 
@@ -215,7 +205,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox tbPath;
         private System.Windows.Forms.TextBox tbFileIndexing;
         private System.Windows.Forms.CheckBox checkBox1;

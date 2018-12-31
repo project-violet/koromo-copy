@@ -6,9 +6,11 @@
 
 ***/
 
+using Koromo_Copy.Controls;
 using Koromo_Copy.Fs;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -58,5 +60,12 @@ namespace Koromo_Copy.Utility
         }
 
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var z = textBox1.Text.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+            z.Sort((x,y) => ColumnSorter.ComparePath(x,y));
+            textBox1.Text = string.Join("\r\n", z);
+        }
     }
 }
