@@ -84,7 +84,7 @@ namespace Koromo_Copy_UX3.Utility
             builded = true;
         }
 
-        public List<HitomiTagdata> GetResults(string word, ref int position)
+        public List<HitomiTagdata> GetResults(ref string word, ref int position)
         {
             var match = new List<HitomiTagdata>();
 
@@ -150,7 +150,8 @@ namespace Koromo_Copy_UX3.Utility
                     "type:",
                 };
 
-            List<HitomiTagdata> data_col = (from ix in match_target where ix.StartsWith(word) select new HitomiTagdata { Tag = ix }).ToList();
+            string w = word;
+            List<HitomiTagdata> data_col = (from ix in match_target where ix.StartsWith(w) select new HitomiTagdata { Tag = ix }).ToList();
             if (data_col.Count > 0)
                 match.AddRange(data_col);
             match.AddRange(HitomiDataAnalysis.GetTotalList(word));
@@ -159,17 +160,5 @@ namespace Koromo_Copy_UX3.Utility
 
             return match;
         }
-
-        #region Search
-
-        public List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> Search(string serach_text, List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> raw)
-        {
-            var result = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();
-
-
-            return result;
-        }
-
-        #endregion
     }
 }

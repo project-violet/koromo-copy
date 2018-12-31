@@ -105,16 +105,140 @@ namespace Koromo_Copy_UX3.Utility
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(SearchText.Text) && SearchText.Text != "검색")
+            if (SearchText.Text != "검색")
             {
-
+                elems = Search(SearchText.Text, raws);
+                sort_data(align_column, align_row);
+                max_page = elems.Count / show_elem_per_page;
+                initialize_page();
             }
         }
-        
+
+        #endregion
+
+        #region Search
+
+        public static List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> Search(string serach_text, List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> raw)
+        {
+            HitomiDataQuery query = new HitomiDataQuery();
+            List<string> positive_data = new List<string>();
+            List<string> negative_data = new List<string>();
+            List<string> request_number = new List<string>();
+
+            serach_text.Trim().Split(' ').ToList().ForEach((a) => { if (!a.Contains(":")) positive_data.Add(a.Trim()); });
+            query.Common = positive_data;
+            query.Common.Add("");
+            foreach (var elem in from elem in serach_text.Trim().Split(' ') where elem.Contains(":") select elem)
+            {
+                if (elem.StartsWith("tag:"))
+                    if (query.TagInclude == null)
+                        query.TagInclude = new List<string>() { elem.Substring("tag:".Length) };
+                    else
+                        query.TagInclude.Add(elem.Substring("tag:".Length));
+                else if (elem.StartsWith("female:"))
+                    if (query.TagInclude == null)
+                        query.TagInclude = new List<string>() { elem };
+                    else
+                        query.TagInclude.Add(elem);
+                else if (elem.StartsWith("male:"))
+                    if (query.TagInclude == null)
+                        query.TagInclude = new List<string>() { elem };
+                    else
+                        query.TagInclude.Add(elem);
+                else if (elem.StartsWith("artist:"))
+                    if (query.Artists == null)
+                        query.Artists = new List<string>() { elem.Substring("artist:".Length) };
+                    else
+                        query.Artists.Add(elem.Substring("artist:".Length));
+                else if (elem.StartsWith("series:"))
+                    if (query.Series == null)
+                        query.Series = new List<string>() { elem.Substring("series:".Length) };
+                    else
+                        query.Series.Add(elem.Substring("series:".Length));
+                else if (elem.StartsWith("group:"))
+                    if (query.Groups == null)
+                        query.Groups = new List<string>() { elem.Substring("group:".Length) };
+                    else
+                        query.Groups.Add(elem.Substring("group:".Length));
+                else if (elem.StartsWith("character:"))
+                    if (query.Characters == null)
+                        query.Characters = new List<string>() { elem.Substring("character:".Length) };
+                    else
+                        query.Characters.Add(elem.Substring("character:".Length));
+                else if (elem.StartsWith("tagx:"))
+                    if (query.TagExclude == null)
+                        query.TagExclude = new List<string>() { elem.Substring("tagx:".Length) };
+                    else
+                        query.TagExclude.Add(elem.Substring("tagx:".Length));
+                else if (elem.StartsWith("type:"))
+                    if (query.Type == null)
+                        query.Type = new List<string>() { elem.Substring("type:".Length) };
+                    else
+                        query.Type.Add(elem.Substring("type:".Length));
+                else
+                {
+                    Koromo_Copy.Console.Console.Instance.WriteErrorLine($"Unknown rule '{elem}'.");
+                    return null;
+                }
+            }
+
+            var result = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();
+
+            for (int i = 0; i < raw.Count; i++)
+            {
+                var v = raw[i].Item1.Value.ArticleData;
+                if (query.Common.Contains(v.Id.ToString()))
+                {
+                    result.Add(raw[i]);
+                    continue;
+                }
+                if (query.TagExclude != null)
+                {
+                    if (v.Tags != null)
+                    {
+                        int intersec_count = 0;
+                        foreach (var tag in query.TagExclude)
+                        {
+                            if (v.Tags.Any(vtag => vtag.ToLower().Replace(' ', '_') == tag.ToLower()))
+                            {
+                                intersec_count++;
+                            }
+
+                            if (intersec_count > 0) break;
+                        }
+                        if (intersec_count > 0) continue;
+                    }
+                }
+                bool[] check = new bool[query.Common.Count];
+                if (query.Common.Count > 0)
+                {
+                    HitomiDataSearch.IntersectCountSplit(v.Title.Split(' '), query.Common, ref check);
+                    HitomiDataSearch.IntersectCountSplit(v.Tags, query.Common, ref check);
+                    HitomiDataSearch.IntersectCountSplit(v.Artists, query.Common, ref check);
+                    HitomiDataSearch.IntersectCountSplit(v.Groups, query.Common, ref check);
+                    HitomiDataSearch.IntersectCountSplit(v.Series, query.Common, ref check);
+                    HitomiDataSearch.IntersectCountSplit(v.Characters, query.Common, ref check);
+                }
+                bool connect = false;
+                if (check.Length == 0) { check = new bool[1]; check[0] = true; }
+                if (check[0] && v.Artists != null && query.Artists != null) { check[0] = HitomiDataSearch.IsIntersect(v.Artists, query.Artists); connect = true; } else if (query.Artists != null) check[0] = false;
+                if (check[0] && v.Tags != null && query.TagInclude != null) { check[0] = HitomiDataSearch.IsIntersect(v.Tags, query.TagInclude); connect = true; } else if (query.TagInclude != null) check[0] = false;
+                if (check[0] && v.Groups != null && query.Groups != null) { check[0] = HitomiDataSearch.IsIntersect(v.Groups, query.Groups); connect = true; } else if (query.Groups != null) check[0] = false;
+                if (check[0] && v.Series != null && query.Series != null) { check[0] = HitomiDataSearch.IsIntersect(v.Series, query.Series); connect = true; } else if (query.Series != null) check[0] = false;
+                if (check[0] && v.Characters != null && query.Characters != null) { check[0] = HitomiDataSearch.IsIntersect(v.Characters, query.Characters); connect = true; } else if (query.Characters != null) check[0] = false;
+                if (check[0] && v.Types != null && query.Type != null) { check[0] = query.Type.Any(x => x == v.Types); connect = true; } else if (query.Type != null) check[0] = false;
+                if (check.All((x => x)) && ((query.Common.Count == 0 && connect) || query.Common.Count > 0))
+                    result.Add(raw[i]);
+            }
+
+            result.Sort((a, b) => Convert.ToInt32(b.Item1.Value.ArticleData.Id) - Convert.ToInt32(a.Item1.Value.ArticleData.Id));
+            return result;
+        }
+
         #endregion
 
         #region UI / IO
-        
+
         List<KeyValuePair<string, ZipListingArticleModel>> article_list;
         ZipListingModel model;
 
@@ -168,6 +292,7 @@ namespace Koromo_Copy_UX3.Utility
             {
                 return new ZipListingElements(root_directory + x.Key);
             }))));
+            raws = elems;
             sort_data(align_column, align_row);
 
             await Application.Current.Dispatcher.BeginInvoke(new Action(
@@ -231,6 +356,7 @@ namespace Koromo_Copy_UX3.Utility
                     {
                         return new ZipListingElements(model.RootDirectory + x.Key);
                     }))));
+                    raws = elems;
                     sort_data(align_column, align_row);
                     ArticleCount.Text = $"작품 {article_list.Count.ToString("#,#")}개";
                     PageCount.Text = $"이미지 {article_list.Select(x=>x.Value.ArticleData.Pages).Sum().ToString("#,#")}장";
@@ -289,6 +415,7 @@ namespace Koromo_Copy_UX3.Utility
             if (row == 1) elems.Reverse();
         }
 
+        List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> raws = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();
         List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> elems = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();
         private void show_page_impl(int page)
         {

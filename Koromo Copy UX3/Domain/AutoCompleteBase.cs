@@ -23,7 +23,7 @@ namespace Koromo_Copy_UX3.Domain
 {
     public interface IAutoCompleteAlgorithm
     {
-        List<HitomiTagdata> GetResults(string word, ref int position);
+        List<HitomiTagdata> GetResults(ref string word, ref int position);
     }
 
     public class AutoCompleteBase
@@ -121,7 +121,7 @@ namespace Koromo_Copy_UX3.Domain
                 word += SearchText.Text[i];
             }
             if (word == "") { AutoComplete.IsOpen = false; return; }
-            var match = Algorithm.GetResults(word, ref position);
+            var match = Algorithm.GetResults(ref word, ref position);
             if (match.Count > 0)
             {
                 AutoComplete.IsOpen = true;

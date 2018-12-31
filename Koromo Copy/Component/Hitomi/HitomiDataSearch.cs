@@ -15,7 +15,7 @@ namespace Koromo_Copy.Component.Hitomi
 {
     public class HitomiDataSearch
     {
-        private static bool IsIntersect(string[] target, List<string> source)
+        public static bool IsIntersect(string[] target, List<string> source)
         {
             bool[] check = new bool[source.Count];
             for (int i = 0; i < source.Count; i++)
@@ -24,7 +24,7 @@ namespace Koromo_Copy.Component.Hitomi
             return check.All((x => x));
         }
 
-        private static void IntersectCountSplit(string[] target, List<string> source, ref bool[] check)
+        public static void IntersectCountSplit(string[] target, List<string> source, ref bool[] check)
         {
             if (target != null)
             {
