@@ -127,7 +127,7 @@
                 </Grid>
             </Border>
 
-            <TextBlock Margin="0 16 0 0" FontSize="20" Text="관리되는 않는 항목" FontWeight="Thin"/>
+            <TextBlock Margin="0 16 0 0" FontSize="20" Text="관리되지 않는 항목" FontWeight="Thin"/>
 
             <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 4 0 0">
                 <Grid Margin="4">

@@ -70,17 +70,15 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.2 Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.3 Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 이제부터 기본 다운로드큐로 Emilia Queue를 적용합니다."/>
-                        <LineBreak/>
-                        <Run Text="   Emilia Queue는 저수준 쓰레드 기반의 다운로더로 기존의 다운로더보다 높은 성능을 가집니다."/>
+                        <Run Text=" - 압축파일 분석기 (Zip Listing) 도구가 추가됩니다."/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 시리즈 매니져에서 만화 정보를 빠르게 가져옵니다. 최대 10배 이상의 다운로드 시간을 절약할 수 있습니다."/>
+                        <Run Text=" - 이제부터 모든 도구들을 '도구' 탭에서 실행할 수 있습니다."/>
                         <LineBreak/>
-                        <Run Text="   시리즈 매니져는 Ctrl + S 단축키를 통해 실행가능합니다."/>
+                        <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
@@ -90,7 +88,7 @@
                         <Run Text=" 자세한 업데이트 내역은 커밋이나 설정->업데이트를 참고하세요."/>
                         <LineBreak/>
                         <Run Text=" 커밋 : "/>
-                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.1.6925.32714...master">https://github.com/dc-koromo/koromo-copy/compare/1.1.6925.32714...master</Hyperlink>
+                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.2.6930.40876...master">https://github.com/dc-koromo/koromo-copy/compare/1.2.6930.40876...master</Hyperlink>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
