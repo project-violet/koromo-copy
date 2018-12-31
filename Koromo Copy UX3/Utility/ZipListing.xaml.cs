@@ -107,7 +107,17 @@ namespace Koromo_Copy_UX3.Utility
         {
             if (SearchText.Text != "검색")
             {
-                elems = Search(SearchText.Text, raws);
+                if (!string.IsNullOrEmpty(SearchText.Text.Trim()))
+                {
+                    elems = Search(SearchText.Text, raws);
+                    SearchResult.Visibility = Visibility.Visible;
+                    SearchResult.Text = $"검색결과: {elems.Count.ToString("#,#")}개";
+                }
+                else
+                {
+                    elems = raws;
+                    SearchResult.Visibility = Visibility.Collapsed;
+                }
                 sort_data(align_column, align_row);
                 max_page = elems.Count / show_elem_per_page;
                 initialize_page();
