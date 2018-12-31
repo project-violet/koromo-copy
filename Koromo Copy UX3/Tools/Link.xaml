@@ -6,13 +6,14 @@
              xmlns:local="clr-namespace:Koromo_Copy_UX3.Tools"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="300">
+             d:DesignHeight="2000" d:DesignWidth="300">
     <Grid Margin="20">
         <StackPanel>
             <TextBlock FontSize="25" Text="도구 및 유틸리티 모음" FontWeight="Thin"/>
             <TextBlock FontSize="13" Text="Koromo Copy에는 다운로드 및 다운로드된 파일을 관리하기 위한 여러가지 도구들이 포함되어 있습니다." FontWeight="Thin"/>
 
-            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+            <TextBlock Margin="0 16 0 0" FontSize="20" Text="관리되는 항목" FontWeight="Thin"/>
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 4 0 0">
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -125,6 +126,121 @@
                     </Button>
                 </Grid>
             </Border>
+
+            <TextBlock Margin="0 16 0 0" FontSize="20" Text="관리되는 않는 항목" FontWeight="Thin"/>
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 4 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="히토미 탐색기 (Hitomi Explorer)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="Hitomi Copy의 고급도구로 포함되어있던 도구입니다. 이 도구는 압축파일의 이름을 통해 다운로드된 파일의 재배치와 일괄 이름 변경, 로그파일에 기록된 항목과의 비교기능을 제공합니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="HitomiExplorer" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Explore" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="파일시스템 뷰어 (Filesystem Enumerator)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="특정 디렉토리의 하위 폴더 및 파일들과 해당 폴더/파일의 크기를 조사하는 유틸리티입니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="FsEnumerator" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FileTree" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+            
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="연관태그 분석기 (Related Tags Test)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="Hitomi Copy의 고급도구로 포함되어있던 도구입니다. 이 도구는 작품들의 태그를 이용해 태그 연관성을 검사합니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="RelatedTagsTest" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Tag" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="문자열 도구 (String Tools)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="특정 폴더의 폴더/파일 이름 추출과 정렬을 수행하는 도구입니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="StringTools" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="CodeString" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
         </StackPanel>
     </Grid>
 </UserControl>

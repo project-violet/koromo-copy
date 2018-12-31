@@ -231,6 +231,7 @@
     <Compile Include="Utility\StringTools.Designer.cs">
       <DependentUpon>StringTools.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\UtilityDelegator.cs" />
     <Compile Include="UX\UXSetting.cs" />
     <Compile Include="Version.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
