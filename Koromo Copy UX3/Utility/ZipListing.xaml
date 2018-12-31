@@ -160,6 +160,7 @@
                             <TextBlock x:Name="ProgressText" Text="가져오는 중..." FontSize="13" Foreground="White"/>
                             <ProgressBar x:Name="CollectProgress" Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
                         </WrapPanel>
+                        <TextBlock x:Name="SearchResult" Text="검색결과: 0개" FontSize="13" Foreground="White" VerticalAlignment="Center" Margin="10 0 0 0" Visibility="Collapsed"/>
                         <Border HorizontalAlignment="Center" CornerRadius="2" BorderThickness="1" BorderBrush="#717171" x:Name="PagerBorder">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Button BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Tag="LeftLeft" Click="PageFunction_Click">
