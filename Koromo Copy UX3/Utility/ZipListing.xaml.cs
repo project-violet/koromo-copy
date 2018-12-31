@@ -524,7 +524,7 @@ namespace Koromo_Copy_UX3.Utility
         {
             if (e.Key == Key.Enter)
             {
-                if (!string.IsNullOrEmpty(SearchText.Text) && SearchText.Text != "검색")
+                if (SearchText.Text != "검색")
                 {
                     if (e.Key == Key.Return && !logic.skip_enter)
                     {
