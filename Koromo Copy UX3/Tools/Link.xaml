@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="Koromo_Copy_UX3.Tools.Link"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Koromo_Copy_UX3.Tools"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="300">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock FontSize="25" Text="도구 및 유틸리티 모음" FontWeight="Thin"/>
+            <TextBlock FontSize="13" Text="Koromo Copy에는 다운로드 및 다운로드된 파일을 관리하기 위한 여러가지 도구들이 포함되어 있습니다." FontWeight="Thin"/>
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="시리즈 매니져 (Series Manager, Ctrl + S)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="Hiyobi Non-H, Mangashow.me의 다운로드와 최신 상태 동기화 기능을 제공하는 독립된 다운로더입니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="SeriesManager" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Images" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="압축파일 폴더 뷰어 (Zip Viewer, Ctrl + E)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="압축파일들이 포함된 폴더를 Drag &amp; Drop하여 해당파일들의 썸네일을 볼 수 있습니다. 탐색기의 미리보기 기능과 유사합니다. 만약, 압축된 파일이 hitomi.la를 통해 다운로드되었다면, 압축파일에 포함된 Info.json파일을 분석하여 간략한 정보를 보여줍니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="ZipViewer" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ZipBox" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="압축파일 분석기 (Zip Listing, Ctrl + L)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="hitomi.la에서 다운로드되었으며, Koromo copy의 압축설정을 통해 압축된 파일들에 한해 사용가능합니다. 이 도구는 특정 하위폴더에있는 다운로드된 압축파일을 모두 분석하여 독립된 검색환경을 제공합니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="ZipListing" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Files" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="만화 크롤러 (Manga Crawler)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="Mangashow.me의 모든 만화를 분석하여 나열합니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="MangaCrawler" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Lumx" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>
