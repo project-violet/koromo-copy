@@ -48,6 +48,12 @@ namespace Koromo_Copy_UX3.Utility
 
         private void ZipViewerElements_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!File.Exists(zip_file_name))
+            {
+                Title.Text = $"파일을 찾을 수 없음";
+                Artist.Text = zip_file_name;
+                return;
+            }
             Task.Run(() =>
             {
                 try

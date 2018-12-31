@@ -9,7 +9,8 @@
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Zip Listing - Koromo Copy" Height="837.973" Width="1257.243">
+        Title="Zip Listing - Koromo Copy" Height="837.973" Width="1257.243"
+        SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -37,8 +38,15 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="PathText" KeyDown="PathText_KeyDown" Grid.Column="0" Height="30" BorderBrush="#303030" Background="#121212" Text="경로" Foreground="#E2E2E2" FontSize="15" Padding="3"/>
-                    <Button MinWidth="70" Height="30" Cursor="Hand" Grid.Column="1" BorderBrush="#303030" Background="#303030" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" PreviewMouseLeftButtonDown="Button_MouseDown" PreviewMouseLeftButtonUp="Button_MouseUp" Click="Button_Click_1">
+                    <TextBox x:Name="SearchText" KeyDown="SearchText_KeyDown" PreviewKeyDown="SearchText_PreviewKeyDown" KeyUp="SearchText_KeyUp" Grid.Column="0" Height="30" BorderBrush="#303030" Background="#121212" Text="검색" Foreground="#E2E2E2" FontSize="15" Padding="3"/>
+
+                    <controls:NonTopmostPopup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=SearchText}" Placement="Bottom">
+                        <materialDesign:Card>
+                            <ListBox x:Name="AutoCompleteList" FontSize="15" Width="350" Height="300" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
+                        </materialDesign:Card>
+                    </controls:NonTopmostPopup>
+                    
+                    <Button x:Name="SearchButton" MinWidth="70" Height="30" Cursor="Hand" Grid.Column="1" BorderBrush="#303030" Background="#303030" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" PreviewMouseLeftButtonDown="Button_MouseDown" PreviewMouseLeftButtonUp="Button_MouseUp" Click="Button_Click_1">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Template">
@@ -82,10 +90,12 @@
                             </ResourceDictionary>
                         </ListBox.Resources>
 
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="House" Height="24" Width="24" Margin="10 0 0 0"/>
-                            <TextBlock Text="홈" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="New">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="CreateNewFolder" Height="24" Width="24" Margin="10 0 0 0"/>
+                                <TextBlock Text="새로 만들기" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListBoxItem>
 
                         <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="Open">
                             <StackPanel Orientation="Horizontal">
@@ -145,12 +155,12 @@
                         </controls:WheelSpeedScrollViewer>
                     </Grid>
 
-                    <Grid Grid.Row="1" Background="#232323" Height="35">
+                    <Grid Grid.Row="1" Background="#232323" Height="35" x:Name="PagerGrid">
                         <WrapPanel x:Name="CollectStatusPanel" Orientation="Horizontal" VerticalAlignment="Center" Margin="0 0 20 0" HorizontalAlignment="Right" Visibility="Collapsed">
                             <TextBlock x:Name="ProgressText" Text="가져오는 중..." FontSize="13" Foreground="White"/>
-                            <ProgressBar Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
+                            <ProgressBar x:Name="CollectProgress" Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
                         </WrapPanel>
-                        <Border HorizontalAlignment="Center" CornerRadius="2" BorderThickness="1" BorderBrush="#717171">
+                        <Border HorizontalAlignment="Center" CornerRadius="2" BorderThickness="1" BorderBrush="#717171" x:Name="PagerBorder">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Button BorderBrush="#363636" Background="#303030" BorderThickness="1 0 0 0" Tag="LeftLeft" Click="PageFunction_Click">
                                     <materialDesign:PackIcon Kind="ChevronDoubleLeft" Height="28" Width="28" Foreground="#717171"/>

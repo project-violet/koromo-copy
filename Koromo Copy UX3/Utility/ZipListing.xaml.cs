@@ -12,15 +12,19 @@ using Koromo_Copy.Fs;
 using Koromo_Copy_UX3.Domain;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -45,23 +49,38 @@ namespace Koromo_Copy_UX3.Utility
                 page_number_buttons.Add(page_number as Button);
             }
             initialize_page();
-            
-            PathText.GotFocus += PathText_GotFocus;
-            PathText.LostFocus += PathText_LostFocus;
+
+            logic = new AutoCompleteBase(algorithm, SearchText, AutoComplete, AutoCompleteList);
+            SearchText.GotFocus += SearchText_GotFocus;
+            SearchText.LostFocus += SearchText_LostFocus;
         }
 
         #region UI
 
-        private void PathText_LostFocus(object sender, RoutedEventArgs e)
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(PathText.Text))
-                PathText.Text = "경로";
+            var offset = AutoComplete.HorizontalOffset;
+            AutoComplete.HorizontalOffset = offset + 1;
+            AutoComplete.HorizontalOffset = offset;
         }
 
-        private void PathText_GotFocus(object sender, RoutedEventArgs e)
+        private void Window_LocationChanged(object sender, EventArgs e)
         {
-            if (PathText.Text == "경로")
-                PathText.Text = "";
+            var offset = AutoComplete.HorizontalOffset;
+            AutoComplete.HorizontalOffset = offset + 1;
+            AutoComplete.HorizontalOffset = offset;
+        }
+
+        private void SearchText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchText.Text))
+                SearchText.Text = "검색";
+        }
+
+        private void SearchText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (SearchText.Text == "검색")
+                SearchText.Text = "";
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
@@ -86,36 +105,16 @@ namespace Koromo_Copy_UX3.Utility
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(PathText.Text) && PathText.Text != "경로")
+            if (!string.IsNullOrEmpty(SearchText.Text) && SearchText.Text != "검색")
             {
-                CollectStatusPanel.Visibility = Visibility.Visible;
-                string path = PathText.Text;
-                Task.Run(() => ProcessPath(path));
+
             }
         }
-
-        private void PathText_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                if (!string.IsNullOrEmpty(PathText.Text) && PathText.Text != "경로")
-                {
-                    CollectStatusPanel.Visibility = Visibility.Visible;
-                    string path = PathText.Text;
-                    Task.Run(() => ProcessPath(path));
-                }
-            }
-        }
-
-        private void FilterText_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
+        
         #endregion
 
         #region UI / IO
-
+        
         List<KeyValuePair<string, ZipListingArticleModel>> article_list;
         ZipListingModel model;
 
@@ -162,6 +161,7 @@ namespace Koromo_Copy_UX3.Utility
             model.ArticleList = article_dic.ToArray();
             ZipListingModelManager.SaveModel($"ziplist-result-{DateTime.Now.Ticks}.json", model);
 
+            algorithm.Build(model);
             article_list = article_dic.ToList();
             elems.Clear();
             article_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
@@ -187,7 +187,18 @@ namespace Koromo_Copy_UX3.Utility
         {
             var item = sender as ListBoxItem;
 
-            if (item.Tag.ToString() == "Open")
+            if (item.Tag.ToString() == "New")
+            {
+                var cofd = new CommonOpenFileDialog();
+                cofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                cofd.IsFolderPicker = true;
+                if (cofd.ShowDialog(this) == CommonFileDialogResult.Ok)
+                {
+                    CollectStatusPanel.Visibility = Visibility.Visible;
+                    await Task.Run(() => ProcessPath(cofd.FileName));
+                }
+            }
+            else if (item.Tag.ToString() == "Open")
             {
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -211,8 +222,9 @@ namespace Koromo_Copy_UX3.Utility
                         return;
                     }
 
+                    algorithm.Build(model);
                     article_list = model.ArticleList.ToList();
-                    
+
                     // 초기화
                     elems.Clear();
                     article_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
@@ -377,5 +389,50 @@ namespace Koromo_Copy_UX3.Utility
 
         #endregion
 
+        #region Search Helper
+        ZipListingAutoComplete algorithm = new ZipListingAutoComplete();
+        AutoCompleteBase logic;
+
+        private void SearchText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (!string.IsNullOrEmpty(SearchText.Text) && SearchText.Text != "검색")
+                {
+                    if (e.Key == Key.Return && !logic.skip_enter)
+                    {
+                        ButtonAutomationPeer peer = new ButtonAutomationPeer(SearchButton);
+                        IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                        invokeProv.Invoke();
+                    }
+                    logic.skip_enter = false;
+                }
+            }
+        }
+
+        private void SearchText_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            AutoCompleteList.Width = SearchText.RenderSize.Width;
+            logic.SearchText_PreviewKeyDown(sender, e);
+        }
+
+        private void SearchText_KeyUp(object sender, KeyEventArgs e)
+        {
+            AutoCompleteList.Width = SearchText.RenderSize.Width;
+            logic.SearchText_KeyUp(sender, e);
+        }
+
+        private void AutoCompleteList_KeyUp(object sender, KeyEventArgs e)
+        {
+            AutoCompleteList.Width = SearchText.RenderSize.Width;
+            logic.AutoCompleteList_KeyUp(sender, e);
+        }
+
+        private void AutoCompleteList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AutoCompleteList.Width = SearchText.RenderSize.Width;
+            logic.AutoCompleteList_MouseDoubleClick(sender, e);
+        }
+        #endregion
     }
 }
