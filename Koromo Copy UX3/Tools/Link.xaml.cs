@@ -1,4 +1,5 @@
-﻿using Koromo_Copy_UX3.Utility;
+﻿using Koromo_Copy.Utility;
+using Koromo_Copy_UX3.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,13 @@ namespace Koromo_Copy_UX3.Tools
                     break;
                 case "MangaCrawler":
                     (new MangaCrawler()).Show();
+                    break;
+
+                case "HitomiExplorer":
+                case "FsEnumerator":
+                case "RelatedTagsTest":
+                case "StringTools":
+                    UtilityDelegator.Run(tag);
                     break;
             }
 
