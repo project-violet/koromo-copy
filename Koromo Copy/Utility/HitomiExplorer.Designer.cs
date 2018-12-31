@@ -109,7 +109,7 @@
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(433, 15);
             this.metroLabel1.TabIndex = 5;
-            this.metroLabel1.Text = "Copyright (C) 2018. DCInside Programming Gallery Union. All Rights Reserved.";
+            this.metroLabel1.Text = "Copyright (C) 2018-2019. DCInside Programming Gallery Union. All Rights Reserved.";
             // 
             // tabControl1
             // 

@@ -1,6 +1,6 @@
 ﻿/***
 
-   Copyright (C) 2018. dc-koromo. All Rights Reserved.
+   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
    
    Author: Koromo Copy Developer
 
@@ -150,7 +150,7 @@ namespace Koromo_Copy_UX3
                     "[추가된 기능]\r\n" +
                     " - Zip Listing 도구 추가\r\n\r\n" +
                     " - 도구 탭에 Link 추가\r\n\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -169,7 +169,7 @@ namespace Koromo_Copy_UX3
                     " - Mangashowme 사이트 변경에따른 다운로더 수정\r\n\r\n" +
                     "[삭제된 기능]\r\n" +
                     " - 기존의 Task 기반의 다운로드큐가 삭제되고, Emilia Queue를 기본 다운로드큐로 대체됩니다.\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -187,7 +187,7 @@ namespace Koromo_Copy_UX3
                     "[수정된 기능]\r\n" +
                     " - Emilia Queue가 활성화된 상태에서 프로그램실행시 간헐적으로 발생하는 오류 수정\r\n\r\n" +
                     " - Hiyobi Non-H 다운로더 버그 수정\r\n\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -206,7 +206,7 @@ namespace Koromo_Copy_UX3
                     " - Manazero 다운로드가 인식안되는 오류 수정\r\n\r\n" +
                     " - Mangashow.me 사이트 개편에 따른 다운로더 오류 수정\r\n\r\n" +
                     " - 경로 설정 중 \\문자 다음에 토큰이 나오지 않을때 경로 토큰으로 인식되지 않던 오류 수정\r\n\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -228,7 +228,7 @@ namespace Koromo_Copy_UX3
                     " - 컬럼 정렬시 옳바르게 정렬되지 않는 문제\r\n\r\n" +
                     " - 자동완성 창이 닫히지 않거나 다른 창을 가리는 문제\r\n\r\n" +
                     " - 댓글에서 하이퍼링크 토큰이 삭제되지 않는 문제\r\n\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -245,7 +245,7 @@ namespace Koromo_Copy_UX3
                     " - Manazero 다운로더 추가\r\n\r\n" +
                     " - DCInside 게시글 이미지 다운로더 추가\r\n\r\n" +
                     " - 작가 추천에 다운로드된 작가 숨기기 기능 추가\r\n\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -267,7 +267,7 @@ namespace Koromo_Copy_UX3
                     " - 작가추천 기능에서 정리 후 자동스크롤되어 다음 작가 목록이 로딩되는 문제\r\n\r\n" +
                     "[삭제된 기능]\r\n" +
                     " - 마루마루 다운로더\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -283,7 +283,7 @@ namespace Koromo_Copy_UX3
                     " - 작가 추천 기능 구현\r\n\r\n" +
                     " - 수동 업데이트 도구 추가\r\n\r\n" +
                     " - 작가창 오른쪽에 추천 작가 표시 기능, 작품 날짜표시 기능\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -299,7 +299,7 @@ namespace Koromo_Copy_UX3
                     " - 다운로더 기능\r\n\r\n" +
                     " - 미리보기 기능\r\n\r\n" +
                     " - 작가/그룹창에서 모두 다운로드/다운로드 기능\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -319,7 +319,7 @@ namespace Koromo_Copy_UX3
                     " - Window Style을 Default에서 None으로 변경하고 DropShadow를 지원하는 새로운 윈도우로 대체함\r\n\r\n" +
                     " - 설정 탭을 추가함\r\n\r\n" +
                     " - 시작시 필요한 데이터를 다운로드\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
 
@@ -334,7 +334,7 @@ namespace Koromo_Copy_UX3
                     "[추가된 기능]\r\n" +
                     " - 메타데이터 검색 구현\r\n\r\n" +
                     " - Material Control을 적용해서 구현함\r\n" +
-                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018. dc-koromo. All Rights Reserved."
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
                 }
             });
         }
