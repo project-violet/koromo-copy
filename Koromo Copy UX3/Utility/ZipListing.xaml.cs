@@ -118,6 +118,7 @@ namespace Koromo_Copy_UX3.Utility
                     elems = raws;
                     SearchResult.Visibility = Visibility.Collapsed;
                 }
+                filter_data();
                 sort_data(align_column, align_row);
                 max_page = elems.Count / show_elem_per_page;
                 initialize_page();
@@ -318,6 +319,8 @@ namespace Koromo_Copy_UX3.Utility
 
         int align_row = 0;
         int align_column = 0;
+        DateTime? starts;
+        DateTime? ends;
         private async void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListBoxItem;
@@ -389,9 +392,28 @@ namespace Koromo_Copy_UX3.Utility
                     initialize_page();
                 }
             }
+            else if (item.Tag.ToString() == "Filter")
+            {
+                var dialog = new ZipListingFilter(raws.Select(x => DateTime.Parse(x.Item1.Value.CreatedDate)).ToList(), starts, ends);
+                if ((bool)(await DialogHost.Show(dialog, "RootDialog")))
+                {
+                    if (dialog.StartDate.SelectedDate.HasValue)
+                    {
+                        starts = dialog.StartDate.SelectedDate;
+                    }
+                    if (dialog.EndDate.SelectedDate.HasValue)
+                    {
+                        ends = dialog.EndDate.SelectedDate.Value.AddDays(1);
+                    }
+                    filter_data();
+                    max_page = elems.Count / show_elem_per_page;
+                    initialize_page();
+                }
+            }
             else if (item.Tag.ToString() == "Statistics")
             {
-
+                var dialog = new ZipListingStatistics();
+                await DialogHost.Show(dialog, "RootDialog");
             }
         }
 
@@ -423,6 +445,18 @@ namespace Koromo_Copy_UX3.Utility
             }
 
             if (row == 1) elems.Reverse();
+        }
+
+        private void filter_data()
+        {
+            if (starts.HasValue)
+            {
+                elems.RemoveAll(x => DateTime.Parse(x.Item1.Value.CreatedDate) < starts);
+            }
+            if (ends.HasValue)
+            {
+                elems.RemoveAll(x => DateTime.Parse(x.Item1.Value.CreatedDate) > ends);
+            }
         }
 
         List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> raws = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();

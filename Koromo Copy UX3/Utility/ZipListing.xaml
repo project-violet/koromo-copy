@@ -125,6 +125,13 @@
                             </StackPanel>
                         </ListBoxItem>
 
+                        <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="Filter">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Filter" Height="24" Width="24" Margin="10 0 0 0"/>
+                                <TextBlock Text="필터" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                        
                         <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="Statistics">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="ChartBar" Height="24" Width="24" Margin="10 0 0 0"/>
