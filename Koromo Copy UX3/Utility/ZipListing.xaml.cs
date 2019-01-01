@@ -403,7 +403,7 @@ namespace Koromo_Copy_UX3.Utility
                     }
                     if (dialog.EndDate.SelectedDate.HasValue)
                     {
-                        ends = dialog.EndDate.SelectedDate.Value.AddDays(1);
+                        ends = dialog.EndDate.SelectedDate.Value.AddMilliseconds(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999);
                     }
                     elems = day_before;
                     filter_data();
