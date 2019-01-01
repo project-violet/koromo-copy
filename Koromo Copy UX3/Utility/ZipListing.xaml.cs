@@ -575,6 +575,7 @@ namespace Koromo_Copy_UX3.Utility
                         ButtonAutomationPeer peer = new ButtonAutomationPeer(SearchButton);
                         IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                         invokeProv.Invoke();
+                        logic.ClosePopup();
                     }
                     logic.skip_enter = false;
                 }
