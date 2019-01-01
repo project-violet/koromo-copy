@@ -85,7 +85,11 @@ namespace Koromo_Copy_UX3.Utility
                                     stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "작가 목록" });
                                     var menu_item = new MenuItem { Header = stack };
                                     foreach (var artist in model.Artists)
-                                        menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = artist } });
+                                    {
+                                        var item = new MenuItem { Header = new TextBlock { Text = artist }, Tag = $"artist:{artist.Replace(' ', '_')}" };
+                                        item.Click += subitem_click;
+                                        menu_item.Items.Add(item);
+                                    }
                                     seperator = true;
                                     Menu.Items.Add(new Separator { Margin = new Thickness(4,0,4,0), Background = Brushes.Gray });
                                     Menu.Items.Add(menu_item);
@@ -97,7 +101,11 @@ namespace Koromo_Copy_UX3.Utility
                                     stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "그룹 목록" });
                                     var menu_item = new MenuItem { Header = stack };
                                     foreach (var group in model.Groups)
-                                        menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = group } });
+                                    {
+                                        var item = new MenuItem { Header = new TextBlock { Text = group }, Tag = $"group:{group.Replace(' ', '_')}" };
+                                        item.Click += subitem_click;
+                                        menu_item.Items.Add(item);
+                                    }
                                     if (!seperator)
                                     {
                                         seperator = true;
@@ -112,10 +120,15 @@ namespace Koromo_Copy_UX3.Utility
                                     stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "시리즈 목록" });
                                     var menu_item = new MenuItem { Header = stack };
                                     foreach (var series in model.Series)
+                                    {
+                                        MenuItem item = null;
                                         if (KoreanSeries.SeriesMap(series) == series)
-                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = series } });
+                                            item = new MenuItem { Header = new TextBlock { Text = series }, Tag = $"series:{series.Replace(' ', '_')}" };
                                         else
-                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = $"{series} ({KoreanSeries.SeriesMap(series)})" } });
+                                            item = new MenuItem { Header = new TextBlock { Text = $"{series} ({KoreanSeries.SeriesMap(series)})" }, Tag = $"series:{series.Replace(' ', '_')}" };
+                                        item.Click += subitem_click;
+                                        menu_item.Items.Add(item);
+                                    }
                                     if (!seperator)
                                     {
                                         seperator = true;
@@ -130,12 +143,17 @@ namespace Koromo_Copy_UX3.Utility
                                     stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "태그 목록" });
                                     var menu_item = new MenuItem { Header = stack };
                                     foreach (var tag in model.Tags)
+                                    {
+                                        MenuItem item = null;
                                         if (KoreanTag.TagMap(tag) == tag)
-                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = tag } });
+                                            item = new MenuItem { Header = new TextBlock { Text = tag }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
                                         else if (KoreanTag.TagMap(tag).Contains(':'))
-                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag).Split(':')[1]})" } });
+                                            item = new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag).Split(':')[1]})" }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
                                         else
-                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag)})" } });
+                                            item = new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag)})" }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
+                                        item.Click += subitem_click;
+                                        menu_item.Items.Add(item);
+                                    }
                                     if (!seperator)
                                     {
                                         seperator = true;
@@ -208,6 +226,11 @@ namespace Koromo_Copy_UX3.Utility
             {
                 Process.Start("explorer", "/select, \"" + zip_file_name + "\"");
             }
+        }
+
+        private void subitem_click(object sender, RoutedEventArgs e)
+        {
+            ((ZipListing)Window.GetWindow(this)).add_search_token((sender as MenuItem).Tag.ToString());
         }
     }
 }
