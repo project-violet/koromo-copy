@@ -389,7 +389,7 @@ namespace Koromo_Copy_UX3.Utility
                     initialize_page();
                 }
             }
-            else if (item.Tag.ToString() == "Filter")
+            else if (item.Tag.ToString() == "Statistics")
             {
 
             }
