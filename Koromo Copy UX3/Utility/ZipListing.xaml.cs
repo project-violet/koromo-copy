@@ -471,6 +471,18 @@ namespace Koromo_Copy_UX3.Utility
             }
         }
 
+        public async void add_search_token(string token)
+        {
+            await Application.Current.Dispatcher.BeginInvoke(new Action(
+            delegate
+            {
+                if (SearchText.Text == "검색")
+                    SearchText.Text = token;
+                else
+                    SearchText.Text = SearchText.Text + " " + token;
+            }));
+        }
+
         #endregion
 
         #region Pager
