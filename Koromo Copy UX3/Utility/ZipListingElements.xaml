@@ -64,7 +64,7 @@
 
     <materialDesign:Card Background="#2C2C2C" x:Name="Card">
         <materialDesign:Card.ContextMenu>
-            <ContextMenu Background="#282828" Foreground="White">
+            <ContextMenu x:Name="Menu" Background="#282828" Foreground="White">
                 <ContextMenu.Resources>
                     <ResourceDictionary>
                         <ResourceDictionary.MergedDictionaries>

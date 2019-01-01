@@ -40,7 +40,7 @@
 
                     <TextBox x:Name="SearchText" KeyDown="SearchText_KeyDown" PreviewKeyDown="SearchText_PreviewKeyDown" KeyUp="SearchText_KeyUp" Grid.Column="0" Height="30" BorderBrush="#303030" Background="#121212" Text="검색" Foreground="#E2E2E2" FontSize="15" Padding="3"/>
 
-                    <controls:NonTopmostPopup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=SearchText}" Placement="Bottom">
+                    <controls:NonTopmostPopup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=SearchText}" Placement="Bottom" IsTopmost="False">
                         <materialDesign:Card>
                             <ListBox x:Name="AutoCompleteList" FontSize="15" Width="350" Height="300" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
                         </materialDesign:Card>

@@ -8,6 +8,8 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Hitomi.Translate;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -74,6 +76,73 @@ namespace Koromo_Copy_UX3.Utility
                                 Title.Text = model.Title;
                                 Artist.Text = model.Artists != null ? model.Artists[0] : "";
                                 ImageCount.Text = $"{model.Pages} Pages";
+
+                                bool seperator = false;
+                                if (model.Artists != null)
+                                {
+                                    var stack = new StackPanel { Orientation = Orientation.Horizontal };
+                                    stack.Children.Add(new PackIcon { Kind = PackIconKind.Artist, Opacity = .56 });
+                                    stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "작가 목록" });
+                                    var menu_item = new MenuItem { Header = stack };
+                                    foreach (var artist in model.Artists)
+                                        menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = artist } });
+                                    seperator = true;
+                                    Menu.Items.Add(new Separator { Margin = new Thickness(4,0,4,0), Background = Brushes.Gray });
+                                    Menu.Items.Add(menu_item);
+                                }
+                                if (model.Groups != null)
+                                {
+                                    var stack = new StackPanel { Orientation = Orientation.Horizontal };
+                                    stack.Children.Add(new PackIcon { Kind = PackIconKind.UserGroup, Opacity = .56 });
+                                    stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "그룹 목록" });
+                                    var menu_item = new MenuItem { Header = stack };
+                                    foreach (var group in model.Groups)
+                                        menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = group } });
+                                    if (!seperator)
+                                    {
+                                        seperator = true;
+                                        Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
+                                    }
+                                    Menu.Items.Add(menu_item);
+                                }
+                                if (model.Series != null)
+                                {
+                                    var stack = new StackPanel { Orientation = Orientation.Horizontal };
+                                    stack.Children.Add(new PackIcon { Kind = PackIconKind.Book, Opacity = .56 });
+                                    stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "시리즈 목록" });
+                                    var menu_item = new MenuItem { Header = stack };
+                                    foreach (var series in model.Series)
+                                        if (KoreanSeries.SeriesMap(series) == series)
+                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = series } });
+                                        else
+                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = $"{series} ({KoreanSeries.SeriesMap(series)})" } });
+                                    if (!seperator)
+                                    {
+                                        seperator = true;
+                                        Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
+                                    }
+                                    Menu.Items.Add(menu_item);
+                                }
+                                if (model.Tags != null)
+                                {
+                                    var stack = new StackPanel { Orientation = Orientation.Horizontal };
+                                    stack.Children.Add(new PackIcon { Kind = PackIconKind.Tag, Opacity = .56 });
+                                    stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "태그 목록" });
+                                    var menu_item = new MenuItem { Header = stack };
+                                    foreach (var tag in model.Tags)
+                                        if (KoreanTag.TagMap(tag) == tag)
+                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = tag } });
+                                        else if (KoreanTag.TagMap(tag).Contains(':'))
+                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag).Split(':')[1]})" } });
+                                        else
+                                            menu_item.Items.Add(new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag)})" } });
+                                    if (!seperator)
+                                    {
+                                        seperator = true;
+                                        Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
+                                    }
+                                    Menu.Items.Add(menu_item);
+                                }
                             }));
                         }
                     }
