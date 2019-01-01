@@ -109,13 +109,13 @@ namespace Koromo_Copy_UX3.Utility
             {
                 if (!string.IsNullOrEmpty(SearchText.Text.Trim()))
                 {
-                    elems = Search(SearchText.Text, raws);
+                    day_before = elems = Search(SearchText.Text, raws);
                     SearchResult.Visibility = Visibility.Visible;
                     SearchResult.Text = $"검색결과: {elems.Count.ToString("#,#")}개";
                 }
                 else
                 {
-                    elems = raws;
+                    day_before = elems = raws;
                     SearchResult.Visibility = Visibility.Collapsed;
                 }
                 filter_data();
@@ -303,7 +303,7 @@ namespace Koromo_Copy_UX3.Utility
             {
                 return new ZipListingElements(root_directory + x.Key);
             }))));
-            raws = elems;
+            day_before = raws = elems;
             sort_data(align_column, align_row);
 
             await Application.Current.Dispatcher.BeginInvoke(new Action(
@@ -369,7 +369,7 @@ namespace Koromo_Copy_UX3.Utility
                     {
                         return new ZipListingElements(model.RootDirectory + x.Key);
                     }))));
-                    raws = elems;
+                    day_before = raws = elems;
                     sort_data(align_column, align_row);
                     ArticleCount.Text = $"작품 {article_list.Count.ToString("#,#")}개";
                     PageCount.Text = $"이미지 {article_list.Select(x=>x.Value.ArticleData.Pages).Sum().ToString("#,#")}장";
@@ -405,6 +405,7 @@ namespace Koromo_Copy_UX3.Utility
                     {
                         ends = dialog.EndDate.SelectedDate.Value.AddDays(1);
                     }
+                    elems = day_before;
                     filter_data();
                     max_page = elems.Count / show_elem_per_page;
                     initialize_page();
@@ -412,7 +413,7 @@ namespace Koromo_Copy_UX3.Utility
             }
             else if (item.Tag.ToString() == "Statistics")
             {
-                var dialog = new ZipListingStatistics();
+                var dialog = new ZipListingStatistics(article_list);
                 await DialogHost.Show(dialog, "RootDialog");
             }
         }
@@ -451,15 +452,16 @@ namespace Koromo_Copy_UX3.Utility
         {
             if (starts.HasValue)
             {
-                elems.RemoveAll(x => DateTime.Parse(x.Item1.Value.CreatedDate) < starts);
+                elems = elems.Where(x => DateTime.Parse(x.Item1.Value.CreatedDate) >= starts).ToList();
             }
             if (ends.HasValue)
             {
-                elems.RemoveAll(x => DateTime.Parse(x.Item1.Value.CreatedDate) > ends);
+                elems = elems.Where(x => DateTime.Parse(x.Item1.Value.CreatedDate) <= ends).ToList();
             }
         }
 
         List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> raws = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();
+        List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> day_before = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();
         List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>> elems = new List<Tuple<KeyValuePair<string, ZipListingArticleModel>, Lazy<ZipListingElements>>>();
         private void show_page_impl(int page)
         {
