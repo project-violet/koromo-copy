@@ -387,7 +387,7 @@ namespace Koromo_Copy_UX3.Utility
             }
             else if (item.Tag.ToString() == "Back")
             {
-                stack_pop();
+                stack_back();
             }
             else if (item.Tag.ToString() == "Forward")
             {
@@ -649,7 +649,7 @@ namespace Koromo_Copy_UX3.Utility
             stack_pointer++;
         }
 
-        private void stack_pop()
+        private void stack_back()
         {
             if (stack_pointer <= 0) return;
             stack_pointer--;
