@@ -434,6 +434,7 @@ namespace Koromo_Copy_UX3.Utility
             }
             else if (item.Tag.ToString() == "Statistics")
             {
+                if (article_list.Count == 0) return;
                 var dialog = new ZipListingStatistics(article_list);
                 await DialogHost.Show(dialog, "RootDialog");
             }
