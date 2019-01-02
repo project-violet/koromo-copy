@@ -106,6 +106,22 @@
 
                         <Separator/>
 
+                        <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="Back">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ArrowLeftBold" Height="24" Width="24" Margin="10 0 0 0"/>
+                                <TextBlock Text="뒤로가기" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListBoxItem>
+
+                        <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="Forward">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ArrowRightBold" Height="24" Width="24" Margin="10 0 0 0"/>
+                                <TextBlock Text="앞으로가기" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListBoxItem>
+
+                        <Separator/>
+
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Image" Height="24" Width="24" Margin="10 0 0 0"/>
                             <TextBlock x:Name="ArticleCount" Text="작품 0개" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
@@ -157,7 +173,7 @@
 
                     <Grid Grid.Row="0">
                         <Image x:Name="WaterMark" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.5" RenderOptions.BitmapScalingMode="Fant" Stretch="Uniform" MaxHeight="400"/>
-                        <controls:WheelSpeedScrollViewer SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
+                        <controls:WheelSpeedScrollViewer x:Name="ScrollViewer" SpeedFactor="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=SearchSpaceWheelSpeed}">
                             <local:FallsPanel x:Name="SeriesPanel"/>
                         </controls:WheelSpeedScrollViewer>
                     </Grid>

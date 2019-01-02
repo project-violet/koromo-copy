@@ -103,6 +103,7 @@ namespace Koromo_Copy_UX3.Utility
             PathIcon.Margin = new Thickness(0, 0, 0, 0);
         }
 
+        string latest_search_text = "";
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (SearchText.Text != "검색")
@@ -110,6 +111,7 @@ namespace Koromo_Copy_UX3.Utility
                 if (!string.IsNullOrEmpty(SearchText.Text.Trim()))
                 {
                     day_before = elems = Search(SearchText.Text, raws);
+                    latest_search_text = SearchText.Text;
                     SearchResult.Visibility = Visibility.Visible;
                     SearchResult.Text = $"검색결과: {elems.Count.ToString("#,#")}개";
                 }
@@ -122,6 +124,7 @@ namespace Koromo_Copy_UX3.Utility
                 sort_data(align_column, align_row);
                 max_page = elems.Count / show_elem_per_page;
                 initialize_page();
+                stack_push();
             }
         }
 
@@ -315,6 +318,9 @@ namespace Koromo_Copy_UX3.Utility
                 max_page = article_dic.Count / show_elem_per_page;
                 initialize_page();
             }));
+
+            stack_clear();
+            stack_push();
         }
 
         int align_row = 0;
@@ -375,7 +381,17 @@ namespace Koromo_Copy_UX3.Utility
                     PageCount.Text = $"이미지 {article_list.Select(x=>x.Value.ArticleData.Pages).Sum().ToString("#,#")}장";
                     max_page = article_list.Count / show_elem_per_page;
                     initialize_page();
+                    stack_clear();
+                    stack_push();
                 }
+            }
+            else if (item.Tag.ToString() == "Back")
+            {
+                stack_pop();
+            }
+            else if (item.Tag.ToString() == "Forward")
+            {
+                stack_forward();
             }
             else if (item.Tag.ToString() == "Align")
             {
@@ -390,6 +406,8 @@ namespace Koromo_Copy_UX3.Utility
                     align_column = column;
                     align_row = row;
                     initialize_page();
+
+                    stack_push();
                 }
             }
             else if (item.Tag.ToString() == "Filter")
@@ -410,6 +428,8 @@ namespace Koromo_Copy_UX3.Utility
                     filter_data();
                     max_page = elems.Count / show_elem_per_page;
                     initialize_page();
+
+                    stack_push();
                 }
             }
             else if (item.Tag.ToString() == "Statistics")
@@ -492,15 +512,16 @@ namespace Koromo_Copy_UX3.Utility
 
         int max_page = 0; // 1 ~ 250
         int current_page_segment = 0;
+        int selected_page = 0;
 
         List<Button> page_number_buttons = new List<Button>();
 
-        private void initialize_page()
+        private void initialize_page(bool show = true)
         {
             current_page_segment = 0;
             page_number_buttons.ForEach(x => x.Visibility = Visibility.Visible);
             set_page_segment(0);
-            show_page(0);
+            if (show) show_page(0);
         }
 
         private void show_page(int i)
@@ -513,6 +534,7 @@ namespace Koromo_Copy_UX3.Utility
             page_number_buttons[i % 10].Foreground = new SolidColorBrush(Color.FromRgb(0x17, 0x17, 0x17));
 
             show_page_impl(i);
+            selected_page = i;
         }
 
         private void set_page_segment(int seg)
@@ -531,6 +553,8 @@ namespace Koromo_Copy_UX3.Utility
         private void PageNumber_Click(object sender, RoutedEventArgs e)
         {
             show_page(Convert.ToInt32((string)(sender as Button).Content) - 1);
+
+            stack_push();
         }
 
         private void PageFunction_Click(object sender, RoutedEventArgs e)
@@ -571,6 +595,104 @@ namespace Koromo_Copy_UX3.Utility
                     show_page(max_page);
                     break;
             }
+
+            stack_push();
+        }
+
+        #endregion
+
+        #region Stack
+
+        public struct ZipListingStackElements
+        {
+            public int selected_page;
+            public int max_page;
+            public int current_page_segment;
+            public double scroll_status;
+
+            public string search_text;
+            public DateTime? starts;
+            public DateTime? ends;
+            public int align_row;
+            public int align_column;
+        }
+
+        List<ZipListingStackElements> status_stack = new List<ZipListingStackElements>();
+        int stack_pointer = -1;
+
+        private void stack_clear()
+        {
+            status_stack.Clear();
+            stack_pointer = -1;
+        }
+
+        private void stack_push()
+        {
+            if (stack_pointer >= 0 && stack_pointer != status_stack.Count - 1)
+            {
+                status_stack.RemoveRange(stack_pointer + 1, status_stack.Count - stack_pointer - 1);
+                stack_pointer = status_stack.Count - 1;
+            }
+            status_stack.Add(new ZipListingStackElements
+            {
+                selected_page = selected_page,
+                max_page = max_page,
+                current_page_segment = current_page_segment,
+                scroll_status = ScrollViewer.VerticalOffset,
+
+                align_column = align_column,
+                align_row = align_row,
+                search_text = latest_search_text,
+                starts = starts,
+                ends = ends,
+            });
+            stack_pointer++;
+        }
+
+        private void stack_pop()
+        {
+            if (stack_pointer <= 0) return;
+            stack_pointer--;
+            stack_regression(stack_pointer);
+        }
+
+        private void stack_forward()
+        {
+            if (stack_pointer >= status_stack.Count - 1) return;
+            stack_pointer++;
+            stack_regression(stack_pointer);
+        }
+
+        private void stack_jump(int ptr)
+        {
+            stack_pointer = ptr;
+            stack_regression(ptr);
+        }
+
+        string latest_search = "";
+        private void stack_regression(int ptr)
+        {
+            var elem = status_stack[ptr];
+            elems = raws;
+            starts = elem.starts;
+            ends = elem.ends;
+            align_row = elem.align_row;
+            align_column = elem.align_column;
+            if (latest_search != elem.search_text && elem.search_text != "")
+            {
+                Search(elem.search_text, raws);
+                SearchText.Text = elem.search_text;
+                latest_search = elem.search_text;
+            }
+
+            max_page = elem.max_page;
+            current_page_segment = elem.current_page_segment;
+
+            sort_data(align_column, align_row);
+            filter_data();
+            initialize_page(false);
+            show_page(elem.selected_page);
+            ScrollViewer.ScrollToVerticalOffset(elem.scroll_status);
         }
 
         #endregion
