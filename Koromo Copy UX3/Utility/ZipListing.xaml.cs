@@ -394,6 +394,7 @@ namespace Koromo_Copy_UX3.Utility
             }
             else if (item.Tag.ToString() == "Filter")
             {
+                if (raws.Count == 0) return;
                 var dialog = new ZipListingFilter(raws.Select(x => DateTime.Parse(x.Item1.Value.CreatedDate)).ToList(), starts, ends);
                 if ((bool)(await DialogHost.Show(dialog, "RootDialog")))
                 {
