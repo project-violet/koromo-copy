@@ -114,7 +114,6 @@ namespace Koromo_Copy_UX3.Utility
                 if (!string.IsNullOrEmpty(SearchText.Text.Trim()))
                 {
                     day_before = elems = Search(SearchText.Text, raws);
-                    latest_search_text = SearchText.Text;
                     SearchResult.Visibility = Visibility.Visible;
                     SearchResult.Text = $"검색결과: {elems.Count.ToString("#,#")}개";
                 }
@@ -123,6 +122,7 @@ namespace Koromo_Copy_UX3.Utility
                     day_before = elems = raws;
                     SearchResult.Visibility = Visibility.Collapsed;
                 }
+                latest_search_text = SearchText.Text;
                 filter_data();
                 sort_data(align_column, align_row);
                 max_page = elems.Count / show_elem_per_page;
@@ -701,9 +701,9 @@ namespace Koromo_Copy_UX3.Utility
             ends = elem.ends;
             align_row = elem.align_row;
             align_column = elem.align_column;
-            if (latest_search != elem.search_text && elem.search_text != "")
+            if (latest_search != elem.search_text)
             {
-                Search(elem.search_text, raws);
+                day_before = elems = Search(elem.search_text, raws);
                 SearchText.Text = elem.search_text;
                 latest_search = elem.search_text;
             }
