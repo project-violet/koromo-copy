@@ -58,11 +58,6 @@ namespace Koromo_Copy_UX3.Utility
             SearchText.LostFocus += SearchText_LostFocus;
         }
 
-        private void ZipListing_KeyDown(object sender, KeyEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         #region UI
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -133,6 +128,23 @@ namespace Koromo_Copy_UX3.Utility
                 max_page = elems.Count / show_elem_per_page;
                 initialize_page();
                 stack_push();
+            }
+        }
+
+        private void ZipListing_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                StringBuilder builder = new StringBuilder();
+
+                for (int i = 0; i < status_stack.Count; i++)
+                {
+                    builder.Append($"[{i + 1}] ");
+                    builder.Append(JsonConvert.SerializeObject(status_stack[i]));
+                    builder.Append("\r\n");
+                }
+
+                MessageBox.Show(builder.ToString(), "스택");
             }
         }
 
