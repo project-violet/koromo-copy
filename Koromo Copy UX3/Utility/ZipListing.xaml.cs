@@ -51,8 +51,16 @@ namespace Koromo_Copy_UX3.Utility
             initialize_page();
 
             logic = new AutoCompleteBase(algorithm, SearchText, AutoComplete, AutoCompleteList);
+
+            KeyDown += ZipListing_KeyDown;
+
             SearchText.GotFocus += SearchText_GotFocus;
             SearchText.LostFocus += SearchText_LostFocus;
+        }
+
+        private void ZipListing_KeyDown(object sender, KeyEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #region UI
@@ -251,7 +259,7 @@ namespace Koromo_Copy_UX3.Utility
 
         #endregion
 
-        #region UI / IO
+        #region IO
 
         List<KeyValuePair<string, ZipListingArticleModel>> article_list;
         ZipListingModel model;
@@ -304,7 +312,7 @@ namespace Koromo_Copy_UX3.Utility
             elems.Clear();
             article_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
             {
-                return new ZipListingElements(root_directory + x.Key);
+                return new ZipListingElements(root_directory + x.Key, x.Value.ArticleData);
             }))));
             day_before = raws = elems;
             sort_data(align_column, align_row);
@@ -360,10 +368,12 @@ namespace Koromo_Copy_UX3.Utility
                         return;
                     }
 
+                    bool offline = false;
                     if (!Directory.Exists(model.RootDirectory))
                     {
-                        MessageBox.Show($"루트 디렉토리 {model.RootDirectory}를 찾을 수 없습니다! 루트 디렉토리를 수정해주세요!", "Zip Listing", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
+                        if (MessageBox.Show($"루트 디렉토리 \"{model.RootDirectory}\"를 찾을 수 없습니다! 디렉토리 위치가 변경되었다면 직접 루트 디렉토리를 수정해주세요!\r\n오프라인 모드로 열까요?", "Zip Listing", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.No)
+                            return;
+                        offline = true;
                     }
 
                     algorithm.Build(model);
@@ -373,7 +383,7 @@ namespace Koromo_Copy_UX3.Utility
                     elems.Clear();
                     article_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
                     {
-                        return new ZipListingElements(model.RootDirectory + x.Key);
+                        return new ZipListingElements(model.RootDirectory + x.Key, x.Value.ArticleData, offline);
                     }))));
                     day_before = raws = elems;
                     sort_data(align_column, align_row);

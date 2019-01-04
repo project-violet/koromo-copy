@@ -36,12 +36,16 @@ namespace Koromo_Copy_UX3.Utility
     public partial class ZipListingElements : UserControl
     {
         string zip_file_name;
+        bool offline_mode;
+        HitomiJsonModel model;
 
-        public ZipListingElements(string path)
+        public ZipListingElements(string path, HitomiJsonModel model, bool offline = false)
         {
             InitializeComponent();
 
             zip_file_name = path;
+            offline_mode = offline;
+            this.model = model;
             Loaded += ZipViewerElements_Loaded;
         }
 
@@ -53,7 +57,7 @@ namespace Koromo_Copy_UX3.Utility
         {
             if (loaded) return;
             loaded = true;
-            if (!File.Exists(zip_file_name))
+            if (offline_mode == false && !File.Exists(zip_file_name))
             {
                 Title.Text = $"파일을 찾을 수 없음";
                 Artist.Text = zip_file_name;
@@ -63,133 +67,119 @@ namespace Koromo_Copy_UX3.Utility
             {
                 try
                 {
-                    zipFile = ZipFile.Open(zip_file_name, ZipArchiveMode.Read);
-
-                    try
-                    {
-                        using (var reader = new StreamReader(zipFile.GetEntry("Info.json").Open()))
-                        {
-                            var model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
-                            Application.Current.Dispatcher.BeginInvoke(new Action(
-                            delegate
-                            {
-                                Title.Text = model.Title;
-                                Artist.Text = model.Artists != null ? model.Artists[0] : "";
-                                ImageCount.Text = $"{model.Pages} Pages";
-
-                                bool seperator = false;
-                                if (model.Artists != null)
-                                {
-                                    var stack = new StackPanel { Orientation = Orientation.Horizontal };
-                                    stack.Children.Add(new PackIcon { Kind = PackIconKind.Artist, Opacity = .56 });
-                                    stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "작가 목록" });
-                                    var menu_item = new MenuItem { Header = stack };
-                                    foreach (var artist in model.Artists)
-                                    {
-                                        var item = new MenuItem { Header = new TextBlock { Text = artist }, Tag = $"artist:{artist.Replace(' ', '_')}" };
-                                        item.Click += subitem_click;
-                                        menu_item.Items.Add(item);
-                                    }
-                                    seperator = true;
-                                    Menu.Items.Add(new Separator { Margin = new Thickness(4,0,4,0), Background = Brushes.Gray });
-                                    Menu.Items.Add(menu_item);
-                                }
-                                if (model.Groups != null)
-                                {
-                                    var stack = new StackPanel { Orientation = Orientation.Horizontal };
-                                    stack.Children.Add(new PackIcon { Kind = PackIconKind.UserGroup, Opacity = .56 });
-                                    stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "그룹 목록" });
-                                    var menu_item = new MenuItem { Header = stack };
-                                    foreach (var group in model.Groups)
-                                    {
-                                        var item = new MenuItem { Header = new TextBlock { Text = group }, Tag = $"group:{group.Replace(' ', '_')}" };
-                                        item.Click += subitem_click;
-                                        menu_item.Items.Add(item);
-                                    }
-                                    if (!seperator)
-                                    {
-                                        seperator = true;
-                                        Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
-                                    }
-                                    Menu.Items.Add(menu_item);
-                                }
-                                if (model.Series != null)
-                                {
-                                    var stack = new StackPanel { Orientation = Orientation.Horizontal };
-                                    stack.Children.Add(new PackIcon { Kind = PackIconKind.Book, Opacity = .56 });
-                                    stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "시리즈 목록" });
-                                    var menu_item = new MenuItem { Header = stack };
-                                    foreach (var series in model.Series)
-                                    {
-                                        MenuItem item = null;
-                                        if (KoreanSeries.SeriesMap(series) == series)
-                                            item = new MenuItem { Header = new TextBlock { Text = series }, Tag = $"series:{series.Replace(' ', '_')}" };
-                                        else
-                                            item = new MenuItem { Header = new TextBlock { Text = $"{series} ({KoreanSeries.SeriesMap(series)})" }, Tag = $"series:{series.Replace(' ', '_')}" };
-                                        item.Click += subitem_click;
-                                        menu_item.Items.Add(item);
-                                    }
-                                    if (!seperator)
-                                    {
-                                        seperator = true;
-                                        Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
-                                    }
-                                    Menu.Items.Add(menu_item);
-                                }
-                                if (model.Tags != null)
-                                {
-                                    var stack = new StackPanel { Orientation = Orientation.Horizontal };
-                                    stack.Children.Add(new PackIcon { Kind = PackIconKind.Tag, Opacity = .56 });
-                                    stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "태그 목록" });
-                                    var menu_item = new MenuItem { Header = stack };
-                                    foreach (var tag in model.Tags)
-                                    {
-                                        MenuItem item = null;
-                                        if (KoreanTag.TagMap(tag) == tag)
-                                            item = new MenuItem { Header = new TextBlock { Text = tag }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
-                                        else if (KoreanTag.TagMap(tag).Contains(':'))
-                                            item = new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag).Split(':')[1]})" }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
-                                        else
-                                            item = new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag)})" }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
-                                        item.Click += subitem_click;
-                                        menu_item.Items.Add(item);
-                                    }
-                                    if (!seperator)
-                                    {
-                                        seperator = true;
-                                        Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
-                                    }
-                                    Menu.Items.Add(menu_item);
-                                }
-                            }));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Application.Current.Dispatcher.BeginInvoke(new Action(
-                        delegate
-                        {
-                            Title.Text = Path.GetFileNameWithoutExtension(zip_file_name);
-                            Artist.Visibility = Visibility.Collapsed;
-                        }));
-                    }
-
-                    var zipEntry = !zipFile.Entries[0].Name.EndsWith(".json") ? zipFile.Entries[0] : zipFile.Entries[1];
-                    zipStream = zipEntry.Open();
-
                     Application.Current.Dispatcher.BeginInvoke(new Action(
                     delegate
                     {
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.DecodePixelWidth = 250;
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.StreamSource = zipStream;
-                        bitmap.EndInit();
-                        bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
+                        Title.Text = model.Title;
+                        Artist.Text = model.Artists != null ? model.Artists[0] : "";
+                        ImageCount.Text = $"{model.Pages} Pages";
 
-                        Image.Source = bitmap;
+                        bool seperator = false;
+                        if (model.Artists != null)
+                        {
+                            var stack = new StackPanel { Orientation = Orientation.Horizontal };
+                            stack.Children.Add(new PackIcon { Kind = PackIconKind.Artist, Opacity = .56 });
+                            stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "작가 목록" });
+                            var menu_item = new MenuItem { Header = stack };
+                            foreach (var artist in model.Artists)
+                            {
+                                var item = new MenuItem { Header = new TextBlock { Text = artist }, Tag = $"artist:{artist.Replace(' ', '_')}" };
+                                item.Click += subitem_click;
+                                menu_item.Items.Add(item);
+                            }
+                            seperator = true;
+                            Menu.Items.Add(new Separator { Margin = new Thickness(4, 0, 4, 0), Background = Brushes.Gray });
+                            Menu.Items.Add(menu_item);
+                        }
+                        if (model.Groups != null)
+                        {
+                            var stack = new StackPanel { Orientation = Orientation.Horizontal };
+                            stack.Children.Add(new PackIcon { Kind = PackIconKind.UserGroup, Opacity = .56 });
+                            stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "그룹 목록" });
+                            var menu_item = new MenuItem { Header = stack };
+                            foreach (var group in model.Groups)
+                            {
+                                var item = new MenuItem { Header = new TextBlock { Text = group }, Tag = $"group:{group.Replace(' ', '_')}" };
+                                item.Click += subitem_click;
+                                menu_item.Items.Add(item);
+                            }
+                            if (!seperator)
+                            {
+                                seperator = true;
+                                Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
+                            }
+                            Menu.Items.Add(menu_item);
+                        }
+                        if (model.Series != null)
+                        {
+                            var stack = new StackPanel { Orientation = Orientation.Horizontal };
+                            stack.Children.Add(new PackIcon { Kind = PackIconKind.Book, Opacity = .56 });
+                            stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "시리즈 목록" });
+                            var menu_item = new MenuItem { Header = stack };
+                            foreach (var series in model.Series)
+                            {
+                                MenuItem item = null;
+                                if (KoreanSeries.SeriesMap(series) == series)
+                                    item = new MenuItem { Header = new TextBlock { Text = series }, Tag = $"series:{series.Replace(' ', '_')}" };
+                                else
+                                    item = new MenuItem { Header = new TextBlock { Text = $"{series} ({KoreanSeries.SeriesMap(series)})" }, Tag = $"series:{series.Replace(' ', '_')}" };
+                                item.Click += subitem_click;
+                                menu_item.Items.Add(item);
+                            }
+                            if (!seperator)
+                            {
+                                seperator = true;
+                                Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
+                            }
+                            Menu.Items.Add(menu_item);
+                        }
+                        if (model.Tags != null)
+                        {
+                            var stack = new StackPanel { Orientation = Orientation.Horizontal };
+                            stack.Children.Add(new PackIcon { Kind = PackIconKind.Tag, Opacity = .56 });
+                            stack.Children.Add(new TextBlock { Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center, Text = "태그 목록" });
+                            var menu_item = new MenuItem { Header = stack };
+                            foreach (var tag in model.Tags)
+                            {
+                                MenuItem item = null;
+                                if (KoreanTag.TagMap(tag) == tag)
+                                    item = new MenuItem { Header = new TextBlock { Text = tag }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
+                                else if (KoreanTag.TagMap(tag).Contains(':'))
+                                    item = new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag).Split(':')[1]})" }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
+                                else
+                                    item = new MenuItem { Header = new TextBlock { Text = $"{tag} ({KoreanTag.TagMap(tag)})" }, Tag = $"{(tag.StartsWith("female:") || tag.StartsWith("male:") ? tag.Replace(' ', '_') : $"tag:{tag.Replace(' ', '_')}")}" };
+                                item.Click += subitem_click;
+                                menu_item.Items.Add(item);
+                            }
+                            if (!seperator)
+                            {
+                                seperator = true;
+                                Menu.Items.Add(new Separator { Margin = new Thickness(8, 0, 8, 0), Background = Brushes.Gray });
+                            }
+                            Menu.Items.Add(menu_item);
+                        }
                     }));
+
+                    if (offline_mode == false)
+                    {
+                        zipFile = ZipFile.Open(zip_file_name, ZipArchiveMode.Read);
+                        var zipEntry = !zipFile.Entries[0].Name.EndsWith(".json") ? zipFile.Entries[0] : zipFile.Entries[1];
+                        zipStream = zipEntry.Open();
+
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            var bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.DecodePixelWidth = 250;
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.StreamSource = zipStream;
+                            bitmap.EndInit();
+                            bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
+
+                            Image.Source = bitmap;
+                        }));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -201,13 +191,19 @@ namespace Koromo_Copy_UX3.Utility
 
         private void Bitmap_DownloadCompleted(object sender, EventArgs e)
         {
-            zipStream.Close();
-            zipFile.Dispose();
+            if (offline_mode == false)
+            {
+                zipStream.Close();
+                zipFile.Dispose();
+            }
         }
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Process.Start(zip_file_name);
+            if (offline_mode == false)
+            {
+                Process.Start(zip_file_name);
+            }
         }
         
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
