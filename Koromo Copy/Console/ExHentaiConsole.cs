@@ -11,6 +11,10 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 
 namespace Koromo_Copy.Console
 {
@@ -29,6 +33,10 @@ namespace Koromo_Copy.Console
         [CommandLine("-addr", CommandType.ARGUMENTS, Help = "use -addr <Hitomi Article>", Pipe = true,
             Info = "Get ex-hentai address using hitomi article.")]
         public string[] Address;
+
+        [CommandLine("-paging", CommandType.ARGUMENTS, Help = "use -paging page", Pipe = true,
+            Info = "Get ex-hentai address using hitomi article.")]
+        public string[] Paging;
     }
 
     /// <summary>
@@ -61,6 +69,10 @@ namespace Koromo_Copy.Console
             else if (option.Address != null)
             {
                 ProcessAddress(option.Address);
+            }
+            else if (option.Paging != null)
+            {
+                ProcessPaging(option.Paging);
             }
             
             return true;
@@ -111,6 +123,40 @@ namespace Koromo_Copy.Console
                 Console.Instance.WriteLine(result);
             else
                 Console.Instance.WriteLine("Not found.");
+        }
+
+        /// <summary>
+        /// 페이지 주소 정보를 출력합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        static void ProcessPaging(string[] args)
+        {
+            //string url = "https://exhentai.org/?inline_set=dm_l&page=" + args[0];
+            //string url2 = "https://exhentai.org/?page=1&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&f_search=language%3Akorean&f_apply=Apply+Filter&inline_set=dm_l";
+            
+            var result = new List<EHentaiResultArticle>();
+
+            for (int i = 0; i < 1398; i++)
+            {
+                try
+                {
+                    var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&f_search=language%3Akorean&f_apply=Apply+Filter&inline_set=dm_l";
+                    var html = NetCommon.DownloadExHentaiString(url);
+                    result.AddRange(ExHentaiParser.ParseResultPageListView(html));
+                    Monitor.Instance.Push($"[Paging] {i+1}/1398");
+                }
+                catch (Exception e)
+                {
+                    Console.Instance.WriteErrorLine($"[Error] {i} {e.Message}");
+                }
+                Thread.Sleep(5000);
+            }
+            
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            using (var fs = new StreamWriter(new FileStream("exh.json", FileMode.Create, FileAccess.Write)))
+            {
+                fs.Write(json);
+            }
         }
     }
 }
