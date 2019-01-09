@@ -44,4 +44,18 @@ namespace Koromo_Copy.Component.EH
         public List<string> ImagesLink { get; set; }
         public string Archive { get; set; }
     }
+
+    public class EHentaiResultArticle
+    {
+        public string URL;
+
+        public string Thumbnail;
+        public string Title;
+
+        public string Uploader;
+        public string Published;
+        public string Files;
+        public string Type;
+    }
+
 }

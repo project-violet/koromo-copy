@@ -178,5 +178,84 @@ namespace Koromo_Copy.Component.EH
 
             return article;
         }
+
+        /// <summary>
+        /// 결과 페이지를 분석합니다.
+        /// ex: https://exhentai.org/
+        /// ex: https://exhentai.org/?inline_set=dm_t
+        /// ex: https://exhentai.org/?page=1
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public static List<EHentaiResultArticle> ParseResultPageThumbnailView(string html)
+        {
+            var result = new List<EHentaiResultArticle>();
+
+            var document = new HtmlDocument();
+            document.LoadHtml(html);
+            var nodes = document.DocumentNode.SelectNodes("//div[@class='itg']/div[@class='id1']");
+
+            foreach (var node in nodes)
+            {
+                try
+                {
+                    var article = new EHentaiResultArticle();
+
+                    article.URL = node.SelectSingleNode("./div[@class='id2']/a").GetAttributeValue("href", "");
+
+                    try { article.Thumbnail = node.SelectSingleNode("./div[@class='id3']/a/img").GetAttributeValue("src", ""); } catch { }
+                    article.Title = node.SelectSingleNode("./div[@class='id2']/a").InnerText;
+
+                    article.Files = node.SelectSingleNode(".//div[@class='id42']").InnerText;
+                    article.Type = node.SelectSingleNode(".//div[@class='id41']").GetAttributeValue("title", "");
+
+                    result.Add(article);
+                }
+                catch { }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 결과 페이지를 분석합니다.
+        /// ex: https://exhentai.org/
+        /// ex: https://exhentai.org/?inline_set=dm_l
+        /// ex: https://exhentai.org/?page=1
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public static List<EHentaiResultArticle> ParseResultPageListView(string html)
+        {
+            var result = new List<EHentaiResultArticle>();
+
+            var document = new HtmlDocument();
+            document.LoadHtml(html);
+            var nodes = document.DocumentNode.SelectNodes("//table[@class='itg']/tr");
+
+            if (nodes.Count > 1) nodes.RemoveAt(0);
+
+            foreach (var node in nodes)
+            {
+                try
+                {
+                    var article = new EHentaiResultArticle();
+
+                    article.URL = node.SelectSingleNode("./td[3]/div/div[@class='it5']/a").GetAttributeValue("href", "");
+
+                    try { article.Thumbnail = node.SelectSingleNode("./td[3]/div/div[@class='it2']/img").GetAttributeValue("src", ""); } catch { }
+                    article.Title = node.SelectSingleNode("./td[3]/div/div[@class='it5']/a").InnerText;
+
+                    article.Uploader = node.SelectSingleNode("./td[4]/div/a").GetAttributeValue("href", "");
+                    article.Published = node.SelectSingleNode("./td[2]").InnerText;
+                    article.Type = node.SelectSingleNode("./td/a/img").GetAttributeValue("alt", "");
+
+                    result.Add(article);
+                }
+                catch { }
+            }
+
+            return result;
+        }
     }
 }
