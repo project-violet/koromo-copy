@@ -247,9 +247,6 @@
     </Compile>
     <Compile Include="Utility\ArrangePanel.cs" />
     <Compile Include="Utility\FallsPanel.cs" />
-    <Compile Include="Utility\HentaiEngine.xaml.cs">
-      <DependentUpon>HentaiEngine.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Utility\MangaCrawler.xaml.cs">
       <DependentUpon>MangaCrawler.xaml</DependentUpon>
     </Compile>
@@ -454,10 +451,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tools\Statistics.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Utility\HentaiEngine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
