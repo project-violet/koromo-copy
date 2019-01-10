@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 
 namespace Koromo_Copy.Console
@@ -34,9 +35,11 @@ namespace Koromo_Copy.Console
             Info = "Get ex-hentai address using hitomi article.")]
         public string[] Address;
 
-        [CommandLine("-paging", CommandType.ARGUMENTS, Help = "use -paging page", Pipe = true,
-            Info = "Get ex-hentai address using hitomi article.")]
+        [CommandLine("-paging", CommandType.ARGUMENTS, Help = "use -paging page")]
         public string[] Paging;
+
+        [CommandLine("-expun", CommandType.ARGUMENTS, Help = "use -expun xxx")]
+        public string[] Expun;
     }
 
     /// <summary>
@@ -73,6 +76,10 @@ namespace Koromo_Copy.Console
             else if (option.Paging != null)
             {
                 ProcessPaging(option.Paging);
+            }
+            else if (option.Expun != null)
+            {
+                ProcessExpun(option.Expun);
             }
             
             return true;
@@ -136,14 +143,15 @@ namespace Koromo_Copy.Console
             
             var result = new List<EHentaiResultArticle>();
 
-            for (int i = 0; i < 1398; i++)
+            for (int i = 0; i < 1443; i++)
             {
                 try
                 {
                     var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&f_search=language%3Akorean&f_apply=Apply+Filter&inline_set=dm_l";
-                    var html = NetCommon.DownloadExHentaiString(url);
+                    var url2 = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&advsearch=1&f_search=language%3Akorean&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&f_apply=Apply+Filter";
+                    var html = NetCommon.DownloadExHentaiString(url2);
                     result.AddRange(ExHentaiParser.ParseResultPageListView(html));
-                    Monitor.Instance.Push($"[Paging] {i+1}/1398");
+                    Monitor.Instance.Push($"[Paging] {i+1}/1443");
                 }
                 catch (Exception e)
                 {
@@ -157,6 +165,52 @@ namespace Koromo_Copy.Console
             {
                 fs.Write(json);
             }
+        }
+
+        /// <summary>
+        /// 익펀 데이터를 출력합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        static void ProcessExpun(string[] args)
+        {
+            var non_ef = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("exh.json"));
+            var inc_ef = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("exh-ef.json"));
+
+            HashSet<string> non_ef_urls = new HashSet<string>();
+            non_ef.ForEach(x => non_ef_urls.Add(x.URL));
+
+            HashSet<string> inc_ef_urls = new HashSet<string>();
+            inc_ef.ForEach(x => inc_ef_urls.Add(x.URL));
+
+            var build = new StringBuilder();
+            build.Append("\r\n");
+            build.Append("Koromo Copy Expunged Data Extractor\r\n");
+            build.Append("Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.\r\n");
+            build.Append("\r\n");
+            build.Append("손실 작품\r\n");
+            int ee_count = 0;
+            non_ef.ForEach(x =>
+            {
+                if (!inc_ef_urls.Contains(x.URL))
+                {
+                    build.Append($"{x.URL.Substring("https://exhentai.org/g".Length)} : {x.Title} \r\n");
+                    ee_count++;
+                }
+            });
+            build.Append($"{(ee_count > 0 ? ee_count.ToString("#,#") : "0")} 개");
+            build.Append("\r\n");
+            build.Append("Expunged 데이터\r\n");
+            int ef_count = 0;
+            inc_ef.ForEach(x =>
+            {
+                if (!non_ef_urls.Contains(x.URL))
+                {
+                    build.Append($"{x.URL.Substring("https://exhentai.org/g".Length)} : {x.Title} \r\n");
+                    ef_count++;
+                }
+            });
+            build.Append($"{(ef_count > 0 ? ef_count.ToString("#,#") : "0")} 개");
+            Console.Instance.WriteLine(build.ToString());
         }
     }
 }
