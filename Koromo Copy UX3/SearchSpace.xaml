@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Koromo_Copy_UX3"
              xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
              xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
+             xmlns:utility="clr-namespace:Koromo_Copy_UX3.Utility"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -146,7 +147,10 @@
                         <Border.Effect>
                             <DropShadowEffect x:Name="DropShadow" ShadowDepth="0" BlurRadius="2"/>
                         </Border.Effect>-->
-                    <StackPanel x:Name="SearchPanel"/>
+                    <Grid>
+                        <StackPanel x:Name="SearchPanel"/>
+                        <utility:FallsPanel x:Name="SearchMaterialPanel"/>
+                    </Grid>
                     <!--</Border>
                 </Border>-->
                 </controls:WheelSpeedScrollViewer>

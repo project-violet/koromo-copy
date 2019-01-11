@@ -196,6 +196,9 @@
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SearchMaterialElements.xaml.cs">
+      <DependentUpon>SearchMaterialElements.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchSimpleElements.xaml.cs">
       <DependentUpon>SearchSimpleElements.xaml</DependentUpon>
     </Compile>
@@ -387,6 +390,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SearchElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SearchMaterialElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

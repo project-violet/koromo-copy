@@ -46,5 +46,10 @@ namespace Koromo_Copy.UX
         /// 테마 색상입니다.
         /// </summary>
         public Color ThemeColor;
+
+        /// <summary>
+        /// 썸네일 검색결과를 보여줍니다.
+        /// </summary>
+        public bool UsingThumbnailSearchElements;
     }
 }
