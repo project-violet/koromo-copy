@@ -50,8 +50,8 @@ namespace Koromo_Copy_UX3
                 }
             }
         }
-
-        private void SearchElements_MouseUp(object sender, MouseButtonEventArgs e)
+        
+        private void UserControl_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Select = !Select;
         }

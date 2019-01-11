@@ -7,6 +7,7 @@
              xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
              xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
              xmlns:utility="clr-namespace:Koromo_Copy_UX3.Utility"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -147,6 +148,26 @@
                         <Border.Effect>
                             <DropShadowEffect x:Name="DropShadow" ShadowDepth="0" BlurRadius="2"/>
                         </Border.Effect>-->
+                    <controls:WheelSpeedScrollViewer.ContextMenu>
+                        <ContextMenu x:Name="Menu">
+                            <ContextMenu.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </ContextMenu.Resources>
+                            <MenuItem Click="MenuItem_Click" Tag="DeSelectSimilar">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center">제목 비슷한 작품 선택 취소</TextBlock>
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+                        </ContextMenu>
+                    </controls:WheelSpeedScrollViewer.ContextMenu>
                     <Grid>
                         <StackPanel x:Name="SearchPanel"/>
                         <utility:FallsPanel x:Name="SearchMaterialPanel"/>

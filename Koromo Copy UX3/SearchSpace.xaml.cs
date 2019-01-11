@@ -339,6 +339,8 @@ namespace Koromo_Copy_UX3
         #region Search Helper
         AutoCompleteLogic logic;
 
+        public object StringAlgorithms { get; private set; }
+
         private void SearchText_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return && !logic.skip_enter)
@@ -374,5 +376,42 @@ namespace Koromo_Copy_UX3
         }
         #endregion
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            string tag = ((MenuItem)sender).Tag.ToString();
+
+            if (tag == "DeSelectSimilar")
+            {
+                List<string> titles = new List<string>();
+                if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
+                {
+                    for (int i = 0; i < SearchPanel.Children.Count; i+=2)
+                    {
+                        string ttitle = (SearchPanel.Children[i] as SearchElements).Article.Title.Split('|')[0];
+                        if (titles.Count > 0 && !titles.TrueForAll((title) => Strings.ComputeLevenshteinDistance(ttitle, title) > Settings.Instance.Hitomi.TextMatchingAccuracy))
+                        {
+                            (SearchPanel.Children[i] as SearchElements).Select = false;
+                            continue;
+                        }
+
+                        titles.Add(ttitle);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < SearchMaterialPanel.Children.Count; i++)
+                    {
+                        string ttitle = (SearchMaterialPanel.Children[i] as SearchMaterialElements).Article.Title.Split('|')[0];
+                        if (titles.Count > 0 && !titles.TrueForAll((title) => Strings.ComputeLevenshteinDistance(ttitle, title) > Settings.Instance.Hitomi.TextMatchingAccuracy))
+                        {
+                            (SearchMaterialPanel.Children[i] as SearchMaterialElements).Select = false;
+                            continue;
+                        }
+
+                        titles.Add(ttitle);
+                    }
+                }
+            }
+        }
     }
 }
