@@ -86,7 +86,7 @@ namespace Koromo_Copy_UX3.Utility
                 (desiredPosition.TopLeft - position.TopLeft).Length,
                 (desiredPosition.BottomRight - position.BottomRight).Length);
 
-            var animationTime = TimeSpan.FromMilliseconds(distance * 2);
+            var animationTime = TimeSpan.FromMilliseconds(700);//distance * 2);
             var animation = new RectAnimation(position, desiredPosition, new Duration(animationTime));
             animation.DecelerationRatio = 1;
             ((UIElement)d).BeginAnimation(PositionProperty, animation);

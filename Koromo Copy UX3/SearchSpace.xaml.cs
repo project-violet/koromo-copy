@@ -48,6 +48,10 @@ namespace Koromo_Copy_UX3
         {
             InitializeComponent();
 
+            if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
+                SearchMaterialPanel.Visibility = Visibility.Collapsed;
+            else
+                SearchPanel.Visibility = Visibility.Collapsed;
             Loaded += SearchSpace_Loaded;
             Instance = this;
             InstanceMonitor.Instances.Add("searchspace", Instance);
@@ -241,10 +245,18 @@ namespace Koromo_Copy_UX3
             delegate
             {
                 // Put code that needs to run on the UI thread here
-                var se = new SearchElements(HitomiLegalize.MetadataToArticle(md));
-                SearchPanel.Children.Add(se);
-                SearchPanel.Children.Add(new Separator());
-                Koromo_Copy.Monitor.Instance.Push("[AddSearchElements] Hitomi Metadata " + md.ID);
+                if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
+                {
+                    var se = new SearchElements(HitomiLegalize.MetadataToArticle(md));
+                    SearchPanel.Children.Add(se);
+                    SearchPanel.Children.Add(new Separator());
+                }
+                else
+                {
+                    var sme = new SearchMaterialElements(HitomiLegalize.MetadataToArticle(md));
+                    SearchMaterialPanel.Children.Add(sme);
+                    Koromo_Copy.Monitor.Instance.Push("[AddSearchElements] Hitomi Metadata " + md.ID);
+                }
             }));
         }
 
@@ -258,34 +270,69 @@ namespace Koromo_Copy_UX3
             }
             else if (tag == "Tidy")
             {
-                int count = SearchPanel.Children.Count / 2;
-                SearchPanel.Children.Clear();
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
-                if (count > 0)
-                MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목을 정리했습니다!", false);
+                if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
+                {
+                    int count = SearchPanel.Children.Count / 2;
+                    SearchPanel.Children.Clear();
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+                    if (count > 0)
+                        MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목을 정리했습니다!", false);
+                }
+                else
+                {
+                    int count = SearchMaterialPanel.Children.Count / 2;
+                    SearchMaterialPanel.Children.Clear();
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+                    if (count > 0)
+                        MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목을 정리했습니다!", false);
+                }
             }
             else if (tag == "SelectAll")
             {
-                SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = true);
+                if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
+                    SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = true);
+                else
+                    SearchMaterialPanel.Children.OfType<SearchMaterialElements>().ToList().ForEach(x => x.Select = true);
             }
             else if (tag == "DeSelectAll")
             {
-                SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = false);
+                if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
+                    SearchPanel.Children.OfType<SearchElements>().ToList().ForEach(x => x.Select = false);
+                else
+                    SearchMaterialPanel.Children.OfType<SearchMaterialElements>().ToList().ForEach(x => x.Select = false);
             }
             else if (tag == "Download")
             {
-                int count = 0;
-                SearchPanel.Children.OfType<SearchElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
+                if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
                 {
-                    var prefix = HitomiCommon.MakeDownloadDirectory(x.Article as HitomiArticle, SearchText.Text);
-                    Directory.CreateDirectory(prefix);
-                    DownloadSpace.Instance.RequestDownload(x.Article.Title, 
-                        x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(), 
-                        x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
-                        Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
-                    count++;
-                });
-                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                    int count = 0;
+                    SearchPanel.Children.OfType<SearchElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
+                    {
+                        var prefix = HitomiCommon.MakeDownloadDirectory(x.Article as HitomiArticle, SearchText.Text);
+                        Directory.CreateDirectory(prefix);
+                        DownloadSpace.Instance.RequestDownload(x.Article.Title,
+                            x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
+                            x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                            Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
+                        count++;
+                    });
+                    if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                }
+                else
+                {
+                    int count = 0;
+                    SearchMaterialPanel.Children.OfType<SearchMaterialElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
+                    {
+                        var prefix = HitomiCommon.MakeDownloadDirectory(x.Article as HitomiArticle, SearchText.Text);
+                        Directory.CreateDirectory(prefix);
+                        DownloadSpace.Instance.RequestDownload(x.Article.Title,
+                            x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
+                            x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                            Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
+                        count++;
+                    });
+                    if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                }
             }
         }
         
