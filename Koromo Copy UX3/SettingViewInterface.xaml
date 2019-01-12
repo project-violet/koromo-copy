@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Koromo_Copy_UX3.SettingViewInterface"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Koromo_Copy_UX3"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <Grid Margin="20">
+
+        <StackPanel HorizontalAlignment="Stretch">
+            <TextBlock Text="UI 설정" FontSize="20"/>
+
+
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                <ToggleButton IsChecked="{Binding UsingThumbnailSearchElements}">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+                <TextBlock Text="  검색결과를 썸네일뷰로 표시" ToolTip="검색결과를 작품의 썸네일과 간단한 정보만 표시합니다. 프로그램을 재시작해야 적용됩니다.">
+                    <TextBlock.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </TextBlock.Resources>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

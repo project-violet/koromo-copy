@@ -156,6 +156,7 @@
     <Compile Include="Domain\SettingAdvancedViewModel.cs" />
     <Compile Include="Domain\SettingDownloaderViewModel.cs" />
     <Compile Include="Domain\SettingHitomiViewModel.cs" />
+    <Compile Include="Domain\SettingViewInterfaceModel.cs" />
     <Compile Include="Domain\SettingWrap.cs" />
     <Compile Include="Domain\ToolIndexDataGridViewModel.cs" />
     <Compile Include="Domain\UXConsole.cs" />
@@ -219,6 +220,9 @@
     </Compile>
     <Compile Include="SettingViewInformation.xaml.cs">
       <DependentUpon>SettingViewInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingViewInterface.xaml.cs">
+      <DependentUpon>SettingViewInterface.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingViewPixiv.xaml.cs">
       <DependentUpon>SettingViewPixiv.xaml</DependentUpon>
@@ -422,6 +426,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingViewInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewInterface.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

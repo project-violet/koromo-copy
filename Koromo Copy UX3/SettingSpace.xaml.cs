@@ -74,6 +74,12 @@ namespace Koromo_Copy_UX3
 
             SettingsTree.Items.Add(new TreeViewItem
             {
+                Header = "인터페이스",
+                DataContext = new SettingViewInterface { DataContext = new SettingViewInterfaceModel() }
+            });
+
+            SettingsTree.Items.Add(new TreeViewItem
+            {
                 Header = "업데이트",
                 DataContext = new SettingViewUpdate()
             });
