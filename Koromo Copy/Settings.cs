@@ -126,7 +126,8 @@ namespace Koromo_Copy
                         SearchSpaceWheelSpeed = 1.5,
                         DoNotHightlightAutoCompleteResults = false,
                         MaxCountOfAutoCompleteResult = 100,
-                        ThemeColor = Color.Pink
+                        ThemeColor = Color.Pink,
+                        UsingThumbnailSearchElements = false
                     },
 
                     Pixiv = new PixivSetting
