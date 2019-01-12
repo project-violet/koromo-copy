@@ -118,6 +118,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Format.cs" />
+    <Compile Include="Html\HtmlTree.cs" />
     <Compile Include="Internal.cs" />
     <Compile Include="Component\EH\EHentaiArticle.cs" />
     <Compile Include="Component\EH\ExHentaiTool.cs" />

@@ -10,6 +10,7 @@ using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Component.Mangashow;
+using Koromo_Copy.Html;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Plugin;
 using Koromo_Copy.Utility.Develop;
@@ -132,6 +133,13 @@ namespace Koromo_Copy.Console.Utility
                     MangashowmeParser.ParseSeries(html4);
                     var html5 = Net.NetCommon.DownloadString("http://mangashow.me/viewer.php?chapter_id=79688");
                     MangashowmeParser.ParseImages(html5);
+                    break;
+
+                case "tree":
+                    var html6 = Net.NetCommon.DownloadString("https://www.google.com/search?q=anime&newwindow=1&rlz=1C1GIGM_enKR776KR776&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjS-J2cxejfAhWT-mEKHSpkCqsQ_AUIDigB&biw=1573&bih=814");
+                    var tree = new HtmlTree(html6);
+                    tree.BuildTree();
+                    Console.Instance.Write(Monitor.SerializeObject(tree.GetLevelImages(11)));
                     break;
             }
         }
