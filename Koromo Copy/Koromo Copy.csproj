@@ -175,7 +175,6 @@
     <Compile Include="Plugin\PlugInManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Script\ScriptElement.cs" />
     <Compile Include="Script\ScriptEngine.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Statistics.cs" />
