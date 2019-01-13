@@ -358,17 +358,14 @@ namespace Koromo_Copy_UX3.Utility
             }
         }
         
-        private void Filter_KeyDown(object sender, KeyEventArgs e)
+        private void Filter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (e.Key == Key.Return)
-            {
-                var text = Filter.Text.Trim();
+            var text = Filter.Text.Trim();
 
-                if (text == "")
-                    HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
-                else
-                    HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults().Where(x => x.특정항목.Contains(text)));
-            }
+            if (text == "")
+                HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
+            else
+                HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults().Where(x => x.특정항목.Contains(text)));
         }
     }
 }
