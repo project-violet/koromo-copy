@@ -380,7 +380,9 @@ namespace Koromo_Copy_UX3.Utility
         {
             try
             {
-                (new CustomCrawlerTree(tree[0][0], new List<HtmlNode>())).Show();
+                var p_list = HTMLList.SelectedItems.OfType<CustomCrawlerDataGridItemViewModel>().ToList();
+                p_list.Sort((x, y) => Convert.ToInt32(x.인덱스).CompareTo(Convert.ToInt32(y.인덱스)));
+                (new CustomCrawlerTree(tree[0][0], p_list.Select(x => tree[x.i][x.j]).ToList())).Show();
             }
             catch (Exception ex)
             {
