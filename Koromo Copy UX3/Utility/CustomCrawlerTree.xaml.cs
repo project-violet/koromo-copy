@@ -30,12 +30,14 @@ namespace Koromo_Copy_UX3.Utility
     {
         HtmlNode root_node;
         List<HtmlNode> marking;
+        List<HtmlNode> original_marking;
 
         public CustomCrawlerTree(HtmlNode node, List<HtmlNode> marking)
         {
             InitializeComponent();
 
             root_node = node;
+            original_marking = marking;
             this.marking = new List<HtmlNode>();
             foreach (var snode in marking)
             {
@@ -54,8 +56,8 @@ namespace Koromo_Copy_UX3.Utility
         {
             if (load) return;
             load = true;
-            
-            var tvi = new TreeViewItem();
+
+            var tvi = new TreeViewItem { Tag = root_node };
             tvi.Header = make_header2(root_node);
             recursive_append(tvi, root_node);
             Tree.Items.Add(tvi);
@@ -108,14 +110,68 @@ namespace Koromo_Copy_UX3.Utility
         {
             foreach (var snode in node.ChildNodes)
             {
-                var tvi = new TreeViewItem();
+                var tvi = new TreeViewItem { Tag = snode };
                 var header = make_header(snode);
                 if (string.IsNullOrEmpty(header))
                     continue;
-                tvi.Header = make_header2(snode);//new TextBlock { Text = make_header(snode), TextWrapping = TextWrapping.Wrap };
+                tvi.Header = make_header2(snode);
                 item.Items.Add(tvi);
                 recursive_append(tvi, snode);
             }
+        }
+
+        private void Tree_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Tree.SelectedItem != null)
+            {
+                var node = ((TreeViewItem)Tree.SelectedItem).Tag as HtmlNode;
+
+                var builder = new StringBuilder();
+                builder.Append($"XPath: {node.XPath}\r\n");
+                try { builder.Append($"Parent: {node.ParentNode.Name}\r\n"); } catch { }
+                builder.Append("Attributes:\r\n");
+                node.Attributes.ToList().ForEach(x => builder.Append($"{x.Name}=\"{x.Value}\"\r\n"));
+                builder.Append("Childs:\r\n");
+                int child = 0;
+                node.ChildNodes.ToList().ForEach(x => { try { builder.Append($"[{child++.ToString().PadLeft(3, '0')}] {x.Name}, {x.XPath.Substring(node.XPath.Length)}\r\n"); } catch { } });
+                TextBox.Text = builder.ToString();
+            }
+        }
+
+        private void ExpandButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (root_node.ParentNode == null) return;
+
+            root_node = root_node.ParentNode;
+            marking = new List<HtmlNode>();
+            foreach (var snode in original_marking)
+            {
+                var tnode = snode;
+                while (tnode != null && tnode != root_node)
+                {
+                    marking.Add(tnode);
+                    tnode = tnode.ParentNode;
+                }
+            }
+
+            var tvi = new TreeViewItem { Tag = root_node };
+            tvi.Header = make_header2(root_node);
+            recursive_append(tvi, root_node);
+            Tree.Items.Clear();
+            Tree.Items.Add(tvi);
+            tvi.IsExpanded = true;
+        }
+
+        private void ShinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Tree.SelectedItem == null) return;
+
+            root_node = ((TreeViewItem)Tree.SelectedItem).Tag as HtmlNode;
+            var tvi = new TreeViewItem { Tag = root_node };
+            tvi.Header = make_header2(root_node);
+            recursive_append(tvi, root_node);
+            Tree.Items.Clear();
+            Tree.Items.Add(tvi);
         }
     }
 }
