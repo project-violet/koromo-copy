@@ -60,6 +60,9 @@
     <Reference Include="Costura, Version=3.1.6.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\Koromo Copy\packages\Costura.Fody.3.1.6\lib\net46\Costura.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.8.12.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\Koromo Copy\packages\HtmlAgilityPack.1.8.12\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\Koromo Copy\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -253,6 +256,16 @@
       <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ArrangePanel.cs" />
+    <Compile Include="Utility\CustomCrawler.xaml.cs">
+      <DependentUpon>CustomCrawler.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\CustomCrawlerDataGridViewModel.cs" />
+    <Compile Include="Utility\CustomCrawlerImage.xaml.cs">
+      <DependentUpon>CustomCrawlerImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\DoubleThumbSlider.xaml.cs">
+      <DependentUpon>DoubleThumbSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\FallsPanel.cs" />
     <Compile Include="Utility\MangaCrawler.xaml.cs">
       <DependentUpon>MangaCrawler.xaml</DependentUpon>
@@ -466,6 +479,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tools\Statistics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\CustomCrawler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\CustomCrawlerImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\DoubleThumbSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

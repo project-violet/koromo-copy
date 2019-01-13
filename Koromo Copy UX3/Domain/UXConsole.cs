@@ -182,6 +182,16 @@ namespace Koromo_Copy_UX3.Domain
                     }));
                     break;
 
+                case "cc":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        CustomCrawler cc = new CustomCrawler();
+                        cc.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;

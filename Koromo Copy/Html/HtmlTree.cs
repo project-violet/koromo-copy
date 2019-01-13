@@ -20,7 +20,12 @@ namespace Koromo_Copy.Html
         HtmlNode root_node;
         List<List<HtmlNode>> depth_map;
         public int Height { get { return depth_map.Count - 1; } }
-
+        
+        public List<HtmlNode> this[int i]
+        {
+            get { return depth_map[i]; }
+        }
+        
         public HtmlTree(string html)
         {
             HtmlDocument document = new HtmlDocument();
