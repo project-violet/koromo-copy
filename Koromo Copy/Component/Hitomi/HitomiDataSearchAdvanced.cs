@@ -518,6 +518,19 @@ namespace Koromo_Copy.Component.Hitomi
             for (int i = starts; i < ends; i++)
             {
                 var v = HitomiData.Instance.metadata_collection[i];
+                if (Settings.Instance.Hitomi.ExclusiveTag != null && v.Tags != null)
+                {
+                    int intersec_count = 0;
+                    foreach (var tag in Settings.Instance.Hitomi.ExclusiveTag)
+                    {
+                        if (v.Tags.Any(vtag => vtag.ToLower().Replace(' ', '_') == tag.ToLower()))
+                        {
+                            intersec_count++;
+                        }
+                        if (intersec_count > 0) break;
+                    }
+                    if (intersec_count > 0) continue;
+                }
                 if (match(query, v))
                     result.Add(v);
             }
