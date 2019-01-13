@@ -127,6 +127,34 @@
                 </Grid>
             </Border>
 
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="커스텀 크롤러 (Custom Crawler)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="크롤러를 직접 제작하거나, 제작에 도움을 줄 수 있는 유용한 도구 모음입니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="CustomCrawler" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Lumx" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
             <TextBlock Margin="0 16 0 0" FontSize="20" Text="관리되지 않는 항목" FontWeight="Thin"/>
 
             <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 4 0 0">

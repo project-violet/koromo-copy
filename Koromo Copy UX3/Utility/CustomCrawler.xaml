@@ -4,9 +4,81 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="CustomCrawler" Height="300" Width="300">
-    <Grid>
-        
+        Title="Custom Crawler" Height="692" Width="1497">
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.Resources>
+            <Style x:Key="TextBlockStyleKey" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                <Setter Property="Margin" Value="5 0 0 0" />
+            </Style>
+        </Grid.Resources>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="URL: " FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBox x:Name="URLText" Grid.Row="0" Grid.Column="1" FontSize="15"/>
+        <Button x:Name="URLButton" Content="Load" Grid.Row="0" Grid.Column="2" Width="120" Click="URLButton_Click" Margin="8 0 8 0"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="HTML: " FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 4 0 0"/>
+        <DataGrid x:Name="HTMLList" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
+                  SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" BorderThickness="1" Background="White" MouseDoubleClick="HTMLList_MouseDoubleClick"
+                  CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2" Margin="0 4 0 0">
+            <DataGrid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="60" Header="인덱스" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" SortDirection="Descending"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 깊이}" Width="50" Header="깊이" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 네임}" Width="100" Header="네임" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding 특정항목}" Width="1000" Header="특정항목" ElementStyle="{StaticResource TextBlockStyleKey}"
+                                                           EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+            </DataGrid.Columns>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Height" Value="25"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Background" Value="Gray"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+        </DataGrid>
+        <StackPanel Grid.Row="1" Grid.Column="2" Margin="8">
+            <TextBlock Text="이름"/>
+            <CheckBox x:Name="aCheck" Content="a" IsChecked="True"/>
+            <CheckBox x:Name="imgCheck" Content="img" IsChecked="True"/>
+            <CheckBox x:Name="linkCheck" Content="link" IsChecked="False"/>
+            <CheckBox x:Name="scriptCheck" Content="script" IsChecked="False"/>
+            <CheckBox x:Name="metaCheck" Content="meta" IsChecked="False"/>
+            <CheckBox x:Name="textCheck" Content="text" IsChecked="False" ToolTip="텍스트가 포함된 모든 name 포함"/>
+            <TextBlock Text="기능" Margin="0 4 0 0"/>
+            <Button x:Name="LCA" Content="LCA" Click="LCA_Click" ToolTip="선택된 항목들의 Lowest Common Ancestor를 분석합니다."/>
+            <Button x:Name="XPath" Margin="0 4 0 0" Content="XPath" Click="XPath_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
