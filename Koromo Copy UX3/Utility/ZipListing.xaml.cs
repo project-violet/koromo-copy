@@ -482,7 +482,7 @@ namespace Koromo_Copy_UX3.Utility
             }
             else if (column == 4)
             {
-                elems.Sort((x, y) => x.Item1.Value.ArticleData.Id.CompareTo(y.Item1.Value.ArticleData.Id));
+                elems.Sort((x, y) => Convert.ToInt32(x.Item1.Value.ArticleData.Id).CompareTo(Convert.ToInt32(y.Item1.Value.ArticleData.Id)));
             }
             else if (column == 5)
             {
