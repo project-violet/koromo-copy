@@ -51,57 +51,62 @@ namespace Koromo_Copy_UX3.Utility
                 var html = NetCommon.DownloadString(URLText.Text);
                 tree = new HtmlTree(html);
                 tree.BuildTree();
-
-                var filter = new List<string>();
-                if (aCheck.IsChecked == true)
-                    filter.Add("a");
-                if (imgCheck.IsChecked == true)
-                    filter.Add("img");
-                if (linkCheck.IsChecked == true)
-                    filter.Add("link");
-                if (scriptCheck.IsChecked == true)
-                    filter.Add("script");
-                if (metaCheck.IsChecked == true)
-                    filter.Add("meta");
-
-                var list = new List<CustomCrawlerDataGridItemViewModel>();
-                int index = 0;
-                for (int i = 0; i <= tree.Height; i++)
-                {
-                    for (int j = 0; j < tree[i].Count; j++)
-                    {
-                        if (textCheck.IsChecked == false && !filter.Contains(tree[i][j].OriginalName))
-                            continue;
-                        
-                        var src = imgCheck.IsChecked == true ? tree[i][j].GetAttributeValue("data-src", "") : "";
-                        if (imgCheck.IsChecked == true && string.IsNullOrEmpty(src))
-                            src = tree[i][j].GetAttributeValue("src", "");
-                        if ((aCheck.IsChecked == true || linkCheck.IsChecked == true) && string.IsNullOrEmpty(src))
-                            src = tree[i][j].GetAttributeValue("href", "");
-                        if ((scriptCheck.IsChecked == true || metaCheck.IsChecked == true) && string.IsNullOrEmpty(src))
-                            src = tree[i][j].GetAttributeValue("content", "");
-                        if (string.IsNullOrEmpty(src) && textCheck.IsChecked == true && tree[i][j].InnerText.Trim() != "")
-                            src = tree[i][j].InnerText.Trim();
-                        if (string.IsNullOrEmpty(src))
-                            continue;
-
-                        list.Add(new CustomCrawlerDataGridItemViewModel
-                        {
-                            인덱스 = index++.ToString(),
-                            깊이 = i.ToString(),
-                            네임 = tree[i][j].OriginalName,
-                            특정항목 = src,
-                            i = i,
-                            j = j,
-                        });
-                    }
-                }
-                HTMLList.DataContext = new CustomCrawlerDataGridViewModel(list);
+                HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private List<CustomCrawlerDataGridItemViewModel> GetLoadResults()
+        {
+            var filter = new List<string>();
+            if (aCheck.IsChecked == true)
+                filter.Add("a");
+            if (imgCheck.IsChecked == true)
+                filter.Add("img");
+            if (linkCheck.IsChecked == true)
+                filter.Add("link");
+            if (scriptCheck.IsChecked == true)
+                filter.Add("script");
+            if (metaCheck.IsChecked == true)
+                filter.Add("meta");
+
+            var list = new List<CustomCrawlerDataGridItemViewModel>();
+            int index = 0;
+            for (int i = 0; i <= tree.Height; i++)
+            {
+                for (int j = 0; j < tree[i].Count; j++)
+                {
+                    if (textCheck.IsChecked == false && !filter.Contains(tree[i][j].OriginalName))
+                        continue;
+
+                    var src = imgCheck.IsChecked == true ? tree[i][j].GetAttributeValue("data-src", "") : "";
+                    if (imgCheck.IsChecked == true && string.IsNullOrEmpty(src))
+                        src = tree[i][j].GetAttributeValue("src", "");
+                    if ((aCheck.IsChecked == true || linkCheck.IsChecked == true) && string.IsNullOrEmpty(src))
+                        src = tree[i][j].GetAttributeValue("href", "");
+                    if ((scriptCheck.IsChecked == true || metaCheck.IsChecked == true) && string.IsNullOrEmpty(src))
+                        src = tree[i][j].GetAttributeValue("content", "");
+                    if (string.IsNullOrEmpty(src) && textCheck.IsChecked == true && tree[i][j].InnerText.Trim() != "")
+                        src = tree[i][j].InnerText.Trim();
+                    if (string.IsNullOrEmpty(src))
+                        continue;
+
+                    list.Add(new CustomCrawlerDataGridItemViewModel
+                    {
+                        인덱스 = index++.ToString(),
+                        깊이 = i.ToString(),
+                        네임 = tree[i][j].OriginalName,
+                        특정항목 = src,
+                        i = i,
+                        j = j,
+                    });
+                }
+            }
+
+            return list;
         }
 
         private void HTMLList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -348,6 +353,19 @@ namespace Koromo_Copy_UX3.Utility
                 {
                     MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            }
+        }
+        
+        private void Filter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                var text = Filter.Text.Trim();
+
+                if (text == "")
+                    HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
+                else
+                    HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults().Where(x => x.특정항목.Contains(text)));
             }
         }
     }
