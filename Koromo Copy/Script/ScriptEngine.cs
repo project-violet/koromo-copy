@@ -141,7 +141,10 @@ namespace Koromo_Copy.Script
                         result.Title = node.SelectSingleNode(model.TitleXPath.Remove(model.TitleXPath.IndexOf("/#text"))).InnerText;
                     }
                     result.Images = get(node, model.ImagesXPath);
-                    result.FileNames = get(node, model.FileNameXPath);
+                    if (!string.IsNullOrEmpty(model.ImagesXPath))
+                        result.FileNames = get(node, model.FileNameXPath);
+                    else
+                        result.FileNames = result.Images.Select(x => x.Split('/').Last()).ToList();
 
                     return result;
                 }
