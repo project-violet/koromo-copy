@@ -13,6 +13,7 @@ using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Html;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Plugin;
+using Koromo_Copy.Script;
 using Koromo_Copy.Utility.Develop;
 using System.Threading;
 using System.Windows.Forms;
@@ -140,6 +141,18 @@ namespace Koromo_Copy.Console.Utility
                     var tree = new HtmlTree(html6);
                     tree.BuildTree();
                     Console.Instance.Write(Monitor.SerializeObject(tree.GetLevelImages(11)));
+                    break;
+
+                case "cc":
+                    ScriptEngine.Instance.AddScript(new ScriptModel
+                    {
+                        URLSpecifier= "http://gall.dcinside.com/",
+                        TitleXPath = "/html[1]/body[1]/div[2]/div[2]/main[1]/section[1]/article[3]/div[1]/section[1]/article[1]/div[1]/table[1]/tbody[1]/tr[14]/td[2]/a[1]/#text[1]",
+                        ImagesXPath = "/html[1]/body[1]/div[2]/div[2]/main[1]/section[1]/article[2]/div[1]/div[1]/div[6]/ul[1]/li[{1+i*1}]/a[1]",
+                        FileNameXPath = "/html[1]/body[1]/div[2]/div[2]/main[1]/section[1]/article[2]/div[1]/div[1]/div[6]/ul[1]/li[{1+i*1}]/a[1]/#text[1]"
+                    });
+                    var html7 = Net.NetCommon.DownloadString("http://gall.dcinside.com/board/view/?id=hit&no=15003&page=1");
+                    Monitor.Instance.Push(ScriptEngine.Instance.Parse("http://gall.dcinside.com/board/view/?id=hit&no=15003&page=1", html7));
                     break;
             }
         }
