@@ -72,6 +72,8 @@ namespace Koromo_Copy_UX3.Utility
                 filter.Add("script");
             if (metaCheck.IsChecked == true)
                 filter.Add("meta");
+            if (textCheck.IsChecked == true)
+                filter.Add("#text");
 
             var list = new List<CustomCrawlerDataGridItemViewModel>();
             int index = 0;
@@ -79,7 +81,7 @@ namespace Koromo_Copy_UX3.Utility
             {
                 for (int j = 0; j < tree[i].Count; j++)
                 {
-                    if (textCheck.IsChecked == false && !filter.Contains(tree[i][j].OriginalName))
+                    if (!filter.Contains(tree[i][j].OriginalName))
                         continue;
 
                     var src = imgCheck.IsChecked == true ? tree[i][j].GetAttributeValue("data-src", "") : "";
@@ -89,7 +91,7 @@ namespace Koromo_Copy_UX3.Utility
                         src = tree[i][j].GetAttributeValue("href", "");
                     if ((scriptCheck.IsChecked == true || metaCheck.IsChecked == true) && string.IsNullOrEmpty(src))
                         src = tree[i][j].GetAttributeValue("content", "");
-                    if (string.IsNullOrEmpty(src) && textCheck.IsChecked == true && tree[i][j].InnerText.Trim() != "")
+                    if (textCheck.IsChecked == true && tree[i][j].InnerText.Trim() != "" && tree[i][j].OriginalName == "#text")
                         src = tree[i][j].InnerText.Trim();
                     if (string.IsNullOrEmpty(src))
                         continue;
