@@ -79,6 +79,9 @@
             <TextBlock Text="기능" Margin="0 4 0 0"/>
             <Button x:Name="LCA" Content="LCA" Click="LCA_Click" ToolTip="선택된 항목들의 Lowest Common Ancestor를 분석합니다."/>
             <Button x:Name="XPath" Margin="0 4 0 0" Content="XPath" Click="XPath_Click"/>
+            <Button x:Name="Attributes" Margin="0 4 0 0" Content="Attributes" Click="Attributes_Click"/>
+            <Button x:Name="Tree" Margin="0 4 0 0" Content="Tree" Click="Tree_Click"/>
+            <Button x:Name="LCATree" Margin="0 4 0 0" Content="LCA Tree" Click="LCATree_Click"/>
         </StackPanel>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="FILTER: " FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 4 0 0"/>
