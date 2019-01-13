@@ -268,7 +268,7 @@ namespace Koromo_Copy_UX3.Utility
 
         private string ExtractPattern(List<string> list)
         {
-            if (list.Count < 2) return "At least 3 inputs are required.";
+            if (list.Count < 3) return "At least 3 inputs are required.";
             var std = ParsePatternString(list[0]);
             var fix = ClassifyTokens(std);
             var tokens = list.Select(x => ParsePatternString(x)).ToList();
