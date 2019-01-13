@@ -35,7 +35,8 @@ namespace Koromo_Copy_UX3.Utility
         public CustomCrawler()
         {
             InitializeComponent();
-            
+
+            HTMLList.DataContext = new CustomCrawlerDataGridViewModel();
             HTMLList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<CustomCrawlerDataGridItemViewModel>(HTMLList).SortHandler);
         }
 
@@ -188,7 +189,7 @@ namespace Koromo_Copy_UX3.Utility
                 builder.Append($"LCA 루트:\r\n");
                 for (int i = 0; i < list.Count; i++)
                     builder.Append($"[{i.ToString().PadLeft(4, '0')}] {list[i].Item3}\r\n");
-                MessageBox.Show(builder.ToString());
+                MessageBox.Show(builder.ToString(), Title);
             }
             catch (Exception ex)
             {
@@ -349,7 +350,7 @@ namespace Koromo_Copy_UX3.Utility
                     for (int i = 0; i < p_list.Count; i++)
                         builder.Append($"[{i.ToString().PadLeft(4, '0')}] {xpaths[i]}\r\n");
                     builder.Append("Pattern: " + ExtractPattern(xpaths));
-                    MessageBox.Show(builder.ToString());
+                    MessageBox.Show(builder.ToString(), Title);
                 }
                 catch (Exception ex)
                 {
@@ -357,7 +358,53 @@ namespace Koromo_Copy_UX3.Utility
                 }
             }
         }
-        
+
+        private void Attributes_Click(object sender, RoutedEventArgs e)
+        {
+            if (HTMLList.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("하나의 요소만 선택하세요!", Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            var elem = (CustomCrawlerDataGridItemViewModel)HTMLList.SelectedItems[0];
+            var node = tree[elem.i][elem.j];
+
+            var builder = new StringBuilder();
+            for (int i = 0; i < node.Attributes.Count; i++)
+                builder.Append($"[{i.ToString().PadLeft(2, '0')}] {node.Attributes[i].Name}=\"{node.Attributes[i].Value}\"\r\n");
+            MessageBox.Show(builder.ToString(), Title);
+        }
+
+        private void Tree_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                (new CustomCrawlerTree(tree[0][0], new List<HtmlNode>())).Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void LCATree_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var p_list = HTMLList.SelectedItems.OfType<CustomCrawlerDataGridItemViewModel>().ToList();
+                p_list.Sort((x, y) => Convert.ToInt32(x.인덱스).CompareTo(Convert.ToInt32(y.인덱스)));
+                var list = p_list.Select(x => Tuple.Create(x.i, tree[x.i][x.j])).ToList();
+                var lca_node = GetLCANode(list);
+
+                (new CustomCrawlerTree(lca_node, p_list.Select(x => tree[x.i][x.j]).ToList())).Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void Filter_TextChanged(object sender, TextChangedEventArgs e)
         {
             var text = Filter.Text.Trim();
@@ -367,5 +414,6 @@ namespace Koromo_Copy_UX3.Utility
             else
                 HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults().Where(x => x.특정항목.Contains(text)));
         }
+
     }
 }
