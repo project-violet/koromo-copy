@@ -114,3 +114,27 @@ https://mangashow.me/bbs/board.php?bo_table=msm_manga&wr_id=417295
 제목: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/h1[1]
 이미지: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/form[1]/div[1]/div[{1+i*1}]/div[1], #attr[style], #regex[https://[^\)]*]
 ```
+
+망가쇼미 스크립트 전문
+
+``` json
+{
+  "ScriptName": "Mangashowme",
+  "ScriptVersion": "1.0",
+  "ScriptAuthor": "dc-koromo",
+  "ScriptFolderName": "mangashowme",
+  "ScriptRequestName": "mangashow-me",
+  "PerDelay": 1000,
+  "UsingDriver": false,
+  "URLSpecifier": "https://mangashow.me/",
+  "TitleCAL": "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+  "ImagesCAL": "",
+  "FileNameCAL": "",
+  "UsingSub": true,
+  "SubURLCAL": "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #attr[href]",
+  "SubURLTitleCAL": "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #text",
+  "SubTitleCAL": "",
+  "SubImagesCAL": "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/form[1]/div[1]/div[{1+i*1}]/div[1], #attr[style], #regex[https://[^\\\\)]*]",
+  "SubFileNameCAL": "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/form[1]/div[1]/div[{1+i*1}]/div[1], #attr[style], #regex[https://[^\\\\)]*], #split[/,-1]"
+}
+```
