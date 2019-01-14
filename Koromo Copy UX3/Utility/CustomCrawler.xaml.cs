@@ -71,6 +71,8 @@ namespace Koromo_Copy_UX3.Utility
                 filter.Add("link");
             if (scriptCheck.IsChecked == true)
                 filter.Add("script");
+            if (divCheck.IsChecked == true)
+                filter.Add("div");
             if (metaCheck.IsChecked == true)
                 filter.Add("meta");
             if (textCheck.IsChecked == true)
@@ -92,6 +94,8 @@ namespace Koromo_Copy_UX3.Utility
                         src = tree[i][j].GetAttributeValue("href", "");
                     if ((scriptCheck.IsChecked == true || metaCheck.IsChecked == true) && string.IsNullOrEmpty(src))
                         src = tree[i][j].GetAttributeValue("content", "");
+                    if ((divCheck.IsChecked == true) && string.IsNullOrEmpty(src))
+                        src = tree[i][j].GetAttributeValue("style", "");
                     if (textCheck.IsChecked == true && tree[i][j].InnerText.Trim() != "" && tree[i][j].OriginalName == "#text")
                         src = tree[i][j].InnerText.Trim();
                     if (string.IsNullOrEmpty(src))
