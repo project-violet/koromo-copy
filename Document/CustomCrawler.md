@@ -139,7 +139,8 @@
 #### 2.1.2. 패턴 입력
 
 패턴은 `/div[{1+i*1}]/a[1]`와 같이 `XPath`에 `{~}`가 포함된 형식입니다.
-안쪽 `{~}`형식은 상수 a,b,c와 변수 i에 대하여 `i*b`, `a+i*c` 형식만 올 수 있습니다.
+안쪽 `{~}`형식은 임의의 상수 a,b,c와 변수 i에 대하여 `i*b`, `a+i*c` 형식만 올 수 있습니다.
+(추후에 범용 연산 기능을 구현할 예정입니다.)
 
 패턴 토큰이 첫 번째 토큰으로 있다면 두 번째 토큰은 위 `2.1.1.`과 같은 방법으로 각각 적용됩니다.
 
@@ -155,13 +156,35 @@
 
 준비물 : `FireFox`, `Chrome` 또는 개발자 도구가 지원되는 웹 브라우져
 
+`Custom Crawler`의 기능에서 `Create`를 클릭하여 제작합니다.
+
 ### 3.1. 속성 정보
 
+| 속성                | 내용                                                                  |
+| ----------------- | ------------------------------------------------------------------- |
+| ScriptName        | 스크립트 이름입니다.                                                         |
+| ScriptVersion     | 스크립트 버전입니다.                                                         |
+| ScriptAuthor      | 스크립트 작성자 입니다.                                                       |
+| ScriptFolderName  | 스크립트의 대표 폴더 이름입니다.                                                  |
+| ScriptRequestName | 다운로드 탭에서 보여지는 이름입니다.                                                |
+| PerDelay          | SubURL 탐색시 각 항목이 끝날때마다 기다릴 시간(ms)입니다.                               |
+| UsingDriver       | 드라이버를 사용할지의 여부입니다.                                                  |
+|                   |
+| URLSpecifier      | 스크립트를 특정할 수 있는 URL 입니다.                                             |
+| TitleCAL          | 대표제목을 가져오는 CAL 문법입니다.                                               |
+| ImagesCAL         | 이미지들을 가져오는 CAL 문법입니다. SubURL이 있다면, 사용되지 않습니다.                       |
+| FileNameCAL       | 파일이름들을 가져오는 CAL 문법입니다. SubURL이 있다면, 사용되지 않습니다.                      |
+|                   |
+| UsingSub          | 하위 URL들을 가져오는 크롤러 유형인지의 여부입니다.                                      |
+| SubURLCAL         | 하위 URL들을 가져오는 CAL 문법입니다.                                            |
+| SubURLTitleCAL    | 하위 URL의 제목들을 가져오는 CAL 문법입니다. 이 항목이 비어있다면 SubTitleCAL을 통해 제목을 설정합니다. |
+| SubTitleCAL       | 하위 URL의 제목을 가져오는 CAL 문법입니다.                                         |
+| SubImagesCAL      | 하위 URL의 이미지들을 가져오는 CAL 문법입니다.                                       |
+| SubFileNameCAL    | 하위 URL의 파일이름들을 가져오는 CAL 문법입니다.                                      |
 
+### 3.2.1. 예제) 디시인사이드 게시글 (작성중)
 
-### 3.2.1. 예제) 디시인사이드 게시글
-
-### 3.2.2. 예제) 망가쇼미 작품
+### 3.2.2. 예제) 망가쇼미 작품 (작성중)
 
 https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%ED%9E%88%ED%86%A0%EB%A6%AC+%EB%B4%87%EC%B9%98%EC%9D%98+OO%EC%83%9D%ED%99%9C
 
