@@ -182,11 +182,122 @@
 | SubImagesCAL      | 하위 URL의 이미지들을 가져오는 CAL 문법입니다.                                       |
 | SubFileNameCAL    | 하위 URL의 파일이름들을 가져오는 CAL 문법입니다.                                      |
 
+### 3.2. 제작 방법
+
+커스텀 크롤러로 크롤러를 작성하려는 경우, 다음 절차와 예제를 확인하여 따라하시면됩니다.
+
+한 페이지만 가져오려는 경우
+
+```
+1. 웹 브라우져에서 제목을 복사한뒤 text 이름와 FILTER를 통해 XPath를 확정합니다.
+2. 제목을 가져올 수 있는 CAL 문법을 작성합니다.
+3. 위와 같은 방법으로 이미지들을 가져올 수 있는 CAL 문법을 작성합니다.
+4. 위와 같은 방법으로 파일이름들을 가져올 수 있는 CAL 문법을 작성합니다.
+```
+
+하위 페이지들을 가져오려는 경우
+
+```
+1. 웹 브라우져에서 제목을 복사한뒤 text 이름와 FILTER를 통해 XPath를 확정합니다.
+2. 제목을 가져올 수 있는 CAL 문법을 작성합니다.
+3. 위와 같은 방법으로 하위 URL을 가져올 수 있는 CAL 문법을 작성합니다.
+4. 하위 URL에서 위 방법의 3,4번을 반복합니다.
+```
+
 ### 3.2.1. 예제) 디시인사이드 게시글 (작성중)
 
 ### 3.2.2. 예제) 망가쇼미 작품 (작성중)
 
+예제 주소 : 
+
 https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%ED%9E%88%ED%86%A0%EB%A6%AC+%EB%B4%87%EC%B9%98%EC%9D%98+OO%EC%83%9D%ED%99%9C
+
+https://mangashow.me/bbs/board.php?bo_table=msm_manga&wr_id=419587
+
+
+#### 3.2.2.1. 제목 가져오기
+
+![hitomi main](Images/cc-create-msm1.gif)
+
+먼저 웹 브라우져의 개발자 도구를 통해 제목의 위치를 파악합니다.
+`페이지에서 요소 고르기`를 통해 쉽게 찾을 수 있습니다.
+
+![hitomi main](Images/cc-create-msm2.png)
+
+`text` 태그만 선택한 뒤 `Load`를 클릭해 목록을 불러오고, 위에서 찾은 항목을 찾습니다.
+`LCA Tree` 기능을 이용해 선택한 항목이 웹 브라우져에서 본 위치와 같은지 확인합니다.
+
+![hitomi main](Images/cc-create-msm3.png)
+
+`XPath` 기능이나 `Tree`, `LCA Tree` 기능을 이용해 선택한 항목의 `XPath`를 가져옵니다.
+
+```
+LCA XPath: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/#text[1]
+```
+
+이제 `TitleCAL` 속성을 구했습니다. `CAL` 문법 `/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1], #text`를 입력하면 제목을 가져올 수 있습니다.
+`CLA`기능에서 확인해보세요.
+
+#### 3.2.2.2. 하위 URL 주소 및 제목 가져오기
+
+마찬가지로 하위 URL의 정보를 파악한 뒤 정보를 가져옵니다.
+
+먼저 제목을 찾으면 다음과 같습니다.
+
+![hitomi main](Images/cc-create-msm4.png)
+
+```
+LCA XPath: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]
+
+XPaths:
+
+[0000] /div[1]/a[1]/div[1]/#text[2]
+[0001] /div[2]/a[1]/div[1]/#text[1]
+[0002] /div[3]/a[1]/div[1]/#text[1]
+[0003] /div[4]/a[1]/div[1]/#text[1]
+...
+[0044] /div[45]/a[1]/div[1]/#text[1]
+[0045] /div[46]/a[1]/div[1]/#text[1]
+[0046] /div[47]/a[1]/div[1]/#text[1]
+[0047] /div[48]/a[1]/div[1]/#text[1]
+[0048] /div[49]/a[1]/div[1]/#text[1]
+```
+
+첫 번째 항목 `/div[1]/a[1]/div[1]/#text[2]` 때문에 선형 패턴이 나오지 않으므로, `LCA Tree`를 이용해 이 항목의 계층구조 확인후 `CLA`를 작성합니다.
+
+```
+SubURLTitleCAL = /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #text
+```
+
+구조가 달라 가져올 수 없는 경우엔 하위 URL에서 제목을 가져올 수 있습니다.
+
+![hitomi main](Images/cc-create-msm5.png)
+
+`a` 태그를 통해 링크 주소를 가져온 후 `XPath`를 추출합니다.
+
+```
+LCA XPath: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]
+
+XPaths:
+
+[0000] /div[1]/a[1]
+...
+[0008] /div[9]/a[1]
+
+Pattern: /div[{1+i*1}]/a[1]
+```
+
+`a` 태그의 `href`속성에 URL이 있으므로 SubURLCAL는 다음과 같이 작성합니다.
+
+```
+SubURLCAL = /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #attr[href]
+```
+
+#### 3.2.2.3. 하위 URL의 이미지 목록과 파일이름 목록 가져오기
+
+
+
+#### 3.2.2.4. 최종 정리
 
 ```
 제목: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]
