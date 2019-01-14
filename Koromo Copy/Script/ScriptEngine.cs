@@ -162,7 +162,7 @@ namespace Koromo_Copy.Script
             var sub_urls = HtmlCAL.Calculate(model.SubURLCAL, root_node);
 
             List<string> titles = null;
-            if (string.IsNullOrEmpty(model.SubURLTitleCAL))
+            if (!string.IsNullOrEmpty(model.SubURLTitleCAL))
                 titles = HtmlCAL.Calculate(model.SubURLTitleCAL, root_node);
 
             update?.Invoke($"{sub_urls.Count}개의 하위 항목을 찾았습니다.");
