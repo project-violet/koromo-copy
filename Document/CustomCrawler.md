@@ -86,7 +86,9 @@
 
 `CAL` 문법에 관해선 `2. CAL 문법`을 참고하세요.
 
+![hitomi main](Images/cc-cal.gif)
 
+실시간으로 `CAL` 문법을 해석하고, 결과를 보여줍니다.
 
 ## 2. CAL 문법
 
