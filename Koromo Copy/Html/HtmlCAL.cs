@@ -185,7 +185,7 @@ namespace Koromo_Copy.Html
                 ptr++;
             }
 
-            return result;
+            return result.Select(x=>x.Trim()).ToList();
         }
     }
 }
