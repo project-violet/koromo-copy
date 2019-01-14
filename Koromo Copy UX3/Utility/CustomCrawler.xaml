@@ -74,6 +74,7 @@
             <CheckBox x:Name="imgCheck" Content="img" IsChecked="True"/>
             <CheckBox x:Name="linkCheck" Content="link" IsChecked="False"/>
             <CheckBox x:Name="scriptCheck" Content="script" IsChecked="False"/>
+            <CheckBox x:Name="divCheck" Content="div" IsChecked="False"/>
             <CheckBox x:Name="metaCheck" Content="meta" IsChecked="False"/>
             <CheckBox x:Name="textCheck" Content="text" IsChecked="False" ToolTip="텍스트가 포함된 모든 name 포함"/>
             <TextBlock Text="기능" Margin="0 4 0 0"/>

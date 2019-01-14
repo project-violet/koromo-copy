@@ -169,6 +169,7 @@ namespace Koromo_Copy.Html
                     var regex = new Regex(val);
                     var tmp = new List<string>();
                     result.ForEach(x => tmp.Add(regex.Match(x).Value));
+                    result = tmp;
                 }
                 else if (token.StartsWith("#gregex"))
                 {
@@ -178,6 +179,7 @@ namespace Koromo_Copy.Html
                     var regex = new Regex(val);
                     var tmp = new List<string>();
                     result.ForEach(x => tmp.Add(regex.Match(x).Groups[1].Value));
+                    result = tmp;
                 }
 
                 ptr++;
