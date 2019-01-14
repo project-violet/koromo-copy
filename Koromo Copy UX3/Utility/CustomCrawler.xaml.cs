@@ -432,5 +432,10 @@ namespace Koromo_Copy_UX3.Utility
             else
                 HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults().Where(x => x.특정항목.Contains(text)));
         }
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            (new CustomCrawlerCreate()).Show();
+        }
     }
 }

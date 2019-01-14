@@ -1,0 +1,81 @@
+﻿<Window x:Class="Koromo_Copy_UX3.Utility.CustomCrawlerCreate"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
+        mc:Ignorable="d"
+        Title="Custom Crawler Create" Height="486" Width="682">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Script Name: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="ScriptName" Grid.Row="0" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Script Version: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="ScriptVersion" Grid.Row="1" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Script Author: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="ScriptAuthor" Grid.Row="2" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Script Folder Name: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="ScriptFolderName" Grid.Row="3" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Script Request Name: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="ScriptRequestName" Grid.Row="4" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Per Delay: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="PerDelay" Grid.Row="5" Grid.Column="1" Text="1000" FontSize="15"/>
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Using Driver: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="UsingDriver" Grid.Row="6" Grid.Column="1" Text="0" FontSize="15"/>
+
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="URL Specifier: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 8 0 0"/>
+        <TextBox x:Name="URLSpecifier" Grid.Row="7" Grid.Column="1" FontSize="15" Margin="0 8 0 0"/>
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="Title CAL: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="TitleCAL" Grid.Row="8" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="Images CAL: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="ImagesCAL" Grid.Row="9" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="10" Grid.Column="0" Text="FileName CAL: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="FileNameCAL" Grid.Row="10" Grid.Column="1" FontSize="15"/>
+
+        <TextBlock Grid.Row="11" Grid.Column="0" Text="Using Sub: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 8 0 0"/>
+        <TextBox x:Name="UsingSub" Grid.Row="11" Grid.Column="1" Text="0" FontSize="15" Margin="0 8 0 0"/>
+        <TextBlock Grid.Row="12" Grid.Column="0" Text="SubURL CAL: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="SubURLCAL" Grid.Row="12" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="13" Grid.Column="0" Text="SubURL Title CAL: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="SubURLTitleCAL" Grid.Row="13" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="14" Grid.Column="0" Text="SubTitle CAL: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="SubTitleCAL" Grid.Row="14" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="15" Grid.Column="0" Text="SubImages CAL: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="SubImagesCAL" Grid.Row="15" Grid.Column="1" FontSize="15"/>
+        <TextBlock Grid.Row="16" Grid.Column="0" Text="SubFileName CAL: " FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBox x:Name="SubFileNameCAL" Grid.Row="16" Grid.Column="1" FontSize="15"/>
+
+        <Grid Grid.Row="17" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 16 8">
+                <Button x:Name="Open" Content="Open" Width="70" Click="Open_Click"/>
+                <Button x:Name="Save" Content="Save" Width="70" Margin="4 0 16 0" Click="Save_Click"/>
+                <Button x:Name="Import" Content="Import" Width="100" Click="Import_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
