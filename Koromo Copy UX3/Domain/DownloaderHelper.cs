@@ -17,6 +17,7 @@ using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Net;
 using Koromo_Copy.Net.Driver;
 using Koromo_Copy.Plugin;
+using Koromo_Copy.Script;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +26,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows;
 
 namespace Koromo_Copy_UX3.Domain
 {
@@ -68,12 +70,17 @@ namespace Koromo_Copy_UX3.Domain
             {
                 ProcessHiyobi(url);
             }
-            else if (url.Contains("mangashow.me"))
+            //else if (url.Contains("mangashow.me"))
+            //{
+            //    ProcessMangashowme(url);
+            //}
+            else if (ScriptEngine.Instance.TestScript(url))
             {
-                ProcessMangashowme(url);
+                ProcessScript(url);
             }
             else
             {
+
                 // Plugins
                 foreach (var plugin in PlugInManager.Instance.GetDownloadPlugins())
                 {
@@ -352,6 +359,47 @@ namespace Koromo_Copy_UX3.Domain
                 }
 
                 MainWindow.Instance.FadeOut_MiddlePopup($"{count}개({articles.Count} 작품) 항목 다운로드 시작...");
+            });
+        }
+
+        public static void ProcessScript(string url)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    var model = ScriptEngine.Instance.FindModel(url);
+                    MainWindow.Instance.FadeOut_MiddlePopup($"스크립트: {model.ScriptName} ({model.ScriptVersion})\r\n작성자: {model.ScriptAuthor}");
+                    System.Threading.Thread.Sleep(3000);
+
+                    MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
+                    var result = ScriptEngine.Instance.Run(url, (x) => MainWindow.Instance.ModifyText_MiddlePopup(x));
+
+                    int count = 0;
+                    foreach (var article in result.Item2)
+                    {
+                        string dir = Path.Combine(Path.Combine(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), model.ScriptFolderName), DeleteInvalid(result.Item1)), DeleteInvalid(article.Title));
+                        Directory.CreateDirectory(dir);
+
+                        var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
+                        se.Referer = article.URL;
+
+                        count += article.Images.Count;
+                        DownloadSpace.Instance.RequestDownload($"{model.ScriptRequestName}: {article.Title}",
+                            article.Images.ToArray(),
+                            article.Images.Select(x => Path.Combine(dir, HttpUtility.UrlDecode(HttpUtility.UrlDecode(x.Split('/').Last())))).ToArray(),
+                            se,
+                            dir + '\\',
+                            null
+                            );
+                    }
+                    MainWindow.Instance.FadeOut_MiddlePopup($"{count}개({result.Item2.Count} 작품) 항목 다운로드 시작...");
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("스크립트 실행 중 오류가 발생했습니다.\r\n" + e.Message + "\r\n" + e.StackTrace, 
+                        "Script Engine", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             });
         }
 

@@ -262,6 +262,9 @@
     <Compile Include="Utility\CustomCrawlerCAL.xaml.cs">
       <DependentUpon>CustomCrawlerCAL.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\CustomCrawlerCreate.xaml.cs">
+      <DependentUpon>CustomCrawlerCreate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\CustomCrawlerDataGridViewModel.cs" />
     <Compile Include="Utility\CustomCrawlerImage.xaml.cs">
       <DependentUpon>CustomCrawlerImage.xaml</DependentUpon>
@@ -493,6 +496,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\CustomCrawlerCAL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\CustomCrawlerCreate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
