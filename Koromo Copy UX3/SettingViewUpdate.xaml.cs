@@ -139,6 +139,26 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 1.4
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.4 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 검색결과 썸네일로 보기 기능 추가\r\n\r\n" +
+                    " - 커스텀 크롤러 도구 추가\r\n\r\n" +
+                    " - 통합 Hentai 403, 404 다운로더 시험 추가\r\n\r\n" +
+                    "[수정된 기능]\r\n" +
+                    " - 망가쇼미 다운로더\r\n\r\n" +
+                    " - 고급검색에서 제외태그가 적용되지 않는 오류\r\n\r\n" +
+                    " - Zip-Listing에 스택, 오프라인 기능 추가\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.3
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements
