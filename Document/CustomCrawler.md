@@ -100,6 +100,14 @@
 
 ### 3.2. 예제) 망가쇼미 작품
 
+https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%ED%9E%88%ED%86%A0%EB%A6%AC+%EB%B4%87%EC%B9%98%EC%9D%98+OO%EC%83%9D%ED%99%9C
+
+```
+제목: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]
+부 제목: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #text
+작품들 링크: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #attr[href]
+```
+
 https://mangashow.me/bbs/board.php?bo_table=msm_manga&wr_id=417295
 
 ```
