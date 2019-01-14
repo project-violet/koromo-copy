@@ -44,38 +44,84 @@ namespace Koromo_Copy.Html
             return result;
         }
 
+        private static int cal(string pp, int v)
+        {
+            // 1. i*b
+            // 2. a+i*c
+            if (pp.Contains('+'))
+                return Convert.ToInt32(pp.Split('+')[0].Trim()) + v * Convert.ToInt32(pp.Split('+')[1].Split('*')[1].Trim());
+            return v * Convert.ToInt32(pp.Split('*')[1].Trim());
+        }
+
         public static List<string> Calculate(string pattern, HtmlNode root_node)
         {
             var result = new List<string>();
             var split = split_token(pattern);
             var xpath = split[0].Trim();
-            var extend = split.Count > 0 ? split[1].Trim() : "";
+            var extend = split.Count > 1 ? split[1].Trim() : "";
+            var snodes = new List<HtmlNode>();
             int ptr = 1;
 
-            var explore = root_node.SelectSingleNode(xpath);
+            HtmlNode explore = null;
 
-            if (string.IsNullOrEmpty(extend) || extend == "#text")
-                result.Add(explore.InnerText);
-            else if (extend == "#html")
-                result.Add(explore.InnerHtml);
-            else if (extend == "#ohtml")
-                result.Add(explore.OuterHtml);
-            else if (extend == "#attr")
+            if (!(xpath.Contains("{") && xpath.Contains("}")))
             {
-                var val = extend.Split('[')[1].Split(']')[0].Trim();
-                result.Add(explore.GetAttributeValue(val, ""));
+                explore = root_node.SelectSingleNode(xpath);
+                if (string.IsNullOrEmpty(extend) || extend == "#text")
+                    result.Add(explore.InnerText);
+                else if (extend == "#html")
+                    result.Add(explore.InnerHtml);
+                else if (extend == "#ohtml")
+                    result.Add(explore.OuterHtml);
+                else if (extend.StartsWith("#attr"))
+                {
+                    var val = extend.Split('[')[1].Split(']')[0].Trim();
+                    result.Add(explore.GetAttributeValue(val, ""));
+                }
+            }
+            else
+            {
+                var _split = xpath.Split('{').ToList();
+                _split.RemoveAt(0);
+                var split2 = _split.Select(x => x.Split('}')[0]);
+                for (int i = 0; ; i++)
+                {
+                    var builder = new StringBuilder(xpath);
+                    foreach (var sss in split2)
+                    {
+                        builder.Replace("{" + sss + "}", cal(sss, i).ToString());
+                    }
+                    var pattern2 = builder.ToString();
+                    if (pattern2.Contains("#text"))
+                    {
+                        pattern2 = pattern2.Remove(pattern2.IndexOf("/#text"));
+                    }
+                    var node = root_node.SelectSingleNode(pattern2);
+                    if (node == null)
+                        break;
+                    snodes.Add(node);
+                }
             }
 
             if (result.Count > 0)
                 ptr++;
 
-            if (extend.StartsWith("."))
+            if (extend.StartsWith(".") || snodes.Count > 0)
             {
-                var nodes = explore.SelectNodes(extend);
-                ptr++;
-                if (split.Count >= 3)
+                List<HtmlNode> nodes;
+                if (snodes.Count == 0 && explore != null)
                 {
-                    extend = split[2].Trim();
+                    nodes = explore.SelectNodes(extend).ToList();
+                    ptr++;
+                }
+                else
+                    nodes = snodes;
+                if (split.Count >= 3 || (snodes.Count > 0 && split.Count >= 2))
+                {
+                    if (split.Count >= 3 && snodes.Count == 0)
+                        extend = split[2].Trim();
+                    else
+                        extend = split[1].Trim();
                     if (extend.StartsWith("#attr"))
                     {
                         // #attr[src] ...
@@ -96,7 +142,7 @@ namespace Koromo_Copy.Html
                 }
             }
 
-            while (ptr != split.Count)
+            while (ptr < split.Count)
             {
                 var token = split[ptr].Trim();
 
