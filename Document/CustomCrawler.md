@@ -99,3 +99,10 @@
 ### 3.1. 예제) 디시인사이드 게시글
 
 ### 3.2. 예제) 망가쇼미 작품
+
+https://mangashow.me/bbs/board.php?bo_table=msm_manga&wr_id=417295
+
+```
+제목: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/h1[1]
+이미지: /html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/form[1]/div[1]/div[{1+i*1}]/div[1], #attr[style], #regex[https://[^\)]*]
+```
