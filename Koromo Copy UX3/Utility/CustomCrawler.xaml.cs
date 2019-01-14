@@ -407,6 +407,18 @@ namespace Koromo_Copy_UX3.Utility
             }
         }
 
+        private void CAL_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                (new CustomCrawlerCAL(tree[0][0])).Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void Filter_TextChanged(object sender, TextChangedEventArgs e)
         {
             var text = Filter.Text.Trim();
@@ -416,6 +428,5 @@ namespace Koromo_Copy_UX3.Utility
             else
                 HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults().Where(x => x.특정항목.Contains(text)));
         }
-
     }
 }
