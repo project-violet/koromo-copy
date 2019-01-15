@@ -69,6 +69,8 @@ namespace Koromo_Copy.Html
                 explore = root_node.SelectSingleNode(xpath);
                 if (string.IsNullOrEmpty(extend) || extend == "#text")
                     result.Add(explore.InnerText);
+                else if (extend == "#htext")
+                    result.Add(string.Join("", explore.ChildNodes.Where(x => x.Name == "#text").Select(x => x.InnerText.Trim())));
                 else if (extend == "#html")
                     result.Add(explore.InnerHtml);
                 else if (extend == "#ohtml")
@@ -130,6 +132,8 @@ namespace Koromo_Copy.Html
                     }
                     else if (extend == "#text")
                         nodes.ToList().ForEach(x => result.Add(x.InnerText));
+                    else if (extend == "#htext")
+                        nodes.ToList().ForEach(y => result.Add(string.Join("", y.ChildNodes.Where(x => x.Name == "#text").Select(x => x.InnerText.Trim()))));
                     else if (extend == "#html")
                         nodes.ToList().ForEach(x => result.Add(x.InnerHtml));
                     else if (extend == "#ohtml")
