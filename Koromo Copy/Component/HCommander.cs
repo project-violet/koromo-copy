@@ -136,10 +136,20 @@ namespace Koromo_Copy.Component
             var f = ExHentaiData.data.AsParallel().Where(x => (x >> 40) == magic_number).ToList();
             if (f.Count > 0)
             {
-                var url = $"https://exhentai.org/g/{magic}/{f[0] ^ 1L * magic_number << 40:x}/";
-                var html2 = NetCommon.DownloadExHentaiString(url);
-                var article = ExHentaiParser.ParseArticleData(html2);
-                return ConvertTo(article, url);
+                try
+                {
+                    var url = $"https://e-hentai.org/g/{magic}/{f[0] ^ 1L * magic_number << 40:x}/";
+                    var html2 = NetCommon.DownloadExHentaiString(url);
+                    var article = EHentaiParser.ParseArticleData(html2);
+                    return ConvertTo(article, url);
+                }
+                catch
+                {
+                    var url = $"https://exhentai.org/g/{magic}/{f[0] ^ 1L * magic_number << 40:x}/";
+                    var html2 = NetCommon.DownloadExHentaiString(url);
+                    var article = ExHentaiParser.ParseArticleData(html2);
+                    return ConvertTo(article, url);
+                }
             }
 
             //
