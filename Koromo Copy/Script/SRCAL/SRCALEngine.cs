@@ -113,6 +113,7 @@ namespace Koromo_Copy.Script.SRCAL
         public SRCALBlock Parse(List<string> raw_script)
         {
             root_block = new SRCALBlock();
+
             return root_block;
         }
     }

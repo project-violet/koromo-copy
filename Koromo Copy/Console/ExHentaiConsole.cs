@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -37,9 +38,10 @@ namespace Koromo_Copy.Console
 
         [CommandLine("-paging", CommandType.ARGUMENTS, Help = "use -paging page")]
         public string[] Paging;
-
         [CommandLine("-expun", CommandType.ARGUMENTS, Help = "use -expun xxx")]
         public string[] Expun;
+        [CommandLine("-xxx", CommandType.OPTION, Help = "?")]
+        public bool XXX;
     }
 
     /// <summary>
@@ -80,6 +82,10 @@ namespace Koromo_Copy.Console
             else if (option.Expun != null)
             {
                 ProcessExpun(option.Expun);
+            }
+            else if (option.XXX)
+            {
+                ProcessXXX();
             }
             
             return true;
@@ -211,6 +217,29 @@ namespace Koromo_Copy.Console
             });
             build.Append($"{(ef_count > 0 ? ef_count.ToString("#,#") : "0")} 개");
             Console.Instance.WriteLine(build.ToString());
+        }
+
+        static void ProcessXXX()
+        {
+            var inc_ef = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("exh-ef.json"));
+
+            var builder = new StringBuilder();
+
+            Random rnd = new Random();
+            inc_ef = inc_ef.OrderBy(x => rnd.Next()).ToList();
+
+            int ppp = 0;
+            foreach (var per in inc_ef)
+            {
+                var url = per.URL;
+                var xi = Convert.ToInt64( url.Split('/')[4]);
+                var yi = Convert.ToInt64(url.Split('/')[5],16);
+                builder.Append(((xi << 40) + yi).ToString() + ", ");
+                ppp++;
+                if (ppp % 10 == 9)
+                    builder.Append("\r\n        ");
+            }
+            Console.Instance.WriteLine(builder.ToString());
         }
     }
 }
