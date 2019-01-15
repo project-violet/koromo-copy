@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy.Component;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hitomi.Analysis;
 using Koromo_Copy.Interface;
@@ -72,6 +73,9 @@ namespace Koromo_Copy.Console
         public bool Rank;
         [CommandLine("-taglist", CommandType.OPTION, Info = "Show downloaded articles tags list.")]
         public bool TagList;
+
+        [CommandLine("-forbidden", CommandType.ARGUMENTS, Info = "use -forbidden <Hitomi Number>.")]
+        public string[] Forbidden;
     }
 
     /// <summary>
@@ -169,6 +173,13 @@ namespace Koromo_Copy.Console
             else if (option.TagList)
             {
                 ProcessTagList();
+            }
+            //
+            //  Forbidden 데이터
+            //
+            else if (option.Forbidden != null)
+            {
+                ProcessForbidden(option.Forbidden);
             }
 
             return true;
@@ -412,6 +423,15 @@ namespace Koromo_Copy.Console
             {
                 Console.Instance.WriteLine($"{(i + 1).ToString().PadLeft(5)}: {list[i].Key} ({list[i].Value})");
             }
+        }
+
+        /// <summary>
+        /// 403 Forbidden, 404 Not Found 데이터에대한 탐색을 시험합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        static void ProcessForbidden(string[] args)
+        {
+            Console.Instance.WriteLine(Monitor.SerializeObject(HCommander.GetArticleData(Convert.ToInt32(args[0]))));
         }
     }
 }

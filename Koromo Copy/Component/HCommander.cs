@@ -79,7 +79,7 @@ namespace Koromo_Copy.Component
         /// </summary>
         /// <param name="magic_number"></param>
         /// <returns></returns>
-        public HArticleModel? GetArticleData(int magic_number)
+        public static HArticleModel? GetArticleData(int magic_number)
         {
             string magic = magic_number.ToString();
 
@@ -135,7 +135,7 @@ namespace Koromo_Copy.Component
             string title = "";
             try
             {
-                var html = NetCommon.DownloadString($"{HitomiCommon.HitomiGalleryAddress}{magic}.html");
+                var html = NetCommon.DownloadString($"{HitomiCommon.HitomiGalleryBlock}{magic}.html");
                 var article = HitomiParser.ParseGalleryBlock(html);
                 title = article.Title;
             }
@@ -173,7 +173,7 @@ namespace Koromo_Copy.Component
         /// </summary>
         /// <param name="article"></param>
         /// <returns></returns>
-        public byte[] DownloadImage(HArticleModel article)
+        public static byte[] DownloadImage(HArticleModel article)
         {
             return null;
         }
@@ -183,7 +183,7 @@ namespace Koromo_Copy.Component
         /// </summary>
         /// <param name="article"></param>
         /// <returns></returns>
-        public string[] GetDownloadImageAddress(HArticleModel article)
+        public static string[] GetDownloadImageAddress(HArticleModel article)
         {
             return null;
         }
@@ -192,7 +192,7 @@ namespace Koromo_Copy.Component
 
         #region 프라이빗 프리베이트
 
-        private HArticleModel ConvertTo(HitomiMetadata metadata)
+        private static HArticleModel ConvertTo(HitomiMetadata metadata)
         {
             var article = new HArticleModel();
             article.ArticleType = HArticleType.Hitomi;
@@ -208,12 +208,12 @@ namespace Koromo_Copy.Component
             return article;
         }
 
-        private HArticleModel ConvertTo(HitomiArticle article)
+        private static HArticleModel ConvertTo(HitomiArticle article)
         {
             return ConvertTo(HitomiLegalize.ArticleToMetadata(article));
         }
 
-        private HArticleModel ConvertTo(HiyobiArticle data)
+        private static HArticleModel ConvertTo(HiyobiArticle data)
         {
             var article = new HArticleModel();
             article.ArticleType = HArticleType.Hiyobi;
@@ -229,7 +229,7 @@ namespace Koromo_Copy.Component
             return article;
         }
 
-        private HArticleModel ConvertTo(EHentaiArticle data)
+        private static HArticleModel ConvertTo(EHentaiArticle data)
         {
             var article = new HArticleModel();
             article.ArticleType = HArticleType.EXHentai;
