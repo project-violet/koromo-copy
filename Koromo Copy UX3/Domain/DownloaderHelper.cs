@@ -316,9 +316,21 @@ namespace Koromo_Copy_UX3.Domain
 
                     MainWindow.Instance.FadeOut_MiddlePopup($"{count}개({articles.Count} 작품) 항목 다운로드 시작...");
                 }
-                else
+                else if (url.StartsWith("https://hiyobi.me/info/"))
                 {
-                    MainWindow.Instance.FadeOut_MiddlePopup("해당 hiyobi.me 주소는 다운로드를 지원하지 않아요");
+                    MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
+                    var imagelink = HitomiParser.GetImageLink(NetCommon.DownloadString(HiyobiCommon.GetDownloadImageAddress(url.Split('/').Last())));
+                    var article = HiyobiParser.ParseGalleryConents(NetCommon.DownloadString(url));
+                    string dir = HitomiCommon.MakeDownloadDirectory(article);
+                    article.ImagesLink = imagelink;
+                    Directory.CreateDirectory(dir);
+                    DownloadSpace.Instance.RequestDownload(article.Title,
+                        imagelink.Select(y => HitomiCommon.GetDownloadImageAddress(article.Magic, y)).ToArray(),
+                        imagelink.Select(y => Path.Combine(dir, y)).ToArray(),
+                        Koromo_Copy.Interface.SemaphoreExtends.Default, dir, article);
+                    Directory.CreateDirectory(dir);
+                    MainWindow.Instance.FadeOut_MiddlePopup($"{imagelink.Count}개 이미지 다운로드 시작...");
+                    //MainWindow.Instance.FadeOut_MiddlePopup("해당 hiyobi.me 주소는 다운로드를 지원하지 않아요");
                 }
             });
         }
