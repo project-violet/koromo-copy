@@ -94,13 +94,14 @@ namespace Koromo_Copy.Component
                 // 히토미 데이터가 존재한다면 데이터의 유효 여부를 판단한다.
                 try
                 {
-                    var request = WebRequest.Create($"{HitomiCommon.HitomiGalleryAddress}{magic}.html");
+                    var url = $"{HitomiCommon.HitomiGalleryAddress}{magic}.html";
+                    var request = WebRequest.Create(url);
                     using (var response = request.GetResponse())
                     {
                         using (var responseStream = response.GetResponseStream())
                         {
                             // 최종 승인
-                            return ConvertTo(search_hitomi.Value);
+                            return ConvertTo(search_hitomi.Value, url);
                         }
                     }
                 }
@@ -120,7 +121,7 @@ namespace Koromo_Copy.Component
                 {
                     var html = NetCommon.DownloadString(HiyobiCommon.GetInfoAddress(magic));
                     var article = HiyobiParser.ParseGalleryConents(html);
-                    return ConvertTo(article);
+                    return ConvertTo(article, HiyobiCommon.GetInfoAddress(magic));
                 }
                 catch
                 {
@@ -128,6 +129,18 @@ namespace Koromo_Copy.Component
             }
 
             Monitor.Instance.Push($"[HCommander] [3] {magic}");
+            
+            //
+            // 9.3/4 샰쮘뽣?뛤3쇼뵀?gVA덲탭k융뷠킢쪳1SPS?XF퍵8C샜쁬
+            //
+            var f = ExHentaiData.data.AsParallel().Where(x => (x >> 40) == magic_number).ToList();
+            if (f.Count > 0)
+            {
+                var url = $"https://exhentai.org/g/{magic}/{f[0] ^ 1L * magic_number << 40:x}/";
+                var html2 = NetCommon.DownloadExHentaiString(url);
+                var article = ExHentaiParser.ParseArticleData(html2);
+                return ConvertTo(article, url);
+            }
 
             //
             // 3. GalleryBlock을 이용해 제목을 가져온다.
@@ -141,7 +154,6 @@ namespace Koromo_Copy.Component
             }
             catch
             {
-                // 탐색 불가
                 Monitor.Instance.Push($"[HCommander] [0] {magic}");
                 return null;
             }
@@ -158,7 +170,7 @@ namespace Koromo_Copy.Component
                     var url = Regex.Match(html, $"(https://exhentai.org/g/{magic}/\\w+/)").Value;
                     var html2 = NetCommon.DownloadExHentaiString(url);
                     var article = ExHentaiParser.ParseArticleData(html2);
-                    return ConvertTo(article);
+                    return ConvertTo(article, url);
                 }
             }
             catch
@@ -192,10 +204,11 @@ namespace Koromo_Copy.Component
 
         #region 프라이빗 프리베이트
 
-        private static HArticleModel ConvertTo(HitomiMetadata metadata)
+        private static HArticleModel ConvertTo(HitomiMetadata metadata, string url)
         {
             var article = new HArticleModel();
             article.ArticleType = HArticleType.Hitomi;
+            article.URL = url;
             article.artist = metadata.Artists;
             article.group = metadata.Groups;
             article.parody = metadata.Parodies;
@@ -208,15 +221,16 @@ namespace Koromo_Copy.Component
             return article;
         }
 
-        private static HArticleModel ConvertTo(HitomiArticle article)
+        private static HArticleModel ConvertTo(HitomiArticle article, string url)
         {
-            return ConvertTo(HitomiLegalize.ArticleToMetadata(article));
+            return ConvertTo(HitomiLegalize.ArticleToMetadata(article), url);
         }
 
-        private static HArticleModel ConvertTo(HiyobiArticle data)
+        private static HArticleModel ConvertTo(HiyobiArticle data, string url)
         {
             var article = new HArticleModel();
             article.ArticleType = HArticleType.Hiyobi;
+            article.URL = url;
             article.artist = data.Artists;
             article.group = data.Groups;
             article.parody = data.Series;
@@ -229,10 +243,11 @@ namespace Koromo_Copy.Component
             return article;
         }
 
-        private static HArticleModel ConvertTo(EHentaiArticle data)
+        private static HArticleModel ConvertTo(EHentaiArticle data, string url)
         {
             var article = new HArticleModel();
             article.ArticleType = HArticleType.EXHentai;
+            article.URL = url;
             article.Thumbnail = data.Thumbnail;
             article.Title = data.Title;
             article.SubTitle = data.SubTitle;
