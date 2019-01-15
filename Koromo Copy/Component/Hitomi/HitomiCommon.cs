@@ -27,7 +27,7 @@ namespace Koromo_Copy.Component.Hitomi
         /// 갤러리의 주소입니다.
         /// 이 주소는 작품의 이미지 정보를 얻어오는데 사용합니다.
         /// </summary>
-        public const string HitomiGalleryAddress = @"https://hitomi.la/galleries/";
+        public const string HitomiGalleryAddress = @"https://ltn.hitomi.la/galleries/";
 
         /// <summary>
         /// Gallery Block의 주소입니다.

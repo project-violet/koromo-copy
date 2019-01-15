@@ -8,6 +8,7 @@
 
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 
@@ -19,7 +20,7 @@ namespace Koromo_Copy.Component.Hiyobi
         {
             string magic = Regex.Match(uri, "(\\d+)").Value;
             string html_source = await Task.Run(() => NetCommon.DownloadString(HiyobiCommon.GetInfoAddress(magic)));
-            HiyobiArticle article = HiyobiParser.ParseGalleryConents(html_source);
+            HitomiArticle article = HiyobiParser.ParseGalleryConents(html_source);
             return article;
         }
 

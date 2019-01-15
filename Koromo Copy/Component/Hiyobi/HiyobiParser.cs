@@ -7,6 +7,7 @@
 ***/
 
 using HtmlAgilityPack;
+using Koromo_Copy.Component.Hitomi;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,9 @@ namespace Koromo_Copy.Component.Hiyobi
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>
-        public static HiyobiArticle ParseGalleryConents(string html)
+        public static HitomiArticle ParseGalleryConents(string html)
         {
-            HiyobiArticle article = new HiyobiArticle();
+            HitomiArticle article = new HitomiArticle();
 
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);

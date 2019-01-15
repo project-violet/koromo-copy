@@ -94,7 +94,7 @@ namespace Koromo_Copy.Component
                 // 히토미 데이터가 존재한다면 데이터의 유효 여부를 판단한다.
                 try
                 {
-                    var url = $"{HitomiCommon.HitomiGalleryAddress}{magic}.html";
+                    var url = $"https://hitomi.la/galleries/{magic}.html";
                     var request = WebRequest.Create(url);
                     using (var response = request.GetResponse())
                     {
