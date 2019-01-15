@@ -181,6 +181,22 @@ namespace Koromo_Copy.Html
                     result.ForEach(x => tmp.Add(regex.Match(x).Groups[1].Value));
                     result = tmp;
                 }
+                else if (token.StartsWith("#back"))
+                {
+                    var val = token.Split(new char[] { '[' }, 2)[1];
+                    val = val.Remove(val.LastIndexOf(']'));
+                    var tmp = new List<string>();
+                    result.ForEach(x => tmp.Add(x + val));
+                    result = tmp;
+                }
+                else if (token.StartsWith("#front"))
+                {
+                    var val = token.Split(new char[] { '[' }, 2)[1];
+                    val = val.Remove(val.LastIndexOf(']'));
+                    var tmp = new List<string>();
+                    result.ForEach(x => tmp.Add(val + x));
+                    result = tmp;
+                }
 
                 ptr++;
             }
