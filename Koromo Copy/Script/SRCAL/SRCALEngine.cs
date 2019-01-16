@@ -22,8 +22,12 @@ namespace Koromo_Copy.Script.SRCAL
         String,
         StringList,
         Internal,
+        Function,
     }
 
+    /// <summary>
+    /// Parser for SRCAL - Crawler Descript Language
+    /// </summary>
     public class SRCALParser
     {
         public class SRCALVariable
@@ -35,7 +39,51 @@ namespace Koromo_Copy.Script.SRCAL
             public string ContentString;
             public List<string> ContentStringList;
             public string ContentInternal;
+            public SRCALFunction ContentFunction;
         }
+
+        /*
+        
+        EBNF: SRCAL-CDL
+
+            script   -> block
+
+            line     -> ##.*?
+                      | expr
+                      | e
+            
+            expr     -> func
+                      | var = variable
+                      | runnable
+                      
+            block    -> [ block ]
+                     -> line block
+                     -> e
+                     
+            name     -> [_a-zA-Z]\w*
+                      | $name            ; Inernal functions
+
+            number   -> [0-9]+
+            string   -> "([^\\"]|\\")*"
+            const    -> number
+                      | string
+                     
+            var      -> name
+            
+            variable -> var
+                      | function
+                      | variable [ number ]
+
+            argument -> variable
+                      | variable, argument
+            function -> name ( )
+                      | name ( argument )
+            
+            runnable -> loop (var = variable "to" variable) block
+                      | foreach (var : variable)            block
+                      | if (variable)                       block
+                      | if (variable)                       block else block
+        */
 
         public class SRCALFunction
         {
@@ -55,7 +103,10 @@ namespace Koromo_Copy.Script.SRCAL
             public SRCALVariable ContentVariable;
         }
 
-        public interface SRCALRunnable { }
+        public abstract class SRCALRunnable {
+            public int LineNumber;
+            public int LineColumn;
+        }
         
         public class SRCALExpression : SRCALRunnable
         {
@@ -91,6 +142,7 @@ namespace Koromo_Copy.Script.SRCAL
         public class SRCALBlock
         {
             public List<SRCALRunnable> RunList;
+            public void AddRunnable(SRCALRunnable runnable) => RunList.Add(runnable);
         }
 
         SRCALBlock root_block;
@@ -110,11 +162,37 @@ namespace Koromo_Copy.Script.SRCAL
             };
         }
 
+        List<string> raw_script;
+        int line_number;
+        int column;
         public SRCALBlock Parse(List<string> raw_script)
         {
             root_block = new SRCALBlock();
+            line_number = 0;
+            this.raw_script = raw_script;
+
+            for (; line_number < raw_script.Count; line_number++)
+            {
+                var line_string = raw_script[line_number].Trim();
+                if (string.IsNullOrEmpty(line_string) || line_string.StartsWith("##"))
+                    continue;
+                column = 0;
+                parse_internal();
+            }
 
             return root_block;
+        }
+
+        private void parse_internal()
+        {
+
+        }
+
+        private SRCALExpression parse_expression()
+        {
+            var expr = new SRCALExpression();
+
+            return expr;
         }
     }
 
@@ -132,7 +210,7 @@ namespace Koromo_Copy.Script.SRCAL
     }
 
     /// <summary>
-    /// Simple Robust CAL 스크립트를 실행하는 클래스입니다.
+    /// Simple Robust CAL - CDL 스크립트를 실행하는 클래스입니다.
     /// </summary>
     public class SRCALScript
     {
