@@ -70,6 +70,14 @@ namespace Koromo_Copy_UX3.Domain
             {
                 ProcessHiyobi(url);
             }
+            else if (url.Contains("e-hentai.org"))
+            {
+
+            }
+            else if (url.Contains("exhentai.org"))
+            {
+
+            }
             //else if (url.Contains("mangashow.me"))
             //{
             //    ProcessMangashowme(url);
