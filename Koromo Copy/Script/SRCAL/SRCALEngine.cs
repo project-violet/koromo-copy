@@ -48,8 +48,10 @@ namespace Koromo_Copy.Script.SRCAL
 
             script   -> block
 
-            line     -> ##.*?
+            comment  -> ##.*?
+            line     -> comment
                       | expr
+                      | expr comment
                       | e
             
             expr     -> func
