@@ -68,6 +68,7 @@ namespace Koromo_Copy.Script.SRCAL
             variable -> var
                       | function
                       | variable [ number ]
+                      | const
 
             argument -> variable
                       | variable, argument
@@ -90,8 +91,19 @@ namespace Koromo_Copy.Script.SRCAL
         }
         public class CDLBlock : CDLDebugInfo { }
         public class CDLLine : CDLDebugInfo { }
-        public class CDLExptr : CDLDebugInfo { }
-        public class CDLConst : CDLDebugInfo { }
+        public class CDLExpr : CDLDebugInfo { }
+        public class CDLConst : CDLDebugInfo {
+            public enum CDLConstType
+            {
+                Integer,
+                String,
+            }
+            public CDLConstType Type;
+            public string Name;
+            public int ContentInteger;
+            public string ContentString;
+        }
+        public class CDLVar : CDLDebugInfo { }
         public class CDLVariable : CDLDebugInfo { }
         public class CDLArgument : CDLDebugInfo { }
         public class CDLFunction : CDLDebugInfo { }
