@@ -33,13 +33,6 @@ namespace Koromo_Copy.Script.SRCAL
         public class SRCALVariable
         {
             public SRCALType Type;
-            public string Name;
-            public int ContentInteger;
-            public bool ContentBoolean;
-            public string ContentString;
-            public List<string> ContentStringList;
-            public string ContentInternal;
-            public SRCALFunction ContentFunction;
         }
 
         /*
@@ -87,115 +80,51 @@ namespace Koromo_Copy.Script.SRCAL
                       | if (variable)                       block else block
         */
 
-        public class SRCALFunction
-        {
-            public bool IsReturn;
-            public bool IsInternal;
-            public string Name;
-
-            public SRCALVariable ContentReturn;
-            public List<SRCALVariable> ContentArguments;
-        }
-
-        public class SRCALStatement
-        {
-            public bool IsFunctionCall;
-            public bool IsVariable;
-
-            public SRCALVariable ContentVariable;
-        }
-
-        public abstract class SRCALRunnable {
-            public int LineNumber;
-            public int LineColumn;
+        public abstract class CDLDebugInfo {
+            public int Line;
+            public int Column;
         }
         
-        public class SRCALExpression : SRCALRunnable
-        {
-            public bool IsEqual;
-
-            public SRCALStatement Stmt;
-            public SRCALVariable Left;
-            public SRCALExpression Right;
+        public class CDLScript {
+            public CDLBlock start_block;
         }
+        public class CDLBlock : CDLDebugInfo { }
+        public class CDLLine : CDLDebugInfo { }
+        public class CDLExptr : CDLDebugInfo { }
+        public class CDLConst : CDLDebugInfo { }
+        public class CDLVariable : CDLDebugInfo { }
+        public class CDLArgument : CDLDebugInfo { }
+        public class CDLFunction : CDLDebugInfo { }
 
-        public class SRCALLoop : SRCALRunnable
-        {
-            public SRCALVariable Variable;
-            public SRCALBlock InnerBlock;
-        }
+        public abstract class CDLRunnable { }
+        public class CDLLoop : CDLRunnable { }
+        public class CDLForEach : CDLRunnable { }
+        public class CDLIf : CDLRunnable { }
+        public class CDLIfElse : CDLRunnable { }
 
-        public class SRCALForeach : SRCALRunnable
-        {
-            public SRCALVariable Source;
-            public SRCALVariable Variable;
-            public SRCALBlock InnerBlock;
-        }
-
-        public class SRCALIfElse : SRCALRunnable
-        {
-            public SRCALStatement Stmt;
-
-            public bool IsElseExists;
-            public SRCALBlock IfBlock;
-            public SRCALBlock ElseBlock;
-        }
-
-        public class SRCALBlock
-        {
-            public List<SRCALRunnable> RunList;
-            public void AddRunnable(SRCALRunnable runnable) => RunList.Add(runnable);
-        }
-
-        SRCALBlock root_block;
-        Dictionary<string, SRCALVariable> attributes;
+        Dictionary<string, string> attributes;
 
         public SRCALParser()
         {
-            attributes = new Dictionary<string, SRCALVariable>
+            attributes = new Dictionary<string, string>
             {
-                {"$ScriptName", null },
-                {"$ScriptVersion", null },
-                {"$ScriptAuthor", null },
-                {"$ScriptFolderName", null },
-                {"$ScriptRequestName", null },
-                {"$URLSpecifier", null },
-                {"$UsingDriver", null },
+                {"$ScriptName", "" },
+                {"$ScriptVersion", "" },
+                {"$ScriptAuthor", "" },
+                {"$ScriptFolderName", "" },
+                {"$ScriptRequestName", "" },
+                {"$URLSpecifier", "" },
+                {"$UsingDriver", "" },
             };
         }
 
         List<string> raw_script;
-        int line_number;
+        int line;
         int column;
-        public SRCALBlock Parse(List<string> raw_script)
-        {
-            root_block = new SRCALBlock();
-            line_number = 0;
-            this.raw_script = raw_script;
-
-            for (; line_number < raw_script.Count; line_number++)
-            {
-                var line_string = raw_script[line_number].Trim();
-                if (string.IsNullOrEmpty(line_string) || line_string.StartsWith("##"))
-                    continue;
-                column = 0;
-                parse_internal();
-            }
-
-            return root_block;
+        public void Parse(List<string> raw_script)
+        { 
         }
-
-        private void parse_internal()
-        {
-
-        }
-
-        private SRCALExpression parse_expression()
-        {
-            var expr = new SRCALExpression();
-
-            return expr;
-        }
+        
     }
 
     /// <summary>
@@ -203,11 +132,11 @@ namespace Koromo_Copy.Script.SRCAL
     /// </summary>
     public class SRCALEngine
     {
-        SRCALParser.SRCALBlock root_block;
+        //SRCALParser.SRCALBlock root_block;
 
         public void ParseScript(List<string> raw_script)
         {
-            root_block = new SRCALParser().Parse(raw_script);
+            //root_block = new SRCALParser().Parse(raw_script);
         }
     }
 
