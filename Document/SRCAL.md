@@ -20,7 +20,7 @@ line     -> comment
           | e
 
 expr     -> func
-          | var = variable
+          | var = index
           | runnable
           
 block    -> [ block ]
@@ -37,21 +37,21 @@ const    -> number
          
 var      -> name
 
+index    -> variable
+          | variable [ number ]
 variable -> var
           | function
-          | variable [ number ]
           | const
 
-argument -> variable
-          | variable, argument
+argument -> index
+          | index, argument
 function -> name ( )
           | name ( argument )
 
-runnable -> loop (var = variable "to" variable) block
-          | foreach (var : variable)            block
-          | if (variable)                       block
-          | if (variable)                       block else block
-
+runnable -> loop (var = index "to" index) block
+          | foreach (var : index)         block
+          | if (index)                    block
+          | if (index)                    block else block
 ```
 
 ## 3. 스크립트 상호작용
@@ -152,7 +152,7 @@ loop (i = 1 to max_page) [
 
     foreach (sub_url : sub_urls) [
         $LoadPage(sub_url)
-        if equal(cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[2]/span[1]/a[1], #attr[id]"), "image-resize-link") [
+        if (equal(cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[2]/span[1]/a[1], #attr[id]"), "image-resize-link")) [
             image_url = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[2]/span[1]/a[1], #attr[href]")
         ] else [
             image_url = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/section[1]/img[1], #attr[src]")
@@ -161,8 +161,8 @@ loop (i = 1 to max_page) [
         $AppendImage(image_url, file_name)
     ]
 
-    if equal($LatestImagesCount, 0) [ 
-        exit loop
+    if (equal($LatestImagesCount, 0)) [ 
+        $ExitLoop()
     ]
 ]
 

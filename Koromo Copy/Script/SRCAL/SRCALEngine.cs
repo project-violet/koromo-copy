@@ -30,11 +30,6 @@ namespace Koromo_Copy.Script.SRCAL
     /// </summary>
     public class SRCALParser
     {
-        public class SRCALVariable
-        {
-            public SRCALType Type;
-        }
-
         /*
         
         EBNF: SRCAL-CDL
@@ -48,7 +43,7 @@ namespace Koromo_Copy.Script.SRCAL
                       | e
             
             expr     -> func
-                      | var = variable
+                      | var = index
                       | runnable
                       
             block    -> [ block ]
@@ -65,20 +60,21 @@ namespace Koromo_Copy.Script.SRCAL
                      
             var      -> name
             
+            index    -> variable
+                      | variable [ number ]
             variable -> var
                       | function
-                      | variable [ number ]
                       | const
 
-            argument -> variable
-                      | variable, argument
+            argument -> index
+                      | index, argument
             function -> name ( )
                       | name ( argument )
             
-            runnable -> loop (var = variable "to" variable) block
-                      | foreach (var : variable)            block
-                      | if (variable)                       block
-                      | if (variable)                       block else block
+            runnable -> loop (var = index "to" index) block
+                      | foreach (var : index)         block
+                      | if (index)                    block
+                      | if (index)                    block else block
         */
 
         public class CDLDebugInfo {
@@ -106,7 +102,7 @@ namespace Koromo_Copy.Script.SRCAL
             public CDLFunction ContentFunction;
             public CDLRunnable ContentRunnable;
             public CDLVar ContentVar;
-            public CDLVariable ContentVariable;
+            public CDLIndex ContentIndex;
         }
         public class CDLConst : CDLDebugInfo {
             public enum CDLConstType
@@ -136,49 +132,52 @@ namespace Koromo_Copy.Script.SRCAL
             public string ContentString;
             public List<string> ContentStringList;
         }
+        public class CDLIndex : CDLDebugInfo {
+            public CDLVariable ContentVariable;
+            public bool UseIndex;
+            public int ContentIndex;
+        }
+
         public class CDLVariable : CDLDebugInfo {
             public enum CDLVariableType
             {
                 Var,
                 Function,
-                VariableIndex,
                 Const,
             }
             public CDLVariableType Type;
             public CDLVar ContentVar;
             public CDLFunction ContentFunction;
-            public CDLVariable ContentVariableIndex;
-            public int Index;
             public CDLConst ContentConst;
         }
         public class CDLArgument : CDLDebugInfo {
-            public List<CDLVariable> ContentArguments;
+            public List<CDLIndex> ContentArguments;
         }
         public class CDLFunction : CDLDebugInfo {
             public bool IsReturnVoid;
-            public CDLVariable ContentReturn;
+            public CDLIndex ContentReturn;
             public string ContentFunctionName;
-            public List<CDLVariable> ContentArguments;
+            public List<CDLIndex> ContentArguments;
         }
 
         public class CDLRunnable : CDLDebugInfo { }
         public class CDLLoop : CDLRunnable {
             public CDLVar ContentIterator;
-            public CDLVariable ContentStarts;
-            public CDLVariable ContentEnds;
+            public CDLIndex ContentStarts;
+            public CDLIndex ContentEnds;
             public CDLBlock ContentInnerBlock;
         }
         public class CDLForEach : CDLRunnable {
             public CDLVar ContentIterator;
-            public CDLVariable ContentSource;
+            public CDLIndex ContentSource;
             public CDLBlock ContentBlock;
         }
         public class CDLIf : CDLRunnable {
-            public CDLVariable ContentStatement;
+            public CDLIndex ContentStatement;
             public CDLBlock ContentBlock;
         }
         public class CDLIfElse : CDLRunnable {
-            public CDLVariable ContentStatement;
+            public CDLIndex ContentStatement;
             public CDLBlock ContentIfBlock;
             public CDLBlock ContentElseBlock;
         }
@@ -202,7 +201,8 @@ namespace Koromo_Copy.Script.SRCAL
         List<string> raw_script;
         int line;
         int column;
-        List<Tuple<CDLDebugInfo, string>> errors; 
+        bool hard_check = false;
+        public List<Tuple<CDLDebugInfo, string>> errors; 
 
         public CDLScript Parse(List<string> raw_script)
         {
@@ -300,10 +300,7 @@ namespace Koromo_Copy.Script.SRCAL
                         }
                         builder.Append(str[column++]);
                     }
-                    errors.Add(new Tuple<CDLDebugInfo, string>(new CDLDebugInfo
-                    {
-                        Line = line, Column = column
-                    }, "constant string closure not found!"));
+                    push_error(line, column, "constant string closure not found!");
                 }
                 else if ("([,])=:".Contains(str[column]))
                 {
@@ -344,16 +341,18 @@ namespace Koromo_Copy.Script.SRCAL
         
         private CDLBlock parse_block()
         {
+            var l = line;
+            var c = column;
             var ff = look_up_token();
 
-            var block = new CDLBlock { Line = line, Column = column };
+            var block = new CDLBlock { Line = l, Column = c };
             if (ff == "[")
             {
                 var ll = new List<CDLLine>();
-                next_token(); // [
+                test_terminal("[", l, c);
                 while (look_up_token() != "]")
                     ll.Add(parse_line());
-                next_token(); // ]
+                test_terminal("]", l, c);
                 block.ContentLines = ll;
             }
             else if (ff != "")
@@ -397,15 +396,11 @@ namespace Koromo_Copy.Script.SRCAL
                 next_token();
                 return new CDLExpr { Line = l, Column = c, Type = CDLExpr.CDLExprType.Equal,
                     ContentVar = parse_var(nt),
-                    ContentVariable = parse_variable()
+                    ContentIndex = parse_index()
                 };
             }
-
-            errors.Add(Tuple.Create(new CDLDebugInfo
-            {
-                Line = l,
-                Column = c
-            }, "cannot parse expr!"));
+            
+            push_error(l, c, "cannot parse expr!");
             return new CDLExpr();
         }
 
@@ -414,39 +409,28 @@ namespace Koromo_Copy.Script.SRCAL
             var l = line;
             var c = column;
 
-            next_token(); // (
-            var args = new List<CDLVariable>();
+            test_terminal("(", l, c);
+            var args = new List<CDLIndex>();
 
             var lookup = look_up_token();
             while (lookup != "" && lookup != ")")
             {
-                args.Add(parse_variable());
+                args.Add(parse_index());
                 if (look_up_token() == ",")
-                {
                     next_token();
-                    continue;
-                }
                 lookup = look_up_token();
             }
 
             if (lookup == "")
             {
-                errors.Add(Tuple.Create(new CDLDebugInfo
-                {
-                    Line = l,
-                    Column = c
-                }, "function arguments parse error!"));
+                push_error(l, c, "function arguments parse error!");
                 return new CDLFunction();
             }
 
             var close = next_token();
             if (close != ")")
             {
-                errors.Add(Tuple.Create(new CDLDebugInfo
-                {
-                    Line = l,
-                    Column = c
-                }, "closure not found in function!"));
+                push_error(l, c, "closure not found in function!");
             }
             return new CDLFunction { Line = l, Column = c, ContentFunctionName = name, ContentArguments = args };
         }
@@ -454,6 +438,23 @@ namespace Koromo_Copy.Script.SRCAL
         private CDLVar parse_var(string name)
         {
             return new CDLVar { Line = line, Column = column, Name = name };
+        }
+
+        private CDLIndex parse_index()
+        {
+            var l = line;
+            var c = column;
+            var v = parse_variable();
+
+            var nt = look_up_token();
+            if (nt == "[")
+            {
+                test_terminal("[", l, c);
+                var index = next_token();
+                test_terminal("]", l, c);
+                return new CDLIndex { Line = line, Column = column, ContentVariable = v, UseIndex = true, ContentIndex = Convert.ToInt32(index) };
+            }
+            return new CDLIndex { Line = line, Column = column, ContentVariable = v, UseIndex = false };
         }
 
         private CDLVariable parse_variable()
@@ -480,8 +481,6 @@ namespace Koromo_Copy.Script.SRCAL
             var nnt = look_up_token();
             if (nnt == "(")
                 return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Function, ContentFunction = parse_function(nt) };
-            //if (nnt == "[")
-            //    return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.VariableIndex, ContentVariableIndex = p }
             
             return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Var, ContentVar = parse_var(nt) };
         }
@@ -492,29 +491,31 @@ namespace Koromo_Copy.Script.SRCAL
             var c = column;
             if (specific == "loop")
             {
-                next_token(); // (
+                test_terminal("(", l, c);
                 var iter = parse_var(next_token());
-                next_token(); // =
-                var start = parse_variable();
-                next_token(); // to
-                var ends = parse_variable();
-                next_token(); // )
+                test_terminal("=", l, c);
+                var start = parse_index();
+                test_terminal("to", l, c);
+                var ends = parse_index();
+                test_terminal(")", l, c);
                 var block = parse_block();
                 return new CDLLoop { Line = l, Column = c, ContentIterator = iter, ContentStarts = start, ContentEnds = ends, ContentInnerBlock = block };
             }
             else if (specific == "foreach")
             {
-                next_token(); // (
+                test_terminal("(", l, c);
                 var iter = parse_var(next_token());
-                next_token(); // :
-                var src = parse_variable();
-                next_token(); // )
+                test_terminal(":", l, c);
+                var src = parse_index();
+                test_terminal(")", l, c);
                 var block = parse_block();
                 return new CDLForEach { Line = l, Column = c, ContentIterator = iter, ContentSource = src, ContentBlock = block };
             }
             else if (specific == "if")
             {
-                var stmt = parse_variable();
+                test_terminal("(", l, c);
+                var stmt = parse_index();
+                test_terminal(")", l, c);
                 var block = parse_block();
 
                 if (look_up_token() == "else")
@@ -528,6 +529,19 @@ namespace Koromo_Copy.Script.SRCAL
             return new CDLRunnable();
         }
 
+        private void push_error(int l, int c, string msg)
+        {
+            errors.Add(new Tuple<CDLDebugInfo, string>(new CDLDebugInfo { Line = l, Column = c }, msg));
+            if (hard_check)
+                throw new Exception(msg);
+        }
+
+        private void test_terminal(string term, int l, int c)
+        {
+            if (next_token() != term)
+                push_error(l, c, $"missmatch terminal symbol {term}!");
+        }
+
         #endregion
     }
 
@@ -538,16 +552,28 @@ namespace Koromo_Copy.Script.SRCAL
     {
         SRCALParser.CDLScript script;
 
-        public void ParseScript(List<string> raw_script)
+        public bool ParseScript(List<string> raw_script)
         {
+            var parser = new SRCALParser();
             try
             {
-                script = new SRCALParser().Parse(raw_script);
+                script = parser.Parse(raw_script);
+
+                if (parser.errors.Count == 0)
+                    return true;
             }
             catch (Exception e)
             {
-                Monitor.Instance.Push($"[SRCAL Engine] Script parse error. {e.Message}");
+                Monitor.Instance.Push($"[SRCAL Engine] Script parsing error. {e.Message}");
             }
+
+            Monitor.Instance.Push($"[SRCAL Engine] Occurred some errors when parsing script ...");
+            for (int i = 0; i < parser.errors.Count; i++)
+            {
+                Monitor.Instance.Push($"[{parser.errors[i].Item1.Line}, {parser.errors[i].Item1.Column}] {parser.errors[i].Item2}");
+            }
+
+            return false;
         }
 
         public void RunScript(string request_url)
