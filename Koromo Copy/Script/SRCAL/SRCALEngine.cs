@@ -89,30 +89,99 @@ namespace Koromo_Copy.Script.SRCAL
         public class CDLScript {
             public CDLBlock start_block;
         }
-        public class CDLBlock : CDLDebugInfo { }
-        public class CDLLine : CDLDebugInfo { }
-        public class CDLExpr : CDLDebugInfo { }
+        public class CDLBlock : CDLDebugInfo {
+            public List<CDLLine> ContentLines;
+        }
+        public class CDLLine : CDLDebugInfo {
+            public CDLExpr ContentExpr;
+        }
+        public class CDLExpr : CDLDebugInfo {
+            public enum CDLExprType
+            {
+                Function,
+                Runnable,
+                Equal
+            }
+            public CDLExprType Type;
+            public CDLFunction ContentFunction;
+            public CDLRunnable ContentRunnable;
+            public CDLVar ContentVar;
+            public CDLVariable ContentVariable;
+        }
         public class CDLConst : CDLDebugInfo {
             public enum CDLConstType
             {
+                Boolean,
                 Integer,
                 String,
             }
             public CDLConstType Type;
             public string Name;
+            public bool ContentBoolean;
             public int ContentInteger;
             public string ContentString;
         }
-        public class CDLVar : CDLDebugInfo { }
-        public class CDLVariable : CDLDebugInfo { }
-        public class CDLArgument : CDLDebugInfo { }
-        public class CDLFunction : CDLDebugInfo { }
+        public class CDLVar : CDLDebugInfo {
+            public enum CDLVarType
+            {
+                Boolean,
+                Integer,
+                String,
+                StringList
+            }
+            public CDLVarType Type;
+            public string Name;
+            public bool ContentBoolean;
+            public int ContentInteger;
+            public string ContentString;
+            public List<string> ContentStringList;
+        }
+        public class CDLVariable : CDLDebugInfo {
+            public enum CDLVariableType
+            {
+                Var,
+                Function,
+                VariableIndex,
+                Const,
+            }
+            public CDLVariableType Type;
+            public CDLVar ContentVar;
+            public CDLFunction ContentFunction;
+            public CDLVariable ContentVariableIndex;
+            public int Index;
+            public CDLConst ContentConst;
+        }
+        public class CDLArgument : CDLDebugInfo {
+            public List<CDLVariable> ContentArguments;
+        }
+        public class CDLFunction : CDLDebugInfo {
+            public bool IsReturnVoid;
+            public CDLVariable ContentReturn;
+            public string ContentFunctionName;
+            public List<CDLVariable> ContentArguments;
+        }
 
-        public abstract class CDLRunnable { }
-        public class CDLLoop : CDLRunnable { }
-        public class CDLForEach : CDLRunnable { }
-        public class CDLIf : CDLRunnable { }
-        public class CDLIfElse : CDLRunnable { }
+        public abstract class CDLRunnable : CDLDebugInfo { }
+        public class CDLLoop : CDLRunnable {
+            public CDLVar ContentIterator;
+            public CDLVariable ContentStarts;
+            public CDLVariable ContentEnds;
+            public CDLBlock ContentInnerBlock;
+        }
+        public class CDLForEach : CDLRunnable {
+            public CDLVar ContentIterator;
+            public CDLVariable ContentSource;
+            public CDLBlock ContentBlock;
+        }
+        public class CDLIf : CDLRunnable {
+            public CDLVariable ContentStatement;
+            public CDLBlock ContentBlock;
+        }
+        public class CDLIfElse : CDLRunnable {
+            public CDLVariable ContentStatement;
+            public CDLBlock ContentIfBlock;
+            public CDLBlock ContentElseBlock;
+        }
 
         Dictionary<string, string> attributes;
 
