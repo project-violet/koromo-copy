@@ -81,7 +81,7 @@ namespace Koromo_Copy.Script.SRCAL
                       | if (variable)                       block else block
         */
 
-        public abstract class CDLDebugInfo {
+        public class CDLDebugInfo {
             public int Line;
             public int Column;
         }
@@ -161,7 +161,7 @@ namespace Koromo_Copy.Script.SRCAL
             public List<CDLVariable> ContentArguments;
         }
 
-        public abstract class CDLRunnable : CDLDebugInfo { }
+        public class CDLRunnable : CDLDebugInfo { }
         public class CDLLoop : CDLRunnable {
             public CDLVar ContentIterator;
             public CDLVariable ContentStarts;
@@ -202,10 +202,286 @@ namespace Koromo_Copy.Script.SRCAL
         List<string> raw_script;
         int line;
         int column;
+        CDLScript script;
+        List<Tuple<CDLDebugInfo, string>> errors; 
+
         public void Parse(List<string> raw_script)
-        { 
+        {
+            this.raw_script = raw_script;
+            errors = new List<Tuple<CDLDebugInfo, string>>();
+            line = 0;
+            column = 0;
+            script = parse_script();
+        }
+
+        #region Parse Tool
+
+        private enum token_type
+        {
+            None,
+            Integer,
+            String,
+            Name,
+            Internal,
+            Special
+        }
+
+        token_type latest_token_type;
+
+        private string next_token()
+        {
+        STARTS:
+
+            if (line == raw_script.Count) {
+                latest_token_type = token_type.None;
+                return "";
+            }
+            
+            if (raw_script[line].Length == column || raw_script[line].Substring(column).Trim() == "")
+            {
+                line++;
+                column = 0;
+                goto STARTS;
+            }
+
+            if (raw_script[line].Substring(column).StartsWith("##"))
+            {
+                goto STARTS;
+            }
+
+            var builder = new StringBuilder();
+            var str = raw_script[line];
+
+            for (; column < str.Length; column++)
+            {
+                if (str[column] == ' ') continue;
+                if (char.IsDigit(str[column]))
+                {
+                    latest_token_type = token_type.Integer;
+                    while (column < str.Length && char.IsDigit(str[column]))
+                        builder.Append(str[column++]);
+                    return builder.ToString();
+                }
+                else if (('a' <= str[column] && str[column] <= 'z') ||
+                         ('A' <= str[column] && str[column] <= 'Z') ||
+                         str[column] == '_' || str[column] == '$')
+                {
+                    latest_token_type = token_type.Name;
+                    if (str[column] == '$') latest_token_type = token_type.Internal;
+                    builder.Append(str[column++]);
+                    while (column < str.Length && char.IsLetter(str[column]))
+                        builder.Append(str[column++]);
+                    return builder.ToString();
+                }
+                else if (str[column] == '"')
+                {
+                    latest_token_type = token_type.String;
+                    column++;
+                    while (column < str.Length)
+                    {
+                        if (str[column] == '"') {
+                            column++;
+                            return builder.ToString();
+                        }
+                        if (str[column] == '\\')
+                        {
+                            if (column < str.Length)
+                                column++;
+                            else
+                                break;
+                        }
+                        builder.Append(column++);
+                    }
+                    errors.Add(new Tuple<CDLDebugInfo, string>(new CDLDebugInfo
+                    {
+                        Line = line, Column = column
+                    }, "constant string closure not found!"));
+                }
+                else if ("([,])=:".Contains(str[column]))
+                {
+                    latest_token_type = token_type.Special;
+                    return str[column++].ToString();
+                }
+            }
+
+            latest_token_type = token_type.None;
+            return "";
+        }
+
+        private string look_up_token()
+        {
+            var l = line;
+            var c = column;
+            var t = latest_token_type;
+            var str = next_token();
+            line = l;
+            column = c;
+            latest_token_type = t;
+            return str;
         }
         
+        #endregion
+
+        #region Parse Recursion
+
+        private CDLScript parse_script()
+        {
+            var script = new CDLScript();
+            var ll = new List<CDLLine>();
+            while (line != raw_script.Count && look_up_token() != "")
+                ll.Add(parse_line());
+            script.start_block = new CDLBlock { ContentLines = ll };
+            return script;
+        }
+        
+        private CDLBlock parse_block()
+        {
+            var ff = look_up_token();
+
+            var block = new CDLBlock { Line = line, Column = column };
+            if (ff == "[")
+            {
+                var ll = new List<CDLLine>();
+                while (look_up_token() != "]")
+                    ll.Add(parse_line());
+                block.ContentLines = ll;
+            }
+            else if (ff != "")
+            {
+                block.ContentLines = new List<CDLLine>() { parse_line() };
+            }
+
+            return block;
+        }
+
+        private CDLLine parse_line()
+        {
+            var l = line;
+            var c = column;
+            return new CDLLine { Line = l, Column = c, ContentExpr = parse_expr() };
+        }
+
+        private CDLExpr parse_expr()
+        {
+            var l = line;
+            var c = column;
+
+            var nt = next_token();
+            var ntt = latest_token_type;
+            var nnt = look_up_token();
+
+            if (nt == "loop" || nt == "foreach" || nt == "if")
+            {
+                return new CDLExpr { Line = l, Column = c, Type = CDLExpr.CDLExprType.Runnable,
+                    ContentRunnable = parse_runnable(nt)
+                };
+            }
+            else if (nnt == "(")
+            {
+                return new CDLExpr { Line = l, Column = c, Type = CDLExpr.CDLExprType.Function,
+                    ContentFunction = parse_function(nt)
+                };
+            }
+            else if (nnt == "=")
+            {
+                return new CDLExpr { Line = l, Column = c, Type = CDLExpr.CDLExprType.Equal,
+                    ContentVar = parse_var(nt),
+                    ContentVariable = parse_variable()
+                };
+            }
+
+            errors.Add(Tuple.Create(new CDLDebugInfo
+            {
+                Line = l,
+                Column = c
+            }, "cannot parse expr!"));
+            return new CDLExpr();
+        }
+
+        private CDLFunction parse_function(string name)
+        {
+            var l = line;
+            var c = column;
+
+            next_token(); // (
+            var args = new List<CDLVariable>();
+
+            while (look_up_token() != ")")
+            {
+                args.Add(parse_variable());
+                if (look_up_token() == ",")
+                {
+                    next_token();
+                    continue;
+                }
+                else
+                {
+                    errors.Add(Tuple.Create(new CDLDebugInfo
+                    {
+                        Line = l,
+                        Column = c
+                    }, "function arguments parse error!"));
+                    return new CDLFunction();
+                }
+            }
+
+            var close = next_token();
+            if (close != ")")
+            {
+                errors.Add(Tuple.Create(new CDLDebugInfo
+                {
+                    Line = l,
+                    Column = c
+                }, "closure not found in function!"));
+            }
+            return new CDLFunction { Line = l, Column = c, ContentFunctionName = name, ContentArguments = args };
+        }
+
+        private CDLVar parse_var(string name)
+        {
+            return new CDLVar { Line = line, Column = column, Name = name };
+        }
+
+        private CDLVariable parse_variable()
+        {
+            var l = line;
+            var c = column;
+            var nt = next_token();
+            var tt = latest_token_type;
+
+            if (tt == token_type.Integer)
+                return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Const, ContentConst = 
+                    new CDLConst { Line = l, Column = c, Type = CDLConst.CDLConstType.Integer, ContentInteger = Convert.ToInt32(nt) } };
+            if (tt == token_type.String)
+                return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Const, ContentConst = 
+                    new CDLConst { Line = l, Column = c, Type = CDLConst.CDLConstType.String, ContentString = nt } };
+
+            if (nt == "true")
+                return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Const, ContentConst = 
+                    new CDLConst { Line = l, Column = c, Type = CDLConst.CDLConstType.Boolean, ContentBoolean = true } };
+            if (nt == "false")
+                return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Const, ContentConst = 
+                    new CDLConst { Line = l, Column = c, Type = CDLConst.CDLConstType.Boolean, ContentBoolean = false } };
+
+            var nnt = look_up_token();
+            if (nnt == "(")
+                return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Function, ContentFunction = parse_function(nt) };
+            //if (nnt == "[")
+            //    return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.VariableIndex, ContentVariableIndex = p }
+            
+            return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Var, ContentVar = parse_var(nt) };
+        }
+
+        private CDLRunnable parse_runnable(string specific)
+        {
+            if (specific == "loop")
+            {
+
+            }
+            return new CDLRunnable();
+        }
+
+        #endregion
     }
 
     /// <summary>
