@@ -202,16 +202,15 @@ namespace Koromo_Copy.Script.SRCAL
         List<string> raw_script;
         int line;
         int column;
-        CDLScript script;
         List<Tuple<CDLDebugInfo, string>> errors; 
 
-        public void Parse(List<string> raw_script)
+        public CDLScript Parse(List<string> raw_script)
         {
             this.raw_script = raw_script;
             errors = new List<Tuple<CDLDebugInfo, string>>();
             line = 0;
             column = 0;
-            script = parse_script();
+            return parse_script();
         }
 
         #region Parse Tool
@@ -246,6 +245,8 @@ namespace Koromo_Copy.Script.SRCAL
 
             if (raw_script[line].Substring(column).StartsWith("##"))
             {
+                line++;
+                column = 0;
                 goto STARTS;
             }
 
@@ -269,8 +270,15 @@ namespace Koromo_Copy.Script.SRCAL
                     latest_token_type = token_type.Name;
                     if (str[column] == '$') latest_token_type = token_type.Internal;
                     builder.Append(str[column++]);
-                    while (column < str.Length && char.IsLetter(str[column]))
-                        builder.Append(str[column++]);
+                    while (column < str.Length)
+                    {
+                        if (('a' <= str[column] && str[column] <= 'z') ||
+                            ('A' <= str[column] && str[column] <= 'Z') ||
+                            str[column] == '_' || str[column] == '$')
+                            builder.Append(str[column++]);
+                        else
+                            break;
+                    }
                     return builder.ToString();
                 }
                 else if (str[column] == '"')
@@ -290,7 +298,7 @@ namespace Koromo_Copy.Script.SRCAL
                             else
                                 break;
                         }
-                        builder.Append(column++);
+                        builder.Append(str[column++]);
                     }
                     errors.Add(new Tuple<CDLDebugInfo, string>(new CDLDebugInfo
                     {
@@ -342,8 +350,10 @@ namespace Koromo_Copy.Script.SRCAL
             if (ff == "[")
             {
                 var ll = new List<CDLLine>();
+                next_token(); // [
                 while (look_up_token() != "]")
                     ll.Add(parse_line());
+                next_token(); // ]
                 block.ContentLines = ll;
             }
             else if (ff != "")
@@ -384,6 +394,7 @@ namespace Koromo_Copy.Script.SRCAL
             }
             else if (nnt == "=")
             {
+                next_token();
                 return new CDLExpr { Line = l, Column = c, Type = CDLExpr.CDLExprType.Equal,
                     ContentVar = parse_var(nt),
                     ContentVariable = parse_variable()
@@ -406,7 +417,8 @@ namespace Koromo_Copy.Script.SRCAL
             next_token(); // (
             var args = new List<CDLVariable>();
 
-            while (look_up_token() != ")")
+            var lookup = look_up_token();
+            while (lookup != "" && lookup != ")")
             {
                 args.Add(parse_variable());
                 if (look_up_token() == ",")
@@ -414,15 +426,17 @@ namespace Koromo_Copy.Script.SRCAL
                     next_token();
                     continue;
                 }
-                else
+                lookup = look_up_token();
+            }
+
+            if (lookup == "")
+            {
+                errors.Add(Tuple.Create(new CDLDebugInfo
                 {
-                    errors.Add(Tuple.Create(new CDLDebugInfo
-                    {
-                        Line = l,
-                        Column = c
-                    }, "function arguments parse error!"));
-                    return new CDLFunction();
-                }
+                    Line = l,
+                    Column = c
+                }, "function arguments parse error!"));
+                return new CDLFunction();
             }
 
             var close = next_token();
@@ -474,9 +488,42 @@ namespace Koromo_Copy.Script.SRCAL
 
         private CDLRunnable parse_runnable(string specific)
         {
+            var l = line;
+            var c = column;
             if (specific == "loop")
             {
+                next_token(); // (
+                var iter = parse_var(next_token());
+                next_token(); // =
+                var start = parse_variable();
+                next_token(); // to
+                var ends = parse_variable();
+                next_token(); // )
+                var block = parse_block();
+                return new CDLLoop { Line = l, Column = c, ContentIterator = iter, ContentStarts = start, ContentEnds = ends, ContentInnerBlock = block };
+            }
+            else if (specific == "foreach")
+            {
+                next_token(); // (
+                var iter = parse_var(next_token());
+                next_token(); // :
+                var src = parse_variable();
+                next_token(); // )
+                var block = parse_block();
+                return new CDLForEach { Line = l, Column = c, ContentIterator = iter, ContentSource = src, ContentBlock = block };
+            }
+            else if (specific == "if")
+            {
+                var stmt = parse_variable();
+                var block = parse_block();
 
+                if (look_up_token() == "else")
+                {
+                    next_token(); // else
+                    var block2 = parse_block();
+                    return new CDLIfElse { Line = l, Column = c, ContentStatement = stmt, ContentIfBlock = block, ContentElseBlock = block2 };
+                }
+                return new CDLIf { Line = l, Column = c, ContentStatement = stmt, ContentBlock = block };
             }
             return new CDLRunnable();
         }
@@ -489,11 +536,23 @@ namespace Koromo_Copy.Script.SRCAL
     /// </summary>
     public class SRCALEngine
     {
-        //SRCALParser.SRCALBlock root_block;
+        SRCALParser.CDLScript script;
 
         public void ParseScript(List<string> raw_script)
         {
-            //root_block = new SRCALParser().Parse(raw_script);
+            try
+            {
+                script = new SRCALParser().Parse(raw_script);
+            }
+            catch (Exception e)
+            {
+                Monitor.Instance.Push($"[SRCAL Engine] Script parse error. {e.Message}");
+            }
+        }
+
+        public void RunScript(string request_url)
+        {
+
         }
     }
 
