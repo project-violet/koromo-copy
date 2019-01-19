@@ -210,7 +210,32 @@ namespace Koromo_Copy.Script.SRCAL
             errors = new List<Tuple<CDLDebugInfo, string>>();
             line = 0;
             column = 0;
-            return parse_script();
+            var script = parse_script();
+            set_attributes(script);
+            return script;
+        }
+
+        private void set_attributes(CDLScript script)
+        {
+            foreach (var line in script.start_block.ContentLines)
+            {
+                if (line.ContentExpr.Type == CDLExpr.CDLExprType.Equal)
+                {
+                    if (attributes.ContainsKey(line.ContentExpr.ContentVar.Name))
+                    {
+                        if (line.ContentExpr.Type == CDLExpr.CDLExprType.Equal)
+                        {
+                            if (line.ContentExpr.ContentIndex.ContentVariable.Type == CDLVariable.CDLVariableType.Const)
+                            {
+                                if (line.ContentExpr.ContentIndex.ContentVariable.ContentConst.Type == CDLConst.CDLConstType.String)
+                                    attributes[line.ContentExpr.ContentVar.Name] = line.ContentExpr.ContentIndex.ContentVariable.ContentConst.ContentString;
+                                else
+                                    attributes[line.ContentExpr.ContentVar.Name] = Convert.ToString(line.ContentExpr.ContentIndex.ContentVariable.ContentConst.ContentInteger);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         #region Parse Tool
