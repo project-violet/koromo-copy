@@ -104,6 +104,8 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 
 어노테이션은 반복문을 병렬화하기 위해 사용합니다.
 
+### 3.5. 함수
+
 ## 4. 스크립트 자동 생성 도구
 
 `Koromo Copy`는 `SRCAL-CDL`의 정형화된 몇 가지 틀을 제공합니다.
@@ -169,6 +171,48 @@ loop (i = 1 to max_page) [
     ]
 
     $CleareImagesCount()
+]
+
+$RequestDownload()
+```
+
+### 5.2. 망가쇼미 시리즈 다운로더
+
+```
+##
+## Koromo Copy SRCAL Script
+##
+## Mangashowme Series Downloader
+##
+
+##
+## Attributes
+##
+$ScriptName = "mangashowme-series"
+$ScriptVersion = "0.1"
+$ScriptAuthor = "dc-koromo"
+$ScriptFolderName = "mangashowme"
+$ScriptRequestName = "mangashowme"
+$URLSpecifier = "https://mangashow.me/bbs/page.php"
+$UsingDriver = 0
+
+##
+## Procedure
+##
+request_url = $RequestURL
+max_page = $Infinity
+
+title = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]")[0]
+sub_urls = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #attr[href]")
+sub_titles = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1]/div[1], #htext")
+
+loop (i = 0 to add(count(sub_urls), -1)) [
+    $LoadPage(sub_urls[i])
+    images = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/form[1]/div[1]/div[{1+i*1}]/div[1], #attr[style], #regex[https://[^\\)]*]")
+    foreach (image : images) [
+        filename = split(image, "/")[-1]
+        $AppendImage(image, concat(title, "/", sub_titles[i], "/", filename))
+    ]
 ]
 
 $RequestDownload()

@@ -63,7 +63,7 @@ namespace Koromo_Copy.Script.SRCAL
             var      -> name
             
             index    -> variable
-                      | variable [ number ]
+                      | variable [ variable ]
             variable -> var
                       | function
                       | const
@@ -137,7 +137,7 @@ namespace Koromo_Copy.Script.SRCAL
         public class CDLIndex : CDLDebugInfo {
             public CDLVariable ContentVariable;
             public bool UseIndex;
-            public int ContentIndex;
+            public CDLVariable ContentIndex;
         }
 
         public class CDLVariable : CDLDebugInfo {
@@ -205,7 +205,7 @@ namespace Koromo_Copy.Script.SRCAL
         int column;
         int nt_line;
         int nt_column;
-        bool hard_check = false;
+        bool hard_check = true;
         public List<Tuple<CDLDebugInfo, string>> errors; 
 
         public CDLScript Parse(List<string> raw_script)
@@ -483,9 +483,9 @@ namespace Koromo_Copy.Script.SRCAL
             if (nt == "[")
             {
                 test_terminal("[", l, c);
-                var index = next_token();
+                var index = parse_variable();
                 test_terminal("]", l, c);
-                return new CDLIndex { Line = l, Column = c, ContentVariable = v, UseIndex = true, ContentIndex = Convert.ToInt32(index) };
+                return new CDLIndex { Line = l, Column = c, ContentVariable = v, UseIndex = true, ContentIndex = index };
             }
             return new CDLIndex { Line = l, Column = c, ContentVariable = v, UseIndex = false };
         }
@@ -626,7 +626,7 @@ namespace Koromo_Copy.Script.SRCAL
             }
             catch (Exception e)
             {
-                Monitor.Instance.Push($"[SRCAL Engine] Script parsing error. {e.Message}");
+                Monitor.Instance.Push($"[SRCAL Engine] Script parsing error. {e.Message}\r\n{e.StackTrace}");
             }
 
             if (parser.errors.Count > 0)
@@ -992,7 +992,64 @@ namespace Koromo_Copy.Script.SRCAL
                     ContentStringList = v1.ContentString.Split(new string[] { v2.ContentString }, StringSplitOptions.None).ToList()
                 };
             }
-            else if (func.ContentFunctionName == "multiple")
+            else if (func.ContentFunctionName == "count")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'count' function must have 1 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.StringList)
+                {
+                    var msg = "arguments type must be string-list type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.Integer,
+                    ContentInteger = v1.ContentStringList.Count
+                };
+            }
+            else if (func.ContentFunctionName == "add")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'mul' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.Integer || v2.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    var msg = "arguments type must be integer type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.Integer,
+                    ContentInteger = v1.ContentInteger + v2.ContentInteger
+                };
+            }
+            else if (func.ContentFunctionName == "mul")
             {
                 if (func.ContentArguments.Count != 2)
                 {
@@ -1192,10 +1249,20 @@ namespace Koromo_Copy.Script.SRCAL
                 result1.Column = _var.Column;
                 result1.Name = var.Name;
                 result1.Type = SRCALParser.CDLVar.CDLVarType.String;
-                if (index.ContentIndex == -1)
+
+                var _index = run_variable(index.ContentIndex);
+
+                if (_index.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    var msg = "index is not integer type.";
+                    error_message.Add(Tuple.Create(_var.Line, _var.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if (_index.ContentInteger == -1)
                     result1.ContentString = _var.ContentStringList.Last();
                 else
-                    result1.ContentString = _var.ContentStringList[index.ContentIndex];
+                    result1.ContentString = _var.ContentStringList[_index.ContentInteger];
                 return result1;
             }
 
