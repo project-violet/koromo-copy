@@ -38,7 +38,7 @@ const    -> number
 var      -> name
 
 index    -> variable
-          | variable [ number ]
+          | variable [ variable ]
 variable -> var
           | function
           | const
