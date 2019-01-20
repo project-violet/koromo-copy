@@ -147,23 +147,28 @@ request_url = $RequestURL
 max_page = $Infinity
 
 loop (i = 1 to max_page) [
-    $LoadPage(url(request_url, "&page=", i))
-    sub_urls = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[3]/div[1]/article[{1+i*1}]/a[1], #attr[href], #front[https://danbooru.donmai.us")
+    $LoadPage(concat(request_url, "&page=", i))
+    sub_urls = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[3]/div[1]/article[{1+i*1}]/a[1], #attr[href], #front[https://danbooru.donmai.us]")
 
     foreach (sub_url : sub_urls) [
         $LoadPage(sub_url)
-        if (equal(cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[2]/span[1]/a[1], #attr[id]"), "image-resize-link")) [
-            image_url = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[2]/span[1]/a[1], #attr[href]")
+        image_url = ""
+        if (equal(cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[1]/span[1]/a[1], #attr[id]")[0], "image-resize-link")) [
+            image_url = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[1]/span[1]/a[1], #attr[href]")[0]
+        ] else if (equal(cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[2]/span[1]/a[1], #attr[id]")[0], "image-resize-link")) [
+            image_url = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[2]/span[1]/a[1], #attr[href]")[0]
         ] else [
-            image_url = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/section[1]/img[1], #attr[src]")
+            image_url = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/section[1]/img[1], #attr[src]")[0]
         ]
-        file_name = split(image_url, '/')[-1]
+        file_name = split(image_url, "/")[-1]
         $AppendImage(image_url, file_name)
     ]
 
     if (equal($LatestImagesCount, 0)) [ 
         $ExitLoop()
     ]
+
+    $CleareImagesCount()
 ]
 
 $RequestDownload()

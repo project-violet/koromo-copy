@@ -6,10 +6,12 @@
 
 ***/
 
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Koromo_Copy.Script.SRCAL
@@ -182,8 +184,8 @@ namespace Koromo_Copy.Script.SRCAL
             public CDLBlock ContentElseBlock;
         }
 
-        Dictionary<string, string> attributes;
-
+        public Dictionary<string, string> attributes;
+        
         public SRCALParser()
         {
             attributes = new Dictionary<string, string>
@@ -201,6 +203,8 @@ namespace Koromo_Copy.Script.SRCAL
         List<string> raw_script;
         int line;
         int column;
+        int nt_line;
+        int nt_column;
         bool hard_check = false;
         public List<Tuple<CDLDebugInfo, string>> errors; 
 
@@ -281,9 +285,12 @@ namespace Koromo_Copy.Script.SRCAL
             for (; column < str.Length; column++)
             {
                 if (str[column] == ' ') continue;
-                if (char.IsDigit(str[column]))
+                nt_line = line;
+                nt_column = column;
+                if (char.IsDigit(str[column]) || str[column] == '-')
                 {
                     latest_token_type = token_type.Integer;
+                    builder.Append(str[column++]);
                     while (column < str.Length && char.IsDigit(str[column]))
                         builder.Append(str[column++]);
                     return builder.ToString();
@@ -397,10 +404,11 @@ namespace Koromo_Copy.Script.SRCAL
 
         private CDLExpr parse_expr()
         {
-            var l = line;
-            var c = column;
-
             var nt = next_token();
+
+            var l = nt_line;
+            var c = nt_column;
+
             var ntt = latest_token_type;
             var nnt = look_up_token();
 
@@ -420,7 +428,7 @@ namespace Koromo_Copy.Script.SRCAL
             {
                 next_token();
                 return new CDLExpr { Line = l, Column = c, Type = CDLExpr.CDLExprType.Equal,
-                    ContentVar = parse_var(nt),
+                    ContentVar = parse_var(l, c, nt),
                     ContentIndex = parse_index()
                 };
             }
@@ -431,8 +439,8 @@ namespace Koromo_Copy.Script.SRCAL
 
         private CDLFunction parse_function(string name)
         {
-            var l = line;
-            var c = column;
+            var l = nt_line;
+            var c = nt_column;
 
             test_terminal("(", l, c);
             var args = new List<CDLIndex>();
@@ -460,9 +468,9 @@ namespace Koromo_Copy.Script.SRCAL
             return new CDLFunction { Line = l, Column = c, ContentFunctionName = name, ContentArguments = args };
         }
 
-        private CDLVar parse_var(string name)
+        private CDLVar parse_var(int l, int c, string name)
         {
-            return new CDLVar { Line = line, Column = column, Name = name };
+            return new CDLVar { Line = l, Column = c, Name = name };
         }
 
         private CDLIndex parse_index()
@@ -477,16 +485,18 @@ namespace Koromo_Copy.Script.SRCAL
                 test_terminal("[", l, c);
                 var index = next_token();
                 test_terminal("]", l, c);
-                return new CDLIndex { Line = line, Column = column, ContentVariable = v, UseIndex = true, ContentIndex = Convert.ToInt32(index) };
+                return new CDLIndex { Line = l, Column = c, ContentVariable = v, UseIndex = true, ContentIndex = Convert.ToInt32(index) };
             }
-            return new CDLIndex { Line = line, Column = column, ContentVariable = v, UseIndex = false };
+            return new CDLIndex { Line = l, Column = c, ContentVariable = v, UseIndex = false };
         }
 
         private CDLVariable parse_variable()
         {
-            var l = line;
-            var c = column;
             var nt = next_token();
+
+            var l = nt_line;
+            var c = nt_column;
+
             var tt = latest_token_type;
 
             if (tt == token_type.Integer)
@@ -507,7 +517,7 @@ namespace Koromo_Copy.Script.SRCAL
             if (nnt == "(")
                 return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Function, ContentFunction = parse_function(nt) };
             
-            return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Var, ContentVar = parse_var(nt) };
+            return new CDLVariable { Line = l, Column = c, Type = CDLVariable.CDLVariableType.Var, ContentVar = parse_var(line, column, nt) };
         }
 
         private CDLRunnable parse_runnable(string specific)
@@ -517,7 +527,7 @@ namespace Koromo_Copy.Script.SRCAL
             if (specific == "loop")
             {
                 test_terminal("(", l, c);
-                var iter = parse_var(next_token());
+                var iter = parse_var(l,c,next_token());
                 test_terminal("=", l, c);
                 var start = parse_index();
                 test_terminal("to", l, c);
@@ -529,7 +539,7 @@ namespace Koromo_Copy.Script.SRCAL
             else if (specific == "foreach")
             {
                 test_terminal("(", l, c);
-                var iter = parse_var(next_token());
+                var iter = parse_var(line,column,next_token());
                 test_terminal(":", l, c);
                 var src = parse_index();
                 test_terminal(")", l, c);
@@ -576,6 +586,24 @@ namespace Koromo_Copy.Script.SRCAL
     public class SRCALEngine
     {
         SRCALParser.CDLScript script;
+        SRCALAttribute attribute;
+        Action<SRCALAttribute, List<Tuple<string, string>>> request_download;
+
+        public class SRCALAttribute
+        {
+            public string ScriptName;
+            public string ScriptVersion;
+            public string ScriptAuthor;
+            public string ScriptFolderName;
+            public string ScriptRequestName;
+            public string URLSpecifier;
+            public bool UsingDriver;
+        }
+        
+        public SRCALEngine(Action<SRCALAttribute,List<Tuple<string,string>>> request_download_callback)
+        {
+
+        }
 
         public bool ParseScript(List<string> raw_script)
         {
@@ -586,27 +614,654 @@ namespace Koromo_Copy.Script.SRCAL
 
                 if (parser.errors.Count == 0)
                     return true;
+
+                attribute = new SRCALAttribute();
+                attribute.ScriptName = parser.attributes["$ScriptName"];
+                attribute.ScriptVersion = parser.attributes["$ScriptVersion"];
+                attribute.ScriptAuthor = parser.attributes["$ScriptAuthor"];
+                attribute.ScriptFolderName = parser.attributes["$ScriptFolderName"];
+                attribute.ScriptRequestName = parser.attributes["$ScriptRequestName"];
+                attribute.URLSpecifier = parser.attributes["$URLSpecifier"];
+                attribute.UsingDriver = Convert.ToInt32(parser.attributes["$UsingDriver"]) == 0 ? false : true;
             }
             catch (Exception e)
             {
                 Monitor.Instance.Push($"[SRCAL Engine] Script parsing error. {e.Message}");
             }
 
-            Monitor.Instance.Push($"[SRCAL Engine] Occurred some errors when parsing script ...");
-            for (int i = 0; i < parser.errors.Count; i++)
+            if (parser.errors.Count > 0)
             {
-                Monitor.Instance.Push($"[{parser.errors[i].Item1.Line}, {parser.errors[i].Item1.Column}] {parser.errors[i].Item2}");
+                Monitor.Instance.Push($"[SRCAL Engine] Occurred some errors when parsing script ...");
+                for (int i = 0; i < parser.errors.Count; i++)
+                {
+                    Monitor.Instance.Push($"[{parser.errors[i].Item1.Line}, {parser.errors[i].Item1.Column}] {parser.errors[i].Item2}");
+                }
             }
 
             return false;
         }
 
-        public void RunScript(string request_url)
+        public bool RunScript(string request_url)
         {
+            variables = new List<Tuple<int, SRCALParser.CDLVar>>();
+            error_message = new List<Tuple<int, int, string>>();
+            info_message = new List<Tuple<int, int, string>>();
+            error = false;
+            variable_update(new SRCALParser.CDLVar { Name = "$RequestURL", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = request_url });
+            variable_update(new SRCALParser.CDLVar { Name = "$Infinity", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = int.MaxValue });
+            variable_update(new SRCALParser.CDLVar { Name = "$LatestImagesCount", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = 0 });
+            enter_block();
+            error_message = new List<Tuple<int, int, string>>();
+            
+            Thread thread = new Thread(new ParameterizedThreadStart(run_script));
+            thread.Start(script);
+            thread.Join();
 
+            return error;
         }
-    }
 
+        bool error = false;
+        List<Tuple<int,int,string>> error_message;
+        List<Tuple<int,int,string>> info_message;
+        
+        #region Variable Management
+
+        List<Tuple<int, SRCALParser.CDLVar>> variables;
+
+        int block_depth = 0;
+        private void enter_block()
+        {
+            block_depth++;
+        }
+
+        private void exit_block()
+        {
+            block_depth--;
+            for (int i = 0; i < variables.Count; i++)
+            {
+                if (variables[i].Item1 > block_depth)
+                    variables.RemoveAt(i--);
+            }
+        }
+        
+        private bool variable_exists(string name) => variables.Any(x => x.Item2.Name == name);
+
+        private SRCALParser.CDLVar variable_get(string name)
+        {
+            foreach (var v in variables)
+                if (v.Item2.Name == name)
+                    return v.Item2;
+            return null;
+        }
+
+        private void variable_update(SRCALParser.CDLVar var)
+        {
+            for (int i = 0; i < variables.Count; i++)
+                if (variables[i].Item2.Name == var.Name)
+                {
+                    variables[i] = new Tuple<int, SRCALParser.CDLVar>(variables[i].Item1, var);
+                    return;
+                }
+            variables.Add(new Tuple<int, SRCALParser.CDLVar>(block_depth, var));
+        }
+
+        #endregion
+
+        #region Script Runner
+
+        string current_html;
+        List<Tuple<string, string>> image_list;
+        HtmlNode root_node;
+
+        private void run_script(object script)
+        {
+            try
+            {
+                var url = variable_get("$RequestURL").ContentString;
+                info_message.Add(Tuple.Create(-1, -1, $"download request html {url}"));
+                current_html = Net.NetCommon.DownloadString(url);
+                HtmlDocument document = new HtmlDocument();
+                document.LoadHtml(current_html);
+                root_node = document.DocumentNode;
+                image_list = new List<Tuple<string, string>>();
+                run_block(((SRCALParser.CDLScript)script).start_block);
+            }
+            catch (Exception e)
+            {
+                error_message.Add(Tuple.Create(-1, -1, e.Message));
+                error = true;
+            }
+        }
+
+        private void run_block(SRCALParser.CDLBlock block)
+        {
+            foreach (var line in block.ContentLines)
+            {
+                try
+                {
+                    if (line.ContentExpr == null)
+                        throw new Exception("content expr is null.");
+                    run_expr(line.ContentExpr);
+                }
+                catch (Exception e)
+                {
+                    error_message.Add(Tuple.Create(line.Line, line.Column, e.Message));
+                    error = true;
+                    break;
+                }
+            }
+        }
+
+        private void run_expr(SRCALParser.CDLExpr expr)
+        {
+            switch (expr.Type)
+            {
+                case SRCALParser.CDLExpr.CDLExprType.Function:
+                    run_function(expr.ContentFunction);
+                    break;
+
+                case SRCALParser.CDLExpr.CDLExprType.Runnable:
+                    run_runnable(expr.ContentRunnable);
+                    break;
+
+                case SRCALParser.CDLExpr.CDLExprType.Equal:
+                    variable_update(run_index(expr.ContentVar, expr.ContentIndex));
+                    break;
+            }
+        }
+
+        bool exit_loop = false;
+        private SRCALParser.CDLVar run_function(SRCALParser.CDLFunction func)
+        {
+            //
+            //  Internfal Functions
+            //
+            if (func.ContentFunctionName == "$LoadPage")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$LoadPage' function must have one argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = variable_get("$RequestURL");
+                var v1 = run_index(v,func.ContentArguments[0]);
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+                v.ContentString = v1.ContentString;
+                variable_update(v);
+                info_message.Add(Tuple.Create(func.Line, func.Column, $"download request html {v.ContentString}"));
+                current_html = Net.NetCommon.DownloadString(v.ContentString);
+                HtmlDocument document = new HtmlDocument();
+                document.LoadHtml(current_html);
+                root_node = document.DocumentNode;
+            }
+            else if (func.ContentFunctionName == "$AppendImage")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'$LoadPage' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                info_message.Add(Tuple.Create(func.Line, func.Column, $"append image {v1.ContentString} { v2.ContentString}"));
+                image_list.Add(Tuple.Create(v1.ContentString, v2.ContentString));
+                var latest_images_count = variable_get("$LatestImagesCount").ContentInteger;
+                variable_update(new SRCALParser.CDLVar { Name = "$LatestImagesCount", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = latest_images_count + 1 });
+            }
+            else if (func.ContentFunctionName == "$RequestDownload")
+            {
+                request_download.Invoke(attribute, image_list);
+                image_list = new List<Tuple<string, string>>();
+            }
+            else if (func.ContentFunctionName == "$ExitLoop")
+            {
+                exit_loop = true;
+            }
+            else if (func.ContentFunctionName == "$CleareImagesCount")
+            {
+                variable_update(new SRCALParser.CDLVar { Name = "$LatestImagesCount", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = 0 });
+            }
+            //
+            //  Common functions
+            //
+            else if (func.ContentFunctionName == "concat")
+            {
+                var builder = new StringBuilder();
+
+                foreach (var arg in func.ContentArguments)
+                {
+                    var v = new SRCALParser.CDLVar();
+                    var v1 = run_index(v, arg);
+
+                    if (v1.Type == SRCALParser.CDLVar.CDLVarType.Integer)
+                        builder.Append(Convert.ToString(v1.ContentInteger));
+                    else if (v1.Type == SRCALParser.CDLVar.CDLVarType.String)
+                        builder.Append(v1.ContentString);
+                    else
+                    {
+                        var msg = $"boolean or string-list type cannot be 'concat' arguments";
+                        error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                        throw new Exception(msg);
+                    }
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = builder.ToString()
+                };
+            }
+            else if (func.ContentFunctionName == "cal")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'cal' function must have one argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                List<string> sl;
+                try
+                {
+                    sl = Html.HtmlCAL.Calculate(v1.ContentString, root_node);
+                }
+                catch (Exception e)
+                {
+                    //error_message.Add(Tuple.Create(func.Line, func.Column, e.Message));
+                    sl = new List<string>() { "" };
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.StringList,
+                    ContentStringList = sl
+                };
+            }
+            else if (func.ContentFunctionName == "equal")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'equal' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != v2.Type)
+                {
+                    var msg = "each type is different, so cannot compare two elements.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if (v1.Type == SRCALParser.CDLVar.CDLVarType.StringList)
+                {
+                    var msg = "cannot test equal string-list type";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if ((v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean && v1.ContentBoolean == v2.ContentBoolean) ||
+                    (v1.Type == SRCALParser.CDLVar.CDLVarType.Integer && v1.ContentInteger == v2.ContentInteger) ||
+                    (v1.Type == SRCALParser.CDLVar.CDLVarType.String  && v1.ContentString  == v2.ContentString ))
+                {
+                    return new SRCALParser.CDLVar
+                    {
+                        Line = func.Line,
+                        Column = func.Column,
+                        Name = "$rvalue",
+                        Type = SRCALParser.CDLVar.CDLVarType.Boolean,
+                        ContentBoolean = true
+                    };
+                }
+                else
+                {
+                    return new SRCALParser.CDLVar
+                    {
+                        Line = func.Line,
+                        Column = func.Column,
+                        Name = "$rvalue",
+                        Type = SRCALParser.CDLVar.CDLVarType.Boolean,
+                        ContentBoolean = false
+                    };
+                }
+            }
+            else if (func.ContentFunctionName == "split")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'equal' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "arguments type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.StringList,
+                    ContentStringList = v1.ContentString.Split(new string[] { v2.ContentString }, StringSplitOptions.None).ToList()
+                };
+            }
+            else if (func.ContentFunctionName == "multiple")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'multiple' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.Integer || v2.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    var msg = "arguments type must be integer type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.Integer,
+                    ContentInteger = v1.ContentInteger * v2.ContentInteger
+                };
+            }
+            else
+            {
+                var msg = $"'{func.ContentFunctionName}' function not found.";
+                error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                throw new Exception(msg);
+            }
+            return null;
+        }
+
+        private void run_runnable(SRCALParser.CDLRunnable runnable)
+        {
+            if (runnable is SRCALParser.CDLLoop _loop)
+            {
+                var iter = _loop.ContentIterator;
+                if (variable_exists(iter.Name))
+                {
+                    var msg = $"'{iter.Name}' variable already declared.";
+                    error_message.Add(Tuple.Create(iter.Line, iter.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var start = run_index(v, _loop.ContentStarts);
+
+                if (start.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    var msg = $"'loop starts' must be integer type.";
+                    error_message.Add(Tuple.Create(start.Line, start.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                iter.Type = SRCALParser.CDLVar.CDLVarType.Integer;
+                iter.ContentInteger = start.ContentInteger;
+
+                enter_block();
+                while (true)
+                {
+                    variable_update(iter);
+                    var ends = run_index(v, _loop.ContentEnds);
+
+                    if (ends.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                    {
+                        var msg = $"'loop ends' must be integer type.";
+                        error_message.Add(Tuple.Create(iter.Line, iter.Column, msg));
+                        throw new Exception(msg);
+                    }
+
+                    if (start.ContentInteger-1 == ends.ContentInteger) break;
+
+                    enter_block();
+                    run_block(_loop.ContentInnerBlock);
+                    exit_block();
+
+                    if (exit_loop)
+                    {
+                        exit_loop = false;
+                        break;
+                    }
+                    iter.ContentInteger++;
+                }
+                exit_block();
+            }
+            else if (runnable is SRCALParser.CDLForEach _foreach)
+            {
+                var iter = _foreach.ContentIterator;
+                if (variable_exists(iter.Name))
+                {
+                    var msg = $"'{iter.Name}' variable already declared.";
+                    error_message.Add(Tuple.Create(iter.Line, iter.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var contents = run_index(v, _foreach.ContentSource);
+
+                if (contents.Type != SRCALParser.CDLVar.CDLVarType.StringList)
+                {
+                    var msg = $"'foreach source' must be string-list type.";
+                    error_message.Add(Tuple.Create(contents.Line, contents.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                iter.Type = SRCALParser.CDLVar.CDLVarType.String;
+
+                enter_block();
+                foreach (var str in contents.ContentStringList)
+                {
+                    iter.ContentString = str;
+                    variable_update(iter);
+
+                    enter_block();
+                    run_block(_foreach.ContentBlock);
+                    exit_block();
+
+                    if (exit_loop)
+                    {
+                        exit_loop = false;
+                        break;
+                    }
+                }
+                exit_block();
+            }
+            else if (runnable is SRCALParser.CDLIf _if)
+            {
+                var v = new SRCALParser.CDLVar();
+                var stmt = run_index(v, _if.ContentStatement);
+                if (stmt.Type != SRCALParser.CDLVar.CDLVarType.Boolean && stmt.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    var msg = $"'if statement' must be boolean or integer type.";
+                    error_message.Add(Tuple.Create(_if.ContentStatement.Line, _if.ContentStatement.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if ((stmt.Type == SRCALParser.CDLVar.CDLVarType.Boolean && stmt.ContentBoolean == true) ||
+                    (stmt.Type == SRCALParser.CDLVar.CDLVarType.Integer && stmt.ContentInteger != 0))
+                {
+                    enter_block();
+                    run_block(_if.ContentBlock);
+                    exit_block();
+                }
+
+            }
+            else if (runnable is SRCALParser.CDLIfElse _ifelse)
+            {
+                var v = new SRCALParser.CDLVar();
+                var stmt = run_index(v, _ifelse.ContentStatement);
+                if (stmt.Type != SRCALParser.CDLVar.CDLVarType.Boolean && stmt.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    var msg = $"'if-else statement' must be boolean or integer type.";
+                    error_message.Add(Tuple.Create(_ifelse.ContentStatement.Line, _ifelse.ContentStatement.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                enter_block();
+                if ((stmt.Type == SRCALParser.CDLVar.CDLVarType.Boolean && stmt.ContentBoolean == true) ||
+                    (stmt.Type == SRCALParser.CDLVar.CDLVarType.Integer && stmt.ContentInteger != 0))
+                {
+                    run_block(_ifelse.ContentIfBlock);
+                }
+                else
+                {
+                    run_block(_ifelse.ContentElseBlock);
+                }
+                exit_block();
+            }
+        }
+
+        private SRCALParser.CDLVar run_index(SRCALParser.CDLVar var, SRCALParser.CDLIndex index)
+        {
+            var _var = run_variable(index.ContentVariable);
+
+            if (_var == null)
+            {
+                var msg = "variable is null.";
+                error_message.Add(Tuple.Create(index.ContentVariable.Line, index.ContentVariable.Column, msg));
+                throw new Exception(msg);
+            }
+
+            if (index.UseIndex)
+            {
+                if (_var.Type != SRCALParser.CDLVar.CDLVarType.StringList)
+                {
+                    var msg = "var is not string-list type.";
+                    error_message.Add(Tuple.Create(_var.Line, _var.Column, msg));
+                    throw new Exception(msg);
+                }
+                var result1 = new SRCALParser.CDLVar();
+                result1.Line = _var.Line;
+                result1.Column = _var.Column;
+                result1.Name = var.Name;
+                result1.Type = SRCALParser.CDLVar.CDLVarType.String;
+                if (index.ContentIndex == -1)
+                    result1.ContentString = _var.ContentStringList.Last();
+                else
+                    result1.ContentString = _var.ContentStringList[index.ContentIndex];
+                return result1;
+            }
+
+            var result = new SRCALParser.CDLVar();
+            result.Line = _var.Line;
+            result.Column = _var.Column;
+            result.Type = _var.Type;
+            result.Name = var.Name;
+            result.ContentBoolean = _var.ContentBoolean;
+            result.ContentInteger = _var.ContentInteger;
+            result.ContentString = _var.ContentString;
+            result.ContentStringList = _var.ContentStringList;
+            return result;
+        }
+
+        private SRCALParser.CDLVar run_variable(SRCALParser.CDLVariable variable)
+        {
+            if (variable.Type == SRCALParser.CDLVariable.CDLVariableType.Function &&
+                variable.ContentFunction.IsReturnVoid == true)
+            {
+                var msg = "this function must be a function that returns a value.";
+                error_message.Add(Tuple.Create(variable.ContentFunction.Line, variable.ContentFunction.Column, msg));
+                throw new Exception(msg);
+            }
+
+            switch (variable.Type)
+            {
+                case SRCALParser.CDLVariable.CDLVariableType.Var:
+                    if (variable_exists(variable.ContentVar.Name))
+                        return variable_get(variable.ContentVar.Name);
+                    else
+                    {
+                        var msg = $"'{variable.ContentVar.Name}' variable not declared in this area.";
+                        error_message.Add(Tuple.Create(variable.ContentVar.Line, variable.ContentVar.Column, msg));
+                        throw new Exception(msg);
+                    }
+
+                case SRCALParser.CDLVariable.CDLVariableType.Function:
+                    return run_function(variable.ContentFunction);
+
+                case SRCALParser.CDLVariable.CDLVariableType.Const:
+                    if (variable.ContentConst.Type == SRCALParser.CDLConst.CDLConstType.Boolean)
+                        return new SRCALParser.CDLVar { Line = variable.ContentConst.Line, Column = variable.ContentConst.Column, Type = SRCALParser.CDLVar.CDLVarType.Boolean, ContentBoolean = variable.ContentConst.ContentBoolean };
+                    else if (variable.ContentConst.Type == SRCALParser.CDLConst.CDLConstType.Integer)
+                        return new SRCALParser.CDLVar { Line = variable.ContentConst.Line, Column = variable.ContentConst.Column, Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = variable.ContentConst.ContentInteger };
+                    else if (variable.ContentConst.Type == SRCALParser.CDLConst.CDLConstType.String)
+                        return new SRCALParser.CDLVar { Line = variable.ContentConst.Line, Column = variable.ContentConst.Column, Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = variable.ContentConst.ContentString };
+                    else
+                    {
+                        var msg = "unidentified type.";
+                        error_message.Add(Tuple.Create(variable.ContentConst.Line, variable.ContentConst.Column, msg));
+                        throw new Exception(msg);
+                    }
+
+                default:
+                    {
+                        var msg = "unidentified type.";
+                        error_message.Add(Tuple.Create(variable.Line, variable.Column, msg));
+                        throw new Exception(msg);
+                    }
+            }
+        }
+        
+        #endregion
+    }
+    
     /// <summary>
     /// Simple Robust CAL - CDL 스크립트를 실행하는 클래스입니다.
     /// </summary>
