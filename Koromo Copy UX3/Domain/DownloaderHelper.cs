@@ -107,6 +107,10 @@ namespace Koromo_Copy_UX3.Domain
             {
                 ProcessScript(url);
             }
+            else if (ScriptManager.Instance.SpecifyScript(url))
+            {
+                ProcessScriptAdvanced(url);
+            }
             else
             {
 
@@ -483,6 +487,32 @@ namespace Koromo_Copy_UX3.Domain
                     MessageBox.Show("스크립트 실행 중 오류가 발생했습니다.\r\n" + e.Message + "\r\n" + e.StackTrace, 
                         "Script Engine", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            });
+        }
+
+        public static void ProcessScriptAdvanced(string url)
+        {
+            Task.Run(() =>
+            {
+                var script = ScriptManager.Instance.GetScript(url);
+                MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
+                script.Run(url, (x, y) =>
+                {
+                    string dir = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), x.ScriptFolderName) + "/";
+                    foreach (var ddd in y)
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(dir, DeleteInvalid(ddd.Item2))));
+                    }
+
+                    var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
+                    se.Referer = url;
+
+                    DownloadSpace.Instance.RequestDownload($"{x.ScriptRequestName}: {url}",
+                        y.Select(z => z.Item1).ToArray(),
+                        y.Select(z => z.Item2).Select(k => Path.Combine(dir, k)).ToArray(),
+                        se, dir, null);
+                    MainWindow.Instance.FadeOut_MiddlePopup($"{y.Count}개 항목 다운로드 시작...");
+                });
             });
         }
 

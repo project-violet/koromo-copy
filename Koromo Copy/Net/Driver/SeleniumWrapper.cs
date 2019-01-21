@@ -30,7 +30,7 @@ namespace Koromo_Copy.Net.Driver
             var driver_zip_path = Path.Combine(Directory.GetCurrentDirectory(), "chromedriver.zip");
             if (!File.Exists(driver_path))
             {
-                NetCommon.GetDefaultClient().DownloadFile("https://chromedriver.storage.googleapis.com/2.44/chromedriver_win32.zip", driver_zip_path);
+                NetCommon.GetDefaultClient().DownloadFile("https://chromedriver.storage.googleapis.com/72.0.3626.7/chromedriver_win32.zip", driver_zip_path);
 
                 var zip = ZipFile.Open(driver_zip_path, ZipArchiveMode.Read);
                 zip.Entries[0].ExtractToFile(driver_path);

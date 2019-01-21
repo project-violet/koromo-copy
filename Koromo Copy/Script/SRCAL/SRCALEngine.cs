@@ -819,15 +819,7 @@ namespace Koromo_Copy.Script.SRCAL
                 v.ContentString = v1.ContentString;
                 variable_update(v);
                 info_message.Add(Tuple.Create(func.Line, func.Column, $"download request html {v.ContentString}"));
-                if (!attribute.UsingDriver)
-                {
-                    current_html = Net.NetCommon.DownloadString(v.ContentString);
-                }
-                else
-                {
-                    driver.Navigate(v.ContentString);
-                    current_html = driver.GetHtml();
-                }
+                current_html = Net.NetCommon.DownloadString(v.ContentString);
                 HtmlDocument document = new HtmlDocument();
                 document.LoadHtml(current_html);
                 root_node = document.DocumentNode;
@@ -869,6 +861,77 @@ namespace Koromo_Copy.Script.SRCAL
             else if (func.ContentFunctionName == "$CleareImagesCount")
             {
                 variable_update(new SRCALParser.CDLVar { Name = "$LatestImagesCount", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = 0 });
+            }
+            //
+            //  Driver Internal Functions
+            //
+            else if (func.ContentFunctionName == "$DriverNew")
+            {
+                driver.Close();
+                driver = new SeleniumWrapper();
+            }
+            else if (func.ContentFunctionName == "$DriverLoadPage")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$LoadPage' function must have one argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = variable_get("$RequestURL");
+                var v1 = run_index(v, func.ContentArguments[0]);
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+                v.ContentString = v1.ContentString;
+                variable_update(v);
+                info_message.Add(Tuple.Create(func.Line, func.Column, $"download request html {v.ContentString}"));
+                driver.Navigate(v.ContentString);
+                driver.WaitComplete();
+                current_html = driver.GetHtml();
+                HtmlDocument document = new HtmlDocument();
+                document.LoadHtml(current_html);
+                root_node = document.DocumentNode;
+            }
+            else if (func.ContentFunctionName == "$DriverClickByXPath")
+            {
+
+            }
+            else if (func.ContentFunctionName == "$DriverClickByName")
+            {
+
+            }
+            else if (func.ContentFunctionName == "$DriverSendKey")
+            {
+
+            }
+            else if (func.ContentFunctionName == "$DriverGetScrollHeight")
+            {
+
+            }
+            else if (func.ContentFunctionName == "$DriverScrollTo")
+            {
+
+            }
+            else if (func.ContentFunctionName == "$DriverScrollBottom")
+            {
+
+            }
+            //
+            //  Message Internal Function
+            //
+            else if (func.ContentFunctionName == "$MessageFadeOn")
+            {
+                // $MessageFadeOn(false, "error")
+                // $MessageFadeOn(true, "start download")
+            }
+            else if (func.ContentFunctionName == "$MessageFadeOff")
+            {
+
             }
             //
             //  Common functions
