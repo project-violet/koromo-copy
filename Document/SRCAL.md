@@ -284,7 +284,7 @@ max_page = int(cal("/html[1]/body[1]/div[1]/div[2]/div[1]/ul[1]/li[5]/a[1]")[0])
 prefix = split(request_url, "-")[0]
 
 loop (i = 1 to max_page) [
-    $LoadPage(concat(prefix, "-", i, ".html"))
+    $DriverLoadPage(concat(prefix, "-", i, ".html"))
     images = cal("/html[1]/body[1]/div[1]/div[2]/div[2]/div[{1+i*1}]/a[1]/img[1], #attr[src]")
 
     foreach (image : images) [

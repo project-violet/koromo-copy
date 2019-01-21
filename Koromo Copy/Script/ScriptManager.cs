@@ -82,5 +82,13 @@ namespace Koromo_Copy.Script
         {
             return scripts.Any(x => x.SpecifyURL(url));
         }
+
+        public SRCALScript GetScript(string url)
+        {
+            foreach (var engine in scripts)
+                if (engine.SpecifyURL(url))
+                    return engine;
+            return null;
+        }
     }
 }
