@@ -160,6 +160,7 @@
     <Compile Include="Net\DownloadQueue.cs" />
     <Compile Include="Net\Driver\SeleniumWrapper.cs" />
     <Compile Include="Net\EmiliaDispatcher.cs" />
+    <Compile Include="Net\EmiliaJobEXH.cs" />
     <Compile Include="Net\EmiliaQueue.cs" />
     <Compile Include="Net\EmiliaJob.cs" />
     <Compile Include="Net\NetCommon.cs" />
