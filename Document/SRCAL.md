@@ -279,6 +279,7 @@ $UsingDriver = 1
 ## Procedure
 ##
 request_url = $RequestURL
+max_page = int(cal("/html[1]/body[1]/div[1]/div[2]/div[1]/ul[1]/li[5]/a[1]")[0])
 
 images = cal("/html[1]/body[1]/div[1]/div[2]/div[2]/div[{1+i*1}]/a[1]/img[1]")
 
@@ -286,6 +287,10 @@ foreach (image : images) [
     image = concat("https://", image)
     filename = split(image, "/")[-1]
     $AppendImage(image, filename)
+]
+
+loop (i = 2 to max_page) [
+    
 ]
 
 $RequestDownload()
