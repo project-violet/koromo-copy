@@ -9,6 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component;
 using Koromo_Copy.Component.DC;
+using Koromo_Copy.Component.EH;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Component.Manazero;
@@ -25,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
@@ -49,9 +51,22 @@ namespace Koromo_Copy_UX3.Domain
             }
         }
 
-        public static void ProcessUnsable(HArticleModel commander)
+        static int unstable_request = 0;
+        public static void ProcessUnstable(HArticleModel commander)
         {
+            Interlocked.Increment(ref unstable_request);
+            if (commander.ArticleType == HArticleType.Hiyobi)
+            {
+                ProcessHiyobi(commander.URL, true);
+            }
+            else if (commander.ArticleType == HArticleType.EHentai)
+            {
 
+            }
+            else if (commander.ArticleType == HArticleType.EXHentai)
+            {
+                ProcessEXHentai(commander, true);
+            }
         }
 
         public static void ProcessOthers(string url)
@@ -289,7 +304,7 @@ namespace Koromo_Copy_UX3.Domain
             });
         }
 
-        public static void ProcessHiyobi(string url)
+        public static void ProcessHiyobi(string url, bool unstable = false)
         {
             Task.Run(() =>
             {
@@ -332,7 +347,8 @@ namespace Koromo_Copy_UX3.Domain
                 }
                 else if (url.StartsWith("https://hiyobi.me/info/"))
                 {
-                    MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
+                    if (unstable) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
+                    else MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
                     var imagelink = HitomiParser.GetImageLink(NetCommon.DownloadString(HiyobiCommon.GetDownloadImageAddress(url.Split('/').Last())));
                     var article = HiyobiParser.ParseGalleryConents(NetCommon.DownloadString(url));
                     string dir = HitomiCommon.MakeDownloadDirectory(article);
@@ -343,9 +359,50 @@ namespace Koromo_Copy_UX3.Domain
                         imagelink.Select(y => Path.Combine(dir, y)).ToArray(),
                         Koromo_Copy.Interface.SemaphoreExtends.Default, dir, article);
                     Directory.CreateDirectory(dir);
-                    MainWindow.Instance.FadeOut_MiddlePopup($"{imagelink.Count}개 이미지 다운로드 시작...");
-                    //MainWindow.Instance.FadeOut_MiddlePopup("해당 hiyobi.me 주소는 다운로드를 지원하지 않아요");
+                    if (unstable) Interlocked.Decrement(ref unstable_request);
+                    if (unstable && unstable_request != 0) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
+                    else MainWindow.Instance.FadeOut_MiddlePopup($"{imagelink.Count}개 이미지 다운로드 시작...");
                 }
+            });
+        }
+
+        public static void ProcessEXHentai(HArticleModel commander, bool unstable = false)
+        {
+            Task.Run(() =>
+            {
+                if (unstable) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
+                var pages = ExHentaiParser.GetPagesUri(NetCommon.DownloadExHentaiString(commander.URL));
+                var pages_html = EmiliaJobEXH.Instance.AddJob(pages.ToList(), x => { }).Select(x => ExHentaiParser.GetImagesUri(x));
+                List<string> pages_all = new List<string>();
+                pages_html.ToList().ForEach(x => pages_all.AddRange(x));
+                var imagelink = EmiliaJobEXH.Instance.AddJob(pages_all, x => { }).Select(x => ExHentaiParser.GetImagesAddress(x));
+                List<string> tags = new List<string>();
+                if (commander.male != null) tags.AddRange(commander.male.Select(x => "male:" + x.Replace(' ', '_')));
+                if (commander.female != null) tags.AddRange(commander.female.Select(x => "female:" + x.Replace(' ', '_')));
+                if (commander.misc != null) tags.AddRange(commander.misc.Select(x => x.Replace(' ', '_')));
+                HitomiArticle article = new HitomiArticle
+                {
+                    Magic = commander.Magic,
+                    Title = commander.Title,
+                    Artists = commander.artist,
+                    Groups = commander.group,
+                    Series = commander.parody,
+                    Tags = tags.ToArray(),
+                    Language = commander.language != null ? commander.language[0] : "",
+                    Characters = commander.character
+                };
+                string dir = HitomiCommon.MakeDownloadDirectory(article);
+                article.ImagesLink = imagelink.ToList();
+                Directory.CreateDirectory(dir);
+                var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
+                se.Cookie = "igneous=30e0c0a66;ipb_member_id=2742770;ipb_pass_hash=6042be35e994fed920ee7dd11180b65f;";
+                DownloadSpace.Instance.RequestDownload(article.Title,
+                    imagelink.ToArray(),
+                    imagelink.Select(y => Path.Combine(dir, y.Split('/').Last())).ToArray(),
+                    se, dir, article);
+                if (unstable) Interlocked.Decrement(ref unstable_request);
+                if (unstable && unstable_request != 0) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
+                else MainWindow.Instance.FadeOut_MiddlePopup($"{imagelink.Count()}개 이미지 다운로드 시작...");
             });
         }
 

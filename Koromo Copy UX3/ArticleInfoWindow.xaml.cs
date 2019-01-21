@@ -348,7 +348,7 @@ namespace Koromo_Copy_UX3
                             }
                             else
                             {
-                                DownloaderHelper.ProcessUnsable(ha.UnstableModel);
+                                DownloaderHelper.ProcessUnstable(ha.UnstableModel);
                             }
                             MainWindow.Instance.FadeOut_MiddlePopup($"1개 항목 다운로드 시작...");
                             MainWindow.Instance.Activate();

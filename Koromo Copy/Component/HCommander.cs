@@ -101,7 +101,7 @@ namespace Koromo_Copy.Component
                         using (var responseStream = response.GetResponseStream())
                         {
                             // 최종 승인
-                            return ConvertTo(search_hitomi.Value, url);
+                            return ConvertTo(search_hitomi.Value, url, magic);
                         }
                     }
                 }
@@ -121,7 +121,7 @@ namespace Koromo_Copy.Component
                 {
                     var html = NetCommon.DownloadString(HiyobiCommon.GetInfoAddress(magic));
                     var article = HiyobiParser.ParseGalleryConents(html);
-                    return ConvertTo(article, HiyobiCommon.GetInfoAddress(magic));
+                    return ConvertTo(article, HiyobiCommon.GetInfoAddress(magic), magic);
                 }
                 catch
                 {
@@ -138,17 +138,18 @@ namespace Koromo_Copy.Component
             {
                 try
                 {
-                    var url = $"https://e-hentai.org/g/{magic}/{f[0] ^ 1L * magic_number << 40:x}/";
-                    var html2 = NetCommon.DownloadExHentaiString(url);
-                    var article = EHentaiParser.ParseArticleData(html2);
-                    return ConvertTo(article, url);
+                    //var url = $"https://e-hentai.org/g/{magic}/{f[0] ^ 1L * magic_number << 40:x}/";
+                    //var html2 = NetCommon.DownloadExHentaiString(url);
+                    //var article = EHentaiParser.ParseArticleData(html2);
+                    //return ConvertTo(article, url, magic);
+                    throw new Exception();
                 }
                 catch
                 {
                     var url = $"https://exhentai.org/g/{magic}/{f[0] ^ 1L * magic_number << 40:x}/";
                     var html2 = NetCommon.DownloadExHentaiString(url);
                     var article = ExHentaiParser.ParseArticleData(html2);
-                    return ConvertTo(article, url);
+                    return ConvertTo(article, url, magic);
                 }
             }
 
@@ -180,7 +181,7 @@ namespace Koromo_Copy.Component
                     var url = Regex.Match(html, $"(https://exhentai.org/g/{magic}/\\w+/)").Value;
                     var html2 = NetCommon.DownloadExHentaiString(url);
                     var article = ExHentaiParser.ParseArticleData(html2);
-                    return ConvertTo(article, url);
+                    return ConvertTo(article, url, magic);
                 }
             }
             catch
@@ -204,9 +205,10 @@ namespace Koromo_Copy.Component
 
         #region 프라이빗 프리베이트
 
-        private static HArticleModel ConvertTo(HitomiMetadata metadata, string url)
+        private static HArticleModel ConvertTo(HitomiMetadata metadata, string url, string magic)
         {
             var article = new HArticleModel();
+            article.Magic = magic;
             article.ArticleType = HArticleType.Hitomi;
             article.URL = url;
             article.artist = metadata.Artists;
@@ -221,14 +223,15 @@ namespace Koromo_Copy.Component
             return article;
         }
 
-        private static HArticleModel ConvertTo(HitomiArticle article, string url)
+        private static HArticleModel ConvertTo(HitomiArticle article, string url, string magic)
         {
-            return ConvertTo(HitomiLegalize.ArticleToMetadata(article), url);
+            return ConvertTo(HitomiLegalize.ArticleToMetadata(article), url, magic);
         }
 
-        private static HArticleModel ConvertTo(HiyobiArticle data, string url)
+        private static HArticleModel ConvertTo(HiyobiArticle data, string url, string magic)
         {
             var article = new HArticleModel();
+            article.Magic = magic;
             article.ArticleType = HArticleType.Hiyobi;
             article.URL = url;
             article.artist = data.Artists;
@@ -243,9 +246,10 @@ namespace Koromo_Copy.Component
             return article;
         }
 
-        private static HArticleModel ConvertTo(EHentaiArticle data, string url)
+        private static HArticleModel ConvertTo(EHentaiArticle data, string url, string magic)
         {
             var article = new HArticleModel();
+            article.Magic = magic;
             article.ArticleType = HArticleType.EXHentai;
             article.URL = url;
             article.Thumbnail = data.Thumbnail;

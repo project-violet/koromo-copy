@@ -322,7 +322,7 @@ namespace Koromo_Copy_UX3
                         }
                         else
                         {
-                            DownloaderHelper.ProcessUnsable(ha.UnstableModel);
+                            DownloaderHelper.ProcessUnstable(ha.UnstableModel);
                         }
                         count++;
                     });
@@ -345,7 +345,7 @@ namespace Koromo_Copy_UX3
                         }
                         else
                         {
-                            DownloaderHelper.ProcessUnsable(ha.UnstableModel);
+                            DownloaderHelper.ProcessUnstable(ha.UnstableModel);
                         }
                         count++;
                     });
