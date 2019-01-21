@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy;
+using Koromo_Copy.Component;
 using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hiyobi;
@@ -46,6 +47,11 @@ namespace Koromo_Copy_UX3.Domain
                     MainWindow.Instance.FadeOut_MiddlePopup("Pixiv 로그인 오류!", false);
                 }
             }
+        }
+
+        public static void ProcessUnsable(HArticleModel commander)
+        {
+
         }
 
         public static void ProcessOthers(string url)

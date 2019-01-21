@@ -6,9 +6,12 @@
 
 ***/
 
+using Koromo_Copy;
+using Koromo_Copy.Component;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hitomi.Translate;
 using Koromo_Copy.Interface;
+using Koromo_Copy.Net;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -86,18 +89,50 @@ namespace Koromo_Copy_UX3
             Task.Run(() =>
             {
                 HitomiArticle ha = Article as HitomiArticle;
-                ha.Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
-                    $"{HitomiCommon.HitomiGalleryBlock}{ha.Magic}.html")).Thumbnail;
-                ha.ImagesLink = HitomiParser.GetImageLink(Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic)));
-
+                try
+                {
+                    ha.Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
+                        $"{HitomiCommon.HitomiGalleryBlock}{ha.Magic}.html")).Thumbnail;
+                    ha.ImagesLink = HitomiParser.GetImageLink(Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic)));
+                }
+                catch
+                {
+                    ha.IsUnstable = true;
+                    var har = HCommander.GetArticleData(Convert.ToInt32(ha.Magic));
+                    if (!har.HasValue)
+                    {
+                        MessageBox.Show($"{ha.Magic}를 찾을 수 없습니다. 이 항목은 히요비, 이헨, 익헨 어디에도 없었습니다. 프로그램 제작자에게 문의하세요.", "Koromo copy", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    ha.UnstableModel = har.Value;
+                    ha.Thumbnail = ha.UnstableModel.Thumbnail;
+                    ha.ImagesLink = new List<string>();
+                }
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
-                    BitmapImage.BeginInit();
-                    BitmapImage.UriSource = new Uri(ha.Thumbnail);
-                    BitmapImage.DecodePixelWidth = 250;
-                    BitmapImage.EndInit();
-                    BitmapImage.DownloadCompleted += B_DownloadCompleted;
+                    if (ha.IsUnstable && ha.UnstableModel.ArticleType == HArticleType.EXHentai)
+                    {
+                        var image = NetCommon.GetExHentaiClient().DownloadData(new Uri(ha.UnstableModel.Thumbnail));
+                        using (var ms = new System.IO.MemoryStream(image))
+                        {
+                            BitmapImage.BeginInit();
+                            if (Settings.Instance.Model.LowQualityImage)
+                                BitmapImage.DecodePixelWidth = 100;
+                            BitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            BitmapImage.StreamSource = ms;
+                            BitmapImage.EndInit();
+                        }
+                    }
+                    else
+                    {
+                        BitmapImage.BeginInit();
+                        BitmapImage.UriSource = new Uri(ha.Thumbnail);
+                        if (Settings.Instance.Model.LowQualityImage)
+                            BitmapImage.DecodePixelWidth = 100;
+                        BitmapImage.EndInit();
+                        BitmapImage.DownloadCompleted += B_DownloadCompleted;
+                    }
 
                     ImageCount.Text = ha.ImagesLink.Count + " Pages";
                     Image.Source = BitmapImage;

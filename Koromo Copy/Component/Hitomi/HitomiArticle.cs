@@ -51,5 +51,8 @@ namespace Koromo_Copy.Component.Hitomi
         public List<string> ImagesLink { get { return images_link; } set { images_link = value; } }
 
         public string Archive { get; set; }
+
+        public bool IsUnstable;
+        public HArticleModel UnstableModel;
     }
 }
