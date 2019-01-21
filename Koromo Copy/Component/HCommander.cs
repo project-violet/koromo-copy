@@ -189,17 +189,7 @@ namespace Koromo_Copy.Component
             Monitor.Instance.Push($"[HCommander] [0] {magic}");
             return null;
         }
-
-        /// <summary>
-        /// 썸네일 이미지를 다운로드합니다.
-        /// </summary>
-        /// <param name="article"></param>
-        /// <returns></returns>
-        public static byte[] DownloadImage(HArticleModel article)
-        {
-            return null;
-        }
-
+        
         /// <summary>
         /// 다운로드해야할 이미지 목록을 가져옵니다.
         /// </summary>
