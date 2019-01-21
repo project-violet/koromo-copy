@@ -254,3 +254,39 @@ loop (i = 0 to add(count(images), -1))
 
 $RequestDownload()
 ```
+
+### 5.4. Nozomi.la 다운로더
+
+```
+##
+## Koromo Copy SRCAL Script
+##
+## Nozomi.la Downloader
+##
+
+##
+## Attributes
+##
+$ScriptName = "nozomi"
+$ScriptVersion = "0.1"
+$ScriptAuthor = "dc-koromo"
+$ScriptFolderName = "nozomi"
+$ScriptRequestName = "nozomi"
+$URLSpecifier = "https://nozomi.la/"
+$UsingDriver = 1
+
+##
+## Procedure
+##
+request_url = $RequestURL
+
+images = cal("/html[1]/body[1]/div[1]/div[2]/div[2]/div[{1+i*1}]/a[1]/img[1]")
+
+foreach (image : images) [
+    image = concat("https://", image)
+    filename = split(image, "/")[-1]
+    $AppendImage(image, filename)
+]
+
+$RequestDownload()
+```
