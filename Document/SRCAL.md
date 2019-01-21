@@ -289,8 +289,18 @@ foreach (image : images) [
     $AppendImage(image, filename)
 ]
 
+prefix = split(request_url, "-")[0];
+
 loop (i = 2 to max_page) [
+    $LoadPage(concat(prefix, "-", i, ".html"))
     
+    images = cal("/html[1]/body[1]/div[1]/div[2]/div[2]/div[{1+i*1}]/a[1]/img[1]")
+
+    foreach (image : images) [
+       image = concat("https://", image)
+       filename = split(image, "/")[-1]
+       $AppendImage(image, filename)
+    ]
 ]
 
 $RequestDownload()
