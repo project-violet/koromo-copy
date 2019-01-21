@@ -21,18 +21,53 @@ namespace Koromo_Copy.Component.Hitomi
     {
         public static Tuple<string, DateTime>[] date_data =
         {
-            new Tuple<string, DateTime> ("1327007", new DateTime(636800286600000000)),
-            new Tuple<string, DateTime> ("1321257", new DateTime(636790276200000000)),
-            new Tuple<string, DateTime> ("1318876", new DateTime(636786394200000000)),
-            new Tuple<string, DateTime> ("1317006", new DateTime(636782575800000000)),
-            new Tuple<string, DateTime> ("1305236", new DateTime(636760119000000000)),
-            new Tuple<string, DateTime> ("1308977", new DateTime(636767781600000000)),
-            new Tuple<string, DateTime> ("1301606", new DateTime(636753039600000000)),
-            new Tuple<string, DateTime> ("1304270", new DateTime(636757942800000000)),
-            new Tuple<string, DateTime> ("1302923", new DateTime(636755602800000000)),
+            new Tuple<string, DateTime> ("1347780", new DateTime(636832163400000000)),
+            new Tuple<string, DateTime> ("1345274", new DateTime(636828804600000000)),
+            new Tuple<string, DateTime> ("1346935", new DateTime(636830962800000000)),
+            new Tuple<string, DateTime> ("1343882", new DateTime(636826750200000000)),
+            new Tuple<string, DateTime> ("1348587", new DateTime(636833351400000000)),
+            new Tuple<string, DateTime> ("1341316", new DateTime(636823207200000000)),
+            new Tuple<string, DateTime> ("1342058", new DateTime(636824059200000000)),
+            new Tuple<string, DateTime> ("1340654", new DateTime(636822330000000000)),
+            new Tuple<string, DateTime> ("1339906", new DateTime(636821168400000000)),
+            new Tuple<string, DateTime> ("1342704", new DateTime(636824983200000000)),
+            new Tuple<string, DateTime> ("1338658", new DateTime(636819529800000000)),
+            new Tuple<string, DateTime> ("1338004", new DateTime(636818568600000000)),
+            new Tuple<string, DateTime> ("1335920", new DateTime(636815356200000000)),
+            new Tuple<string, DateTime> ("1351278", new DateTime(636836995800000000)),
+            new Tuple<string, DateTime> ("1334825", new DateTime(636813658200000000)),
+            new Tuple<string, DateTime> ("1334242", new DateTime(636812727600000000)),
+            new Tuple<string, DateTime> ("1349864", new DateTime(636835057200000000)),
+            new Tuple<string, DateTime> ("1333073", new DateTime(636810964200000000)),
+            new Tuple<string, DateTime> ("1331249", new DateTime(636808135800000000)),
+            new Tuple<string, DateTime> ("1329910", new DateTime(636805662600000000)),
+            new Tuple<string, DateTime> ("1328560", new DateTime(636803309400000000)),
+            new Tuple<string, DateTime> ("1327394", new DateTime(636801000600000000)),
+            new Tuple<string, DateTime> ("1326096", new DateTime(636798794400000000)),
+            new Tuple<string, DateTime> ("1337127", new DateTime(636817357200000000)),
+            new Tuple<string, DateTime> ("1324547", new DateTime(636796116600000000)),
+            new Tuple<string, DateTime> ("1323395", new DateTime(636794098200000000)),
+            new Tuple<string, DateTime> ("1323088", new DateTime(636793638600000000)),
+            new Tuple<string, DateTime> ("1322689", new DateTime(636792994200000000)),
+            new Tuple<string, DateTime> ("1339212", new DateTime(636820234800000000)),
+            new Tuple<string, DateTime> ("1319108", new DateTime(636786762600000000)),
+            new Tuple<string, DateTime> ("1320221", new DateTime(636788563800000000)),
+            new Tuple<string, DateTime> ("1316381", new DateTime(636781542000000000)),
+            new Tuple<string, DateTime> ("1315120", new DateTime(636779169000000000)),
+            new Tuple<string, DateTime> ("1314229", new DateTime(636777421200000000)),
+            new Tuple<string, DateTime> ("1313039", new DateTime(636775473000000000)),
+            new Tuple<string, DateTime> ("1312347", new DateTime(636774313200000000)),
+            new Tuple<string, DateTime> ("1310003", new DateTime(636769812600000000)),
+            new Tuple<string, DateTime> ("1311199", new DateTime(636772171800000000)),
+            new Tuple<string, DateTime> ("1309500", new DateTime(636768781800000000)),
+            new Tuple<string, DateTime> ("1321703", new DateTime(636792517800000000)),
             new Tuple<string, DateTime> ("1307629", new DateTime(636765181200000000)),
-            new Tuple<string, DateTime> ("1311455", new DateTime(636772555800000000)),
-            new Tuple<string, DateTime> ("1310259", new DateTime(636770286600000000)),
+            new Tuple<string, DateTime> ("1306566", new DateTime(636762967800000000)),
+            new Tuple<string, DateTime> ("1317579", new DateTime(636783698400000000)),
+            new Tuple<string, DateTime> ("1305708", new DateTime(636761182200000000)),
+            new Tuple<string, DateTime> ("1303999", new DateTime(636757446000000000)),
+            new Tuple<string, DateTime> ("1302997", new DateTime(636755764800000000)),
+            new Tuple<string, DateTime> ("1300817", new DateTime(636751622400000000)),
             new Tuple<string, DateTime> ("1296781", new DateTime(636743862000000000)),
             new Tuple<string, DateTime> ("1295631", new DateTime(636741742200000000)),
             new Tuple<string, DateTime> ("1294524", new DateTime(636739607400000000)),
@@ -1090,12 +1125,19 @@ namespace Koromo_Copy.Component.Hitomi
                 pointer++;
             }
             
-            string target = NetCommon.DownloadString(url);
-            string date_text = Regex.Split(Regex.Split(target, @"<span class=""date"">")[1], @"</span>")[0];
-
-            lock (date_list)
+            try
             {
-                date_list.Add(new Tuple<string, DateTime>(id, DateTime.Parse(date_text)));
+                string target = NetCommon.DownloadString(url);
+                string date_text = Regex.Split(Regex.Split(target, @"<span class=""date"">")[1], @"</span>")[0];
+
+                lock (date_list)
+                {
+                    date_list.Add(new Tuple<string, DateTime>(id, DateTime.Parse(date_text)));
+                }
+            }
+            catch
+            {
+
             }
 
             download_string();

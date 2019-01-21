@@ -139,6 +139,24 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 1.5
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.4 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - SRCAL-CDL 스크립트 언어 파서 및 실행기 지원\r\n\r\n" +
+                    " - 통합 Hentai 403, 404 다운로더 지원\r\n\r\n" +
+                    " - 히요비 H 다운로더 추가\r\n\r\n" +
+                    "[기타]\r\n" +
+                    " - 스크립트에 관해선 https://github.com/dc-koromo/koromo-copy/blob/master/Document/SRCAL.md를 참고하세요.\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.4
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements
