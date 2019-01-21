@@ -281,23 +281,14 @@ $UsingDriver = 1
 request_url = $RequestURL
 max_page = int(cal("/html[1]/body[1]/div[1]/div[2]/div[1]/ul[1]/li[5]/a[1]")[0])
 
-images = cal("/html[1]/body[1]/div[1]/div[2]/div[2]/div[{1+i*1}]/a[1]/img[1]")
+prefix = split(request_url, "-")[0]
 
-foreach (image : images) [
-    image = concat("https://", image)
-    filename = split(image, "/")[-1]
-    $AppendImage(image, filename)
-]
-
-prefix = split(request_url, "-")[0];
-
-loop (i = 2 to max_page) [
+loop (i = 1 to max_page) [
     $LoadPage(concat(prefix, "-", i, ".html"))
-    
-    images = cal("/html[1]/body[1]/div[1]/div[2]/div[2]/div[{1+i*1}]/a[1]/img[1]")
+    images = cal("/html[1]/body[1]/div[1]/div[2]/div[2]/div[{1+i*1}]/a[1]/img[1], #attr[src]")
 
     foreach (image : images) [
-       image = concat("https://", image)
+       image = concat("https:", image)
        filename = split(image, "/")[-1]
        $AppendImage(image, filename)
     ]

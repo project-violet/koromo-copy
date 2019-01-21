@@ -743,6 +743,11 @@ namespace Koromo_Copy.Script.SRCAL
                 root_node = document.DocumentNode;
                 image_list = new List<Tuple<string, string>>();
                 run_block(((SRCALParser.CDLScript)script).start_block);
+
+                if (attribute.UsingDriver)
+                {
+                    driver.Close();
+                }
             }
             catch (Exception e)
             {
@@ -820,7 +825,6 @@ namespace Koromo_Copy.Script.SRCAL
                 }
                 else
                 {
-                    driver = new SeleniumWrapper();
                     driver.Navigate(v.ContentString);
                     current_html = driver.GetHtml();
                 }
@@ -1282,7 +1286,7 @@ namespace Koromo_Copy.Script.SRCAL
                         throw new Exception(msg);
                     }
 
-                    if (start.ContentInteger-1 == ends.ContentInteger) break;
+                    if (iter.ContentInteger-1 == ends.ContentInteger) break;
 
                     enter_block();
                     run_block(_loop.ContentInnerBlock);
