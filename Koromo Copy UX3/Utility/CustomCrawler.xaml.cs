@@ -46,6 +46,11 @@ namespace Koromo_Copy_UX3.Utility
         string original_url;
         private void URLButton_Click(object sender, RoutedEventArgs e)
         {
+            if (original_url == URLText.Text)
+            {
+                HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
+                return;
+            }
             try
             {
                 original_url = URLText.Text;
