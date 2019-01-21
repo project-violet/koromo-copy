@@ -86,6 +86,8 @@
             <Button x:Name="CAL" Margin="0 4 0 0" Content="CAL" Click="CAL_Click"/>
             <Button x:Name="Create" Margin="0 4 0 0" Content="Create" Click="Create_Click"/>
             <Button x:Name="Manual" Margin="0 4 0 0" Content="설명서" Click="Manual_Click"/>
+            <TextBlock Text="기타" Margin="0 4 0 0"/>
+            <CheckBox x:Name="driverCheck" Content="driver 사용" IsChecked="False"/>
         </StackPanel>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="FILTER: " FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 4 0 0"/>

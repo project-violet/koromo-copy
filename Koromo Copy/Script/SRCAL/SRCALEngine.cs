@@ -7,6 +7,7 @@
 ***/
 
 using HtmlAgilityPack;
+using Koromo_Copy.Net.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -588,6 +589,7 @@ namespace Koromo_Copy.Script.SRCAL
     {
         SRCALParser.CDLScript script;
         SRCALAttribute attribute;
+        SeleniumWrapper driver;
         Action<SRCALAttribute, List<Tuple<string, string>>> request_download;
 
         public class SRCALAttribute
@@ -725,7 +727,17 @@ namespace Koromo_Copy.Script.SRCAL
             {
                 var url = variable_get("$RequestURL").ContentString;
                 info_message.Add(Tuple.Create(-1, -1, $"download request html {url}"));
-                current_html = Net.NetCommon.DownloadString(url);
+
+                if (!attribute.UsingDriver)
+                {
+                    current_html = Net.NetCommon.DownloadString(url);
+                }
+                else
+                {
+                    driver = new SeleniumWrapper();
+                    driver.Navigate(url);
+                    current_html = driver.GetHtml();
+                }
                 HtmlDocument document = new HtmlDocument();
                 document.LoadHtml(current_html);
                 root_node = document.DocumentNode;
@@ -802,7 +814,16 @@ namespace Koromo_Copy.Script.SRCAL
                 v.ContentString = v1.ContentString;
                 variable_update(v);
                 info_message.Add(Tuple.Create(func.Line, func.Column, $"download request html {v.ContentString}"));
-                current_html = Net.NetCommon.DownloadString(v.ContentString);
+                if (!attribute.UsingDriver)
+                {
+                    current_html = Net.NetCommon.DownloadString(v.ContentString);
+                }
+                else
+                {
+                    driver = new SeleniumWrapper();
+                    driver.Navigate(v.ContentString);
+                    current_html = driver.GetHtml();
+                }
                 HtmlDocument document = new HtmlDocument();
                 document.LoadHtml(current_html);
                 root_node = document.DocumentNode;

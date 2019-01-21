@@ -59,6 +59,7 @@ namespace Koromo_Copy.Script
                 Monitor.Instance.Push($"[Script Manager] Subscribe {script_engine.Attribute().ScriptName} ({script_engine.Attribute().ScriptVersion}) script.");
                 return false;
             }
+            Monitor.Instance.Push($"[Script Manager] Parse error {script_engine.Attribute().ScriptName} ({script_engine.Attribute().ScriptVersion}) script."); 
             return true;
         }
 

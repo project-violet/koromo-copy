@@ -9,6 +9,7 @@
 using HtmlAgilityPack;
 using Koromo_Copy.Html;
 using Koromo_Copy.Net;
+using Koromo_Copy.Net.Driver;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
@@ -49,10 +50,23 @@ namespace Koromo_Copy_UX3.Utility
             {
                 original_url = URLText.Text;
                 root_url = string.Join("/",URLText.Text.Split(new char[] { '/' },4),0,3);
-                var html = NetCommon.DownloadString(URLText.Text);
-                tree = new HtmlTree(html);
-                tree.BuildTree();
-                HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
+                
+                if (driverCheck.IsChecked == false)
+                {
+                    var html = NetCommon.DownloadString(URLText.Text);
+                    tree = new HtmlTree(html);
+                    tree.BuildTree();
+                    HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
+                }
+                else
+                {
+                    var driver = new SeleniumWrapper();
+                    driver.Navigate(URLText.Text);
+                    tree = new HtmlTree(driver.GetHtml());
+                    tree.BuildTree();
+                    driver.Close();
+                    HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
+                }
             }
             catch (Exception ex)
             {
