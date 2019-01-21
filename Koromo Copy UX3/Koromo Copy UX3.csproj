@@ -236,6 +236,9 @@
     <Compile Include="SettingViewPlugin.xaml.cs">
       <DependentUpon>SettingViewPlugin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingViewScript.xaml.cs">
+      <DependentUpon>SettingViewScript.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingViewUI.xaml.cs">
       <DependentUpon>SettingViewUI.xaml</DependentUpon>
     </Compile>
@@ -463,6 +466,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingViewPlugin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingViewScript.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

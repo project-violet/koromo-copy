@@ -202,7 +202,6 @@ $UsingDriver = 0
 ## Procedure
 ##
 request_url = $RequestURL
-max_page = $Infinity
 
 title = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]")[0]
 sub_urls = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #attr[href]")
@@ -232,12 +231,26 @@ $RequestDownload()
 ##
 ## Attributes
 ##
-$ScriptName = "mangashowme-series"
+$ScriptName = "dcinside-article"
 $ScriptVersion = "0.1"
 $ScriptAuthor = "dc-koromo"
-$ScriptFolderName = "mangashowme"
-$ScriptRequestName = "mangashowme"
-$URLSpecifier = "https://mangashow.me/bbs/page.php"
+$ScriptFolderName = "dcinside"
+$ScriptRequestName = "dcinside"
+$URLSpecifier = "http://gall.dcinside.com/board/view/"
 $UsingDriver = 0
 
+##
+## Procedure
+##
+request_url = $RequestURL
+
+gallery_name = cal("/html[1]/body[1]/div[2]/div[2]/main[1]/section[1]/header[1]/div[1]/div[1]/h2[1]/a[1]")
+title = cal("/html[1]/body[1]/div[2]/div[2]/main[1]/section[1]/article[2]/div[1]/header[1]/div[1]/h3[1]/span[2]")
+images = cal("/html[1]/body[1]/div[2]/div[2]/main[1]/section[1]/article[2]/div[1]/div[1]/div[6]/ul[1]/li[{1+i*1}]/a[1], #attr[href]")
+filenames = cal("/html[1]/body[1]/div[2]/div[2]/main[1]/section[1]/article[2]/div[1]/div[1]/div[6]/ul[1]/li[{1+i*1}]/a[1]")
+
+loop (i = 0 to add(count(images), -1))
+    $AppendImage(images[i], concat(gallery_name, "/", title, "/", filenames[i]))
+
+$RequestDownload()
 ```

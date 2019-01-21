@@ -80,6 +80,12 @@ namespace Koromo_Copy_UX3
 
             SettingsTree.Items.Add(new TreeViewItem
             {
+                Header = "스크립트",
+                DataContext = new SettingViewScript { }
+            });
+
+            SettingsTree.Items.Add(new TreeViewItem
+            {
                 Header = "업데이트",
                 DataContext = new SettingViewUpdate()
             });

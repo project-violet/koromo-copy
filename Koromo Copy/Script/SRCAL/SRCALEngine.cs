@@ -601,10 +601,12 @@ namespace Koromo_Copy.Script.SRCAL
             public bool UsingDriver;
         }
         
-        public SRCALEngine(Action<SRCALAttribute,List<Tuple<string,string>>> request_download_callback)
+        public SRCALEngine()
         {
 
         }
+
+        public SRCALAttribute Attribute => attribute;
 
         public bool ParseScript(List<string> raw_script)
         {
@@ -614,16 +616,18 @@ namespace Koromo_Copy.Script.SRCAL
                 script = parser.Parse(raw_script);
 
                 if (parser.errors.Count == 0)
-                    return true;
+                {
+                    attribute = new SRCALAttribute();
+                    attribute.ScriptName = parser.attributes["$ScriptName"];
+                    attribute.ScriptVersion = parser.attributes["$ScriptVersion"];
+                    attribute.ScriptAuthor = parser.attributes["$ScriptAuthor"];
+                    attribute.ScriptFolderName = parser.attributes["$ScriptFolderName"];
+                    attribute.ScriptRequestName = parser.attributes["$ScriptRequestName"];
+                    attribute.URLSpecifier = parser.attributes["$URLSpecifier"];
+                    attribute.UsingDriver = Convert.ToInt32(parser.attributes["$UsingDriver"]) == 0 ? false : true;
 
-                attribute = new SRCALAttribute();
-                attribute.ScriptName = parser.attributes["$ScriptName"];
-                attribute.ScriptVersion = parser.attributes["$ScriptVersion"];
-                attribute.ScriptAuthor = parser.attributes["$ScriptAuthor"];
-                attribute.ScriptFolderName = parser.attributes["$ScriptFolderName"];
-                attribute.ScriptRequestName = parser.attributes["$ScriptRequestName"];
-                attribute.URLSpecifier = parser.attributes["$URLSpecifier"];
-                attribute.UsingDriver = Convert.ToInt32(parser.attributes["$UsingDriver"]) == 0 ? false : true;
+                    return true;
+                }
             }
             catch (Exception e)
             {
@@ -642,8 +646,9 @@ namespace Koromo_Copy.Script.SRCAL
             return false;
         }
 
-        public bool RunScript(string request_url)
+        public bool RunScript(string request_url, Action<SRCALAttribute, List<Tuple<string, string>>> request_download_callback)
         {
+            request_download = request_download_callback;
             variables = new List<Tuple<int, SRCALParser.CDLVar>>();
             error_message = new List<Tuple<int, int, string>>();
             info_message = new List<Tuple<int, int, string>>();
@@ -1416,32 +1421,25 @@ namespace Koromo_Copy.Script.SRCAL
     /// </summary>
     public class SRCALScript
     {
-        SRCALEngine engine;
+        SRCALEngine engine = new SRCALEngine();
         List<string> raw_script;
 
-        public SRCALScript(string script)
+        public SRCALEngine.SRCALAttribute Attribute() => engine.Attribute;
+        
+        public bool SpecifyURL(string url) => url.Contains(Attribute().URLSpecifier);
+        
+        public bool AllocScript(string script)
         {
             raw_script = script.Split(
                 new[] { Environment.NewLine },
                 StringSplitOptions.None
                 ).ToList();
-            init_script();
+            return engine.ParseScript(raw_script);
         }
 
-        public bool SpecifyURL(string url)
+        public bool Run(string url, Action<SRCALEngine.SRCALAttribute, List<Tuple<string, string>>> request_download)
         {
-            return false;
-        }
-
-        public void Run(string url, Action<List<string>, List<string>> request_download)
-        {
-
-        }
-
-        private void init_script()
-        {
-
+            return engine.RunScript(url, request_download);
         }
     }
-
 }
