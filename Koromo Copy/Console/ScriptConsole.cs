@@ -98,10 +98,10 @@ namespace Koromo_Copy.Console
 
             //SRCALParser parser = new SRCALParser();
             //Monitor.SerializeObject(parser.Parse(raw_script));
-            SRCALEngine engine = new SRCALEngine(null);
+            SRCALEngine engine = new SRCALEngine();
             engine.ParseScript(raw_script);
             //engine.RunScript("https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%EC%99%95%20%EA%B2%8C%EC%9E%84%20%EC%A2%85%EA%B7%B9");
-            engine.RunScript("https://danbooru.donmai.us/posts?page=3&tags=yuri");
+            engine.RunScript("https://danbooru.donmai.us/posts?page=3&tags=yuri", null);
         }
     }
 }
