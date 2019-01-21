@@ -146,10 +146,12 @@ $UsingDriver = 0
 ## Procedure
 ##
 request_url = $RequestURL
+## request_url = url_parameter_tidy(request_url, "page")
 max_page = $Infinity
 
 loop (i = 1 to max_page) [
-    $LoadPage(concat(request_url, "&page=", i))
+    ## $LoadPage(concat(request_url, "&page=", i))
+    $LoadPage(url_parameter(request_url, "page", i))
     sub_urls = cal("/html[1]/body[1]/div[1]/div[3]/div[1]/section[1]/div[3]/div[1]/article[{1+i*1}]/a[1], #attr[href], #front[https://danbooru.donmai.us]")
 
     foreach (sub_url : sub_urls) [
@@ -216,4 +218,26 @@ loop (i = 0 to add(count(sub_urls), -1)) [
 ]
 
 $RequestDownload()
+```
+
+### 5.3. 디시인사이드 게시글 이미지 다운로더
+
+```
+##
+## Koromo Copy SRCAL Script
+##
+## DCInside Article Image Downloader
+##
+
+##
+## Attributes
+##
+$ScriptName = "mangashowme-series"
+$ScriptVersion = "0.1"
+$ScriptAuthor = "dc-koromo"
+$ScriptFolderName = "mangashowme"
+$ScriptRequestName = "mangashowme"
+$URLSpecifier = "https://mangashow.me/bbs/page.php"
+$UsingDriver = 0
+
 ```

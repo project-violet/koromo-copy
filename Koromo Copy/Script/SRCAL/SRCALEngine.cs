@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Koromo_Copy.Script.SRCAL
 {
@@ -272,7 +273,7 @@ namespace Koromo_Copy.Script.SRCAL
                 goto STARTS;
             }
 
-            if (raw_script[line].Substring(column).StartsWith("##"))
+            if (raw_script[line].Trim().StartsWith("##") || raw_script[line].Substring(column).StartsWith("##"))
             {
                 line++;
                 column = 0;
@@ -1076,6 +1077,87 @@ namespace Koromo_Copy.Script.SRCAL
                     Name = "$rvalue",
                     Type = SRCALParser.CDLVar.CDLVarType.Integer,
                     ContentInteger = v1.ContentInteger * v2.ContentInteger
+                };
+            }
+            else if (func.ContentFunctionName == "url_parameter")
+            {
+                if (func.ContentArguments.Count != 3)
+                {
+                    var msg = "'url_parameter_tidy' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+                var v3 = run_index(v, func.ContentArguments[2]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "1,2 arguments type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if (!(v3.Type == SRCALParser.CDLVar.CDLVarType.String || v3.Type == SRCALParser.CDLVar.CDLVarType.Integer))
+                {
+                    var msg = "3rd argument type must be int or string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var param = "";
+
+                if (v3.Type == SRCALParser.CDLVar.CDLVarType.Integer)
+                    param = v3.ContentInteger.ToString();
+                else
+                    param = v3.ContentString;
+
+                var url = new Uri(v1.ContentString);
+                var query = HttpUtility.ParseQueryString(url.Query);
+                query.Set(v2.ContentString, param);
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = url.AbsoluteUri.Split('?').FirstOrDefault() + '?' + query.ToString()
+                };
+            }
+            else if (func.ContentFunctionName == "url_parameter_tidy")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'url_parameter_tidy' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "arguments type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+                
+                var url = new Uri(v1.ContentString);
+                var query = HttpUtility.ParseQueryString(url.Query);
+                query.Remove(v2.ContentString);
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = url.AbsoluteUri.Split('?').FirstOrDefault() + '?' + query.ToString()
                 };
             }
             else
