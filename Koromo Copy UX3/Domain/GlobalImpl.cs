@@ -46,6 +46,38 @@ namespace Koromo_Copy_UX3.Domain
                         (new ArtistViewerWindow(x)).Show();
                     }));
             };
+            Global.MessageFadeOn = (bool progress, string x) =>
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    new Action(() =>
+                    {
+                        MainWindow.Instance.Fade_MiddlePopup(true, x, progress);
+                    }));
+            };
+            Global.MessageFadeOff = (bool progress, string x) =>
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    new Action(() =>
+                    {
+                        MainWindow.Instance.Fade_MiddlePopup(false, x, progress);
+                    }));
+            };
+            Global.MessageText = (string x) =>
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    new Action(() =>
+                    {
+                        MainWindow.Instance.ModifyText_MiddlePopup(x);
+                    }));
+            };
+            Global.MessageFadeInFadeOut = (bool progress, string x) =>
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    new Action(() =>
+                    {
+                        MainWindow.Instance.FadeOut_MiddlePopup(x, progress);
+                    }));
+            };
             InternalConsole.get_windows = async () =>
             {
                 object[] result = null;

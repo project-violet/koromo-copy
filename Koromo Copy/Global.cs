@@ -20,5 +20,10 @@ namespace Koromo_Copy
         public static Func<Action,Task> UXWaitInvoke;
 
         public static Action<string> ShowArtistView;
+
+        public static Action<bool, string> MessageFadeOn;
+        public static Action<bool, string> MessageFadeOff;
+        public static Action<string> MessageText;
+        public static Action<bool, string> MessageFadeInFadeOut;
     }
 }
