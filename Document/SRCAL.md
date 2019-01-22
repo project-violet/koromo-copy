@@ -143,6 +143,7 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |count(list)|List의 요소 개수를 가져옵니다. 반환값은 정수입니다.|
 |add(x,y)|두 값을 더합니다.|
 |mul(x,y)|두 값을 곱합니다.|
+|concat(str,str,...)|여러 문자열을 하나로 합칩니다.|
 |url_parameter(url,param,value)|URL의 특정 매개변수를 value로 설정합니다. value는 정수도 올 수 있습니다.|
 |url_parameter_tidy(url,param)|URL의 특정 매개변수를 삭제합니다.|
 |int(txt)|불리안값이나 정수형, 문자열을 정수형으로 바꿉니다.|
