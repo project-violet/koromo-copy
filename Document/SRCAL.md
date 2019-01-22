@@ -153,6 +153,7 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |url_parameter(url,param,value)|URL의 특정 매개변수를 value로 설정합니다. value는 정수도 올 수 있습니다.|
 |url_parameter_tidy(url,param)|URL의 특정 매개변수를 삭제합니다.|
 |int(txt)|불리안값이나 정수형, 문자열을 정수형으로 바꿉니다.|
+|string(tar)|불리안값이나 정수형, 문자열을 문자열형으로 바꿉니다.|
 |regex_exists||
 |regex_match||
 |regex_matches||
@@ -351,4 +352,42 @@ loop (i = 1 to max_page) [
 ]
 
 $RequestDownload()
+```
+
+### 5.5. 구구단
+
+```
+##
+## Koromo Copy SRCAL Script
+##
+## TODO: ScriptName
+##
+
+##
+## Attributes
+##
+$ScriptName = "My-script"
+$ScriptVersion = "1.0"
+$ScriptAuthor = ""
+$ScriptFolderName = ""
+$ScriptRequestName = ""
+$URLSpecifier = "https://googoodan"
+$UsingDriver = 0
+
+##
+## Procedure
+##
+request_url = $RequestURL
+
+$MessageFadeOn(true, "Start collecting...")
+
+loop (i = 1 to 10) [
+    loop (j = 1 to 10) [
+        multiple = mul(i,j)
+        $ConsolePrint(concat(i, " * ", j, " = "))
+        $ConsolePrintln(string(multiple))
+    ]
+]
+
+$MessageFadeOff(true, "Complete collect all images!")
 ```

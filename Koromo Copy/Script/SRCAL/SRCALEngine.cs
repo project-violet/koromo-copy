@@ -1616,6 +1616,50 @@ namespace Koromo_Copy.Script.SRCAL
                     ContentInteger = value
                 };
             }
+            else if (func.ContentFunctionName == "string")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'string' function must have 1 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (!(v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean ||
+                      v1.Type == SRCALParser.CDLVar.CDLVarType.Integer ||
+                      v1.Type == SRCALParser.CDLVar.CDLVarType.String))
+                {
+                    var msg = "arguments type must be boolean, integer or string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                string value = "";
+                if (v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean)
+                {
+                    value = v1.ContentBoolean ? "true" : "false";
+                }
+                else if (v1.Type == SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    value = v1.ContentInteger.ToString();
+                }
+                else if (v1.Type == SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    value = v1.ContentString;
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = value
+                };
+            }
             else if (func.ContentFunctionName == "regex_exists")
             {
 
