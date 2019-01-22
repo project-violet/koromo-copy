@@ -1,0 +1,22 @@
+﻿<Window x:Class="Koromo_Copy_UX3.Utility.ScriptEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        mc:Ignorable="d"
+        Title="ScriptEditor" Height="300" Width="300">
+    <Grid>
+        <avalonEdit:TextEditor
+				Name="textEditor"
+				FontFamily="Consolas"
+				FontSize="11pt"
+                Foreground="White"
+                ShowLineNumbers="True"
+                LineNumbersForeground="Cyan"
+                Background="#1E1E1E"
+				SyntaxHighlighting="SRCAL">Welcome to AvalonEdit!
+        </avalonEdit:TextEditor>
+    </Grid>
+</Window>

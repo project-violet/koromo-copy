@@ -200,6 +200,7 @@
     <Compile Include="RecordWindow.xaml.cs">
       <DependentUpon>RecordWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ScriptEditorBraceFolding.cs" />
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>
     </Compile>
@@ -289,6 +290,9 @@
       <DependentUpon>MangaCrawlerElements.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\PackPanel.cs" />
+    <Compile Include="Utility\ScriptEditor.xaml.cs">
+      <DependentUpon>ScriptEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\SeriesManager.xaml.cs">
       <DependentUpon>SeriesManager.xaml</DependentUpon>
     </Compile>
@@ -298,6 +302,7 @@
     <Compile Include="Utility\SeriesManagerElementsInfo.xaml.cs">
       <DependentUpon>SeriesManagerElementsInfo.xaml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Utility\SRCAL.xshd" />
     <Compile Include="Utility\ZipListing.xaml.cs">
       <DependentUpon>ZipListing.xaml</DependentUpon>
     </Compile>
@@ -530,6 +535,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\MangaCrawlerElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ScriptEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

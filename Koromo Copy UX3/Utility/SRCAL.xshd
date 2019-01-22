@@ -1,0 +1,105 @@
+﻿<?xml version="1.0"?>
+<!-- syntaxdefinition for C/C++ 2001 by Andrea Paatz and Mike Krueger -->
+<!-- converted to AvalonEdit format by Siegfried Pammer in 2010 -->
+<SyntaxDefinition name="SRCAL" extensions=".srcal" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<Color name="Comment" foreground="#66747B" />
+	<Color name="Character" foreground="#FF8D1C" />
+	<Color name="String" foreground="#FF8D1C" />
+	<Color name="Punctuation" foreground="#DCDCDC" />
+	<Color name="MethodName" foreground="#DCDCDC" fontWeight="bold" />
+	<Color name="Digits" foreground="#FFCD22" />
+	<Color name="CompoundKeywords" foreground="#678CB1" fontWeight="bold" />
+	<Color name="Operators" foreground="#A082BD" fontWeight="bold" />
+	<Color name="BooleanConstants" foreground="#93C763" fontWeight="bold" />
+	<Color name="Keywords" foreground="#93C763" fontWeight="bold" />
+	<Color name="LoopKeywords" foreground="#93C763" fontWeight="bold" />
+	<Color name="JumpKeywords" foreground="#93C763" />
+	<Color name="ControlFlow" foreground="#93C763" fontWeight="bold" />
+	<RuleSet ignoreCase="false">
+		<Rule color="Punctuation">
+		[?,.;()\[\]{}+\-/%*&lt;&gt;^=~!&amp;]+
+		</Rule>
+		<Keywords color="CompoundKeywords">
+			<Word>$ScriptName</Word>
+      <Word>$ScriptVersion</Word>
+      <Word>$ScriptAuthor</Word>
+      <Word>$ScriptFolderName</Word>
+      <Word>$ScriptRequestName</Word>
+      <Word>$LatestImagesCount</Word>
+      <Word>$URLSpecifier</Word>
+      <Word>$UsingDriver</Word>
+      <Word>$Infinity</Word>
+      <Word>$RequestURL</Word>
+      <Word>$LoadPage</Word>
+      <Word>$AppendImage</Word>
+      <Word>$RequestDownload</Word>
+      <Word>$ExitLoop</Word>
+      <Word>$ClearImagesCount</Word>
+      <Word>$DriverNew</Word>
+      <Word>$DriverLoadPage</Word>
+      <Word>$DriverClickByXPath</Word>
+      <Word>$DriverClickByName</Word>
+      <Word>$DriverSendKey</Word>
+      <Word>$DriverGetScrollHeight</Word>
+      <Word>$DriverScrollTo</Word>
+      <Word>$DriverScrollBottom</Word>
+      <Word>$MessageFadeOn</Word>
+      <Word>$MessageText</Word>
+      <Word>$MessageFadeOff</Word>
+      <Word>$MessageFadeInFadeOut</Word>
+    </Keywords>
+		<Keywords color="Operators">
+			<Word>add</Word>
+      <Word>mul</Word>
+      <Word>cal</Word>
+      <Word>equal</Word>
+      <Word>split</Word>
+      <Word>count</Word>
+      <Word>concat</Word>
+      <Word>url_parameter</Word>
+      <Word>url_parameter_tidy</Word>
+      <Word>int</Word>
+      <Word>regex_exists</Word>
+      <Word>regex_match</Word>
+      <Word>regex_matches</Word>
+    </Keywords>
+		<Keywords color="BooleanConstants">
+			<Word>false</Word>
+			<Word>true</Word>
+		</Keywords>
+		<Keywords color="LoopKeywords">
+			<Word>foreach</Word>
+			<Word>loop</Word>
+		</Keywords>
+		<Keywords color="JumpKeywords">
+			<Word>\$ExitLoop</Word>
+      <Word>break</Word>
+		</Keywords>
+		<Keywords color="ControlFlow">
+			<Word>else</Word>
+			<Word>if</Word>
+		</Keywords>
+		<Keywords color="Keywords">
+			<Word>to</Word>
+		</Keywords>
+		<Span color="Comment">
+			<Begin>\#\#</Begin>
+		</Span>
+		<Span color="String">
+			<Begin>"</Begin>
+			<End>"</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+		<Span color="Character">
+			<Begin>'</Begin>
+			<End>'</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+		<Rule color="MethodName">[\d\w_$]+(?=(\s*\())</Rule>
+		<Rule color="Digits">\b0[xX][0-9a-fA-F]+|(\b\d+(\.[0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?</Rule>
+	</RuleSet>
+</SyntaxDefinition>

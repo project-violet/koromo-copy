@@ -59,5 +59,22 @@ namespace Koromo_Copy_UX3.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;!-- syntaxdefinition for C/C++ 2001 by Andrea Paatz and Mike Krueger --&gt;
+        ///&lt;!-- converted to AvalonEdit format by Siegfried Pammer in 2010 --&gt;
+        ///&lt;SyntaxDefinition name=&quot;C++&quot; extensions=&quot;.c;.h;.cc;.cpp;.hpp&quot; xmlns=&quot;http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008&quot;&gt;
+        ///	&lt;Color name=&quot;Comment&quot; foreground=&quot;Green&quot; /&gt;
+        ///	&lt;Color name=&quot;Character&quot; foreground=&quot;Fuchsia&quot; /&gt;
+        ///	&lt;Color name=&quot;String&quot; foreground=&quot;Fuchsia&quot; /&gt;
+        ///	&lt;Color name=&quot;Preprocessor&quot; foreground=&quot;Green&quot; /&gt;
+        ///	&lt;Color name=&quot;Punctuation&quot; fo[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string SRCAL {
+            get {
+                return ResourceManager.GetString("SRCAL", resourceCulture);
+            }
+        }
     }
 }
