@@ -126,6 +126,7 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |------|-----|
 |$RequestURL|현재 분석하고있는 URL을 가져옵니다.|
 |$Infinity|무한대입니다. 기본적으로 int.Max값을 가집니다.|
+|$LatestImagesCount|이미지 카운트를 가져옵니다.|
 
 필요하다면 새로운 상수가 언제든지 추가될 수 있습니다.
 
@@ -143,6 +144,8 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |count(list)|List의 요소 개수를 가져옵니다. 반환값은 정수입니다.|
 |add(x,y)|두 값을 더합니다.|
 |mul(x,y)|두 값을 곱합니다.|
+|mod(x,y)|x mod y의 값을 구합니다.|
+|div(x,y)|x / y의 값을 구합니다.|
 |concat(str,str,...)|여러 문자열을 하나로 합칩니다.|
 |url_parameter(url,param,value)|URL의 특정 매개변수를 value로 설정합니다. value는 정수도 올 수 있습니다.|
 |url_parameter_tidy(url,param)|URL의 특정 매개변수를 삭제합니다.|
