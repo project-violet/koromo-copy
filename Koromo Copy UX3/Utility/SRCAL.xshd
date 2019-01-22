@@ -35,6 +35,9 @@
       <Word>$RequestDownload</Word>
       <Word>$ExitLoop</Word>
       <Word>$ClearImagesCount</Word>
+      <Word>$ConsolePrint</Word>
+      <Word>$ConsolePrintln</Word>
+      <Word>$MonitorPrint</Word>
       <Word>$DriverNew</Word>
       <Word>$DriverLoadPage</Word>
       <Word>$DriverClickByXPath</Word>
@@ -51,6 +54,8 @@
 		<Keywords color="Operators">
 			<Word>add</Word>
       <Word>mul</Word>
+      <Word>mod</Word>
+      <Word>div</Word>
       <Word>cal</Word>
       <Word>equal</Word>
       <Word>split</Word>
@@ -59,6 +64,7 @@
       <Word>url_parameter</Word>
       <Word>url_parameter_tidy</Word>
       <Word>int</Word>
+      <Word>string</Word>
       <Word>regex_exists</Word>
       <Word>regex_match</Word>
       <Word>regex_matches</Word>

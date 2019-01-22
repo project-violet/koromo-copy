@@ -127,6 +127,8 @@ namespace Koromo_Copy_UX3.Utility
             Tuple.Create("$MessageFadeInFadeOut","일시적으로 나타났다 사라지는 메세지를 출력합니다."),
             Tuple.Create("add","두 값을 더합니다."),
             Tuple.Create("mul","두 값을 곱합니다."),
+            Tuple.Create("mod","x mod y의 값을 구합니다."),
+            Tuple.Create("div","x / y의 값을 구합니다."),
             Tuple.Create("cal","CAL 문법을 이용해 계산합니다. 반환값은 string-list입니다."),
             Tuple.Create("equal","두 값이 같은지 확인합니다. 반환값은 boolean입니다."),
             Tuple.Create("split","src를 기준으로 문자열을 자릅니다. 반환값은 string-list입니다."),
