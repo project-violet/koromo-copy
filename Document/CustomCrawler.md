@@ -113,10 +113,11 @@
 `HTML` 탐색 토큰 유형은 다음과 같습니다.
 
 | 토큰        | 내용        |
-| --------- | --------- |
-| #text     | InnerText |
-| #html     | InnerHtml |
-| #ohtml    | OuterHtml |
+| --------- | ---------  |
+| #text     | InnerText  |
+| #htext    | CurrentText|
+| #html     | InnerHtml  |
+| #ohtml    | OuterHtml  |
 | #attr[속성] | 헤더 속성     |
 
 `InnerHtml`은 자기 자신을 제외한 안쪽 노드의 `HTML`을 가져오며, 
