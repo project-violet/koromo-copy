@@ -103,10 +103,10 @@ namespace Koromo_Copy_UX3.Domain
             //{
             //    ProcessMangashowme(url);
             //}
-            else if (ScriptEngine.Instance.TestScript(url))
-            {
-                ProcessScript(url);
-            }
+            //else if (ScriptEngine.Instance.TestScript(url))
+            //{
+            //    ProcessScript(url);
+            //}
             else if (ScriptManager.Instance.SpecifyScript(url))
             {
                 ProcessScriptAdvanced(url);
@@ -498,19 +498,31 @@ namespace Koromo_Copy_UX3.Domain
                 MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
                 script.Run(url, (x, y) =>
                 {
-                    string dir = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), x.ScriptFolderName) + "/";
+                    string dir = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), x.ScriptFolderName);
+
+                    var dic = new Dictionary<string, List<Tuple<string,string>>>();
+                    
                     foreach (var ddd in y)
                     {
-                        Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(dir, DeleteInvalid(ddd.Item2))));
+                        var sub_dir = Path.GetDirectoryName(Path.Combine(dir, ddd.Item2));
+                        if (dic.ContainsKey(sub_dir))
+                            dic[sub_dir].Add(Tuple.Create(ddd.Item1, ddd.Item2));
+                        else
+                            dic.Add(sub_dir, new List<Tuple<string, string>>() { Tuple.Create(ddd.Item1, ddd.Item2) });
                     }
 
-                    var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
-                    se.Referer = url;
+                    foreach (var list in dic)
+                    {
+                        Directory.CreateDirectory(list.Key);
+                        var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
+                        se.Referer = url;
 
-                    DownloadSpace.Instance.RequestDownload($"{x.ScriptRequestName}: {url}",
-                        y.Select(z => z.Item1).ToArray(),
-                        y.Select(z => z.Item2).Select(k => Path.Combine(dir, k)).ToArray(),
-                        se, dir, null);
+                        DownloadSpace.Instance.RequestDownload($"{x.ScriptRequestName}: {url}",
+                            list.Value.Select(z => z.Item1).ToArray(),
+                            list.Value.Select(z => z.Item2).Select(k => Path.Combine(dir, k)).ToArray(),
+                            se, list.Key + "\\", null);
+                    }
+
                     MainWindow.Instance.FadeOut_MiddlePopup($"{y.Count}개 항목 다운로드 시작...");
                 });
             });
