@@ -862,6 +862,69 @@ namespace Koromo_Copy.Script.SRCAL
             {
                 variable_update(new SRCALParser.CDLVar { Name = "$LatestImagesCount", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = 0 });
             }
+            else if (func.ContentFunctionName == "$ConsolePrint")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$ConsolePrint' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                Console.Console.Instance.Write(v1.ContentString);
+            }
+            else if (func.ContentFunctionName == "$ConsolePrintln")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$ConsolePrint' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                Console.Console.Instance.WriteLine(v1.ContentString);
+            }
+            else if (func.ContentFunctionName == "$MonitorPrint")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$ConsolePrint' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                Monitor.Instance.Push(v1.ContentString);
+            }
             //
             //  Driver Internal Functions
             //

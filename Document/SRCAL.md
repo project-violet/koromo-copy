@@ -80,6 +80,9 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |$RequestDownload()|모든 요청을 끝내고 저장된 URL을 모두 다운로드합니다.|
 |$ExitLoop()|특정 loop나 foreach를 탈출 합니다.|
 |$ClearImagesCount()|이미지 카운트를 0으로 합니다.|
+|$ConsolePrint(str)|콘솔에 str를 출력합니다.|
+|$ConsolePrintln(str)|콘솔에 str를 출력하고, 다음줄로 옮깁니다.|
+|$MonitorPrint(str)|Monitor를 통해 str을 출력합니다. 이는 로그에 기록됩니다.|
 
 #### 2. 드라이버 제어 함수
 
