@@ -10,6 +10,9 @@ using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Indentation.CSharp;
+using Koromo_Copy;
+using Koromo_Copy.Script;
+using Koromo_Copy.Script.SRCAL;
 using Koromo_Copy_UX3.Properties;
 using System;
 using System.Collections.Generic;
@@ -29,6 +32,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml;
+using static Koromo_Copy.Script.SRCAL.SRCALEngine;
 
 namespace Koromo_Copy_UX3.Utility
 {
@@ -65,9 +69,11 @@ namespace Koromo_Copy_UX3.Utility
 
             textEditor.TextArea.TextEntered += TextArea_TextEntered;
             textEditor.TextArea.TextEntering += TextArea_TextEntering;
+            textEditor.PreviewMouseLeftButtonDown += TextEditor_PreviewMouseLeftButtonDown; ;
 
             textEditor.Options.EnableHyperlinks = false;
             textEditor.Options.HighlightCurrentLine = true;
+            textEditor.Options.ConvertTabsToSpaces = true;
             mgr = FoldingManager.Install(textEditor.TextArea);
             folding = new ScriptEditorBraceFolding();
             DispatcherTimer foldingUpdateTimer = new DispatcherTimer();
@@ -76,6 +82,15 @@ namespace Koromo_Copy_UX3.Utility
             foldingUpdateTimer.Start();
         }
 
+        private void TextEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var pos = textEditor.GetPositionFromPoint(e.GetPosition(textEditor));
+            if (pos.HasValue)
+            {
+                LC.Text = $"줄:{pos.Value.Line} 열:{pos.Value.Column}";
+            }
+        }
+        
         CompletionWindow completionWindow;
 
         static Tuple<string,string>[] tokens =
@@ -162,6 +177,109 @@ namespace Koromo_Copy_UX3.Utility
         private void UpdateFoldings()
         {
             folding.UpdateFoldings(mgr, textEditor.Document);
+        }
+
+        SRCALParser.CDLScript script;
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = (sender as Button).Tag.ToString();
+            DebugMonitor.Text = "";
+            var raw_script = textEditor.Text.Split(
+                new[] { '\n' },
+                StringSplitOptions.None
+                ).ToList();
+            if (tag == "Parse")
+            {
+
+                bool err = false;
+                var parser = new SRCALParser();
+                try
+                {
+                    script = parser.Parse(raw_script);
+
+                    var attribute = new SRCALAttribute();
+                    attribute.ScriptName = parser.attributes["$ScriptName"];
+                    attribute.ScriptVersion = parser.attributes["$ScriptVersion"];
+                    attribute.ScriptAuthor = parser.attributes["$ScriptAuthor"];
+                    attribute.ScriptFolderName = parser.attributes["$ScriptFolderName"];
+                    attribute.ScriptRequestName = parser.attributes["$ScriptRequestName"];
+                    attribute.URLSpecifier = parser.attributes["$URLSpecifier"];
+                    int v;
+                    if (int.TryParse(parser.attributes["$UsingDriver"], out v))
+                    {
+                        attribute.UsingDriver = v == 0 ? false : true;
+                    }
+                    else
+                    {
+                        err = true;
+                        DebugMonitor.Text = "Using driver must be integer type.\r\n";
+                    }
+                    DebugMonitor.Text = Monitor.SerializeObject(attribute) + "\r\n";
+                }
+                catch (Exception ex)
+                {
+                    DebugMonitor.Text += $"Script parsing error. {ex.Message}\r\n{ex.StackTrace}\r\n";
+                    err = true;
+                }
+
+                if (parser.errors.Count > 0)
+                {
+                    DebugMonitor.Text += $"Occurred some errors when parsing script ...\r\n";
+                    for (int i = 0; i < parser.errors.Count; i++)
+                    {
+                        DebugMonitor.Text += $"[{parser.errors[i].Item1.Line + 1}, {parser.errors[i].Item1.Column + 1}] {parser.errors[i].Item2}\r\n";
+                    }
+                    err = true;
+                }
+
+                if (!err)
+                {
+                    DebugMonitor.Text += "Complete parsing.";
+                }
+                else
+                {
+                    DebugMonitor.Text += "Error occured when parse script.";
+                }
+                DebugMonitor.ScrollToEnd();
+            }
+            else if (tag == "Inject")
+            {
+                try
+                {
+                    if (!ScriptManager.Instance.Subscribe(string.Join("\r\n", raw_script)))
+                    {
+                        MessageBox.Show("인젝션에 성공했습니다!\r\n메인창에서 스크립트를 실행하고, 콘솔에서 상태를 점검하세요.\r\n인젝션을 재시도하기 전에 반드시 이젝트해야합니다.", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Instance.Push($"[Script Editor] Fail to inject. {ex.Message}\r\n{ex.StackTrace}");
+                }
+                MessageBox.Show("인젝션에 실패했습니다. 자세한 내용은 콘솔을 참고해주세요.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (tag == "Eject")
+            {
+                var parser = new SRCALParser();
+                try
+                {
+                    script = parser.Parse(raw_script);
+                    if (ScriptManager.Instance.Unsubscribe(parser.attributes["$ScriptName"]) >= 1)
+                    {
+                        MessageBox.Show("이젝션 완료!", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("이젝션할 내용이 없습니다.", Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Instance.Push($"[Script Editor] Fail to eject. {ex.Message}\r\n{ex.StackTrace}");
+                    MessageBox.Show("이젝션을 실패했습니다. 자세한 내용은 콘솔을 참고해주세요.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }
