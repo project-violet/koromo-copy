@@ -858,7 +858,7 @@ namespace Koromo_Copy.Script.SRCAL
             {
                 exit_loop = true;
             }
-            else if (func.ContentFunctionName == "$CleareImagesCount")
+            else if (func.ContentFunctionName == "$ClearImagesCount")
             {
                 variable_update(new SRCALParser.CDLVar { Name = "$LatestImagesCount", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = 0 });
             }
@@ -1369,7 +1369,7 @@ namespace Koromo_Copy.Script.SRCAL
             {
                 if (func.ContentArguments.Count != 3)
                 {
-                    var msg = "'url_parameter_tidy' function must have 2 argument.";
+                    var msg = "'url_parameter' function must have 2 argument.";
                     error_message.Add(Tuple.Create(func.Line, func.Column, msg));
                     throw new Exception(msg);
                 }
@@ -1494,6 +1494,18 @@ namespace Koromo_Copy.Script.SRCAL
                     Type = SRCALParser.CDLVar.CDLVarType.Integer,
                     ContentInteger = value
                 };
+            }
+            else if (func.ContentFunctionName == "regex_exists")
+            {
+
+            }
+            else if (func.ContentFunctionName == "regex_match")
+            {
+
+            }
+            else if (func.ContentFunctionName == "regex_matches")
+            {
+
             }
             else
             {

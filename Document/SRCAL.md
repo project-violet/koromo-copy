@@ -67,14 +67,43 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 
 이 API들은 `Koromo Copy`의 스크립트 엔진이 제공하는 상호작용 함수입니다.
 이 함수들은 `$~~~`와 같이 `$`가 접두어로 붙은 함수들입니다.
+필요하다면 새로운 함수가 언제든지 추가될 수 있습니다.
+
+#### 1. 일반 제어 함수
+
+크롤러를 제어하는데 필요한 가장 기본적인 요소들 입니다.
 
 |  이름 | 내용 |
 |------|-----|
 |$LoadPage(url)|특정 URL을 다운로드하고, 현재 분석하는 문서를 다운로드한 문서로 바꿉니다. 이전 페이지는 저장되지 않기때문에, 필요한 문자열은 미리 저장해두어야 합니다.|
 |$AppendImage(url, filename)|다운로드할 이미지와 이미지의 저장 경로를 저장합니다. 다운로드의 대상이 이미지가 아니여도 상관없습니다. Referer은 현재 URL로 지정됩니다. 저장 경로는 사용자설정에 대한 상대주소입니다.|
 |$RequestDownload()|모든 요청을 끝내고 저장된 URL을 모두 다운로드합니다.|
+|$ExitLoop()|특정 loop나 foreach를 탈출 합니다.|
+|$ClearImagesCount()|이미지 카운트를 0으로 합니다.|
 
-필요하다면 새로운 함수가 언제든지 추가될 수 있습니다.
+#### 2. 드라이버 제어 함수
+
+`$UsingDriver`가 `1`일때 사용가능합니다. 이 함수들은 셀레니움 웹 드라이버를 제어합니다.
+
+| 이름 | 내용 |
+|-----|-----|
+|$DriverNew()|기존 드라이버를 닫고, 새로운 드라이버를 실행합니다.|
+|$DriverLoadPage(url)|특정 URL로 Navigate합니다.|
+|$DriverClickByXPath(xpath)|XPath를 이용해 특정 버튼을 클릭합니다.|
+|$DriverClickByName(name)|Name을 이용해 특정 버튼을 클릭합니다.|
+|$DriverSendKey(id, text)|특정 id 요소에 text를 씁니다.|
+|$DriverGetScrollHeight()|스크롤의 높이를 가져옵니다. 반환값은 정수입니다.|
+|$DriverScrollTo(offset)|스크롤의 높이를 설정합니다. offset은 정수입니다.|
+|$DriverScrollBottom()|스크롤을 최하단으로 내립니다.|
+
+#### 3. 메인창 메세지 제어 함수
+
+| 이름 | 내용 |
+|-----|-----|
+|$MessageFadeOn(progress, text)|메인창에 메세지를 나타냅니다. progress는 boolean 값이며 진행애니메이션의 출력여부입니다.|
+|$MessageText(text)|메세지의 내용을 바꿉니다. progress 여부는 바뀌지 않습니다.|
+|$MessageFadeOff(progress, text)|메인창에서 메세지를 사라지게합니다. 이 함수는 $MessageFadeOn이 호출된 다음에 호출하는 것이 좋습니다.|
+|$MessageFadeInFadeOut(progress, text)|일시적으로 나타났다 사라지는 메세지를 출력합니다.|
 
 ### 3.3. 상호작용 상수
 
@@ -88,15 +117,15 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |$ScriptAuthor|스크립트의 작성자입니다.|
 |$ScriptFolderName|스크립트의 기본 생성 폴더 이름입니다.|
 |$ScriptRequestName|다운로드 상태에 표시될 접두사입니다.|
-|$URLSpecifier|스크립트 실별용 URL입니다. 이 URL이 포함된 URL이라면 해당 스크립트로 식별됩니다.|
-|$UsingDriver|Selenium Driver를 사용할지에 대한 여부입니다.|
+|$URLSpecifier|스크립트 식별용 URL입니다. 이 URL이 포함된 URL이라면 해당 스크립트로 식별됩니다.|
+|$UsingDriver|Selenium Driver를 사용할지에 대한 여부입니다. 유일하게 boolean 타입을 갖습니다.|
 
 다음은 스크립트 엔진이 제공하는. 크롤러를 정의하는데 유용한 상수들입니다.
 
 | 이름 | 내용 |
 |------|-----|
 |$RequestURL|현재 분석하고있는 URL을 가져옵니다.|
-|$Infinity|무한대입니다. loop에서 사용될 경우 예외가 발생할 때 까지 반복합니다.|
+|$Infinity|무한대입니다. 기본적으로 int.Max값을 가집니다.|
 
 필요하다면 새로운 상수가 언제든지 추가될 수 있습니다.
 
@@ -105,6 +134,21 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 어노테이션은 반복문을 병렬화하기 위해 사용합니다.
 
 ### 3.5. 함수
+
+| 이름 | 내용 |
+|-----|-----|
+|cal(text)|CAL 문법을 이용해 계산합니다. 반환값은 string-list입니다.|
+|equal(var, var)|두 값이 같은지 확인합니다. 반환값은 boolean입니다.|
+|split(tar, src)|src를 기준으로 문자열을 자릅니다. 반환값은 string-list입니다.|
+|count(list)|List의 요소 개수를 가져옵니다. 반환값은 정수입니다.|
+|add(x,y)|두 값을 더합니다.|
+|mul(x,y)|두 값을 곱합니다.|
+|url_parameter(url,param,value)|URL의 특정 매개변수를 value로 설정합니다. value는 정수도 올 수 있습니다.|
+|url_parameter_tidy(url,param)|URL의 특정 매개변수를 삭제합니다.|
+|int(txt)|불리안값이나 정수형, 문자열을 정수형으로 바꿉니다.|
+|regex_exists||
+|regex_match||
+|regex_matches||
 
 ## 4. 스크립트 자동 생성 도구
 
@@ -172,7 +216,7 @@ loop (i = 1 to max_page) [
         $ExitLoop()
     ]
 
-    $CleareImagesCount()
+    $ClearImagesCount()
 ]
 
 $RequestDownload()
