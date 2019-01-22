@@ -55,6 +55,17 @@ namespace Koromo_Copy.Script
             var script_engine = new SRCALScript();
             if (script_engine.AllocScript(script))
             {
+                if (ExsitsByName(script_engine.Attribute().ScriptName))
+                {
+                    Monitor.Instance.Push($"[Script Manager] '{script_engine.Attribute().ScriptName}' script already subsribed!");
+                    return true;
+                }
+                var test_scr = GetScript(script_engine.Attribute().URLSpecifier);
+                if (test_scr != null)
+                {
+                    Monitor.Instance.Push($"[Script Manager] '{script_engine.Attribute().URLSpecifier}' URL specifier is overlaps already registered item, '{test_scr.Attribute().ScriptName}' script.");
+                    return true;
+                }
                 scripts.Add(script_engine);
                 Monitor.Instance.Push($"[Script Manager] Subscribe {script_engine.Attribute().ScriptName} ({script_engine.Attribute().ScriptVersion}) script.");
                 return false;
@@ -71,6 +82,16 @@ namespace Koromo_Copy.Script
         public int Unsubscribe(string name)
         {
             return scripts.RemoveAll(x => x.Attribute().ScriptName == name);
+        }
+
+        /// <summary>
+        /// 스크립트의 존재여부를 확인합니다.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool ExsitsByName(string name)
+        {
+            return scripts.Any(x => x.Attribute().ScriptName == name);
         }
 
         /// <summary>

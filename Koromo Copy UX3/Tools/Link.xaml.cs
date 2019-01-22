@@ -48,6 +48,9 @@ namespace Koromo_Copy_UX3.Tools
                 case "CustomCrawler":
                     (new CustomCrawler()).Show();
                     break;
+                case "ScriptEditor":
+                    (new ScriptEditor()).Show();
+                    break;
 
                 case "HitomiExplorer":
                 case "FsEnumerator":
