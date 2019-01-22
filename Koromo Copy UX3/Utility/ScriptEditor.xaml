@@ -6,17 +6,35 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
-        Title="ScriptEditor" Height="300" Width="300">
+        Title="ScriptEditor" Height="556" Width="1006">
     <Grid>
-        <avalonEdit:TextEditor
-				Name="textEditor"
-				FontFamily="Consolas"
-				FontSize="11pt"
-                Foreground="White"
-                ShowLineNumbers="True"
-                LineNumbersForeground="Cyan"
-                Background="#1E1E1E"
-				SyntaxHighlighting="SRCAL">Welcome to AvalonEdit!
-        </avalonEdit:TextEditor>
+        <avalonEdit:TextEditor Name="textEditor" FontFamily="Consolas" FontSize="11pt" Foreground="White" ShowLineNumbers="True" LineNumbersForeground="Cyan" Background="#1E1E1E" SyntaxHighlighting="SRCAL"  xml:space="preserve">##
+## Koromo Copy SRCAL Script
+##
+## TODO: ScriptName
+##
+
+##
+## Attributes
+##
+$ScriptName = ""
+$ScriptVersion = ""
+$ScriptAuthor = ""
+$ScriptFolderName = ""
+$ScriptRequestName = ""
+$URLSpecifier = ""
+$UsingDriver = 0
+
+##
+## Procedure
+##
+request_url = $RequestURL
+
+$MessageFadeOn(true, "Start collecting...")
+
+## TODO: Your own collect logic
+
+$MessageFadeOff(true, "Complete collect all images!")                
+$RequestDownload()</avalonEdit:TextEditor>
     </Grid>
 </Window>

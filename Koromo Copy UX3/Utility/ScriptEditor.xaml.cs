@@ -1,4 +1,12 @@
-﻿using ICSharpCode.AvalonEdit.CodeCompletion;
+﻿/***
+
+   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Indentation.CSharp;
