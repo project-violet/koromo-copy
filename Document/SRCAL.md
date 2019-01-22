@@ -360,18 +360,18 @@ $RequestDownload()
 ##
 ## Koromo Copy SRCAL Script
 ##
-## TODO: ScriptName
+## Dovedan Printer
 ##
 
 ##
 ## Attributes
 ##
-$ScriptName = "My-script"
+$ScriptName = "googoodan"
 $ScriptVersion = "1.0"
 $ScriptAuthor = ""
 $ScriptFolderName = ""
 $ScriptRequestName = ""
-$URLSpecifier = "https://googoodan"
+$URLSpecifier = "https://google.com"
 $UsingDriver = 0
 
 ##
@@ -387,6 +387,48 @@ loop (i = 1 to 10) [
         $ConsolePrint(concat(i, " * ", j, " = "))
         $ConsolePrintln(string(multiple))
     ]
+]
+
+$MessageFadeOff(true, "Complete collect all images!")
+```
+
+### 5.6. 소수
+
+```
+##
+## Koromo Copy SRCAL Script
+##
+## Prime Numbers Printer
+##
+
+##
+## Attributes
+##
+$ScriptName = "prime-number"
+$ScriptVersion = "1.0"
+$ScriptAuthor = ""
+$ScriptFolderName = ""
+$ScriptRequestName = ""
+$URLSpecifier = "https://google.com"
+$UsingDriver = 0
+
+##
+## Procedure
+##
+request_url = $RequestURL
+
+$MessageFadeOn(true, "Start collecting...")
+
+loop (i = 2 to 100) [
+    is_prime = true
+    loop (j = 2 to add(i,-1)) [
+        if (equal(mod(i,j), 0)) [
+            is_prime = false
+            $ExitLoop()
+        ]
+    ]
+    if (is_prime)
+        $ConsolePrintln(string(i))
 ]
 
 $MessageFadeOff(true, "Complete collect all images!")
