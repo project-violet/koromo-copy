@@ -899,27 +899,103 @@ namespace Koromo_Copy.Script.SRCAL
             }
             else if (func.ContentFunctionName == "$DriverClickByXPath")
             {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$DriverClickByXPath' function must have one argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
 
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                driver.ClickXPath(v1.ContentString);
             }
             else if (func.ContentFunctionName == "$DriverClickByName")
             {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$DriverClickByName' function must have one argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
 
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                driver.ClickName(v1.ContentString);
             }
             else if (func.ContentFunctionName == "$DriverSendKey")
             {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'$DriverSendKey' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
 
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                driver.SendKeyId(v1.ContentString, v2.ContentString);
             }
             else if (func.ContentFunctionName == "$DriverGetScrollHeight")
             {
-
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.Integer,
+                    ContentInteger = Convert.ToInt32(driver.GetHeight())
+                };
             }
             else if (func.ContentFunctionName == "$DriverScrollTo")
             {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$DriverScrollTo' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
 
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    var msg = "argument type must be integer type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                driver.Scroll(v1.ContentInteger);
             }
             else if (func.ContentFunctionName == "$DriverScrollBottom")
             {
-
+                driver.ScrollDown();
             }
             //
             //  Message Internal Function
@@ -928,10 +1004,127 @@ namespace Koromo_Copy.Script.SRCAL
             {
                 // $MessageFadeOn(false, "error")
                 // $MessageFadeOn(true, "start download")
+
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'$MessageFadeOn' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (!(v1.Type == SRCALParser.CDLVar.CDLVarType.Integer || v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean))
+                {
+                    var msg = "argument type must be integer or boolean type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if (v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v2.Line, v2.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                bool progress = false;
+                if (v1.Type == SRCALParser.CDLVar.CDLVarType.Integer)
+                    progress = v1.ContentInteger == 0 ? false : true;
+                else if (v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean)
+                    progress = v1.ContentBoolean;
+                Global.MessageFadeOn(progress, v2.ContentString);
+            }
+            else if (func.ContentFunctionName == "$MessageText")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'$MessageText' function must have one argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                Global.MessageText(v1.ContentString);
             }
             else if (func.ContentFunctionName == "$MessageFadeOff")
             {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'$MessageFadeOff' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
 
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (!(v1.Type == SRCALParser.CDLVar.CDLVarType.Integer || v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean))
+                {
+                    var msg = "argument type must be integer or boolean type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if (v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v2.Line, v2.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                bool progress = false;
+                if (v1.Type == SRCALParser.CDLVar.CDLVarType.Integer)
+                    progress = v1.ContentInteger == 0 ? false : true;
+                else if (v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean)
+                    progress = v1.ContentBoolean;
+                Global.MessageFadeOff(progress, v2.ContentString);
+            }
+            else if (func.ContentFunctionName == "$MessageFadeInFadeOut")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'$MessageFadeInFadeOut' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (!(v1.Type == SRCALParser.CDLVar.CDLVarType.Integer || v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean))
+                {
+                    var msg = "argument type must be integer or boolean type.";
+                    error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if (v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(v2.Line, v2.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                bool progress = false;
+                if (v1.Type == SRCALParser.CDLVar.CDLVarType.Integer)
+                    progress = v1.ContentInteger == 0 ? false : true;
+                else if (v1.Type == SRCALParser.CDLVar.CDLVarType.Boolean)
+                    progress = v1.ContentBoolean;
+                Global.MessageFadeInFadeOut(progress, v2.ContentString);
             }
             //
             //  Common functions
