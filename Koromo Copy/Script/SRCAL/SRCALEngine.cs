@@ -1365,6 +1365,35 @@ namespace Koromo_Copy.Script.SRCAL
                     ContentInteger = v1.ContentInteger * v2.ContentInteger
                 };
             }
+            else if (func.ContentFunctionName == "mod")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'mod' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.Integer || v2.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                {
+                    var msg = "arguments type must be integer type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.Integer,
+                    ContentInteger = v1.ContentInteger % v2.ContentInteger
+                };
+            }
             else if (func.ContentFunctionName == "url_parameter")
             {
                 if (func.ContentArguments.Count != 3)
