@@ -105,6 +105,7 @@ namespace Koromo_Copy_UX3.Utility
             Tuple.Create("$LatestImagesCount","마지막으로 요청한 다운로드 이미지의 개수입니다."),
             Tuple.Create("$Infinity","무한대입니다. 기본적으로 int.Max값을 가집니다."),
             Tuple.Create("$RequestURL","현재 분석하고있는 URL을 가져옵니다."),
+            Tuple.Create("$RequestHtml","현재 분석하고있는 HTML을 가져옵니다."),
             Tuple.Create("$LoadPage","특정 URL을 다운로드하고, 현재 분석하는 문서를 다운로드한 문서로 바꿉니다."),
             Tuple.Create("$AppendImage","다운로드할 이미지와 이미지의 저장 경로를 저장합니다."),
             Tuple.Create("$RequestDownload","모든 요청을 끝내고 저장된 URL을 모두 다운로드합니다."),

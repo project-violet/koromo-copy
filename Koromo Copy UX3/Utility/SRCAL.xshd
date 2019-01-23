@@ -30,6 +30,7 @@
       <Word>$UsingDriver</Word>
       <Word>$Infinity</Word>
       <Word>$RequestURL</Word>
+      <Word>$RequestHtml</Word>
       <Word>$LoadPage</Word>
       <Word>$AppendImage</Word>
       <Word>$RequestDownload</Word>
