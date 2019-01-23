@@ -60,6 +60,11 @@ namespace Koromo_Copy.Script
                     Monitor.Instance.Push($"[Script Manager] '{script_engine.Attribute().ScriptName}' script already subsribed!");
                     return true;
                 }
+                if (string.IsNullOrEmpty(script_engine.Attribute().ScriptFolderName))
+                {
+                    Monitor.Instance.Push($"[Script Manager] '{script_engine.Attribute().ScriptName}' script folder name must be specified.");
+                    return true;
+                }
                 var test_scr = GetScript(script_engine.Attribute().URLSpecifier);
                 if (test_scr != null)
                 {
