@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -1666,15 +1667,110 @@ namespace Koromo_Copy.Script.SRCAL
             }
             else if (func.ContentFunctionName == "regex_exists")
             {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'regex_exists' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
 
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "arguments type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var regex = new Regex(v1.ContentString);
+
+                if (regex.Match(v2.ContentString).Groups.Count > 0)
+                {
+                    return new SRCALParser.CDLVar
+                    {
+                        Line = func.Line,
+                        Column = func.Column,
+                        Name = "$rvalue",
+                        Type = SRCALParser.CDLVar.CDLVarType.Boolean,
+                        ContentBoolean = true
+                    };
+                }
+                else
+                {
+                    return new SRCALParser.CDLVar
+                    {
+                        Line = func.Line,
+                        Column = func.Column,
+                        Name = "$rvalue",
+                        Type = SRCALParser.CDLVar.CDLVarType.Boolean,
+                        ContentBoolean = false
+                    };
+                }
             }
             else if (func.ContentFunctionName == "regex_match")
             {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'regex_match' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
 
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "arguments type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var regex = new Regex(v1.ContentString);
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = regex.Match(v2.ContentString).Groups[0].Value
+                };
             }
             else if (func.ContentFunctionName == "regex_matches")
             {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'regex_matches' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
 
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "arguments type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var regex = new Regex(v1.ContentString);
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.StringList,
+                    ContentStringList = regex.Match(v2.ContentString).Groups.OfType<Match>().Select(x => x.Value).ToList()
+                };
             }
             else if (func.ContentFunctionName == "type")
             {
