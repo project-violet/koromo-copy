@@ -145,7 +145,7 @@ namespace Koromo_Copy_UX3
             {
                 DataContext = new PatchNoteViewModel
                 {
-                    Version = "Koromo Copy 1.4 Beta",
+                    Version = "Koromo Copy 1.5 Beta",
                     Content =
                     "[추가된 기능]\r\n" +
                     " - SRCAL-CDL 스크립트 언어 파서 및 실행기 지원\r\n\r\n" +
