@@ -656,6 +656,7 @@ namespace Koromo_Copy.Script.SRCAL
             info_message = new List<Tuple<int, int, string>>();
             error = false;
             variable_update(new SRCALParser.CDLVar { Name = "$RequestURL", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = request_url });
+            variable_update(new SRCALParser.CDLVar { Name = "$RequestHtml", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = current_html });
             variable_update(new SRCALParser.CDLVar { Name = "$Infinity", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = int.MaxValue });
             variable_update(new SRCALParser.CDLVar { Name = "$LatestImagesCount", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = 0 });
             enter_block();
@@ -820,6 +821,7 @@ namespace Koromo_Copy.Script.SRCAL
                 variable_update(v);
                 info_message.Add(Tuple.Create(func.Line, func.Column, $"download request html {v.ContentString}"));
                 current_html = Net.NetCommon.DownloadString(v.ContentString);
+                variable_update(new SRCALParser.CDLVar { Name = "$RequestHtml", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = current_html });
                 HtmlDocument document = new HtmlDocument();
                 document.LoadHtml(current_html);
                 root_node = document.DocumentNode;

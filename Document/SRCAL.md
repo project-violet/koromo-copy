@@ -11,47 +11,50 @@
 ```
 EBNF: SRCAL-CDL
 
-script   -> block
+script    -> block
 
-comment  -> ##.*?
-line     -> comment
-          | expr
-          | expr comment
-          | e
+comment   -> ##.*?
+line      -> comment
+           | expr
+           | expr comment
+           | e
 
-expr     -> func
-          | var = index
-          | runnable
+expr      -> func
+           | var = index
+           | runnable
           
-block    -> [ block ]
-         -> line block
-         -> e
+block     -> [ block ]
+          -> line block
+          -> e
          
-name     -> [_a-zA-Z]\w*
-          | $name            ; Inernal functions
+name      -> [_a-zA-Z]\w*
+           | $name            ; Inernal functions
 
-number   -> [0-9]+
-string   -> "([^\\"]|\\")*"
-const    -> number
-          | string
+number    -> [0-9]+
+string    -> "([^\\"]|\\")*"
+const     -> number
+           | string
          
-var      -> name
+var       -> name
 
-index    -> variable
-          | variable [ variable ]
-variable -> var
-          | function
-          | const
+index     -> variable
+           | variable [ variable ]
+variable  -> var
+           | function    ; function call
+           | const
+           | procedure   ; function variable or lambda function
 
-argument -> index
-          | index, argument
-function -> name ( )
-          | name ( argument )
+argument  -> index
+           | index, argument
+function  -> name ( )
+           | name ( argument )
 
-runnable -> loop (var = index "to" index) block
-          | foreach (var : index)         block
-          | if (index)                    block
-          | if (index)                    block else block
+procedure -> ( argument ) block
+
+runnable  -> loop (var = index "to" index) block
+           | foreach (var : index)         block
+           | if (index)                    block
+           | if (index)                    block else block
 ```
 
 ## 3. 스크립트 상호작용
@@ -128,6 +131,7 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 | 이름 | 내용 |
 |------|-----|
 |$RequestURL|현재 분석하고있는 URL을 가져옵니다.|
+|$RequestHtml|현재 분석하고있는 Html을 가져옵니다.|
 |$Infinity|무한대입니다. 기본적으로 int.Max값을 가집니다.|
 |$LatestImagesCount|이미지 카운트를 가져옵니다.|
 
