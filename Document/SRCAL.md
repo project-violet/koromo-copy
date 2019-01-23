@@ -161,6 +161,7 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |regex_exists||
 |regex_match||
 |regex_matches||
+|type(obj)|인자의 타입을 문자열형태로 가져옵니다.|
 
 ## 4. 스크립트 자동 생성 도구
 
