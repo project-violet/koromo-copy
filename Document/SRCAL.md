@@ -192,7 +192,7 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 ## Attributes
 ##
 $ScriptName = "danbooru-pages"
-$ScriptVersion = "0.1"
+$ScriptVersion = "0.2"
 $ScriptAuthor = "dc-koromo"
 $ScriptFolderName = "danbooru"
 $ScriptRequestName = "danbooru"
