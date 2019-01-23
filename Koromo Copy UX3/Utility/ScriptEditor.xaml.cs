@@ -142,6 +142,7 @@ namespace Koromo_Copy_UX3.Utility
             Tuple.Create("regex_exists",""),
             Tuple.Create("regex_match",""),
             Tuple.Create("regex_matches",""),
+            Tuple.Create("type","인자의 타입을 문자열형태로 가져옵니다."),
         };
         bool opening = false;
         private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)

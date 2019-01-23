@@ -257,11 +257,11 @@ namespace Koromo_Copy.Script.SRCAL
         }
 
         token_type latest_token_type;
-
+        bool nullstr = false;
         private string next_token()
         {
+            nullstr = false;
         STARTS:
-
             if (line == raw_script.Count) {
                 latest_token_type = token_type.None;
                 return "";
@@ -323,6 +323,8 @@ namespace Koromo_Copy.Script.SRCAL
                     {
                         if (str[column] == '"') {
                             column++;
+                            if (builder.ToString() == "")
+                                nullstr = true;
                             return builder.ToString();
                         }
                         if (str[column] == '\\')
@@ -448,7 +450,7 @@ namespace Koromo_Copy.Script.SRCAL
             var args = new List<CDLIndex>();
 
             var lookup = look_up_token();
-            while (lookup != "" && lookup != ")")
+            while ((lookup != "" || nullstr) && lookup != ")")
             {
                 args.Add(parse_index());
                 if (look_up_token() == ",")
@@ -456,7 +458,7 @@ namespace Koromo_Copy.Script.SRCAL
                 lookup = look_up_token();
             }
 
-            if (lookup == "")
+            if (lookup == "" && !nullstr)
             {
                 push_error(l, c, "function arguments parse error!");
                 return new CDLFunction();
@@ -1673,6 +1675,27 @@ namespace Koromo_Copy.Script.SRCAL
             else if (func.ContentFunctionName == "regex_matches")
             {
 
+            }
+            else if (func.ContentFunctionName == "type")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'type' function must have 1 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = v1.Type.ToString()
+                };
             }
             else
             {

@@ -69,6 +69,7 @@
       <Word>regex_exists</Word>
       <Word>regex_match</Word>
       <Word>regex_matches</Word>
+      <Word>type</Word>
     </Keywords>
 		<Keywords color="BooleanConstants">
 			<Word>false</Word>
