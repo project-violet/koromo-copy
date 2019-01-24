@@ -17,6 +17,7 @@ using Koromo_Copy_UX3.Properties;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -308,6 +309,10 @@ namespace Koromo_Copy_UX3.Utility
                     Monitor.Instance.Push($"[Script Editor] Fail to eject. {ex.Message}\r\n{ex.StackTrace}");
                     MessageBox.Show("이젝션을 실패했습니다. 자세한 내용은 콘솔을 참고해주세요.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            }
+            else if (tag == "Help")
+            {
+                Process.Start("https://github.com/dc-koromo/koromo-copy/blob/master/Document/SRCAL.md");
             }
         }
     }
