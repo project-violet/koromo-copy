@@ -279,7 +279,6 @@
     <EmbeddedResource Include="Utility\StringTools.resx">
       <DependentUpon>StringTools.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="MediaDevices.chm" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -299,7 +298,6 @@
     <Folder Include="Component\SoundCloud\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MediaDevicesLicense.txt" />
     <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />
   </ItemGroup>
   <ItemGroup>
