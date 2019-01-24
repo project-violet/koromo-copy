@@ -438,3 +438,56 @@ loop (i = 2 to 100) [
 
 $MessageFadeOff(true, "Complete collect all images!")
 ```
+
+### 5.7. 겔부루
+
+```
+##
+## Koromo Copy SRCAL Script
+##
+## Gelbooru Image Downloader
+##
+
+##
+## Attributes
+##
+$ScriptName = "gelbooru-images"
+$ScriptVersion = "0.1"
+$ScriptAuthor = "dc-koromo"
+$ScriptFolderName = "gelbooru"
+$ScriptRequestName = "gelbooru"
+$URLSpecifier = "https://gelbooru.com/"
+$UsingDriver = 1
+
+##
+## Procedure
+##
+request_url = $RequestURL
+
+master_folder = split(request_url, "=")[-1]
+
+$MessageFadeOn(true, "Start collecting...")
+
+## TODO: Your own collect logic
+loop (i = 0 to $Infinity) [
+    pid = mul(i, 42)
+    $DriverLoadPage(url_parameter(request_url, "pid", pid))
+    
+    $MessageText(concat(master_folder, "...[", i, "]"))
+    foreach (image : cal("/html[1]/body[1]/div[5]/div[{2+i*1}]/span[1]/a[1]/img[1], #attr[src]")) [
+        c1 = split(image, "/")
+        c2 = split(image, "/")
+        c3 = split(split(image, "/")[-1], "_")[1]
+        image = concat("https://simg3.gelbooru.com//images/", c1, "/", c2, "/", c3)
+        $AppendImage(image, concat(master_folder, "/", c3))
+    ]
+    
+    if (equal($LatestImagesCount, 0))
+        $ExitLoop()
+    
+    $ClearImagesCount()
+]
+
+$MessageFadeOff(true, "Complete collect all images!")
+$RequestDownload()
+```
