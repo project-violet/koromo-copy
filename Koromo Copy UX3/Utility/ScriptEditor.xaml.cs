@@ -215,8 +215,16 @@ namespace Koromo_Copy_UX3.Utility
             }
             else if (tag == "Save")
             {
+                string default_filename = "";
+                try
+                {
+                    var parser = new SRCALParser();
+                    script = parser.Parse(raw_script);
+                    default_filename = parser.attributes["$ScriptName"];
+                } catch { }
                 var sfd = new SaveFileDialog();
                 sfd.InitialDirectory = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "script");
+                sfd.FileName = default_filename;
                 sfd.Filter = "SRCAL 스크립트 파일 (*.srcal)|*.srcal";
                 if (sfd.ShowDialog() == true)
                 {
