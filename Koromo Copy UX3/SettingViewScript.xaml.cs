@@ -1,4 +1,14 @@
-﻿using System;
+﻿/***
+
+   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Script;
+using Koromo_Copy_UX3.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +30,34 @@ namespace Koromo_Copy_UX3
     /// </summary>
     public partial class SettingViewScript : UserControl
     {
+        public static SettingViewScript Instance;
         public SettingViewScript()
         {
             InitializeComponent();
+
+            Instance = this;
+        }
+        
+        public void Init()
+        {
+            int index = 0;
+            foreach (var script in ScriptManager.Instance.Scripts)
+            {
+                ScriptInfo.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+                ScriptInfo.Children.Add(new ScriptInfoElements
+                {
+                    DataContext = new ScriptInfoViewModel
+                    {
+                        Version = $"{script.Attribute().ScriptName} {script.Attribute().ScriptVersion}",
+                        Index = index++,
+                        Content =
+                        $"스크립트 이름 : {script.Attribute().ScriptName}\r\n" +
+                        $"스크립트 버전 : {script.Attribute().ScriptVersion}\r\n" +
+                        $"스크립트 작성자 : {script.Attribute().ScriptAuthor}\r\n" +
+                        $"생성 하위 폴더 : {script.Attribute().ScriptFolderName}\r\n"
+                    }
+                });
+            }
         }
     }
 }

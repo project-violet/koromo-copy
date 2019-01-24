@@ -20,5 +20,7 @@ namespace Koromo_Copy.Script
         /// 확인되지 않은 스크립트를 실행할지의 여부입니다.
         /// </summary>
         public bool ArrowUnkownScript;
+
+        public string[] UnusedScripts;
     }
 }

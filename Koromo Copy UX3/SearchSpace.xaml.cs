@@ -125,7 +125,7 @@ namespace Koromo_Copy_UX3
                 }
                 Task.Run(() => CheckUpdate());
                 Task.Run(() => DownloaderHelper.LoadOthersAsync());
-                Task.Run(() => ScriptManager.Instance.Initialization());
+                Task.Run(() => ScriptManager.Instance.Initialization()).ContinueWith ((x) => SettingViewScript.Instance.Init());
             }, TaskScheduler.FromCurrentSynchronizationContext());
 #endif
             Window w = Window.GetWindow(this);

@@ -2052,6 +2052,7 @@ namespace Koromo_Copy.Script.SRCAL
         SRCALEngine engine = new SRCALEngine();
         List<string> raw_script;
 
+        public List<string> RawScript { get { return raw_script; } }
         public SRCALEngine.SRCALAttribute Attribute() => engine.Attribute;
         
         public bool SpecifyURL(string url) => url.Contains(Attribute().URLSpecifier);

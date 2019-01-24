@@ -160,6 +160,7 @@
     <Compile Include="Domain\DownloaderHelper.cs" />
     <Compile Include="Domain\FinderDataGridViewModel.cs" />
     <Compile Include="Domain\GlobalImpl.cs" />
+    <Compile Include="Domain\ScriptInfoViewModel.cs" />
     <Compile Include="Domain\PatchNoteViewModel.cs" />
     <Compile Include="Domain\PathFilenameSorter.cs" />
     <Compile Include="Domain\SettingAdvancedViewModel.cs" />
@@ -202,6 +203,9 @@
     </Compile>
     <Compile Include="RecordWindow.xaml.cs">
       <DependentUpon>RecordWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptInfoElements.xaml.cs">
+      <DependentUpon>ScriptInfoElements.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ScriptEditorBraceFolding.cs" />
     <Compile Include="SearchElements.xaml.cs">
@@ -426,6 +430,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RecordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScriptInfoElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

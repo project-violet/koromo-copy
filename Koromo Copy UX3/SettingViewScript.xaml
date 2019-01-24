@@ -9,8 +9,9 @@
     <Grid Margin="20">
 
         <StackPanel HorizontalAlignment="Stretch">
-            <TextBlock Text="스크립트 설정" FontSize="20"/>
+            <TextBlock Text="스크립트 정보" FontSize="20"/>
 
+            <StackPanel x:Name="ScriptInfo" Margin="0 10 0 0"/>
         </StackPanel>
     </Grid>
 </UserControl>

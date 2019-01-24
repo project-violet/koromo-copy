@@ -27,7 +27,9 @@ namespace Koromo_Copy.Script
             new Tuple<string, string>("dcinside-article.srcal","IyMNCiMjIEtvcm9tbyBDb3B5IFNSQ0FMIFNjcmlwdA0KIyMNCiMjIERDSW5zaWRlIEFydGljbGUgSW1hZ2UgRG93bmxvYWRlcg0KIyMNCg0KIyMNCiMjIEF0dHJpYnV0ZXMNCiMjDQokU2NyaXB0TmFtZSA9ICJkY2luc2lkZS1hcnRpY2xlIg0KJFNjcmlwdFZlcnNpb24gPSAiMC4xIg0KJFNjcmlwdEF1dGhvciA9ICJkYy1rb3JvbW8iDQokU2NyaXB0Rm9sZGVyTmFtZSA9ICJkY2luc2lkZSINCiRTY3JpcHRSZXF1ZXN0TmFtZSA9ICJkY2luc2lkZSINCiRVUkxTcGVjaWZpZXIgPSAiaHR0cDovL2dhbGwuZGNpbnNpZGUuY29tL2JvYXJkL3ZpZXcvIg0KJFVzaW5nRHJpdmVyID0gMA0KDQojIw0KIyMgUHJvY2VkdXJlDQojIw0KcmVxdWVzdF91cmwgPSAkUmVxdWVzdFVSTA0KDQpnYWxsZXJ5X25hbWUgPSBjYWwoIi9odG1sWzFdL2JvZHlbMV0vZGl2WzJdL2RpdlsyXS9tYWluWzFdL3NlY3Rpb25bMV0vaGVhZGVyWzFdL2RpdlsxXS9kaXZbMV0vaDJbMV0vYVsxXSIpDQp0aXRsZSA9IGNhbCgiL2h0bWxbMV0vYm9keVsxXS9kaXZbMl0vZGl2WzJdL21haW5bMV0vc2VjdGlvblsxXS9hcnRpY2xlWzJdL2RpdlsxXS9oZWFkZXJbMV0vZGl2WzFdL2gzWzFdL3NwYW5bMl0iKQ0KaW1hZ2VzID0gY2FsKCIvaHRtbFsxXS9ib2R5WzFdL2RpdlsyXS9kaXZbMl0vbWFpblsxXS9zZWN0aW9uWzFdL2FydGljbGVbMl0vZGl2WzFdL2RpdlsxXS9kaXZbNl0vdWxbMV0vbGlbezEraSoxfV0vYVsxXSwgI2F0dHJbaHJlZl0iKQ0KZmlsZW5hbWVzID0gY2FsKCIvaHRtbFsxXS9ib2R5WzFdL2RpdlsyXS9kaXZbMl0vbWFpblsxXS9zZWN0aW9uWzFdL2FydGljbGVbMl0vZGl2WzFdL2RpdlsxXS9kaXZbNl0vdWxbMV0vbGlbezEraSoxfV0vYVsxXSIpDQoNCmxvb3AgKGkgPSAwIHRvIGFkZChjb3VudChpbWFnZXMpLCAtMSkpDQogICAgJEFwcGVuZEltYWdlKGltYWdlc1tpXSwgY29uY2F0KGdhbGxlcnlfbmFtZSwgIi8iLCB0aXRsZSwgIi8iLCBmaWxlbmFtZXNbaV0pKQ0KDQokUmVxdWVzdERvd25sb2FkKCk="),
             //new Tuple<string, string>("",""),
         };
-        
+
+        public List<SRCALScript> Scripts { get { return scripts; } }
+
         public void Initialization()
         {
             var script_dir = Path.Combine(Directory.GetCurrentDirectory(), "script");
@@ -109,6 +111,11 @@ namespace Koromo_Copy.Script
             return scripts.Any(x => x.SpecifyURL(url));
         }
 
+        /// <summary>
+        /// 특정 URL을 통해 식별된 스크립트를 가져옵니다.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public SRCALScript GetScript(string url)
         {
             foreach (var engine in scripts)
