@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Console|AnyCPU'">
+    <OutputPath>bin\Console\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Koromo Copy\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
