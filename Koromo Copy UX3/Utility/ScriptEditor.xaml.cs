@@ -14,6 +14,7 @@ using Koromo_Copy;
 using Koromo_Copy.Script;
 using Koromo_Copy.Script.SRCAL;
 using Koromo_Copy_UX3.Properties;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -196,7 +197,27 @@ namespace Koromo_Copy_UX3.Utility
                 new[] { '\n' },
                 StringSplitOptions.None
                 ).ToList();
-            if (tag == "Parse")
+            if (tag == "Open")
+            {
+                var ofd = new OpenFileDialog();
+                ofd.InitialDirectory = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "script");
+                ofd.Filter = "SRCAL 스크립트 파일 (*.srcal)|*.srcal";
+                if (ofd.ShowDialog() == true)
+                {
+                    textEditor.Text = File.ReadAllText(ofd.FileName);
+                }
+            }
+            else if (tag == "Save")
+            {
+                var sfd = new SaveFileDialog();
+                sfd.InitialDirectory = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "script");
+                sfd.Filter = "SRCAL 스크립트 파일 (*.srcal)|*.srcal";
+                if (sfd.ShowDialog() == true)
+                {
+                    File.WriteAllText(sfd.FileName, string.Join("\r\n", raw_script));
+                }
+            }
+            else if (tag == "Parse")
             {
 
                 bool err = false;
