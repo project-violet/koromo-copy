@@ -309,6 +309,7 @@ namespace Koromo_Copy.Script.SRCAL
                     {
                         if (('a' <= str[column] && str[column] <= 'z') ||
                             ('A' <= str[column] && str[column] <= 'Z') ||
+                            ('0' <= str[column] && str[column] <= '9') ||
                             str[column] == '_' || str[column] == '$')
                             builder.Append(str[column++]);
                         else
