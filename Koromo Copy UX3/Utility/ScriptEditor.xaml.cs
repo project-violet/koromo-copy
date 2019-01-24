@@ -64,7 +64,7 @@ namespace Koromo_Copy_UX3.Utility
 
         FoldingManager mgr;
         ScriptEditorBraceFolding folding;
-        public ScriptEditor()
+        public ScriptEditor(string code = null)
         {
             inits();
             InitializeComponent();
@@ -82,6 +82,11 @@ namespace Koromo_Copy_UX3.Utility
             foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2);
             foldingUpdateTimer.Tick += delegate { UpdateFoldings(); };
             foldingUpdateTimer.Start();
+
+            if (code != null)
+            {
+                textEditor.Text = code;
+            }
         }
 
         private void TextEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
