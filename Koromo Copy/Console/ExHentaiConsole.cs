@@ -149,21 +149,22 @@ namespace Koromo_Copy.Console
             
             var result = new List<EHentaiResultArticle>();
 
-            for (int i = 0; i < 1443; i++)
+            for (int i = 0; i < 20; i++)
             {
                 try
                 {
                     var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&f_search=language%3Akorean&f_apply=Apply+Filter&inline_set=dm_l";
                     var url2 = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&advsearch=1&f_search=language%3Akorean&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&f_apply=Apply+Filter";
+                    //           https://exhentai.org/?page=1&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sh=on&f_apply=Apply+Filter
                     var html = NetCommon.DownloadExHentaiString(url2);
                     result.AddRange(ExHentaiParser.ParseResultPageListView(html));
-                    Monitor.Instance.Push($"[Paging] {i+1}/1443");
+                    Monitor.Instance.Push($"[Paging] {i+1}/1457");
                 }
                 catch (Exception e)
                 {
                     Console.Instance.WriteErrorLine($"[Error] {i} {e.Message}");
                 }
-                Thread.Sleep(5000);
+                Thread.Sleep(500);
             }
             
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
