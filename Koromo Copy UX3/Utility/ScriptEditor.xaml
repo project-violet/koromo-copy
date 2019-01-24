@@ -32,6 +32,9 @@
             <Button Tag="Eject" Click="Button_Click" ToolTip="스크립트를 이젝션합니다.">
                 <materialDesign:PackIcon Kind="Eject" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
             </Button>
+            <Button Tag="CC" Click="Button_Click" Margin="4 0 0 0" ToolTip="커스텀 크롤러를 실행합니다.">
+                <materialDesign:PackIcon Kind="Lumx" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+            </Button>
             <Button Tag="Help" Click="Button_Click" Margin="4 0 0 0" ToolTip="메뉴얼을 실행합니다.">
                 <materialDesign:PackIcon Kind="Help" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
             </Button>

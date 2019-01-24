@@ -315,6 +315,10 @@ namespace Koromo_Copy_UX3.Utility
                     MessageBox.Show("이젝션을 실패했습니다. 자세한 내용은 콘솔을 참고해주세요.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            else if (tag == "CC")
+            {
+                (new CustomCrawler()).Show();
+            }
             else if (tag == "Help")
             {
                 Process.Start("https://github.com/dc-koromo/koromo-copy/blob/master/Document/SRCAL.md");
