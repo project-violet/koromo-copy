@@ -32,6 +32,9 @@
             <Button Tag="Eject" Click="Button_Click" ToolTip="스크립트를 이젝션합니다.">
                 <materialDesign:PackIcon Kind="Eject" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
             </Button>
+            <Button Tag="Help" Click="Button_Click" Margin="4 0 0 0" ToolTip="메뉴얼을 실행합니다.">
+                <materialDesign:PackIcon Kind="Help" Height="20" Width="20" Opacity=".56" VerticalAlignment="Center"/>
+            </Button>
         </StackPanel>
         <TextBlock x:Name="LC" Grid.Row="0" HorizontalAlignment="Right" Text="[0,0]" VerticalAlignment="Center" FontSize="16" Margin="0 0 25 0"/>
         <avalonEdit:TextEditor Grid.Row="1" Name="textEditor" FontFamily="Consolas" FontSize="11pt" Foreground="White" ShowLineNumbers="True" LineNumbersForeground="Cyan" Background="#1E1E1E" SyntaxHighlighting="SRCAL"  xml:space="preserve" HorizontalScrollBarVisibility="Auto">##
