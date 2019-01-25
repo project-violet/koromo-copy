@@ -146,9 +146,9 @@ namespace Koromo_Copy_UX3.Utility
             Tuple.Create("url_parameter_tidy","URL의 특정 매개변수를 삭제합니다."),
             Tuple.Create("int","불리안값이나 정수형, 문자열을 정수형으로 바꿉니다."),
             Tuple.Create("string","불리안값이나 정수형, 문자열을 문자열형으로 바꿉니다."),
-            Tuple.Create("regex_exists",""),
-            Tuple.Create("regex_match",""),
-            Tuple.Create("regex_matches",""),
+            Tuple.Create("regex_exists","regex pattern과 매칭되는 항목이 존재하는지의 여부를 가져옵니다."),
+            Tuple.Create("regex_match","regex pattern과 매칭되는 항목의 첫 번째 요소를 가져옵니다."),
+            Tuple.Create("regex_matches","regex pattern과 매칭되는 모든 항목을 가져옵니다"),
             Tuple.Create("type","인자의 타입을 문자열형태로 가져옵니다."),
         };
         bool opening = false;

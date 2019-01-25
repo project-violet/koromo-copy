@@ -158,9 +158,9 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |url_parameter_tidy(url,param)|URL의 특정 매개변수를 삭제합니다.|
 |int(txt)|불리안값이나 정수형, 문자열을 정수형으로 바꿉니다.|
 |string(tar)|불리안값이나 정수형, 문자열을 문자열형으로 바꿉니다.|
-|regex_exists||
-|regex_match||
-|regex_matches||
+|regex_exists(pattern, tar)|tar에 pattern과 매칭되는 항목이 존재하는지의 여부를 가져옵니다.|
+|regex_match(pattern, tar)|tar에 pattern과 매칭되는 항목의 첫 번째 요소를 가져옵니다. 반환값은 string입니다.|
+|regex_matches|tar에 pattern과 매칭되는 모든 항목을 가져옵니다. 반환값은 string-list입니다.|
 |type(obj)|인자의 타입을 문자열형태로 가져옵니다.|
 
 ## 4. 스크립트 자동 생성 도구
