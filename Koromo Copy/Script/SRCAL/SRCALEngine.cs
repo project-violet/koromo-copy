@@ -8,6 +8,7 @@
 
 using HtmlAgilityPack;
 using Koromo_Copy.Net.Driver;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,7 +129,8 @@ namespace Koromo_Copy.Script.SRCAL
                 Boolean,
                 Integer,
                 String,
-                StringList
+                StringList,
+                JSon,
             }
             public CDLVarType Type;
             public string Name;
@@ -136,6 +138,7 @@ namespace Koromo_Copy.Script.SRCAL
             public int ContentInteger;
             public string ContentString;
             public List<string> ContentStringList;
+            public JToken ContentJSon;
         }
         public class CDLIndex : CDLDebugInfo {
             public CDLVariable ContentVariable;
@@ -1838,6 +1841,101 @@ namespace Koromo_Copy.Script.SRCAL
                     ContentString = v1.Type.ToString()
                 };
             }
+            else if (func.ContentFunctionName == "to_json")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'to_json' function must have 1 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                var json = JObject.Parse(v1.ContentString);
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.JSon,
+                    ContentJSon = json
+                };
+            }
+            else if (func.ContentFunctionName == "get_json")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'get_json' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.JSon)
+                {
+                    var msg = "first argument type must be json type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if (v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "second argument type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.JSon,
+                    ContentJSon = v1.ContentJSon[v2.ContentString]
+                };
+            }
+            else if (func.ContentFunctionName == "get_json_string")
+            {
+                if (func.ContentArguments.Count != 2)
+                {
+                    var msg = "'get_json' function must have 2 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+                var v2 = run_index(v, func.ContentArguments[1]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.JSon)
+                {
+                    var msg = "first argument type must be json type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                if (v2.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "second argument type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = v1.ContentJSon[v2.ContentString].ToString()
+                };
+            }
             else
             {
                 var msg = $"'{func.ContentFunctionName}' function not found.";
@@ -1913,29 +2011,51 @@ namespace Koromo_Copy.Script.SRCAL
                 var v = new SRCALParser.CDLVar();
                 var contents = run_index(v, _foreach.ContentSource);
 
-                if (contents.Type != SRCALParser.CDLVar.CDLVarType.StringList)
+                if (contents.Type != SRCALParser.CDLVar.CDLVarType.StringList && contents.Type != SRCALParser.CDLVar.CDLVarType.JSon)
                 {
-                    var msg = $"'foreach source' must be string-list type.";
+                    var msg = $"'foreach source' must be string-list or json type.";
                     error_message.Add(Tuple.Create(contents.Line, contents.Column, msg));
                     throw new Exception(msg);
                 }
 
-                iter.Type = SRCALParser.CDLVar.CDLVarType.String;
 
                 enter_block();
-                foreach (var str in contents.ContentStringList)
+                if (contents.Type == SRCALParser.CDLVar.CDLVarType.StringList)
                 {
-                    iter.ContentString = str;
-                    variable_update(iter);
-
-                    enter_block();
-                    run_block(_foreach.ContentBlock);
-                    exit_block();
-
-                    if (exit_loop)
+                    iter.Type = SRCALParser.CDLVar.CDLVarType.String;
+                    foreach (var str in contents.ContentStringList)
                     {
-                        exit_loop = false;
-                        break;
+                        iter.ContentString = str;
+                        variable_update(iter);
+
+                        enter_block();
+                        run_block(_foreach.ContentBlock);
+                        exit_block();
+
+                        if (exit_loop)
+                        {
+                            exit_loop = false;
+                            break;
+                        }
+                    }
+                }
+                else if (contents.Type == SRCALParser.CDLVar.CDLVarType.JSon)
+                {
+                    iter.Type = SRCALParser.CDLVar.CDLVarType.JSon;
+                    foreach (var json in contents.ContentJSon.Children())
+                    {
+                        iter.ContentJSon = (JObject)json;
+                        variable_update(iter);
+
+                        enter_block();
+                        run_block(_foreach.ContentBlock);
+                        exit_block();
+
+                        if (exit_loop)
+                        {
+                            exit_loop = false;
+                            break;
+                        }
                     }
                 }
                 exit_block();
@@ -2004,6 +2124,7 @@ namespace Koromo_Copy.Script.SRCAL
                     error_message.Add(Tuple.Create(_var.Line, _var.Column, msg));
                     throw new Exception(msg);
                 }
+
                 var result1 = new SRCALParser.CDLVar();
                 result1.Line = _var.Line;
                 result1.Column = _var.Column;
@@ -2019,11 +2140,14 @@ namespace Koromo_Copy.Script.SRCAL
                     throw new Exception(msg);
                 }
 
-                if (_index.ContentInteger == -1)
-                    result1.ContentString = _var.ContentStringList.Last();
-                else
-                    result1.ContentString = _var.ContentStringList[_index.ContentInteger];
-                return result1;
+                if (_var.Type == SRCALParser.CDLVar.CDLVarType.StringList)
+                {
+                    if (_index.ContentInteger == -1)
+                        result1.ContentString = _var.ContentStringList.Last();
+                    else
+                        result1.ContentString = _var.ContentStringList[_index.ContentInteger];
+                    return result1;
+                }
             }
 
             var result = new SRCALParser.CDLVar();
@@ -2035,6 +2159,7 @@ namespace Koromo_Copy.Script.SRCAL
             result.ContentInteger = _var.ContentInteger;
             result.ContentString = _var.ContentString;
             result.ContentStringList = _var.ContentStringList;
+            result.ContentJSon = _var.ContentJSon;
             return result;
         }
 
