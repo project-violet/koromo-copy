@@ -457,29 +457,33 @@ $ScriptAuthor = "dc-koromo"
 $ScriptFolderName = "gelbooru"
 $ScriptRequestName = "gelbooru"
 $URLSpecifier = "https://gelbooru.com/"
-$UsingDriver = 1
+$UsingDriver = 0
 
 ##
 ## Procedure
 ##
 request_url = $RequestURL
 
-master_folder = split(request_url, "=")[-1]
+master_folder = url_parameter(request_url, "tags")
 
 $MessageFadeOn(true, "Start collecting...")
 
-## TODO: Your own collect logic
 loop (i = 0 to $Infinity) [
     pid = mul(i, 42)
-    $DriverLoadPage(url_parameter(request_url, "pid", pid))
+    $LoadPage(url_parameter(request_url, "pid", pid))
     
     $MessageText(concat(master_folder, "...[", i, "]"))
-    foreach (image : cal("/html[1]/body[1]/div[5]/div[{2+i*1}]/span[1]/a[1]/img[1], #attr[src]")) [
-        c1 = split(image, "/")
-        c2 = split(image, "/")
+    foreach (image : cal("/html[1]/body[1]/div[4]/div[5]/div[{2+i*1}]/span[1]/a[1]/img[1], #attr[src]")) [
+        c1 = split(image, "/")[4]
+        c2 = split(image, "/")[5]
         c3 = split(split(image, "/")[-1], "_")[1]
         image = concat("https://simg3.gelbooru.com//images/", c1, "/", c2, "/", c3)
         $AppendImage(image, concat(master_folder, "/", c3))
+        
+        ## 썸네일 주소의 이미지는 jpg확장자를 가지나, raw_image는 png를 가진 이미지도 있
+        png = concat(split(c3, ".")[0], ".png")
+        image = concat("https://simg3.gelbooru.com//images/", c1, "/", c2, "/", png)
+        $AppendImage(image, concat(master_folder, "/", png))
     ]
     
     if (equal($LatestImagesCount, 0))
