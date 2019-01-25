@@ -261,14 +261,14 @@ $UsingDriver = 0
 request_url = $RequestURL
 
 title = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]")[0]
-sub_urls = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1], #attr[href]")
+data_wrids = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}], #attr[data-wrid]")
 sub_titles = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[{1+i*1}]/a[1]/div[1], #htext")
 
-$MessageFadeOn(true, concat(title, "...[0/", count(sub_urls), "]"))
+$MessageFadeOn(true, concat(title, "...[0/", count(data_wrids), "]"))
 
-loop (i = 0 to add(count(sub_urls), -1)) [
-    $LoadPage(sub_urls[i])
-    $MessageText(concat(title, "...[", add(i,1), "/", count(sub_urls), "]"))
+loop (i = 0 to add(count(data_wrids), -1)) [
+    $LoadPage(concat("https://mangashow.me/bbs/board.php?bo_table=msm_manga&wr_id=", data_wrids[i]))
+    $MessageText(concat(title, "...[", add(i,1), "/", count(data_wrids), "]"))
     images = cal("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/form[1]/div[1]/div[{1+i*1}]/div[1], #attr[style], #regex[https://[^\\)]*]")
     foreach (image : images) [
         filename = split(image, "/")[-1]
