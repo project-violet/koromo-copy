@@ -660,7 +660,6 @@ namespace Koromo_Copy.Script.SRCAL
             info_message = new List<Tuple<int, int, string>>();
             error = false;
             variable_update(new SRCALParser.CDLVar { Name = "$RequestURL", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = request_url });
-            variable_update(new SRCALParser.CDLVar { Name = "$RequestHtml", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = current_html });
             variable_update(new SRCALParser.CDLVar { Name = "$Infinity", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = int.MaxValue });
             variable_update(new SRCALParser.CDLVar { Name = "$LatestImagesCount", Type = SRCALParser.CDLVar.CDLVarType.Integer, ContentInteger = 0 });
             enter_block();
@@ -748,6 +747,7 @@ namespace Koromo_Copy.Script.SRCAL
                     driver.Navigate(url);
                     current_html = driver.GetHtml();
                 }
+                variable_update(new SRCALParser.CDLVar { Name = "$RequestHtml", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = current_html });
                 HtmlDocument document = new HtmlDocument();
                 document.LoadHtml(current_html);
                 root_node = document.DocumentNode;
@@ -1710,8 +1710,8 @@ namespace Koromo_Copy.Script.SRCAL
                 }
 
                 var regex = new Regex(v1.ContentString);
-
-                if (regex.Match(v2.ContentString).Groups.Count > 0)
+                var match = regex.Match(v2.ContentString);
+                if (match != null && match.Groups.Count > 0)
                 {
                     return new SRCALParser.CDLVar
                     {
@@ -1767,7 +1767,7 @@ namespace Koromo_Copy.Script.SRCAL
             }
             else if (func.ContentFunctionName == "regex_matches")
             {
-                if (func.ContentArguments.Count != 2)
+                if (func.ContentArguments.Count != 2 && func.ContentArguments.Count != 3)
                 {
                     var msg = "'regex_matches' function must have 2 argument.";
                     error_message.Add(Tuple.Create(func.Line, func.Column, msg));
@@ -1777,6 +1777,19 @@ namespace Koromo_Copy.Script.SRCAL
                 var v = new SRCALParser.CDLVar();
                 var v1 = run_index(v, func.ContentArguments[0]);
                 var v2 = run_index(v, func.ContentArguments[1]);
+                var v3 = 0;
+
+                if (func.ContentArguments.Count == 3)
+                {
+                    var vt = run_index(v, func.ContentArguments[2]);
+                    if (vt.Type != SRCALParser.CDLVar.CDLVarType.Integer)
+                    {
+                        var msg = "3rd argument type must be integer type.";
+                        error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                        throw new Exception(msg);
+                    }
+                    v3 = vt.ContentInteger;
+                }
 
                 if (v1.Type != SRCALParser.CDLVar.CDLVarType.String || v2.Type != SRCALParser.CDLVar.CDLVarType.String)
                 {
@@ -1786,14 +1799,22 @@ namespace Koromo_Copy.Script.SRCAL
                 }
 
                 var regex = new Regex(v1.ContentString);
+                var match = regex.Match(v2.ContentString);
+                List<string> mat = new List<string>();
 
+                while (match.Success)
+                {
+                    mat.Add(match.Groups[v3].Value);
+                    match = match.NextMatch();
+                }
+                
                 return new SRCALParser.CDLVar
                 {
                     Line = func.Line,
                     Column = func.Column,
                     Name = "$rvalue",
                     Type = SRCALParser.CDLVar.CDLVarType.StringList,
-                    ContentStringList = regex.Match(v2.ContentString).Groups.OfType<Match>().Select(x => x.Value).ToList()
+                    ContentStringList = mat
                 };
             }
             else if (func.ContentFunctionName == "type")
