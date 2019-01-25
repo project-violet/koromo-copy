@@ -464,27 +464,16 @@ $UsingDriver = 0
 ##
 request_url = $RequestURL
 
-master_folder = url_parameter(request_url, "tags")
+tags = url_parameter(request_url, "tags")
 
 $MessageFadeOn(true, "Start collecting...")
 
 loop (i = 0 to $Infinity) [
-    pid = mul(i, 42)
-    $LoadPage(url_parameter(request_url, "pid", pid))
+    $LoadPage(concat("https://gelbooru.com/index.php?page=dapi&s=post&q=index&limit=100&tags=", tags, "&pid=", i))
     
-    $MessageText(concat(master_folder, "...[", i, "]"))
-    foreach (image : cal("/html[1]/body[1]/div[4]/div[5]/div[{2+i*1}]/span[1]/a[1]/img[1], #attr[src]")) [
-        c1 = split(image, "/")[4]
-        c2 = split(image, "/")[5]
-        c3 = split(split(image, "/")[-1], "_")[1]
-        image = concat("https://simg3.gelbooru.com//images/", c1, "/", c2, "/", c3)
-        $AppendImage(image, concat(master_folder, "/", c3))
-        
-        ## sometimes raw-images hava png extension
-        png = concat(split(c3, ".")[0], ".png")
-        image = concat("https://simg3.gelbooru.com//images/", c1, "/", c2, "/", png)
-        $AppendImage(image, concat(master_folder, "/", png))
-    ]
+    $MessageText(concat(tags, "...[", i, "]"))
+    foreach (image : cal("/posts[1]/post[{1+i*1}], #attr[file_url]"))
+        $AppendImage(image, concat(tags, "/", split(image, "/")[-1]))
     
     if (equal($LatestImagesCount, 0))
         $ExitLoop()
