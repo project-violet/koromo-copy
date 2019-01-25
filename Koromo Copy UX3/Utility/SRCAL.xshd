@@ -70,6 +70,9 @@
       <Word>regex_match</Word>
       <Word>regex_matches</Word>
       <Word>type</Word>
+      <Word>to_json</Word>
+      <Word>get_json</Word>
+      <Word>get_json_string</Word>
     </Keywords>
 		<Keywords color="BooleanConstants">
 			<Word>false</Word>

@@ -160,8 +160,11 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |string(tar)|불리안값이나 정수형, 문자열을 문자열형으로 바꿉니다.|
 |regex_exists(pattern, tar)|tar에 pattern과 매칭되는 항목이 존재하는지의 여부를 가져옵니다.|
 |regex_match(pattern, tar)|tar에 pattern과 매칭되는 항목의 첫 번째 요소를 가져옵니다. 반환값은 string입니다.|
-|regex_matches|tar에 pattern과 매칭되는 모든 항목을 가져옵니다. 반환값은 string-list입니다.|
+|regex_matches(pattern, tar, index=0)|tar에 pattern과 매칭되는 모든 항목을 가져옵니다. index는 각 매칭된 항목 그룹의 offset입니다. 반환값은 string-list입니다.|
 |type(obj)|인자의 타입을 문자열형태로 가져옵니다.|
+|to_json(str)|문자열을 json형태로 가져옵니다.|
+|get_json(json, str)|json의 특정 항목을 가져옵니다. 반환값은 json입니다.|
+|get_json_string(json, str)|json의 특정 항목을 문자열 형태로 가져옵니다.|
 
 ## 4. 스크립트 자동 생성 도구
 
@@ -481,6 +484,51 @@ loop (i = 0 to $Infinity) [
     $ClearImagesCount()
 ]
 
+$MessageFadeOff(true, "Complete collect all images!")
+$RequestDownload()
+```
+
+### 5.8. imgur
+
+```
+##
+## Koromo Copy SRCAL Script
+##
+## imgur Images Downloader
+##
+
+##
+## Attributes
+##
+$ScriptName = "imgur-images"
+$ScriptVersion = "0.1"
+$ScriptAuthor = "dc-koromo"
+$ScriptFolderName = "imgur"
+$ScriptRequestName = "imgur"
+$URLSpecifier = "https://imgur.com/"
+$UsingDriver = 0
+
+##
+## Procedure
+##
+request_url = $RequestURL
+
+$MessageFadeOn(true, "Start collecting...")
+
+title = split(request_url, "/")[-1]
+
+json = to_json(regex_matches("item: ({.*})", $RequestHtml, 1)[0])
+json = get_json(json, "album_images")
+json = get_json(json, "images")
+
+foreach (j : json) [
+    hash = get_json_string(j, "hash")
+    ext = get_json_string(j, "ext")
+    filename = concat(hash, ext)
+    image = concat("https://i.imgur.com/", filename)
+    $AppendImage(image, concat(title, "/", filename))
+]
+    
 $MessageFadeOff(true, "Complete collect all images!")
 $RequestDownload()
 ```
