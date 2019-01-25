@@ -670,6 +670,11 @@ namespace Koromo_Copy.Script.SRCAL
             thread.Start(script);
             thread.Join();
 
+            if (error)
+            {
+                error_message.ForEach(x => Monitor.Instance.Push($"[SRCAL Engine] error occurred [{x.Item1}, {x.Item2}] {x.Item3}"));
+            }
+
             return error;
         }
 
