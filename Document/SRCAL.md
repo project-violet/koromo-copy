@@ -532,3 +532,53 @@ foreach (j : json) [
 $MessageFadeOff(true, "Complete collect all images!")
 $RequestDownload()
 ```
+
+### 5.9. jmana
+
+```
+##
+## Koromo Copy SRCAL Script
+##
+## JMana Downloader
+##
+
+##
+## Attributes
+##
+$ScriptName = "jmana"
+$ScriptVersion = "0.1"
+$ScriptAuthor = "dc-koromo"
+$ScriptFolderName = "jmana"
+$ScriptRequestName = "jmana"
+$URLSpecifier = "https://www.jmana2.com/book/"
+$UsingDriver = 0
+
+##
+## Procedure
+##
+request_url = $RequestURL
+
+$MessageFadeOn(true, "Start collecting...")
+
+title = cal("/html[1]/body[1]/div[2]/div[1]/ul[1]/li[1]")[0]
+sub_urls = cal("/html[1]/body[1]/div[2]/div[2]/div[2]/ul[1]/li[{1+i*1}]/a[1], #attr[href]")
+sub_titles = cal("/html[1]/body[1]/div[2]/div[2]/div[2]/ul[1]/li[{1+i*1}]/a[1]")
+
+max_page = add(count(sub_urls),-1)
+loop (i = 0 to max_page) [
+    $LoadPage(concat("https://www.jmana2.com", sub_urls[i]))
+    $MessageText(concat(title, "...[", i, "/", max_page, "]"))
+    
+    images = cal("/html[1]/body[1]/div[2]/div[1]/div[3]/ul[1]/li[{1+i*1}]/div[1]/img[1], #attr[src]")
+    
+    foreach (image : images) [
+        tidy = split(image, "amp;")
+        image = concat(tidy[0], tidy[1])
+        filename = concat(split(image, "=")[-1], ".jpg")
+        $AppendImage(image, concat(title, "/", sub_titles[i], "/", filename))
+    ]
+]
+
+$MessageFadeOff(true, "Complete collect all images!")
+$RequestDownload()
+```
