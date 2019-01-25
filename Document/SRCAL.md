@@ -480,7 +480,7 @@ loop (i = 0 to $Infinity) [
         image = concat("https://simg3.gelbooru.com//images/", c1, "/", c2, "/", c3)
         $AppendImage(image, concat(master_folder, "/", c3))
         
-        ## 썸네일 주소의 이미지는 jpg확장자를 가지나, raw_image는 png를 가진 이미지도 있
+        ## sometimes raw-images hava png extension
         png = concat(split(c3, ".")[0], ".png")
         image = concat("https://simg3.gelbooru.com//images/", c1, "/", c2, "/", png)
         $AppendImage(image, concat(master_folder, "/", png))
