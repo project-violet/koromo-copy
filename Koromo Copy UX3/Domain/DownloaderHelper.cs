@@ -496,7 +496,7 @@ namespace Koromo_Copy_UX3.Domain
             {
                 var script = ScriptManager.Instance.GetScript(url);
                 MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
-                script.Run(url, (x, y) =>
+                var err = script.Run(url, (x, y) =>
                 {
                     string dir = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), x.ScriptFolderName);
 
@@ -525,6 +525,11 @@ namespace Koromo_Copy_UX3.Domain
 
                     MainWindow.Instance.FadeOut_MiddlePopup($"{y.Count}개 항목 다운로드 시작...");
                 });
+                if (err)
+                {
+                    Koromo_Copy.Monitor.Instance.Push($"[Script Runner] '{script.Attribute().ScriptName}' 스크립트 실행중 오류가 발생했습니다.");
+                    MainWindow.Instance.FadeOut_MiddlePopup($"'{script.Attribute().ScriptName}' 스크립트 실행 중 오류가 발생했습니다.");
+                }
             });
         }
 
