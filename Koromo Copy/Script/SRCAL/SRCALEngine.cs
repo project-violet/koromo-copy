@@ -719,6 +719,9 @@ namespace Koromo_Copy.Script.SRCAL
             if (var.Name == "$RequestHtml")
             {
                 current_html = var.ContentString;
+                HtmlDocument document = new HtmlDocument();
+                document.LoadHtml(current_html);
+                root_node = document.DocumentNode;
             }
             for (int i = 0; i < variables.Count; i++)
                 if (variables[i].Item2.Name == var.Name)
@@ -755,9 +758,6 @@ namespace Koromo_Copy.Script.SRCAL
                     current_html = driver.GetHtml();
                 }
                 variable_update(new SRCALParser.CDLVar { Name = "$RequestHtml", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = current_html });
-                HtmlDocument document = new HtmlDocument();
-                document.LoadHtml(current_html);
-                root_node = document.DocumentNode;
                 image_list = new List<Tuple<string, string>>();
                 run_block(((SRCALParser.CDLScript)script).start_block);
 
@@ -838,9 +838,6 @@ namespace Koromo_Copy.Script.SRCAL
                 info_message.Add(Tuple.Create(func.Line, func.Column, $"download request html {v.ContentString}"));
                 current_html = Net.NetCommon.DownloadString(v.ContentString);
                 variable_update(new SRCALParser.CDLVar { Name = "$RequestHtml", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = current_html });
-                HtmlDocument document = new HtmlDocument();
-                document.LoadHtml(current_html);
-                root_node = document.DocumentNode;
             }
             else if (func.ContentFunctionName == "$AppendImage")
             {
