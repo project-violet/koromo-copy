@@ -174,6 +174,8 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |get_json(json, str)|json의 특정 항목을 가져옵니다. 반환값은 json입니다.|
 |get_json_string(json, str)|json의 특정 항목을 문자열 형태로 가져옵니다.|
 |base64decode(str)|base64 포맷을 디코딩합니다.|
+|htmldecode(str)|html 포맷을 디코딩합니다. 가령, `&amp;`와 같은 문자열이 치환됩니다.|
+|urldecode(str)|url 포맷을 디코딩합니다.|
 
 ## 4. 스크립트 자동 생성 도구
 

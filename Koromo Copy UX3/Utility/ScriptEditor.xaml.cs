@@ -154,6 +154,8 @@ namespace Koromo_Copy_UX3.Utility
             Tuple.Create("get_json","json의 특정 항목을 가져옵니다."),
             Tuple.Create("get_json_string","json의 특정 항목을 문자열 형태로 가져옵니다."),
             Tuple.Create("base64decode","base64 포맷을 디코딩합니다."),
+            Tuple.Create("htmldecode","html 포맷을 디코딩합니다. 가령, &amp;와 같은 문자열이 치환됩니다."),
+            Tuple.Create("urldecode","url 포맷을 디코딩합니다."),
         };
         bool opening = false;
         private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)

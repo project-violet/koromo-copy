@@ -504,11 +504,12 @@ namespace Koromo_Copy_UX3.Domain
                     
                     foreach (var ddd in y)
                     {
-                        var sub_dir = Path.GetDirectoryName(Path.Combine(dir, ddd.Item2));
+                        var tidy = DeleteInvalid(ddd.Item2);
+                        var sub_dir = Path.GetDirectoryName(Path.Combine(dir, tidy));
                         if (dic.ContainsKey(sub_dir))
-                            dic[sub_dir].Add(Tuple.Create(ddd.Item1, ddd.Item2));
+                            dic[sub_dir].Add(Tuple.Create(ddd.Item1, tidy));
                         else
-                            dic.Add(sub_dir, new List<Tuple<string, string>>() { Tuple.Create(ddd.Item1, ddd.Item2) });
+                            dic.Add(sub_dir, new List<Tuple<string, string>>() { Tuple.Create(ddd.Item1, tidy) });
                     }
 
                     foreach (var list in dic)

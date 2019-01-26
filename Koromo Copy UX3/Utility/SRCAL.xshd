@@ -74,6 +74,8 @@
       <Word>get_json</Word>
       <Word>get_json_string</Word>
       <Word>base64decode</Word>
+      <Word>htmldecode</Word>
+      <Word>urldecode</Word>
     </Keywords>
 		<Keywords color="BooleanConstants">
 			<Word>false</Word>
