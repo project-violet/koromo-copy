@@ -55,7 +55,7 @@ namespace Koromo_Copy_UX3
                         $"스크립트 버전 : {script.Attribute().ScriptVersion}\r\n" +
                         $"스크립트 작성자 : {script.Attribute().ScriptAuthor}\r\n" +
                         $"생성 하위 폴더 : {script.Attribute().ScriptFolderName}\r\n" + 
-                        $"스크립트 식별자 : {script.Attribute().URLSpecifier}"
+                        $"스크립트 식별자 : {script.Attribute().URLSpecifier}\r\n"
                     }
                 });
             }
