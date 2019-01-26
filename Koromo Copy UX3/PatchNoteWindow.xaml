@@ -70,27 +70,27 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.5 Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.6 Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 403, 404 항목에 대한 다운로드 지원"/>
+                        <Run Text=" - Gelbooru, Imgur, JMana, AdultI, Mana79, Funbe, MyReadingManga 스크립트 추가됨"/>
                         <LineBreak/>
-                        <Run Text="   히토미에 없는 작품이라면 히요비->익헨 순으로 작품을 찾습니다. (현재 한국어만 가능합니다)"/>
-                        <LineBreak/>
-                        <LineBreak/>
-                        <Run Text=" - 스크립트 엔진 추가"/>
-                        <LineBreak/>
-                        <Run Text="   크롤러의 동작을 정의하는 스크립트 언어를 새로만들어 추가했습니다."/>
-                        <LineBreak/>
-                        <Run Text="   망가쇼미, 단부루, 디시인사이드 이미지 다운로더 스크립트가 추가됩니다. (script 폴더를 확인하세요)"/>
+                        <Run Text="   (망가쇼미, 단부루 스크립트 오류 수정)"/>
                         <LineBreak/>
                         <LineBreak/>
+                        <Run Text=" - 스크립트 개발도구(커스텀 크롤러, 스크립트 에디터)가 추가됩니다."/>
+                        <LineBreak/>
+                        <Run Text="   개발도구들과 개발문서를 참조해 직접 스크립트를 제작해보세요!"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text=" *  망가쇼미의 트래픽 제한으로 시리즈 매니져와 만화 크롤러는 더이상 관리되지 않습니다."/>
                         <LineBreak/>
                         <LineBreak/>
                         <Run Text=" 자세한 업데이트 내역은 커밋이나 설정->업데이트를 참고하세요."/>
                         <LineBreak/>
                         <Run Text=" 커밋 : "/>
-                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.4.6953.26742...master">https://github.com/dc-koromo/koromo-copy/compare/1.4.6953.26742...master</Hyperlink>
+                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.5.6961.837...master">https://github.com/dc-koromo/koromo-copy/compare/1.5.6961.837...master</Hyperlink>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>

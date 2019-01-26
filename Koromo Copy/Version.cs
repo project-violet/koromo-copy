@@ -24,6 +24,7 @@ namespace Koromo_Copy
         public DateTime UpdateTime;
         public string VersionBinary;
         public string PatchNote;
+        public int ScriptVersion;
         public List<Tuple<string, DateTime, string>> Notifications;
     }
 
@@ -95,6 +96,7 @@ namespace Koromo_Copy
             vm.BuildVersion = build;
             vm.RevisionVersion = revis;
             vm.UpdateTime = DateTime.Now;
+            vm.ScriptVersion = 0;
             
             string json = JsonConvert.SerializeObject(vm, Formatting.None);
             using (var fs = new StreamWriter(new FileStream("version", FileMode.Create, FileAccess.Write)))

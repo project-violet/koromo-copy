@@ -8,11 +8,11 @@
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
-## 최신 릴리즈 (2018/01/22)
+## 최신 릴리즈 (2018/01/26)
 
-Koromo Copy 1.5.6961.837 Beta
+Koromo Copy 1.6.6965.28680 Beta
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/1.5.6961.837
+https://github.com/dc-koromo/koromo-copy/releases/tag/1.6.6965.28680
 
 ![hitomi history](Document/Images/1.png)
 
