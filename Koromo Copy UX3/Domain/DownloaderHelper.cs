@@ -128,10 +128,18 @@ namespace Koromo_Copy_UX3.Domain
 
         public static string DeleteInvalid(string path)
         {
-            string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            foreach (char c in invalid)
-                path = path.Replace(c.ToString(), "");
-            return path;
+            var split = path.Split(new[] { '/', '\\' });
+            var invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            var builder = new StringBuilder();
+            foreach (var tkn in split)
+            {
+                var result = tkn;
+                foreach (char c in invalid)
+                    result = result.Replace(c.ToString(), "");
+                builder.Append(result + "\\");
+            }
+            builder.Remove(builder.Length-1, 1);
+            return builder.ToString();
         }
 
         public static async void ProcessPixivAsync(string url)
@@ -504,11 +512,12 @@ namespace Koromo_Copy_UX3.Domain
                     
                     foreach (var ddd in y)
                     {
-                        var sub_dir = Path.GetDirectoryName(Path.Combine(dir, ddd.Item2));
+                        var tidy = DeleteInvalid(ddd.Item2);
+                        var sub_dir = Path.GetDirectoryName(Path.Combine(dir, tidy));
                         if (dic.ContainsKey(sub_dir))
-                            dic[sub_dir].Add(Tuple.Create(ddd.Item1, ddd.Item2));
+                            dic[sub_dir].Add(Tuple.Create(ddd.Item1, tidy));
                         else
-                            dic.Add(sub_dir, new List<Tuple<string, string>>() { Tuple.Create(ddd.Item1, ddd.Item2) });
+                            dic.Add(sub_dir, new List<Tuple<string, string>>() { Tuple.Create(ddd.Item1, tidy) });
                     }
 
                     foreach (var list in dic)
