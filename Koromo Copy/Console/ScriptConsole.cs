@@ -8,6 +8,8 @@
 
 using Koromo_Copy.Interface;
 using Koromo_Copy.Script.SRCAL;
+using Koromo_Copy_Base.Crypto;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +17,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using static Koromo_Copy.Script.SRCAL.SRCALEngine;
 
 namespace Koromo_Copy.Console
 {
@@ -28,6 +31,9 @@ namespace Koromo_Copy.Console
 
         [CommandLine("--test", CommandType.OPTION, Pipe = true, DefaultArgument = true)]
         public bool Test;
+
+        [CommandLine("--extract", CommandType.OPTION, DefaultArgument = true)]
+        public bool Extract;
     }
 
     /// <summary>
@@ -55,6 +61,10 @@ namespace Koromo_Copy.Console
             else if (option.Test)
             {
                 ProcessTest();
+            }
+            else if (option.Extract)
+            {
+                ProcessExtract();
             }
 
             return true;
@@ -104,6 +114,49 @@ namespace Koromo_Copy.Console
             //engine.RunScript("https://mangashow.me/bbs/page.php?hid=manga_detail&manga_name=%EC%99%95%20%EA%B2%8C%EC%9E%84%20%EC%A2%85%EA%B7%B9");
             //engine.RunScript("https://danbooru.donmai.us/posts?page=3&tags=yuri", null);
             engine.RunScript("https://nozomi.la/tag/mikagami_mamizu-1.html", null);
+        }
+
+        class extract_model
+        {
+            public string Version;
+            public List<Tuple<string, SRCALAttribute, string, string>> Scripts;
+        }
+        
+        static void ProcessExtract()
+        {
+            var version = "0";
+            var script_dir = Path.Combine(Directory.GetCurrentDirectory(), "script");
+            var em = new extract_model();
+            em.Version = version;
+            em.Scripts = new List<Tuple<string, SRCALAttribute, string, string>>();
+            foreach (var file in Directory.GetFiles(script_dir))
+            {
+                string raw = File.ReadAllText(file);
+                
+                var raw_script = raw.Split(
+                    new[] { Environment.NewLine },
+                    StringSplitOptions.None
+                    ).ToList();
+                var parser = new SRCALParser();
+                parser.Parse(raw_script);
+
+                var attribute = new SRCALAttribute();
+                attribute.ScriptName = parser.attributes["$ScriptName"];
+                attribute.ScriptVersion = parser.attributes["$ScriptVersion"];
+                attribute.ScriptAuthor = parser.attributes["$ScriptAuthor"];
+                attribute.ScriptFolderName = parser.attributes["$ScriptFolderName"];
+                attribute.ScriptRequestName = parser.attributes["$ScriptRequestName"];
+                attribute.URLSpecifier = parser.attributes["$URLSpecifier"];
+                attribute.UsingDriver = Convert.ToInt32(parser.attributes["$UsingDriver"]) == 0 ? false : true;
+
+                em.Scripts.Add(Tuple.Create(Path.GetFileName(file), attribute, raw.ToBase64(), Hash.GetFileHash(file)));
+            }
+
+            string json = JsonConvert.SerializeObject(em, Formatting.Indented);
+            using (var fs = new StreamWriter(new FileStream("scripts.json", FileMode.Create, FileAccess.Write)))
+            {
+                fs.Write(json);
+            }
         }
     }
 }
