@@ -33,16 +33,15 @@ namespace Koromo_Copy.Script
         public void Initialization()
         {
             var script_dir = Path.Combine(Directory.GetCurrentDirectory(), "script");
-            var scripts = Net.NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/scripts.json");
-            var em = JsonConvert.DeserializeObject<extract_model>(scripts);
-
-            if (Convert.ToInt32(em.Version)+1 > Settings.Instance.Model.ScriptPackageVersion)
+            if (Version.LatestVersionModel.ScriptVersion + 1 > Settings.Instance.Model.ScriptPackageVersion)
             {
                 Directory.CreateDirectory(script_dir);
 
+                var scripts = Net.NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/scripts.json");
+                var em = JsonConvert.DeserializeObject<extract_model>(scripts);
                 foreach (var pair in em.Scripts)
                     File.WriteAllText(Path.Combine(script_dir, pair.Item1), Encoding.UTF8.GetString(Convert.FromBase64String(pair.Item3)));
-                Settings.Instance.Model.ScriptPackageVersion = Convert.ToInt32(em.Version) + 1;
+                Settings.Instance.Model.ScriptPackageVersion = Version.LatestVersionModel.ScriptVersion + 1;
                 Settings.Instance.Save();
             }
 

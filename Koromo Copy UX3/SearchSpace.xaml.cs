@@ -123,9 +123,8 @@ namespace Koromo_Copy_UX3
                 {
                     (new PatchNoteWindow()).Show();
                 }
-                Task.Run(() => CheckUpdate());
+                Task.Run(() => CheckUpdate()).ContinueWith((x) => ScriptManager.Instance.Initialization()).ContinueWith((x) => SettingViewScript.Instance.Init());
                 Task.Run(() => DownloaderHelper.LoadOthersAsync());
-                Task.Run(() => ScriptManager.Instance.Initialization()).ContinueWith ((x) => SettingViewScript.Instance.Init());
             }, TaskScheduler.FromCurrentSynchronizationContext());
 #endif
             Window w = Window.GetWindow(this);

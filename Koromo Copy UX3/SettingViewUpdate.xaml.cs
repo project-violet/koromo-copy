@@ -139,6 +139,23 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 1.6
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.6 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 스크립트 패키지 다운로드 기능 추가\r\n\r\n" +
+                    "[관리가 중단된 도구]\r\n" +
+                    " - 시리즈 매니져\r\n\r\n" +
+                    " - 만화 크롤러\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.5
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements
