@@ -72,7 +72,8 @@
       <Word>type</Word>
       <Word>to_json</Word>
       <Word>get_json</Word>
-      <Word>get_json_string</Word>
+      <Word>get_json_string</Word
+      <Word>base64decode</Word>
     </Keywords>
 		<Keywords color="BooleanConstants">
 			<Word>false</Word>
