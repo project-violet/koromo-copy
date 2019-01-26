@@ -76,7 +76,6 @@
       <Word>base64decode</Word>
       <Word>htmldecode</Word>
       <Word>urldecode</Word>
-      <Word>delinvalid</Word>
     </Keywords>
 		<Keywords color="BooleanConstants">
 			<Word>false</Word>

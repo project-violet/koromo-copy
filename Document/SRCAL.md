@@ -176,7 +176,6 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md#2
 |base64decode(str)|base64 포맷을 디코딩합니다.|
 |htmldecode(str)|html 포맷을 디코딩합니다. 가령, `&amp;`와 같은 문자열이 치환됩니다.|
 |urldecode(str)|url 포맷을 디코딩합니다.|
-|delinvalid(str)|유효하지 않는 파일이름 토큰을 제거합니다.|
 
 ## 4. 스크립트 자동 생성 도구
 

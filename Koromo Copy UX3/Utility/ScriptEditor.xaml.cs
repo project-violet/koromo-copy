@@ -156,7 +156,6 @@ namespace Koromo_Copy_UX3.Utility
             Tuple.Create("base64decode","base64 포맷을 디코딩합니다."),
             Tuple.Create("htmldecode","html 포맷을 디코딩합니다. 가령, &amp;와 같은 문자열이 치환됩니다."),
             Tuple.Create("urldecode","url 포맷을 디코딩합니다."),
-            Tuple.Create("delinvalid","사용할 수 없는 파일이름 토큰을 제거합니다.")
         };
         bool opening = false;
         private void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
