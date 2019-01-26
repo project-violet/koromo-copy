@@ -83,6 +83,12 @@ namespace Koromo_Copy
         /// </summary>
         [JsonProperty]
         public bool DownloadWithRawFileName;
+
+        /// <summary>
+        /// 마지막으로 다운로드한 스크립트 패키지의 버전입니다.
+        /// </summary>
+        [JsonProperty]
+        public int ScriptPackageVersion;
     }
 
     public class Settings : ILazy<Settings>
