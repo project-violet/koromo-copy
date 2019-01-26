@@ -11,6 +11,7 @@ using Koromo_Copy.Net.Driver;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -2019,6 +2020,39 @@ namespace Koromo_Copy.Script.SRCAL
                     Name = "$rvalue",
                     Type = SRCALParser.CDLVar.CDLVarType.String,
                     ContentString = HttpUtility.UrlDecode(v1.ContentString)
+                };
+            }
+            else if (func.ContentFunctionName == "delinvalid")
+            {
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'urldecode' function must have 1 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var result = v1.ContentString;
+                var invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+                foreach (char c in invalid)
+                    result = result.Replace(c.ToString(), "");
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = result
                 };
             }
             else
