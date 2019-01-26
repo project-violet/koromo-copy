@@ -716,6 +716,10 @@ namespace Koromo_Copy.Script.SRCAL
 
         private void variable_update(SRCALParser.CDLVar var)
         {
+            if (var.Name == "$RequestHtml")
+            {
+                current_html = var.ContentString;
+            }
             for (int i = 0; i < variables.Count; i++)
                 if (variables[i].Item2.Name == var.Name)
                 {
@@ -1934,6 +1938,36 @@ namespace Koromo_Copy.Script.SRCAL
                     Name = "$rvalue",
                     Type = SRCALParser.CDLVar.CDLVarType.String,
                     ContentString = v1.ContentJSon[v2.ContentString].ToString()
+                };
+            }
+            else if (func.ContentFunctionName == "base64decode")
+            {
+                // decode base64
+
+                if (func.ContentArguments.Count != 1)
+                {
+                    var msg = "'base64decode' function must have 1 argument.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                var v = new SRCALParser.CDLVar();
+                var v1 = run_index(v, func.ContentArguments[0]);
+
+                if (v1.Type != SRCALParser.CDLVar.CDLVarType.String)
+                {
+                    var msg = "argument type must be string type.";
+                    error_message.Add(Tuple.Create(func.Line, func.Column, msg));
+                    throw new Exception(msg);
+                }
+
+                return new SRCALParser.CDLVar
+                {
+                    Line = func.Line,
+                    Column = func.Column,
+                    Name = "$rvalue",
+                    Type = SRCALParser.CDLVar.CDLVarType.String,
+                    ContentString = Encoding.UTF8.GetString(Convert.FromBase64String(v1.ContentString))
                 };
             }
             else
