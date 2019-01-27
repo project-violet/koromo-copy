@@ -808,5 +808,31 @@ namespace Koromo_Copy_UX3.Utility
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
         #endregion
+
+        #region ShortCut
+
+        private async void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.P && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (article_list.Count == 0) return;
+                var dialog = new ZipListingPage(max_page);
+                if ((bool)(await DialogHost.Show(dialog, "RootDialog")))
+                {
+                    int v = 0;
+                    if (int.TryParse(dialog.Page.Text, out v))
+                    {
+                        v--;
+                        if (v < 0 || v >= max_page) return;
+                        current_page_segment = v / 10;
+                        set_page_segment(current_page_segment);
+                        show_page(v);
+                        stack_push();
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

@@ -324,6 +324,9 @@
       <DependentUpon>ZipListingFilter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ZipListingModel.cs" />
+    <Compile Include="Utility\ZipListingPage.xaml.cs">
+      <DependentUpon>ZipListingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ZipListingSorting.xaml.cs">
       <DependentUpon>ZipListingSorting.xaml</DependentUpon>
     </Compile>
@@ -581,6 +584,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\ZipListingFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipListingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
