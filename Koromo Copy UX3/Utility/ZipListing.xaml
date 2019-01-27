@@ -10,7 +10,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Zip Listing - Koromo Copy" Height="837.973" Width="1257.243"
-        SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
+        SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <ResourceDictionary>
