@@ -91,6 +91,7 @@
     <Compile Include="Component\Pinterest\PinSetting.cs" />
     <Compile Include="Component\SeriesInfo.cs" />
     <Compile Include="Component\SeriesLog.cs" />
+    <Compile Include="Component\Youtube\YTStream.cs" />
     <Compile Include="Console\ScriptConsole.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Component\Hitomi\HitomiDataSearchAdvanced.cs" />
