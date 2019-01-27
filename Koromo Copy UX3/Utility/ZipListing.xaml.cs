@@ -831,6 +831,22 @@ namespace Koromo_Copy_UX3.Utility
                     }
                 }
             }
+            else if (e.Key == Key.R && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (article_list.Count == 0) return;
+                var artists = new Dictionary<string, int>();
+                model.ArticleList.Select(x => x.Value).ToList().ForEach(x =>
+                {
+                    var artist = x.ArticleData.Artists != null ? x.ArticleData.Artists[0] : "";
+                    if (artists.ContainsKey(artist))
+                        artists[artist] += get_rate(Convert.ToInt32(x.ArticleData.Id));
+                    else
+                        artists.Add(artist, get_rate(Convert.ToInt32(x.ArticleData.Id)));
+                });
+                var list = artists.ToList();
+                list.Sort((x, y) => y.Value.CompareTo(x.Value));
+                list.ForEach(x => Monitor.Instance.Push($"{x.Key} [{x.Value}]"));
+            }
         }
 
         #endregion
