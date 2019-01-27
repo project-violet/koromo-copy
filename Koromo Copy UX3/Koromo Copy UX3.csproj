@@ -310,6 +310,9 @@
       <DependentUpon>SeriesManagerElementsInfo.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Utility\SRCAL.xshd" />
+    <Compile Include="Utility\UniversalDownloadManager.xaml.cs">
+      <DependentUpon>UniversalDownloadManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ZipListing.xaml.cs">
       <DependentUpon>ZipListing.xaml</DependentUpon>
     </Compile>
@@ -562,6 +565,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\SeriesManagerElementsInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\UniversalDownloadManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
