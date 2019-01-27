@@ -56,6 +56,11 @@ namespace Koromo_Copy_UX3.Utility
         public KeyValuePair<string, ZipListingArticleModel>[] ArticleList;
     }
 
+    public class ZipListingRatingModel
+    {
+        public Dictionary<int, int> Rating;
+    }
+
     public class ZipListingModelManager
     {
         public static void SaveModel(string filename, ZipListingModel model)
@@ -75,6 +80,25 @@ namespace Koromo_Copy_UX3.Utility
         public static ZipListingModel OpenModel(string filename)
         {
             return JsonConvert.DeserializeObject<ZipListingModel>(File.ReadAllText(filename));
+        }
+
+        public static void SaveRatingModel(string filename, ZipListingRatingModel model)
+        {
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+            Monitor.Instance.Push($"Write file: {filename}");
+            using (StreamWriter sw = new StreamWriter(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename)))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, model);
+            }
+        }
+
+        public static ZipListingRatingModel OpenRatingModel(string filename)
+        {
+            return JsonConvert.DeserializeObject<ZipListingRatingModel>(File.ReadAllText(filename));
         }
     }
 }

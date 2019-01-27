@@ -54,6 +54,7 @@
                 <ComboBoxItem Content="제목순으로 정렬"/>
                 <ComboBoxItem Content="아이디순으로 정렬"/>
                 <ComboBoxItem Content="페이지 개수순으로 정렬"/>
+                <ComboBoxItem Content="레이팅순으로 정렬"/>
             </ComboBox>
 
             <TextBlock Grid.Column="0" Grid.Row="1" Text="정렬 방법 :" FontSize="16" Margin="0 8 10 0" VerticalAlignment="Center"/>

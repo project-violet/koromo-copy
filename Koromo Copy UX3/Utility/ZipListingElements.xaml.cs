@@ -38,14 +38,24 @@ namespace Koromo_Copy_UX3.Utility
         string zip_file_name;
         bool offline_mode;
         HitomiJsonModel model;
-
-        public ZipListingElements(string path, HitomiJsonModel model, bool offline = false)
+        int rating = 0;
+        bool download_thumbnail
+#if DEBUG
+            = true
+#else
+            = false
+#endif
+            ;
+        
+        public ZipListingElements(string path, HitomiJsonModel model, int rating, bool offline = false)
         {
             InitializeComponent();
 
             zip_file_name = path;
             offline_mode = offline;
             this.model = model;
+            this.rating = rating;
+            Rating.Text = Convert.ToString(rating);
             Loaded += ZipViewerElements_Loaded;
         }
 
@@ -63,6 +73,7 @@ namespace Koromo_Copy_UX3.Utility
                 Artist.Text = zip_file_name;
                 return;
             }
+            set_rateeffect();
             Task.Run(() =>
             {
                 try
@@ -180,6 +191,23 @@ namespace Koromo_Copy_UX3.Utility
                             Image.Source = bitmap;
                         }));
                     }
+                    else if (download_thumbnail)
+                    {
+                        var thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
+                            $"{HitomiCommon.HitomiGalleryBlock}{model.Id}.html")).Thumbnail;
+                        Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            var bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.UriSource = new Uri(thumbnail);
+                            bitmap.DecodePixelWidth = 240;
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.EndInit();
+                            //bitmap.DownloadCompleted += Bitmap_DownloadCompleted;
+                            Image.Source = bitmap;
+                        }));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -198,9 +226,10 @@ namespace Koromo_Copy_UX3.Utility
             }
         }
 
+        bool ignore_double_click = false;
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (offline_mode == false)
+            if (offline_mode == false && ignore_double_click == false)
             {
                 Process.Start(zip_file_name);
             }
@@ -227,6 +256,91 @@ namespace Koromo_Copy_UX3.Utility
         private void subitem_click(object sender, RoutedEventArgs e)
         {
             ((ZipListing)Window.GetWindow(this)).add_search_token((sender as MenuItem).Tag.ToString());
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = ((Button)sender).Tag.ToString();
+
+            if (tag == "UpVote")
+            {
+                rating++;
+                Rating.Text = Convert.ToString(rating);
+            }
+            else if (tag == "DownVote")
+            {
+                rating--;
+                if (rating < 0)
+                    rating = 0;
+                Rating.Text = Convert.ToString(rating);
+            }
+            ((ZipListing)Window.GetWindow(this)).set_rate(Convert.ToInt32(model.Id), rating);
+            set_rateeffect();
+        }
+
+        private void set_rateeffect()
+        {
+            if (rating < 5)
+            {
+                RatingShadow.Opacity = 0;
+                Rating.Opacity = 0.56;
+                Rating.Foreground = Brushes.White;
+                UpArrowIcon.Foreground = Brushes.White;
+                UpArrowIcon.Opacity = 0.56;
+                UpArrowShadow.Color = Colors.White;
+                DownArrowIcon.Foreground = Brushes.White;
+                DownArrowIcon.Opacity = 0.56;
+                DownArrowShadow.Color = Colors.White;
+            }
+            else if (rating < 10)
+            {
+                RatingShadow.Opacity = 1;
+                RatingShadow.Color = Colors.Yellow;
+                Rating.Opacity = 1;
+                Rating.Foreground = Brushes.Yellow;
+                UpArrowIcon.Foreground = Brushes.Yellow;
+                UpArrowIcon.Opacity = 1;
+                UpArrowShadow.Color = Colors.Yellow;
+                DownArrowIcon.Foreground = Brushes.Yellow;
+                DownArrowIcon.Opacity = 1;
+                DownArrowShadow.Color = Colors.Yellow;
+            }
+            else if (rating < 15)
+            {
+                RatingShadow.Opacity = 1;
+                RatingShadow.Color = Colors.Orange;
+                Rating.Opacity = 1;
+                Rating.Foreground = Brushes.Orange;
+                UpArrowIcon.Foreground = Brushes.Orange;
+                UpArrowIcon.Opacity = 1;
+                UpArrowShadow.Color = Colors.Orange;
+                DownArrowIcon.Foreground = Brushes.Orange;
+                DownArrowIcon.Opacity = 1;
+                DownArrowShadow.Color = Colors.Orange;
+            }
+            else
+            {
+                RatingShadow.Opacity = 1;
+                RatingShadow.Color = Colors.HotPink;
+                Rating.Opacity = 1;
+                Rating.Foreground = Brushes.HotPink;
+                UpArrowIcon.Foreground = Brushes.HotPink;
+                UpArrowIcon.Opacity = 1;
+                UpArrowShadow.Color = Colors.HotPink;
+                DownArrowIcon.Foreground = Brushes.HotPink;
+                DownArrowIcon.Opacity = 1;
+                DownArrowShadow.Color = Colors.HotPink;
+            }
+        }
+
+        private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ignore_double_click = true;
+        }
+
+        private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ignore_double_click = false;
         }
     }
 }

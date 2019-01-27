@@ -275,6 +275,7 @@ namespace Koromo_Copy_UX3.Utility
 
         List<KeyValuePair<string, ZipListingArticleModel>> article_list;
         ZipListingModel model;
+        ZipListingRatingModel rating_model;
 
         int show_elem_per_page = 20;
 
@@ -317,14 +318,17 @@ namespace Koromo_Copy_UX3.Utility
             model.RootDirectory = root_directory;
             model.Tag = path;
             model.ArticleList = article_dic.ToArray();
-            ZipListingModelManager.SaveModel($"ziplist-result-{DateTime.Now.Ticks}.json", model);
+            var tick = DateTime.Now.Ticks;
+            ZipListingModelManager.SaveModel($"ziplist-result-{tick}.json", model);
+
+            rate_filename = $"ziplist-result-{tick}-rating.json";
 
             algorithm.Build(model);
             article_list = article_dic.ToList();
             elems.Clear();
             article_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
             {
-                return new ZipListingElements(root_directory + x.Key, x.Value.ArticleData);
+                return new ZipListingElements(root_directory + x.Key, x.Value.ArticleData, 0);
             }))));
             day_before = raws = elems;
             sort_data(align_column, align_row);
@@ -373,6 +377,14 @@ namespace Koromo_Copy_UX3.Utility
                     try
                     {
                         model = ZipListingModelManager.OpenModel(ofd.FileName);
+
+                        var raw = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
+                        rate_filename = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(ofd.FileName), raw + "-rating.json");
+
+                        if (File.Exists(rate_filename))
+                        {
+                            rating_model = ZipListingModelManager.OpenRatingModel(rate_filename);
+                        }
                     }
                     catch
                     {
@@ -395,7 +407,7 @@ namespace Koromo_Copy_UX3.Utility
                     elems.Clear();
                     article_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
                     {
-                        return new ZipListingElements(model.RootDirectory + x.Key, x.Value.ArticleData, offline);
+                        return new ZipListingElements(model.RootDirectory + x.Key, x.Value.ArticleData, get_rate(Convert.ToInt32(x.Value.ArticleData.Id)), offline);
                     }))));
                     day_before = raws = elems;
                     sort_data(align_column, align_row);
@@ -488,6 +500,10 @@ namespace Koromo_Copy_UX3.Utility
             {
                 elems.Sort((x, y) => x.Item1.Value.ArticleData.Pages.CompareTo(y.Item1.Value.ArticleData.Pages));
             }
+            else if (column == 6)
+            {
+                elems.Sort((x, y) => get_rate(Convert.ToInt32(x.Item1.Value.ArticleData.Id)).CompareTo(get_rate(Convert.ToInt32(y.Item1.Value.ArticleData.Id))));
+            }
 
             if (row == 1) elems.Reverse();
         }
@@ -527,6 +543,32 @@ namespace Koromo_Copy_UX3.Utility
                 else
                     SearchText.Text = SearchText.Text + " " + token;
             }));
+        }
+
+        #endregion
+
+        #region Rating
+
+        string rate_filename = "";
+        private int get_rate(int magic)
+        {
+            if (rating_model == null || rating_model.Rating == null) return 0;
+            if (rating_model.Rating.ContainsKey(magic))
+                return rating_model.Rating[magic];
+            return 0;
+        }
+
+        public void set_rate(int magic, int rate)
+        {
+            if (rating_model == null)
+                rating_model = new ZipListingRatingModel();
+            if (rating_model.Rating == null)
+                rating_model.Rating = new Dictionary<int, int>();
+            if (rating_model.Rating.ContainsKey(magic))
+                rating_model.Rating[magic] = rate;
+            else
+                rating_model.Rating.Add(magic, rate);
+            ZipListingModelManager.SaveRatingModel(rate_filename, rating_model);
         }
 
         #endregion

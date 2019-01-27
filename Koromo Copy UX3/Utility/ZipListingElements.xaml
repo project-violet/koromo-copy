@@ -98,11 +98,110 @@
                 <Grid Margin="0 4 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <materialDesign:PackIcon Grid.Column="0" Kind="Image" Height="20" Width="20" Foreground="White" Margin="0 0 0 0"/>
                     <TextBlock Grid.Column="1" x:Name="ImageCount" Text="0 Pages" Foreground="White" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" MouseEnter="StackPanel_MouseEnter" MouseLeave="StackPanel_MouseLeave">
+                        <TextBlock Text="Rating" Foreground="White" Margin="4 1 4 0" HorizontalAlignment="Center"/>
+                        <Button Click="Button_Click" Tag="UpVote">
+                            <Button.Resources>
+                                <Storyboard x:Key="GlowOn">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Effect).Opacity">
+                                        <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                                <Storyboard x:Key="GlowOff">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Effect).Opacity">
+                                        <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </Button.Resources>
+                            <Button.Effect>
+                                <DropShadowEffect x:Name="UpArrowShadow" BlurRadius="10" Opacity="0" ShadowDepth="0" Color="White"/>
+                            </Button.Effect>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard Storyboard="{StaticResource GlowOn}"/>
+                                            </Trigger.EnterActions>
+
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard Storyboard="{StaticResource GlowOff}"/>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon x:Name="UpArrowIcon" Kind="ArrowUp" Foreground="White" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBlock x:Name="Rating" Text="0" Foreground="White" Margin="4 1 4 0" Opacity=".56" HorizontalAlignment="Center">
+                            <TextBlock.Effect>
+                                <DropShadowEffect x:Name="RatingShadow" BlurRadius="5" ShadowDepth="0" Opacity="0" Color="Yellow"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <Button Click="Button_Click" Tag="DownVote">
+                            <Button.Resources>
+                                <Storyboard x:Key="GlowOn">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Effect).Opacity">
+                                        <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                                <Storyboard x:Key="GlowOff">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Effect).Opacity">
+                                        <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </Button.Resources>
+                            <Button.Effect>
+                                <DropShadowEffect x:Name="DownArrowShadow"  BlurRadius="10" Opacity="0" ShadowDepth="0" Color="White"/>
+                            </Button.Effect>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard Storyboard="{StaticResource GlowOn}"/>
+                                            </Trigger.EnterActions>
+
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard Storyboard="{StaticResource GlowOff}"/>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon x:Name="DownArrowIcon" Kind="ArrowDown" Foreground="White" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </StackPanel>
         </Grid>
