@@ -202,6 +202,16 @@ namespace Koromo_Copy_UX3.Domain
                     }));
                     break;
 
+                case "elo":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        RankSimulator rs = new RankSimulator();
+                        rs.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;
