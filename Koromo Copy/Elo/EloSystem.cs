@@ -38,6 +38,7 @@ namespace Koromo_Copy.Elo
     {
         public List<EloPlayer> Players;
         public List<Tuple<int, int, int>> History;
+        public List<Tuple<int, int, int, int, int>> DHistory;
         public int GameCount;
     }
 
@@ -53,6 +54,7 @@ namespace Koromo_Copy.Elo
             model = new EloModel();
             model.Players = new List<EloPlayer>();
             model.History = new List<Tuple<int, int, int>>();
+            model.DHistory = new List<Tuple<int, int, int, int, int>>();
         }
 
         public void Save(string filename = "rank-simulator.json")
@@ -81,23 +83,23 @@ namespace Koromo_Copy.Elo
             Save();
         }
 
-        public void Win(int index1, int index2)
+        public void Win(int index1, int index2, int id1, int id2)
         {
             model.Players[index1].U(1, model.Players[index1].E(model.Players[index2]));
             model.Players[index2].U(0, model.Players[index2].E(model.Players[index1]));
             model.Players[index1].History.Add(Tuple.Create(index2, 1));
             model.Players[index2].History.Add(Tuple.Create(index1, -1));
-            model.History.Add(Tuple.Create(index1, index2, 1));
+            model.DHistory.Add(Tuple.Create(index1, index2, 1, id1, id2));
             Save();
         }
-        public void Lose(int index1, int index2) => Win(index2, index1);
-        public void Draw(int index1, int index2)
+        public void Lose(int index1, int index2, int id1, int id2) => Win(index2, index1, id1, id2);
+        public void Draw(int index1, int index2, int id1, int id2)
         {
             model.Players[index1].U(0.5, model.Players[index1].E(model.Players[index2]));
             model.Players[index2].U(0.5, model.Players[index2].E(model.Players[index1]));
             model.Players[index1].History.Add(Tuple.Create(index2, 0));
             model.Players[index2].History.Add(Tuple.Create(index1, 0));
-            model.History.Add(Tuple.Create(index1, index2, 0));
+            model.DHistory.Add(Tuple.Create(index1, index2, 1, id1, id2));
             Save();
         }
     }
