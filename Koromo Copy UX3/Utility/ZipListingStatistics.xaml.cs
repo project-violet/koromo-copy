@@ -51,9 +51,20 @@ namespace Koromo_Copy_UX3.Utility
             Overlap.Text = $"{count_overlap}개 ({((double)count_overlap / source_data.Count * 100).ToString("F3")}%)";
 
             // 파편화 검사
-            
+
             // 1. 작가 기반 파편화 검사
 
+            // 2. 용량
+            long bytes = 0;
+            source_data.ForEach(x => bytes += x.Value.Size);
+            if (bytes < 1024)
+                Size.Text = $"{bytes.ToString("#,#")} Bytes";
+            else if (bytes < 1024 * 1024)
+                Size.Text = $"{(bytes / 1024).ToString("#,#")} KB";
+            else if (bytes < 1024 * 1024 * 1024)
+                Size.Text = $"{(bytes / 1024 / 1024).ToString("#,#")} MB";
+            else
+                Size.Text = $"{(bytes / 1024 / 1024 / 1024).ToString("#,#")} GB";
         }
     }
 }
