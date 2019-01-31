@@ -93,6 +93,7 @@
     <Compile Include="Component\SeriesLog.cs" />
     <Compile Include="Component\Youtube\YTStream.cs" />
     <Compile Include="Console\ScriptConsole.cs" />
+    <Compile Include="Elo\EloSystem.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Component\Hitomi\HitomiDataSearchAdvanced.cs" />
     <Compile Include="Component\Hitomi\HitomiDate.cs" />
