@@ -44,6 +44,9 @@
             <TextBlock Grid.Column="0" Grid.Row="1" Text="파편화도 : " FontSize="16" Margin="0 0 10 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
             <TextBlock Grid.Column="1" Grid.Row="1" x:Name="Fragment" Text="0.0%" FontSize="16" Margin="8 0 0 0" VerticalAlignment="Center"/>
 
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="총 크기 : " FontSize="16" Margin="0 0 10 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="2" x:Name="Size" Text="0 MB" FontSize="16" Margin="8 0 0 0" VerticalAlignment="Center"/>
+
         </Grid>
 
 
