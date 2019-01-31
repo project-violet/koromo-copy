@@ -99,7 +99,7 @@ namespace Koromo_Copy.Elo
             model.Players[index2].U(0.5, model.Players[index2].E(model.Players[index1]));
             model.Players[index1].History.Add(Tuple.Create(index2, 0));
             model.Players[index2].History.Add(Tuple.Create(index1, 0));
-            model.DHistory.Add(Tuple.Create(index1, index2, 1, id1, id2));
+            model.DHistory.Add(Tuple.Create(index1, index2, 0, id1, id2));
             Save();
         }
     }
