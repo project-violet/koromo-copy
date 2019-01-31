@@ -207,6 +207,9 @@
     <Compile Include="ScriptInfoElements.xaml.cs">
       <DependentUpon>ScriptInfoElements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\RankSimulator.xaml.cs">
+      <DependentUpon>RankSimulator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ScriptEditorBraceFolding.cs" />
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>
@@ -552,6 +555,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\MangaCrawlerElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\RankSimulator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
