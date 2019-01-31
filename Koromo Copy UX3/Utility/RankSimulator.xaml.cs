@@ -234,16 +234,18 @@ namespace Koromo_Copy_UX3.Utility
                 LeftText.Text = sys.Players[first].Indentity;
                 RightText.Text = sys.Players[second].Indentity;
             }));
-            LoadLeftImage(await GetThumbnailAddress(fresult[ffirst].ID));
-            LoadRightImage(await GetThumbnailAddress(sresult[ssecond].ID));
+            LoadLeftImage(await GetThumbnailAddress(id1 = fresult[ffirst].ID));
+            LoadRightImage(await GetThumbnailAddress(id2 = sresult[ssecond].ID));
         }
 
+        int id1 = -1;
+        int id2 = -1;
         int left = -1;
         int right = -1;
         private void LeftImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (left < 0 || right < 0) return;
-            sys.Win(left, right);
+            sys.Win(left, right, id1, id2);
             sys.Model.GameCount++;
             sys.Save();
             RountText.Text = $"{sys.Model.GameCount.ToString()} 라운드";
@@ -253,7 +255,7 @@ namespace Koromo_Copy_UX3.Utility
         private void RightImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (left < 0 || right < 0) return;
-            sys.Lose(left, right);
+            sys.Lose(left, right, id1, id2);
             sys.Model.GameCount++;
             sys.Save();
             RountText.Text = $"{sys.Model.GameCount.ToString()} 라운드";
@@ -263,7 +265,7 @@ namespace Koromo_Copy_UX3.Utility
         private void Draw_Click(object sender, RoutedEventArgs e)
         {
             if (left < 0 || right < 0) return;
-            sys.Draw(left, right);
+            sys.Draw(left, right, id1, id2);
             sys.Model.GameCount++;
             sys.Save();
             RountText.Text = $"{sys.Model.GameCount.ToString()} 라운드";
