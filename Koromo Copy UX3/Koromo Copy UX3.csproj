@@ -210,6 +210,7 @@
     <Compile Include="Utility\RankSimulator.xaml.cs">
       <DependentUpon>RankSimulator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\RankSimulatorStatistics.cs" />
     <Compile Include="Utility\ScriptEditorBraceFolding.cs" />
     <Compile Include="SearchElements.xaml.cs">
       <DependentUpon>SearchElements.xaml</DependentUpon>

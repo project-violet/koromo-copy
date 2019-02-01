@@ -192,7 +192,13 @@ namespace Koromo_Copy_UX3.Utility
                 RightProgress.Visibility = Visibility.Visible;
             }));
 
-            var max = sys.Players.Count;
+            var exclude = RankSimulatorStatistics.FilterClosingArtists(sys);
+            var ava_list = new List<int>();
+            for (int i = 0; i < sys.Players.Count; i++)
+                if (!exclude.Contains(i))
+                    ava_list.Add(i);
+
+            var max = ava_list.Count;
             var rand = new Random();
             var r_count = 0;
         RETRY:
@@ -206,11 +212,12 @@ namespace Koromo_Copy_UX3.Utility
                 return;
             }
             r_count++;
-            var first = rand.Next(max);
-            var second = rand.Next(max);
+            var first = ava_list[rand.Next(max)];
+            var second = ava_list[rand.Next(max)];
+
             if (first == second)
                 goto RETRY;
-
+            
             var fresult = await HitomiDataParser.SearchAsync($"artist:{sys.Players[first].Indentity}");
             var sresult = await HitomiDataParser.SearchAsync($"artist:{sys.Players[second].Indentity}");
 
@@ -276,97 +283,11 @@ namespace Koromo_Copy_UX3.Utility
 
         private void Stat_Click(object sender, RoutedEventArgs e)
         {
-            EloSystem tag_sys = new EloSystem();
-            HashSet<string> tags = new HashSet<string>();
-            foreach (var article in HitomiData.Instance.metadata_collection)
-                if (article.Tags != null)
-                    article.Tags.ToList().ForEach(x => tags.Add(x));
-            var list = tags.ToList();
-            list.Sort();
-            tag_sys.AppendPlayerNSave(list.Count);
-            Dictionary<string, int> tag_dic = new Dictionary<string, int>();
-            for (int i = 0; i < list.Count; i++)
+            RankSimulatorStatistics.GetTagRanking(sys).ForEach(x =>
             {
-                tag_sys.Players[i].Indentity = list[i];
-                tag_dic.Add(list[i], i);
-            }
-
-            int j = 0;
-            foreach (var d in sys.Model.DHistory)
-            {
-                var a1 = HitomiLegalize.GetMetadataFromMagic(d.Item4.ToString());
-                var a2 = HitomiLegalize.GetMetadataFromMagic(d.Item5.ToString());
-
-                if (!a1.HasValue || !a2.HasValue)
-                    continue;
-
-                if (a1.Value.Tags == null || a2.Value.Tags == null)
-                    continue;
-
-                if (a1.Value.Tags.Length == 0 || a2.Value.Tags.Length == 0)
-                    continue;
-
-                HashSet<string> first = new HashSet<string>();
-                HashSet<string> second = new HashSet<string>();
-
-                foreach (var tag in a1.Value.Tags)
-                    first.Add(tag);
-                foreach (var tag in a2.Value.Tags)
-                    second.Add(tag);
-
-                double r1 = 0.0;
-                double r2 = 0.0;
-
-                a1.Value.Tags.ToList().ForEach(x => r1 += tag_sys.Players[tag_dic[x]].Rating);
-                a2.Value.Tags.ToList().ForEach(x => r2 += tag_sys.Players[tag_dic[x]].Rating);
-
-                r1 /= a1.Value.Tags.Length;
-                r2 /= a2.Value.Tags.Length;
-
-                if (r1 < 0.5)
-                    r1 = 1500.0;
-                if (r2 < 0.5)
-                    r2 = 1500.0;
-
-                double e1 = 1 / (1 + Math.Pow(10, (r2 - r1) / 400));
-                double e2 = 1 / (1 + Math.Pow(10, (r1 - r2) / 400));
-                
-                if (d.Item3 == 1)
-                {
-                    foreach (var tag in a1.Value.Tags)
-                        if (!second.Contains(tag))
-                        {
-                            double ew = 1 / (1 + Math.Pow(10, (r1 - tag_sys.Players[tag_dic[tag]].R) / 400));
-                            tag_sys.UpdateWin(tag_dic[tag], (ew + e1) / 2);
-                        }
-                    foreach (var tag in a2.Value.Tags)
-                        if (!first.Contains(tag))
-                        {
-                            double ew = 1 / (1 + Math.Pow(10, (r2 - tag_sys.Players[tag_dic[tag]].R) / 400));
-                            tag_sys.UpdateLose(tag_dic[tag], (ew + e2) / 2);
-                        }
-                }
-                else if (d.Item3 == 0)
-                {
-                    foreach (var tag in a1.Value.Tags)
-                        if (!second.Contains(tag))
-                        {
-                            double ew = 1 / (1 + Math.Pow(10, (r1 - tag_sys.Players[tag_dic[tag]].R) / 400));
-                            tag_sys.UpdateDraw(tag_dic[tag], (ew + e1) / 2);
-                        }
-                    foreach (var tag in a2.Value.Tags)
-                        if (!first.Contains(tag))
-                        {
-                            double ew = 1 / (1 + Math.Pow(10, (r2 - tag_sys.Players[tag_dic[tag]].R) / 400));
-                            tag_sys.UpdateDraw(tag_dic[tag], (ew + e2) / 2);
-                        }
-                }
-                
-            }
-            
-            var result = tag_sys.Players.ToList();
-            result.Sort((x, y) => y.R.CompareTo(x.R));
-            result.ForEach(x => Monitor.Instance.Push($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(32) + $"{x.Rating.ToString("0.##")}점".PadLeft(14)));
+                if (x.Win + x.Lose + x.Draw == 0) return;
+                Monitor.Instance.Push($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(32) + $"{x.Rating.ToString("0.##")}점".PadLeft(14));
+            });
         }
     }
 }
