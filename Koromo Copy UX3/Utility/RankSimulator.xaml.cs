@@ -366,7 +366,7 @@ namespace Koromo_Copy_UX3.Utility
             
             var result = tag_sys.Players.ToList();
             result.Sort((x, y) => y.R.CompareTo(x.R));
-            result.ForEach(x => Monitor.Instance.Push($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(30) + $"{x.Rating.ToString("0.##")}점".PadLeft(16)));
+            result.ForEach(x => Monitor.Instance.Push($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(32) + $"{x.Rating.ToString("0.##")}점".PadLeft(14)));
         }
     }
 }
