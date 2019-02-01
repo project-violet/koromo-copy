@@ -210,6 +210,9 @@
     <Compile Include="Utility\RankSimulator.xaml.cs">
       <DependentUpon>RankSimulator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\RankSimulatorStat.xaml.cs">
+      <DependentUpon>RankSimulatorStat.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\RankSimulatorStatistics.cs" />
     <Compile Include="Utility\ScriptEditorBraceFolding.cs" />
     <Compile Include="SearchElements.xaml.cs">
@@ -560,6 +563,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\RankSimulator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\RankSimulatorStat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -288,6 +288,12 @@ namespace Koromo_Copy_UX3.Utility
                 if (x.Win + x.Lose + x.Draw == 0) return;
                 Monitor.Instance.Push($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(32) + $"{x.Rating.ToString("0.##")}점".PadLeft(14));
             });
+
+            RankSimulatorStatistics.GetArtistRanking(sys).ForEach(x =>
+            {
+                if (x.Win + x.Lose + x.Draw == 0) return;
+                Monitor.Instance.Push($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(32) + $"{x.Rating.ToString("0.##")}점".PadLeft(14));
+            });
         }
     }
 }
