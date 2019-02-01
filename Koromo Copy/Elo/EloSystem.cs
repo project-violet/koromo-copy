@@ -27,7 +27,7 @@ namespace Koromo_Copy.Elo
         public List<Tuple<int, int>> History;
 
         [JsonIgnore]
-        public double W { get { return (double)Win / (Win + Lose + Draw); } }
+        public double W { get { return (double)Win / (Win + Lose); } }
         [JsonIgnore]
         public double R { get { return Rating; } }
         public double E(EloPlayer p) => 1 / (1 + Math.Pow(10, (p.R - R) / 400));
@@ -83,24 +83,49 @@ namespace Koromo_Copy.Elo
             Save();
         }
 
+        public void AppendPlayerNSave(int sz)
+        {
+            for (int i = 0; i < sz; i++)
+                model.Players.Add(new EloPlayer { Rating = 1500, History = new List<Tuple<int, int>>() });
+        }
+
         public void Win(int index1, int index2, int id1, int id2)
         {
             model.Players[index1].U(1, model.Players[index1].E(model.Players[index2]));
             model.Players[index2].U(0, model.Players[index2].E(model.Players[index1]));
+            model.Players[index1].Win += 1;
+            model.Players[index2].Lose += 1;
             model.Players[index1].History.Add(Tuple.Create(index2, 1));
             model.Players[index2].History.Add(Tuple.Create(index1, -1));
             model.DHistory.Add(Tuple.Create(index1, index2, 1, id1, id2));
             Save();
         }
-        public void Lose(int index1, int index2, int id1, int id2) => Win(index2, index1, id1, id2);
+        public void Lose(int index1, int index2, int id1, int id2) => Win(index2, index1, id2, id1);
         public void Draw(int index1, int index2, int id1, int id2)
         {
             model.Players[index1].U(0.5, model.Players[index1].E(model.Players[index2]));
             model.Players[index2].U(0.5, model.Players[index2].E(model.Players[index1]));
+            model.Players[index1].Draw += 1;
+            model.Players[index2].Draw += 1;
             model.Players[index1].History.Add(Tuple.Create(index2, 0));
             model.Players[index2].History.Add(Tuple.Create(index1, 0));
             model.DHistory.Add(Tuple.Create(index1, index2, 0, id1, id2));
             Save();
+        }
+        public void UpdateWin(int index, double R)
+        {
+            model.Players[index].U(1, R);
+            model.Players[index].Win += 1;
+        }
+        public void UpdateLose(int index, double R)
+        {
+            model.Players[index].U(0, R);
+            model.Players[index].Lose += 1;
+        }
+        public void UpdateDraw(int index, double R)
+        {
+            model.Players[index].U(0.5, R);
+            model.Players[index].Draw += 1;
         }
     }
 }
