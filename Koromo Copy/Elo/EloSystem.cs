@@ -80,15 +80,8 @@ namespace Koromo_Copy.Elo
         {
             for (int i = 0; i < sz; i++)
                 model.Players.Add(new EloPlayer { Rating = 1500, History = new List<Tuple<int, int>>() });
-            Save();
         }
-
-        public void AppendPlayerNSave(int sz)
-        {
-            for (int i = 0; i < sz; i++)
-                model.Players.Add(new EloPlayer { Rating = 1500, History = new List<Tuple<int, int>>() });
-        }
-
+        
         public void Win(int index1, int index2, int id1, int id2)
         {
             model.Players[index1].U(1, model.Players[index1].E(model.Players[index2]));
