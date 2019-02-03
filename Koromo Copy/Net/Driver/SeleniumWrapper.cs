@@ -94,7 +94,7 @@ namespace Koromo_Copy.Net.Driver
         {
             var canvas = driver.FindElementByXPath(path);
             IJavaScriptExecutor js = driver as IJavaScriptExecutor;
-            var base64 = (string)js.ExecuteScript($"return arguments[0].toDataURL('image/png').substring(21);");
+            var base64 = (string)js.ExecuteScript($"return arguments[0].toDataURL('image/png').substring(21);", canvas);
             return Convert.FromBase64String(base64);
         }
 
