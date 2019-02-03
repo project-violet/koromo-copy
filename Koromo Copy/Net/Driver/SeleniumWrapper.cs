@@ -89,7 +89,15 @@ namespace Koromo_Copy.Net.Driver
             new WebDriverWait(driver, TimeSpan.FromSeconds(_wait)).Until(
                 d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
         }
-        
+
+        public byte[] CanvasToPng(string path)
+        {
+            var canvas = driver.FindElementByXPath(path);
+            IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+            var base64 = (string)js.ExecuteScript($"return arguments[0].toDataURL('image/png').substring(21);");
+            return Convert.FromBase64String(base64);
+        }
+
         public string GetHtml()
         {
             return driver.PageSource;
