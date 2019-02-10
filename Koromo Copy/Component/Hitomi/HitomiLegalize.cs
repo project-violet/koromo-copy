@@ -39,7 +39,7 @@ namespace Koromo_Copy.Component.Hitomi
             metadata.Language = LegalizeLanguage(article.Language);
             metadata.Name = article.Title;
             metadata.Parodies = article.Series;
-            metadata.Tags = article.Tags.Select(x => LegalizeTag(x)).ToArray();
+            try { metadata.Tags = article.Tags.Select(x => LegalizeTag(x)).ToArray(); } catch { }
             metadata.Type = article.Type;
             return metadata;
         }
