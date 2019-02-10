@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Interface;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -53,6 +54,8 @@ namespace Koromo_Copy.Component.Hitomi
         public string Archive { get; set; }
 
         public bool IsUnstable;
+
+        [JsonIgnore]
         public HArticleModel UnstableModel;
     }
 }
