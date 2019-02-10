@@ -8,6 +8,15 @@
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
+## 데이터 동기화 오류
+
+`hitomi.la`의 데이터저장방식이 바뀌어 더이상 데이터베이스를 다운로드할 수 없습니다.
+자세한 내용은 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Hitomi.md 를 참고하시기 바랍니다.
+
+## 최신 데이터
+
+`2019-02-10` 데이터는 https://github.com/dc-koromo/koromo-copy/releases/tag/ld-10022019 여기서 다운로드 하세요.
+
 ## 최신 릴리즈 (2018/01/26)
 
 Koromo Copy 1.6.6965.28680 Beta
