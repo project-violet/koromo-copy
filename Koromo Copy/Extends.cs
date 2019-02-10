@@ -21,5 +21,7 @@ namespace Koromo_Copy
             if (control.InvokeRequired) control.BeginInvoke(action);
             else action();
         }
+
+        public static int ToInt32(this string str) => Convert.ToInt32(str);
     }
 }
