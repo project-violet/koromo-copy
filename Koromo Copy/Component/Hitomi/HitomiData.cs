@@ -167,10 +167,17 @@ namespace Koromo_Copy.Component.Hitomi
                 metadata_collection.ForEach(x => overlap.Add(x.ID.ToString()));
                 foreach (var article in articles)
                 {
-                    if (overlap.Contains(article.Magic)) continue;
-                    metadata_collection.Add(HitomiLegalize.ArticleToMetadata(article));
-                    if (!thumbnail_collection.ContainsKey(article.Magic))
-                        thumbnail_collection.Add(article.Magic, article.Thumbnail);
+                    try
+                    {
+                        if (overlap.Contains(article.Magic)) continue;
+                        metadata_collection.Add(HitomiLegalize.ArticleToMetadata(article));
+                        if (!thumbnail_collection.ContainsKey(article.Magic))
+                            thumbnail_collection.Add(article.Magic, article.Thumbnail);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
                 }
                 SortMetadata();
             }

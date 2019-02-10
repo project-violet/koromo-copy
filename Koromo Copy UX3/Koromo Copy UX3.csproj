@@ -207,6 +207,9 @@
     <Compile Include="ScriptInfoElements.xaml.cs">
       <DependentUpon>ScriptInfoElements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ForbiddenTester.xaml.cs">
+      <DependentUpon>ForbiddenTester.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\RankSimulator.xaml.cs">
       <DependentUpon>RankSimulator.xaml</DependentUpon>
     </Compile>
@@ -551,6 +554,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\DoubleThumbSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ForbiddenTester.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

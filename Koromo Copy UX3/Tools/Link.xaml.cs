@@ -56,6 +56,7 @@ namespace Koromo_Copy_UX3.Tools
                 case "FsEnumerator":
                 case "RelatedTagsTest":
                 case "StringTools":
+                case "GalleryBlockTester":
                     UtilityDelegator.Run(tag);
                     break;
             }

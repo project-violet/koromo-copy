@@ -7,6 +7,7 @@
 ***/
 
 using Hitomi_Copy_3;
+using Hitomi_Copy_3._403;
 
 namespace Koromo_Copy.Utility
 {
@@ -27,6 +28,9 @@ namespace Koromo_Copy.Utility
                     break;
                 case "StringTools":
                     (new StringTools()).Show();
+                    break;
+                case "GalleryBlockTester":
+                    (new GalleryBlockTester()).Show();
                     break;
             }
         }

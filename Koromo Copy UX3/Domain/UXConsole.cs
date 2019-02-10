@@ -212,6 +212,16 @@ namespace Koromo_Copy_UX3.Domain
                     }));
                     break;
 
+                case "ft":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        ForbiddenTester ft = new ForbiddenTester();
+                        ft.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;

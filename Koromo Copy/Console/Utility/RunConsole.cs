@@ -7,6 +7,7 @@
 ***/
 
 using Hitomi_Copy_3;
+using Hitomi_Copy_3._403;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Utility;
 using System;
@@ -83,7 +84,8 @@ namespace Koromo_Copy.Console.Utility
             { "mddown", typeof(MetadataDownloader) },
             { "strings", typeof(StringTools) },
             { "explorer", typeof(HitomiExplorer) },
-            { "tagtest", typeof(RelatedTagsTest) }
+            { "tagtest", typeof(RelatedTagsTest) },
+            { "gbt", typeof (GalleryBlockTester) }
         };
 
         /// <summary>
