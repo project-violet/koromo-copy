@@ -176,7 +176,9 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Development.md#콘
 
 ## 2.1. 데이터 다운로드/동기화시 오류가 발생합니다
 
-`Koromo Copy`에서도 데이터 다운로드가 안된다면 답이 없습니다. `TLS 1.3`이 보급될 때까지 존버하세요.
+`2019-02-10`에 데이터 동기화 기능에 오류가 있음을 발견했습니다.
+현재 다른 방안을 마련중이며, 다음 업데이트때 적용됩니다.
+최신 데이터는 https://github.com/dc-koromo/koromo-copy#%EC%B5%9C%EC%8B%A0-%EB%8D%B0%EC%9D%B4%ED%84%B0 로 상시 업데이트됩니다.
 
 ## 2.2. chromedriver.exe는 무슨 파일인가요?
 
