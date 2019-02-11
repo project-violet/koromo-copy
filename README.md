@@ -15,7 +15,12 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
 ## 최신 데이터
 
-`2019-02-11` 데이터는 https://github.com/dc-koromo/koromo-copy/releases/tag/ld-11022019 여기서 다운로드 하세요.
+`2019-02-12 Early` 데이터는 https://github.com/dc-koromo/koromo-copy/releases/tag/ld-12022019e 여기서 다운로드 하세요.
+
+## 업데이트 지연 안내
+
+최근 3일동안 급격히 늘어난 사용자 수 때문에 트래픽 등의 문제로 수동업데이트는 당분간 지연될 예정입니다.
+새로운 버전이 나온다면 아래 `최신 릴리즈`의 링크에서 직접 다운로드하시기 바랍니다.
 
 ## 최신 릴리즈 (2018/02/11)
 
