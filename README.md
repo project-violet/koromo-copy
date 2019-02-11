@@ -17,11 +17,11 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
 `2019-02-10` 데이터는 https://github.com/dc-koromo/koromo-copy/releases/tag/ld-10022019 여기서 다운로드 하세요.
 
-## 최신 릴리즈 (2018/01/26)
+## 최신 릴리즈 (2018/02/11)
 
-Koromo Copy 1.6.6965.28680 Beta
+Koromo Copy 1.6.6981.17648 Beta
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/1.6.6965.28680
+https://github.com/dc-koromo/koromo-copy/releases/tag/1.6.6981.17648
 
 ![hitomi history](Document/Images/1.png)
 
