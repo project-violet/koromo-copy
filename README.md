@@ -15,7 +15,7 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
 ## 최신 데이터
 
-`2019-02-10` 데이터는 https://github.com/dc-koromo/koromo-copy/releases/tag/ld-10022019 여기서 다운로드 하세요.
+`2019-02-11` 데이터는 https://github.com/dc-koromo/koromo-copy/releases/tag/ld-11022019 여기서 다운로드 하세요.
 
 ## 최신 릴리즈 (2018/02/11)
 
