@@ -8,10 +8,11 @@
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
-## 데이터 동기화 오류
+## 보안접속을 위한 통신 암호화 방법
 
-`hitomi.la`의 데이터저장방식이 바뀌어 더이상 데이터베이스를 다운로드할 수 없습니다.
-자세한 내용은 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Hitomi.md 를 참고하시기 바랍니다.
+기존의 불안전한 `TLS 1.3` 통신표준을 보완한 ESNI등의 기술로 보다 안전하게 인터넷에 접속할 수 있습니다. 자세한 내용은 아래 문서를 확인하시기 바랍니다.
+
+https://github.com/dc-koromo/koromo-copy/blob/master/Document/Bypass.md
 
 ## 최신 데이터
 
