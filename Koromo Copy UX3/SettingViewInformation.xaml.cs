@@ -91,7 +91,10 @@ namespace Koromo_Copy_UX3
             timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Tick += Timer_Tick;
             timer.Start();
+#if false
             await Task.WhenAll(Enumerable.Range(0, number_of_gallery_jsons).Select(no => Task.Run(() => DownloadThread(gallerie_json_uri(no)))));
+#else
+#endif
 
             JsonSerializer serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -141,8 +144,10 @@ namespace Koromo_Copy_UX3
         int seconds = 0;
         long prev_bytes = 0;
 
+#if false
         public static int number_of_gallery_jsons = 20;
         public static string gallerie_json_uri(int no) => $"https://ltn.hitomi.la/galleries{no}.json";
+#endif
         public List<HitomiMetadata> metadata_collection = new List<HitomiMetadata>();
 
         private object post_length_lock = new object();
@@ -178,7 +183,9 @@ namespace Koromo_Copy_UX3
             delegate
             {
                 SyncTotalBytes.Text = ((double)download_size / 1000 / 1000).ToString("#,#.#") + " MB";
+#if false
                 SyncLoad.Text = $"[{load_count}/{number_of_gallery_jsons}]";
+#endif
             }));
         }
 
@@ -260,7 +267,9 @@ namespace Koromo_Copy_UX3
             }
 
             Interlocked.Increment(ref complete_count);
+#if false
             Koromo_Copy.Monitor.Instance.Push($"Download complete: [{complete_count.ToString("00")}/{number_of_gallery_jsons}] {url}");
+#endif
         }
 
     }
