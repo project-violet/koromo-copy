@@ -93,8 +93,6 @@ namespace Koromo_Copy_UX3
             timer.Start();
 #if false
             await Task.WhenAll(Enumerable.Range(0, number_of_gallery_jsons).Select(no => Task.Run(() => DownloadThread(gallerie_json_uri(no)))));
-#else
-#endif
 
             JsonSerializer serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -109,6 +107,7 @@ namespace Koromo_Copy_UX3
 
             HitomiData.Instance.metadata_collection = metadata_collection;
             HitomiData.Instance.LoadHiddendataJson();
+#endif
 
             SyncButton.IsEnabled = true;
             UpdateSyncDate();
