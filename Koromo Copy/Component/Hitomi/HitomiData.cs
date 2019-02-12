@@ -42,6 +42,7 @@ namespace Koromo_Copy.Component.Hitomi
         public int downloadCount = 0;
         public object lock_count = new object();
 
+#if false
         public async Task DownloadMetadata()
         {
             Monitor.Instance.Push("Download Metadata...");
@@ -66,6 +67,7 @@ namespace Koromo_Copy.Component.Hitomi
             }
             return;
         }
+#endif
 
         public async Task DownloadHiddendata()
         {
@@ -108,6 +110,7 @@ namespace Koromo_Copy.Component.Hitomi
             metadata_collection.Sort((a, b) => b.ID.CompareTo(a.ID));
         }
 
+#if false
         public Action<string> MetadataDownloadStatusEvent;
 
         private async Task downloadMetadata(int no)
@@ -148,6 +151,7 @@ namespace Koromo_Copy.Component.Hitomi
                 goto RETRYL;
             }
         }
+#endif
         
         public void LoadMetadataJson()
         {
@@ -197,9 +201,9 @@ namespace Koromo_Copy.Component.Hitomi
         {
             return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json"));
         }
-        #endregion
+#endregion
 
-        #region Metadata Testing
+#region Metadata Testing
         public void LoadMetadataJson(string path)
         {
             metadata_collection.AddRange(JsonConvert.DeserializeObject<List<HitomiMetadata>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), path))));
@@ -209,7 +213,7 @@ namespace Koromo_Copy.Component.Hitomi
         {
             return File.GetLastWriteTime("metadata.json");
         }
-        #endregion
+#endregion
 
         public void OptimizeMetadata()
         {
@@ -228,7 +232,7 @@ namespace Koromo_Copy.Component.Hitomi
             metadata_collection = tmeta;
         }
 
-        #region TagData
+#region TagData
         public void SortTagdata()
         {
             tagdata_collection.artist.Sort((a, b) => b.Count.CompareTo(a.Count));
@@ -241,9 +245,9 @@ namespace Koromo_Copy.Component.Hitomi
             tagdata_collection.type.Sort((a, b) => b.Count.CompareTo(a.Count));
             tagdata_collection.language.Sort((a, b) => b.Count.CompareTo(a.Count));
         }
-        #endregion
+#endregion
 
-        #region TagData Rebuilding
+#region TagData Rebuilding
 
         private void Add(Dictionary<string, int> dic, string key)
         {
@@ -312,14 +316,16 @@ namespace Koromo_Copy.Component.Hitomi
                 serializer.Serialize(writer, tagdata_collection);
             }
         }
-        #endregion
+#endregion
 
         public async Task Synchronization()
         {
             Monitor.Instance.Push("Start Synchronization...");
             metadata_collection?.Clear();
             thumbnail_collection?.Clear();
+#if false
             await Task.Run(() => DownloadMetadata());
+#endif
             await Task.Run(() => DownloadHiddendata());
             await Task.Run(() => RebuildTagData());
             await Task.Run(() => SortTagdata());

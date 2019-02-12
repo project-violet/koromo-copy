@@ -259,7 +259,9 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessDownloadMetadata()
         {
+#if false
             Console.Instance.GlobalTask.Add(HitomiData.Instance.DownloadMetadata());
+#endif
         }
 
         /// <summary>

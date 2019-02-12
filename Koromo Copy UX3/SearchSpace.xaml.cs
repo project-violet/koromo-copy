@@ -80,8 +80,10 @@ namespace Koromo_Copy_UX3
 //                    Koromo_Copy.Console.Console.Instance.Show();
 //#endif
                     MainWindow.Instance.Fade_MiddlePopup(true, "데이터를 다운로드 중입니다...");
+#if false
                     HitomiData.Instance.MetadataDownloadStatusEvent = UpdateDownloadText;
                     await HitomiData.Instance.DownloadMetadata();
+#endif
                     MainWindow.Instance.ModifyText_MiddlePopup("히든 데이터를 다운로드 중입니다...");
                     await HitomiData.Instance.DownloadHiddendata();
                     MainWindow.Instance.FadeOut_MiddlePopup("데이터를 모두 다운로드했습니다!", false);
@@ -127,7 +129,7 @@ namespace Koromo_Copy_UX3
                 Task.Run(() => DownloaderHelper.LoadOthersAsync());
             }, TaskScheduler.FromCurrentSynchronizationContext());
 #endif
-            Window w = Window.GetWindow(this);
+                    Window w = Window.GetWindow(this);
             // 이거 지우면 디자이너 오류남
             if (w != null)
             {
