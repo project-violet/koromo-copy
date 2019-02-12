@@ -11,12 +11,15 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hitomi.Analysis;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Koromo_Copy.Console
 {
@@ -76,6 +79,9 @@ namespace Koromo_Copy.Console
 
         [CommandLine("-forbidden", CommandType.ARGUMENTS, Info = "use -forbidden <Hitomi Number>.")]
         public string[] Forbidden;
+
+        [CommandLine("-test", CommandType.ARGUMENTS, Info = "Tester for hitomi.", Help = "Check developer manual.")]
+        public string[] Test;
     }
 
     /// <summary>
@@ -180,6 +186,13 @@ namespace Koromo_Copy.Console
             else if (option.Forbidden != null)
             {
                 ProcessForbidden(option.Forbidden);
+            }
+            //
+            //  테스트
+            //
+            else if (option.Test != null)
+            {
+                ProcessTest(option.Test);
             }
 
             return true;
@@ -435,5 +448,66 @@ namespace Koromo_Copy.Console
         {
             Console.Instance.WriteLine(Monitor.SerializeObject(HCommander.GetArticleData(Convert.ToInt32(args[0]))));
         }
+        
+        /// <summary>
+        /// 각종 기능을 테스트합니다.
+        /// </summary>
+        /// <param name="args"></param>
+        static void ProcessTest(string[] args)
+        {
+            switch (args[0].ToInt32())
+            {
+                //
+                //  Save and beautify metadatas
+                //
+                case 0:
+                    {
+                        var hiddendata = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json")));
+                        Func<HitomiArticle, NHitomiArticle> r2n = (ha) =>
+                        {
+                            return new NHitomiArticle
+                            {
+                                Artists = ha.Artists,
+                                Characters = ha.Characters,
+                                Groups = ha.Groups,
+                                Language = ha.Language,
+                                Tags = ha.Tags,
+                                Type = ha.Type,
+                                DateTime = ha.DateTime,
+                                Thumbnail = ha.Thumbnail,
+                                Magic = ha.Magic,
+                                Title = ha.Title
+                            };
+                        };
+
+                        var jj = hiddendata.Select(x => r2n(x));
+                        var json = JsonConvert.SerializeObject(jj, Formatting.Indented);
+                        using (var fs = new StreamWriter(new FileStream("hiddendata_beautify.json", FileMode.Create, FileAccess.Write)))
+                        {
+                            fs.Write(json);
+                        }
+
+                        var json2 = JsonConvert.SerializeObject(jj, Formatting.None);
+                        using (var fs = new StreamWriter(new FileStream("hiddendata_nonbeautify.json", FileMode.Create, FileAccess.Write)))
+                        {
+                            var bytes = json2.Zip();
+                            fs.BaseStream.Write(json2.Zip(), 0, bytes.Length);
+                        }
+                    }
+                    break;
+
+                //
+                //  Load metadatas
+                //
+                case 1:
+                    {
+                        var bytes = File.ReadAllBytes("hiddendata_nonbeautify.json");
+                        var json = JsonConvert.DeserializeObject<List<NHitomiArticle>>(bytes.Unzip());
+                        Console.Instance.Write($"{json.Count}");
+                    }
+                    break;
+            }
+        }
+
     }
 }
