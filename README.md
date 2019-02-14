@@ -16,7 +16,7 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Bypass.md
 
 ## 최신 데이터
 
-`2019-02-12 Late` 데이터는 https://github.com/dc-koromo/koromo-copy/releases/tag/ld-12022019l 여기서 다운로드 하세요.
+`2019-02-13 Late` 데이터는 https://github.com/dc-koromo/koromo-copy/releases/tag/ld-13022019l 여기서 다운로드 하세요.
 
 ## 업데이트 지연 안내
 
