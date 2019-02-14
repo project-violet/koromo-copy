@@ -250,7 +250,8 @@ namespace Koromo_Copy_UX3.Utility
                 foreach (var tag in artist_tags_list[i].Value)
                     if (tag.Value >= filter_rate * article_count)
                     {
-                        result.Add(tag_dic[artist]);
+                        if (tag_dic.ContainsKey(artist))
+                            result.Add(tag_dic[artist]);
                         break;
                     }
             }
