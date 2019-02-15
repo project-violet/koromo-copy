@@ -80,7 +80,7 @@ namespace Koromo_Copy_UX3
 //                    Koromo_Copy.Console.Console.Instance.Show();
 //#endif
                     MainWindow.Instance.Fade_MiddlePopup(true, "데이터를 다운로드 중입니다...");
-#if false
+#if true
                     HitomiData.Instance.MetadataDownloadStatusEvent = UpdateDownloadText;
                     await HitomiData.Instance.DownloadMetadata();
 #endif
