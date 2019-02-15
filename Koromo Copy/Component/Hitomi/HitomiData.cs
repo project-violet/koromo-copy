@@ -197,6 +197,11 @@ namespace Koromo_Copy.Component.Hitomi
             return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadata.json"));
         }
 
+        public DateTime DateTimeHiddendata()
+        {
+            return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json"));
+        }
+
         public bool CheckHiddendataExist()
         {
             return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json"));

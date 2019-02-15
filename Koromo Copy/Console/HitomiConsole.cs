@@ -506,6 +506,19 @@ namespace Koromo_Copy.Console
                         Console.Instance.Write($"{json.Count}");
                     }
                     break;
+
+                case 2:
+                    {
+                        var str = File.ReadAllText("hiddendata.json");
+                        File.WriteAllBytes("hiddendata.compress", str.Zip());
+                    }
+                    break;
+                case 3:
+                    {
+                        var str = File.ReadAllText("metadata.json");
+                        File.WriteAllBytes("metadata.compress", str.Zip());
+                    }
+                    break;
             }
         }
 

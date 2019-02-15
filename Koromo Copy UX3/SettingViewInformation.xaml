@@ -67,11 +67,9 @@
                     <TextBlock x:Name="SyncTotalBytes" Margin="5 0 20 0" Grid.Row="1" Grid.Column="1" Text="0 KB" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="SyncDownloadBytes" Margin="5 0 20 0" Grid.Row="2" Grid.Column="1" Text="0 KB" HorizontalAlignment="Left"/>
 
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="로드:" HorizontalAlignment="Right"/>
                     <TextBlock Grid.Row="1" Grid.Column="2" Text="진행 시간:" HorizontalAlignment="Right"/>
                     <TextBlock Grid.Row="2" Grid.Column="2" Text="남은 시간:" HorizontalAlignment="Right"/>
 
-                    <TextBlock x:Name="SyncLoad" Margin="5 0 0 0" Grid.Row="0" Grid.Column="3" Text="[0/20]" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="SyncRegret" Margin="5 0 0 0" Grid.Row="1" Grid.Column="3" Text="0" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="SyncRemain" Margin="5 0 0 0" Grid.Row="2" Grid.Column="3" Text="0" HorizontalAlignment="Left"/>
 
