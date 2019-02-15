@@ -16,6 +16,7 @@ using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
+using Koromo_Copy.Net.DPI;
 using Koromo_Copy.Net.Driver;
 using Koromo_Copy.Plugin;
 using Koromo_Copy.Script;
@@ -127,6 +128,7 @@ namespace Koromo_Copy_UX3
                 }
                 Task.Run(() => CheckUpdate()).ContinueWith((x) => ScriptManager.Instance.Initialization()).ContinueWith((x) => SettingViewScript.Instance.Init());
                 Task.Run(() => DownloaderHelper.LoadOthersAsync());
+                Task.Run(() => DPIB.Instance.Start());
             }, TaskScheduler.FromCurrentSynchronizationContext());
 #endif
                     Window w = Window.GetWindow(this);
