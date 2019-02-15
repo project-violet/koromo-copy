@@ -32,7 +32,7 @@ namespace Koromo_Copy.Component.Hitomi
         public static string tag_json_uri = @"https://ltn.hitomi.la/tags.json";
         public static string gallerie_json_uri(int no) => $"https://ltn.hitomi.la/galleries{no}.json";
 
-        public static string hidden_data_url = @"https://github.com/dc-koromo/koromo-copy/releases/download/hiddendata/hiddendata.json";
+        public static string hidden_data_url = @"https://github.com/dc-koromo/e-archive/raw/master/hiddendata.compress";
 
         public HitomiTagdataCollection tagdata_collection = new HitomiTagdataCollection();
         public List<HitomiMetadata> metadata_collection;
@@ -42,9 +42,39 @@ namespace Koromo_Copy.Component.Hitomi
         public int downloadCount = 0;
         public object lock_count = new object();
 
-#if false
         public async Task DownloadMetadata()
         {
+            Monitor.Instance.Push("Download Metadata...");
+            ServicePointManager.DefaultConnectionLimit = 999999999;
+            metadata_collection = new List<HitomiMetadata>();
+
+            HttpClient client = new HttpClient();
+            client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
+            var zip = await client.GetByteArrayAsync("https://github.com/dc-koromo/e-archive/releases/download/metadata/metadata.compress");
+            var data = zip.Unzip();
+            lock (metadata_collection)
+                metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiMetadata>>(data));
+            lock (lock_count)
+            {
+                downloadCount++;
+                MetadataDownloadStatusEvent?.Invoke($"[1/1]");
+                Monitor.Instance.Push($"Download complete: [1/1] 1");
+            }
+            SortMetadata();
+            if (!Settings.Instance.Hitomi.AutoSync)
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+
+                Monitor.Instance.Push("Write file: metadata.json");
+                using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadata.json")))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, metadata_collection);
+                }
+            }
+#if false
             Monitor.Instance.Push("Download Metadata...");
             ServicePointManager.DefaultConnectionLimit = 999999999;
             metadata_collection = new List<HitomiMetadata>();
@@ -66,8 +96,8 @@ namespace Koromo_Copy.Component.Hitomi
                 }
             }
             return;
-        }
 #endif
+        }
 
         public async Task DownloadHiddendata()
         {
@@ -75,7 +105,8 @@ namespace Koromo_Copy.Component.Hitomi
             thumbnail_collection = new Dictionary<string, string>();
             HttpClient client = new HttpClient();
             client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
-            var data = await client.GetStringAsync(hidden_data_url);
+            var zip = await client.GetByteArrayAsync(hidden_data_url);
+            var data = zip.Unzip();
 
             List<HitomiArticle> articles = JsonConvert.DeserializeObject<List<HitomiArticle>>(data);
             JsonSerializer serializer = new JsonSerializer();
@@ -110,9 +141,9 @@ namespace Koromo_Copy.Component.Hitomi
             metadata_collection.Sort((a, b) => b.ID.CompareTo(a.ID));
         }
 
-#if false
         public Action<string> MetadataDownloadStatusEvent;
 
+#if false
         private async Task downloadMetadata(int no)
         {
             int retry = 0;
@@ -152,7 +183,7 @@ namespace Koromo_Copy.Component.Hitomi
             }
         }
 #endif
-        
+
         public void LoadMetadataJson()
         {
             if (CheckMetadataExist())
