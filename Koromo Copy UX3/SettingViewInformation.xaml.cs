@@ -110,11 +110,11 @@ namespace Koromo_Copy_UX3
             HitomiData.Instance.metadata_collection = metadata_collection;
             HitomiData.Instance.LoadHiddendataJson();
 #endif
-            Task t1 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/releases/download/metadata/metadata.compress"));
+            //Task t1 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/releases/download/metadata/metadata.compress"));
             Task t2 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/raw/master/hiddendata.compress"));
-            t1.Start();
+            //t1.Start();
             t2.Start();
-            await t1;
+            //await t1;
             await t2;
             
             JsonSerializer serializer = new JsonSerializer();
@@ -192,7 +192,7 @@ namespace Koromo_Copy_UX3
         {
             lock (start_lock)
             {
-                while (load_count < 2)
+                while (load_count < 1)
                 {
                     Thread.Sleep(100);
                 }
