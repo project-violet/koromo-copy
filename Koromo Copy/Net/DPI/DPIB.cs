@@ -25,22 +25,24 @@ namespace Koromo_Copy.Net.DPI
     public class DPIB : ILazy<DPIB>
     {
         public const string DownloadURL = "https://github.com/ValdikSS/GoodbyeDPI/releases/download/0.1.5/goodbyedpi-0.1.5.zip";
+        public string tmp_path;
 
         public DPIB()
         {
-            var dpib_path = Path.Combine(Directory.GetCurrentDirectory(), "goodbyedpi/goodbyedpi-0.1.5/x86_64/goodbyedpi.exe");
+            if (!new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
+            {
+                Monitor.Instance.Push($"[GoodbyeDPI] Not administrator mode.");
+                return;
+            }
+
             var dpib_zip_path = Path.Combine(Directory.GetCurrentDirectory(), "goodbyedpi.zip");
 
-            if (!File.Exists(dpib_path))
-            {
-                NetCommon.GetDefaultClient().DownloadFile(DownloadURL, dpib_zip_path);
+            NetCommon.GetDefaultClient().DownloadFile(DownloadURL, dpib_zip_path);
 
-                var zip = ZipFile.Open(dpib_zip_path, ZipArchiveMode.Read);
-                zip.ExtractToDirectory(Path.Combine(Directory.GetCurrentDirectory(), "goodbyedpi"));
-                zip.Dispose();
-                File.Delete(dpib_zip_path);
-            }
-            
+            var zip = ZipFile.Open(dpib_zip_path, ZipArchiveMode.Read);
+            zip.ExtractToDirectory(tmp_path = Path.GetTempPath());
+            zip.Dispose();
+            File.Delete(dpib_zip_path);
         }
 
         Process proc;
@@ -49,14 +51,11 @@ namespace Koromo_Copy.Net.DPI
         public void Start()
         {
             if (!new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
-            {
-                Monitor.Instance.Push($"[GoodbyeDPI] Not administrator mode.");
                 return;
-            }
             
             while (true)
             {
-                var dpib_path = Path.Combine(Directory.GetCurrentDirectory(), "goodbyedpi/goodbyedpi-0.1.5/x86_64/goodbyedpi.exe");
+                var dpib_path = Path.Combine(tmp_path, "goodbyedpi-0.1.5/x86_64/goodbyedpi.exe");
 
                 proc = new Process();
                 proc.StartInfo.UseShellExecute = false;
@@ -78,6 +77,7 @@ namespace Koromo_Copy.Net.DPI
             {
                 close = true;
                 proc.Kill();
+                Directory.Delete(Path.Combine(tmp_path, "goodbyedpi-0.1.5"), true);
             }
         }
     }
