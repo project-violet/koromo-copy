@@ -51,6 +51,9 @@ namespace Koromo_Copy_UX3.Tools
                 case "ScriptEditor":
                     (new ScriptEditor()).Show();
                     break;
+                case "RankSimulator":
+                    (new RankSimulator()).Show();
+                    break;
 
                 case "HitomiExplorer":
                 case "FsEnumerator":

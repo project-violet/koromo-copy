@@ -139,6 +139,23 @@ namespace Koromo_Copy_UX3
 
         private void UpdatePatchNotes()
         {
+            // 1.7
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.7 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 랭크 시뮬레이터\r\n\r\n" +
+                    " - Zip-Listing 페이지 이동기능(Ctrl + P) 및 레이팅 시스템 추가\r\n\r\n" +
+                    "[변경된 기능]\r\n" +
+                    " - 히토미 정책에 따른 metadata/hiddendata 다운로드 경로 변경\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.6
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements
