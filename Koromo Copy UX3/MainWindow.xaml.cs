@@ -10,6 +10,7 @@ using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
+using Koromo_Copy.Net.DPI;
 using Koromo_Copy_UX3.Domain;
 using Koromo_Copy_UX3.Utility;
 using System;
@@ -198,6 +199,8 @@ namespace Koromo_Copy_UX3
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (DPIB.IsValueCreated)
+                DPIB.Instance.Close();
             if (Koromo_Copy.Monitor.IsValueCreated)
             {
                 Koromo_Copy.Monitor.Instance.Push("UX Close");

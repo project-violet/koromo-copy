@@ -43,6 +43,9 @@ namespace Koromo_Copy.Net.DPI
             
         }
 
+        Process proc;
+        bool close = false;
+
         public void Start()
         {
             if (!new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
@@ -54,7 +57,8 @@ namespace Koromo_Copy.Net.DPI
             while (true)
             {
                 var dpib_path = Path.Combine(Directory.GetCurrentDirectory(), "goodbyedpi/goodbyedpi-0.1.5/x86_64/goodbyedpi.exe");
-                var proc = new Process();
+
+                proc = new Process();
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.FileName = dpib_path;
@@ -63,6 +67,17 @@ namespace Koromo_Copy.Net.DPI
                 proc.Start();
                 proc.BeginOutputReadLine();
                 proc.WaitForExit();
+
+                if (close) break;
+            }
+        }
+
+        public void Close()
+        {
+            if (proc != null)
+            {
+                close = true;
+                proc.Kill();
             }
         }
     }
