@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -53,7 +55,7 @@ namespace Koromo_Copy_UX3
         {
             if (HitomiData.Instance.CheckMetadataExist())
             {
-                var dt = HitomiData.Instance.DateTimeMetadata();
+                var dt = HitomiData.Instance.DateTimeHiddendata();
                 var dd = (DateTime.Now - dt).Days;
                 var dh = (DateTime.Now - dt).Hours;
                 SyncDate.Text = $"{dt.ToString("yyyy년 MM월 dd일 ")} ({dd}일 {dh}시간 지남)";
@@ -108,6 +110,33 @@ namespace Koromo_Copy_UX3
             HitomiData.Instance.metadata_collection = metadata_collection;
             HitomiData.Instance.LoadHiddendataJson();
 #endif
+            Task t1 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/releases/download/metadata/metadata.compress"));
+            Task t2 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/raw/master/hiddendata.compress"));
+            t1.Start();
+            t2.Start();
+            await t1;
+            await t2;
+            
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+            Koromo_Copy.Monitor.Instance.Push("Write file: metadata.json");
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "metadata.json")))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, metadata_collection);
+            }
+
+            Koromo_Copy.Monitor.Instance.Push("Write file: hiddendata.json");
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "hiddendata.json")))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, hiddendata_collection);
+            }
+
+            //HitomiData.Instance.metadata_collection = metadata_collection;
+            HitomiData.Instance.LoadHiddendataJson();
 
             SyncButton.IsEnabled = true;
             UpdateSyncDate();
@@ -148,6 +177,7 @@ namespace Koromo_Copy_UX3
         public static string gallerie_json_uri(int no) => $"https://ltn.hitomi.la/galleries{no}.json";
 #endif
         public List<HitomiMetadata> metadata_collection = new List<HitomiMetadata>();
+        public List<HitomiArticle> hiddendata_collection = new List<HitomiArticle>();
 
         private object post_length_lock = new object();
         private object post_status_lock = new object();
@@ -162,7 +192,7 @@ namespace Koromo_Copy_UX3
         {
             lock (start_lock)
             {
-                while (load_count < 20)
+                while (load_count < 2)
                 {
                     Thread.Sleep(100);
                 }
@@ -247,10 +277,21 @@ namespace Koromo_Copy_UX3
                                 lock (post_status_lock) PostStatus(bytesRead);
                             } while (bytesRead != 0);
 
-                            lock (metadata_collection)
+                            if (url == "https://github.com/dc-koromo/e-archive/releases/download/metadata/metadata.compress")
                             {
-                                string str = Encoding.UTF8.GetString((outputStream as MemoryStream).ToArray());
-                                metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiMetadata>>(str));
+                                lock (metadata_collection)
+                                {
+                                    var str = (outputStream as MemoryStream).ToArray().Unzip();
+                                    metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiMetadata>>(str));
+                                }
+                            }
+                            else if (url == "https://github.com/dc-koromo/e-archive/raw/master/hiddendata.compress")
+                            {
+                                lock (hiddendata_collection)
+                                {
+                                    var str = (outputStream as MemoryStream).ToArray().Unzip();
+                                    hiddendata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiArticle>>(str));
+                                }
                             }
                         }
                     }
