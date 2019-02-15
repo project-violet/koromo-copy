@@ -85,7 +85,9 @@ namespace Koromo_Copy.Console.Utility
             { "strings", typeof(StringTools) },
             { "explorer", typeof(HitomiExplorer) },
             { "tagtest", typeof(RelatedTagsTest) },
+#if DEBUG
             { "gbt", typeof (GalleryBlockTester) }
+#endif
         };
 
         /// <summary>
@@ -94,6 +96,14 @@ namespace Koromo_Copy.Console.Utility
         /// <param name="args"></param>
         static void ProcessRun(string[] args)
         {
+#if !DEBUG
+            if (args[0] == "gbt")
+            {
+                Console.Instance.WriteErrorLine("Forbidden. You cannot use gbt tool.");
+                return;
+            }
+#endif
+
             if (!run_dic.ContainsKey(args[0]))
             {
                 Console.Instance.WriteErrorLine($"'{args[0]}' program not found.");
