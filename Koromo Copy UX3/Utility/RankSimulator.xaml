@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Content="내보내기" HorizontalAlignment="Left" Width="70" Margin="0 0 4 0"/>
+            <Button x:Name="Export" Click="Export_Click" Content="내보내기" HorizontalAlignment="Left" Width="70" Margin="0 0 4 0"/>
             <Button x:Name="Stat" Click="Stat_Click" Content="통계" HorizontalAlignment="Left" Width="100"/>
         </StackPanel>
 
