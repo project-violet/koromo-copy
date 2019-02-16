@@ -12,6 +12,7 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Elo;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -294,6 +295,73 @@ namespace Koromo_Copy_UX3.Utility
                 if (x.Win + x.Lose + x.Draw == 0) return;
                 Monitor.Instance.Push($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(32) + $"{x.Rating.ToString("0.##")}점".PadLeft(14));
             });
+        }
+
+        private void Export_Click(object sender, RoutedEventArgs e)
+        {
+            var builder = new StringBuilder();
+
+            builder.Append("Koromo Copy Rank Simulator\r\n");
+            builder.Append("Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.\r\n");
+            builder.Append("\r\n");
+            builder.Append("\r\n");
+            builder.Append("=================================================================================\r\n");
+            builder.Append("\r\n");
+            builder.Append("                                    통산 기록\r\n");
+            builder.Append("\r\n");
+            builder.Append("=================================================================================\r\n");
+            builder.Append("\r\n");
+            builder.Append($" 게임 횟수: {sys.Model.DHistory.Count}\r\n");
+            builder.Append($" 참가자 수: {sys.Players.Count}\r\n");
+            builder.Append("\r\n");
+            builder.Append("\r\n");
+            builder.Append("=================================================================================\r\n");
+            builder.Append("\r\n");
+            builder.Append("                                   전체 게임 기록\r\n");
+            builder.Append("\r\n");
+            builder.Append("=================================================================================\r\n");
+            builder.Append("\r\n");
+            int gc = 0;
+            sys.Model.DHistory.ForEach(x =>
+            {
+                builder.Append($" {(++gc).ToString("#,#").PadLeft(7)} 게임: {sys.Players[x.Item1].Indentity.PadLeft(30)} ({x.Item4.ToString().PadLeft(7)}) vs {sys.Players[x.Item2].Indentity.PadLeft(30)} ({x.Item5.ToString().PadLeft(7)}) ");
+
+                if (x.Item3 == 1)
+                    builder.Append($"       Left Win\r\n");
+                else
+                    builder.Append($"       Draw\r\n");
+            });
+            builder.Append("\r\n");
+            builder.Append("\r\n");
+            builder.Append("=================================================================================\r\n");
+            builder.Append("\r\n");
+            builder.Append("                                태그 엘로 레이팅 기록\r\n");
+            builder.Append("\r\n");
+            builder.Append("=================================================================================\r\n");
+            builder.Append("\r\n");
+            RankSimulatorStatistics.GetTagRanking(sys).ForEach(x =>
+            {
+                if (x.Win + x.Lose + x.Draw == 0) return;
+                builder.Append($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(32) + $"{x.Rating.ToString("0.##")}점".PadLeft(14) + "\r\n");
+            });
+            builder.Append("\r\n");
+            builder.Append("\r\n");
+            builder.Append("=================================================================================\r\n");
+            builder.Append("\r\n");
+            builder.Append("                                작가 엘로 레이팅 기록\r\n");
+            builder.Append("\r\n");
+            builder.Append("=================================================================================\r\n");
+            builder.Append("\r\n");
+            RankSimulatorStatistics.GetArtistRanking(sys).ForEach(x =>
+            {
+                if (x.Win + x.Lose + x.Draw == 0) return;
+                builder.Append($"{x.Win}승".PadLeft(6) + $"{x.Lose}패".PadLeft(6) + $"{x.Draw}무".PadLeft(6) + $" ({(x.W * 100).ToString("0.###")}%):".PadLeft(12) + "  " + $"{x.Indentity}".PadRight(32) + $"{x.Rating.ToString("0.##")}점".PadLeft(14) + "\r\n");
+            });
+            builder.Append("\r\n");
+            builder.Append("끝");
+
+            File.WriteAllText("rank-simulator-result.log", builder.ToString());
+            Process.Start("notepad", "rank-simulator-result.log");
         }
     }
 }
