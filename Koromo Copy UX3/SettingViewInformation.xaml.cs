@@ -120,14 +120,7 @@ namespace Koromo_Copy_UX3
             JsonSerializer serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
             serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            Koromo_Copy.Monitor.Instance.Push("Write file: metadata.json");
-            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "metadata.json")))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, metadata_collection);
-            }
-
+            
             Koromo_Copy.Monitor.Instance.Push("Write file: hiddendata.json");
             using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "hiddendata.json")))
             using (JsonWriter writer = new JsonTextWriter(sw))

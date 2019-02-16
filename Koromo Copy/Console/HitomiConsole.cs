@@ -519,6 +519,17 @@ namespace Koromo_Copy.Console
                         File.WriteAllBytes("metadata.compress", str.Zip());
                     }
                     break;
+
+                case 4:
+                    {
+                        var str = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText("hiddendata.json"));
+                        using (var fs = new StreamWriter(new FileStream("hiddendata.json", FileMode.Create, FileAccess.Write)))
+                        {
+                            fs.Write(JsonConvert.SerializeObject(str, Formatting.None));
+                        }
+                    }
+                    break;
+
             }
         }
 
