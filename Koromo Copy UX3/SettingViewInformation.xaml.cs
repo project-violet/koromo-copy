@@ -93,30 +93,16 @@ namespace Koromo_Copy_UX3
             timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Tick += Timer_Tick;
             timer.Start();
+
 #if false
-            await Task.WhenAll(Enumerable.Range(0, number_of_gallery_jsons).Select(no => Task.Run(() => DownloadThread(gallerie_json_uri(no)))));
-
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            Koromo_Copy.Monitor.Instance.Push("Write file: metadata.json");
-            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "metadata.json")))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, metadata_collection);
-            }
-
-            HitomiData.Instance.metadata_collection = metadata_collection;
-            HitomiData.Instance.LoadHiddendataJson();
+            Task t1 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/releases/download/metadata/metadata.compress"));
+            t1.Start();
+            await t1;
 #endif
-            //Task t1 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/releases/download/metadata/metadata.compress"));
             Task t2 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/raw/master/hiddendata.compress"));
-            //t1.Start();
             t2.Start();
-            //await t1;
             await t2;
-            
+
             JsonSerializer serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
             serializer.NullValueHandling = NullValueHandling.Ignore;
@@ -164,11 +150,7 @@ namespace Koromo_Copy_UX3
 
         int seconds = 0;
         long prev_bytes = 0;
-
-#if false
-        public static int number_of_gallery_jsons = 20;
-        public static string gallerie_json_uri(int no) => $"https://ltn.hitomi.la/galleries{no}.json";
-#endif
+        
         public List<HitomiMetadata> metadata_collection = new List<HitomiMetadata>();
         public List<HitomiArticle> hiddendata_collection = new List<HitomiArticle>();
 
@@ -300,9 +282,6 @@ namespace Koromo_Copy_UX3
             }
 
             Interlocked.Increment(ref complete_count);
-#if false
-            Koromo_Copy.Monitor.Instance.Push($"Download complete: [{complete_count.ToString("00")}/{number_of_gallery_jsons}] {url}");
-#endif
         }
 
     }

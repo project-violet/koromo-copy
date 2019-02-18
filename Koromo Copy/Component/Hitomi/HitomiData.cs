@@ -26,19 +26,14 @@ namespace Koromo_Copy.Component.Hitomi
     /// </summary>
     public class HitomiData : ILazy<HitomiData>
     {
-        public const int max_number_of_result = 10;
-        public const int number_of_gallery_jsons = 20;
-        
-        public static string tag_json_uri = @"https://ltn.hitomi.la/tags.json";
-        public static string gallerie_json_uri(int no) => $"https://ltn.hitomi.la/galleries{no}.json";
-
         public static string hidden_data_url = @"https://github.com/dc-koromo/e-archive/raw/master/hiddendata.compress";
 
         public HitomiTagdataCollection tagdata_collection = new HitomiTagdataCollection();
         public List<HitomiMetadata> metadata_collection;
         public Dictionary<string, string> thumbnail_collection;
 
-        #region Metadata
+#region Metadata
+
         public int downloadCount = 0;
         public object lock_count = new object();
 
@@ -74,29 +69,6 @@ namespace Koromo_Copy.Component.Hitomi
                     serializer.Serialize(writer, metadata_collection);
                 }
             }
-#if false
-            Monitor.Instance.Push("Download Metadata...");
-            ServicePointManager.DefaultConnectionLimit = 999999999;
-            metadata_collection = new List<HitomiMetadata>();
-            downloadCount = 0;
-            await Task.WhenAll(Enumerable.Range(0, number_of_gallery_jsons).Select(no => downloadMetadata(no)));
-            SortMetadata();
-
-            if (!Settings.Instance.Hitomi.AutoSync)
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Converters.Add(new JavaScriptDateTimeConverter());
-                serializer.NullValueHandling = NullValueHandling.Ignore;
-
-                Monitor.Instance.Push("Write file: metadata.json");
-                using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadata.json")))
-                using (JsonWriter writer = new JsonTextWriter(sw))
-                {
-                    serializer.Serialize(writer, metadata_collection);
-                }
-            }
-            return;
-#endif
         }
 
         public async Task DownloadHiddendata()
@@ -142,48 +114,7 @@ namespace Koromo_Copy.Component.Hitomi
         }
 
         public Action<string> MetadataDownloadStatusEvent;
-
-#if false
-        private async Task downloadMetadata(int no)
-        {
-            int retry = 0;
-        RETRYL:
-            if (retry > 10)
-            {
-                Monitor.Instance.Push("Maximum number(10) of retries has been exceeded.");
-                Monitor.Instance.Push("Sorry");
-                return;
-            }
-            try
-            {
-                HttpClient client = new HttpClient();
-                client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
-                var data = await client.GetStringAsync(gallerie_json_uri(no));
-                if (data.Trim() == "")
-                {
-                    Monitor.Instance.Push($"Error: '{gallerie_json_uri(no)}' is empty database!");
-                    return;
-                }
-                lock (metadata_collection)
-                    metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiMetadata>>(data));
-                lock (lock_count)
-                {
-                    downloadCount++;
-                    MetadataDownloadStatusEvent?.Invoke($"[{downloadCount.ToString("00")}/{number_of_gallery_jsons}]");
-                    Monitor.Instance.Push($"Download complete: [{downloadCount.ToString("00")}/{number_of_gallery_jsons}] {gallerie_json_uri(no)}");
-                }
-            }
-            catch (Exception e)
-            {
-                Monitor.Instance.Push($"Error: " + e.Message);
-                Monitor.Instance.Push($"Retrying download ... [{no}|{retry}]");
-                retry++;
-                Thread.Sleep(1000);
-                goto RETRYL;
-            }
-        }
-#endif
-
+        
         public void LoadMetadataJson()
         {
             if (CheckMetadataExist())
@@ -359,9 +290,7 @@ namespace Koromo_Copy.Component.Hitomi
             Monitor.Instance.Push("Start Synchronization...");
             metadata_collection?.Clear();
             thumbnail_collection?.Clear();
-#if false
             await Task.Run(() => DownloadMetadata());
-#endif
             await Task.Run(() => DownloadHiddendata());
             await Task.Run(() => RebuildTagData());
             await Task.Run(() => SortTagdata());
