@@ -142,6 +142,10 @@ namespace Koromo_Copy.Console.Utility
                     tree.BuildTree();
                     Console.Instance.Write(Monitor.SerializeObject(tree.GetLevelImages(11)));
                     break;
+
+                case "ls":
+                    HtmlLocalServer.Instance.Start();
+                    break;
             }
         }
     }

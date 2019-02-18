@@ -29,6 +29,7 @@ namespace Koromo_Copy.Net.DPI
 
         public DPIB()
         {
+#if !DEBUG
             if (!new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
             {
                 Monitor.Instance.Push($"[GoodbyeDPI] Not administrator mode.");
@@ -43,6 +44,7 @@ namespace Koromo_Copy.Net.DPI
             zip.ExtractToDirectory(tmp_path = Path.GetTempPath());
             zip.Dispose();
             File.Delete(dpib_zip_path);
+#endif
         }
 
         Process proc;
@@ -50,6 +52,7 @@ namespace Koromo_Copy.Net.DPI
 
         public void Start()
         {
+#if !DEBUG
             if (!new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
                 return;
             
@@ -69,6 +72,7 @@ namespace Koromo_Copy.Net.DPI
 
                 if (close) break;
             }
+#endif
         }
 
         public void Close()

@@ -129,6 +129,8 @@
     </Compile>
     <Compile Include="Format.cs" />
     <Compile Include="Html\HtmlCAL.cs" />
+    <Compile Include="Html\HtmlLocalServer.cs" />
+    <Compile Include="Html\HtmlManager.cs" />
     <Compile Include="Html\HtmlTree.cs" />
     <Compile Include="Internal.cs" />
     <Compile Include="Component\EH\EHentaiArticle.cs" />
