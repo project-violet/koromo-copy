@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Html;
 using Koromo_Copy.Interface;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,13 @@ namespace Koromo_Copy_UX3
                 }));
                 Thread.Sleep(100);
             }
+
+#if DEBUG
+            if (Article is HitomiArticle ha2)
+            {
+                HtmlLocalServer.Instance.CreateImageServer(ha2.Title, ha2.ImagesLink.Select(x => HitomiCommon.GetDownloadImageAddress(ha2.Magic, x)).ToArray());
+            }
+#endif
         }
     }
 }
