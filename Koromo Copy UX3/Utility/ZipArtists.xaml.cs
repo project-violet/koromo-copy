@@ -9,6 +9,9 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Fs;
+using Koromo_Copy_UX3.Domain;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using System;
@@ -50,7 +53,7 @@ namespace Koromo_Copy_UX3.Utility
         ZipArtistsModel model;
         ZipArtistsRatingModel rating_model;
 
-        int show_elem_per_page = 20;
+        int show_elem_per_page = 5;
 
         private async void ProcessPath(string path)
         {
@@ -78,7 +81,6 @@ namespace Koromo_Copy_UX3.Utility
                         using (var reader = new StreamReader(zipFile.GetEntry("Info.json").Open()))
                         {
                             var json_model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
-                            //article_dic.Add(file.FullName.Substring(root_directory.Length), new ZipListingArticleModel { ArticleData = json_model, Size = file.Length, CreatedDate = file.CreationTime.ToString() });
                             article_data.Add(Path.GetFileName(file.FullName), json_model);
                         }
                     }
@@ -88,7 +90,7 @@ namespace Koromo_Copy_UX3.Utility
                     }
                 }
                 if (article_data.Count == 0) continue;
-                artist_dic.Add(x.Item1.Substring(root_directory.Length), new ZipArtistsArtistModel { ArticleData = article_data, CreatedDate = Directory.GetCreationTime(x.Item1).ToString(), ArtistName = Path.GetDirectoryName(x.Item1), Size= (long)x.Item2});
+                artist_dic.Add(x.Item1.Substring(root_directory.Length), new ZipArtistsArtistModel { ArticleData = article_data, CreatedDate = Directory.GetCreationTime(x.Item1).ToString(), ArtistName = Path.GetFileName(Path.GetDirectoryName(x.Item1)), Size = (long)x.Item2});
             }
 
             model = new ZipArtistsModel();
@@ -101,12 +103,12 @@ namespace Koromo_Copy_UX3.Utility
             rate_filename = $"zipartists-result-{tick}-rating.json";
             
             artist_list = artist_dic.ToList();
-            //elems.Clear();
-            //artist_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipListingElements>(() =>
-            //{
-            //    return new ZipArtistsElements(root_directory + x.Key, x.Value.ArticleData, 0);
-            //}))));
-            //day_before = raws = elems;
+            elems.Clear();
+            artist_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipArtistsElements>(() =>
+            {
+                return new ZipArtistsElements(root_directory + x.Key, x.Value, 0);
+            }))));
+            day_before = raws = elems;
             sort_data(align_column, align_row);
 
             await Application.Current.Dispatcher.BeginInvoke(new Action(
@@ -142,50 +144,160 @@ namespace Koromo_Copy_UX3.Utility
                     await Task.Run(() => ProcessPath(cofd.FileName));
                 }
             }
-        }
+            else if (item.Tag.ToString() == "Open")
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                ofd.Filter = "데이터 파일 (*.json)|*.json";
+                if (ofd.ShowDialog() == true)
+                {
+                    // 열기
+                    try
+                    {
+                        model = ZipArtistsModelManager.OpenModel(ofd.FileName);
 
-        private void show_page_impl(int page)
-        {
-            SeriesPanel.Children.Clear();
+                        var raw = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
+                        rate_filename = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(ofd.FileName), raw + "-rating.json");
 
-            //for (int i = page * show_elem_per_page; i < (page + 1) * show_elem_per_page && i < elems.Count; i++)
-            //{
-            //    SeriesPanel.Children.Add(elems[i].Item2.Value);
-            //}
+                        if (File.Exists(rate_filename))
+                        {
+                            rating_model = ZipArtistsModelManager.OpenRatingModel(rate_filename);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("옳바른 파일이 아닙니다!", "Zip Listing", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    bool offline = false;
+                    if (!Directory.Exists(model.RootDirectory))
+                    {
+                        if (MessageBox.Show($"루트 디렉토리 \"{model.RootDirectory}\"를 찾을 수 없습니다! 디렉토리 위치가 변경되었다면 직접 루트 디렉토리를 수정해주세요!\r\n오프라인 모드로 열까요?", "Zip Listing", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.No)
+                            return;
+                        offline = true;
+                    }
+                    
+                    artist_list = model.ArtistList.ToList();
+
+                    // 초기화
+                    elems.Clear();
+                    artist_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipArtistsElements>(() =>
+                    {
+                        return new ZipArtistsElements(model.RootDirectory + x.Key, x.Value, 0, offline);
+                    }))));
+                    day_before = raws = elems;
+                    sort_data(align_column, align_row);
+                    ArticleCount.Text = $"작가 {artist_list.Count.ToString("#,#")}명";
+                    PageCount.Text = $"작품 {artist_list.Select(x => x.Value.ArticleData.Count).Sum().ToString("#,#")}개";
+                    max_page = artist_list.Count / show_elem_per_page;
+                    initialize_page();
+                    stack_clear();
+                    stack_push();
+                }
+            }
+            else if (item.Tag.ToString() == "Back")
+            {
+                stack_back();
+            }
+            else if (item.Tag.ToString() == "Forward")
+            {
+                stack_forward();
+            }
+            else if (item.Tag.ToString() == "Align")
+            {
+                var dialog = new ZipArtistsSorting(align_column, align_row);
+                if ((bool)(await DialogHost.Show(dialog, "RootDialog")))
+                {
+                    int column = dialog.AlignColumnIndex;
+                    int row = dialog.AlignRowIndex;
+
+                    if (column == align_column && row == align_row) return;
+                    sort_data(column, row);
+                    align_column = column;
+                    align_row = row;
+                    initialize_page();
+
+                    stack_push();
+                }
+            }
+            else if (item.Tag.ToString() == "Filter")
+            {
+                if (raws.Count == 0) return;
+                var dialog = new ZipListingFilter(raws.Select(x => DateTime.Parse(x.Item1.Value.CreatedDate)).ToList(), starts, ends);
+                if ((bool)(await DialogHost.Show(dialog, "RootDialog")))
+                {
+                    if (dialog.StartDate.SelectedDate.HasValue)
+                    {
+                        starts = dialog.StartDate.SelectedDate;
+                    }
+                    if (dialog.EndDate.SelectedDate.HasValue)
+                    {
+                        ends = dialog.EndDate.SelectedDate.Value.AddMilliseconds(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999);
+                    }
+                    elems = day_before;
+                    filter_data();
+                    max_page = elems.Count / show_elem_per_page;
+                    initialize_page();
+
+                    stack_push();
+                }
+            }
         }
 
         private void sort_data(int column, int row)
         {
-            //if (column == 0)
-            //{
-            //    elems.Sort((x, y) => SortAlgorithm.ComparePath(x.Item1.Key, y.Item1.Key));
-            //}
-            //else if (column == 1)
-            //{
-            //    elems.Sort((x, y) => DateTime.Parse(x.Item1.Value.CreatedDate).CompareTo(DateTime.Parse(y.Item1.Value.CreatedDate)));
-            //}
-            //else if (column == 2)
-            //{
-            //    elems.Sort((x, y) => x.Item1.Value.Size.CompareTo(y.Item1.Value.Size));
-            //}
-            //else if (column == 3)
-            //{
-            //    elems.Sort((x, y) => x.Item1.Value.ArticleData.Title.CompareTo(y.Item1.Value.ArticleData.Title));
-            //}
-            //else if (column == 4)
-            //{
-            //    elems.Sort((x, y) => Convert.ToInt32(x.Item1.Value.ArticleData.Id).CompareTo(Convert.ToInt32(y.Item1.Value.ArticleData.Id)));
-            //}
-            //else if (column == 5)
-            //{
-            //    elems.Sort((x, y) => x.Item1.Value.ArticleData.Pages.CompareTo(y.Item1.Value.ArticleData.Pages));
-            //}
-            //else if (column == 6)
-            //{
-            //    elems.Sort((x, y) => get_rate(Convert.ToInt32(x.Item1.Value.ArticleData.Id)).CompareTo(get_rate(Convert.ToInt32(y.Item1.Value.ArticleData.Id))));
-            //}
-            //
-            //if (row == 1) elems.Reverse();
+            if (column == 0)
+            {
+                elems.Sort((x, y) => SortAlgorithm.ComparePath(x.Item1.Key, y.Item1.Key));
+            }
+            else if (column == 1)
+            {
+                elems.Sort((x, y) => DateTime.Parse(x.Item1.Value.CreatedDate).CompareTo(DateTime.Parse(y.Item1.Value.CreatedDate)));
+            }
+            else if (column == 2)
+            {
+                elems.Sort((x, y) => x.Item1.Value.Size.CompareTo(y.Item1.Value.Size));
+            }
+            else if (column == 3)
+            {
+                elems.Sort((x, y) => x.Item1.Value.ArtistName.CompareTo(y.Item1.Value.ArtistName));
+            }
+            else if (column == 4)
+            {
+                elems.Sort((x, y) => x.Item1.Value.ArticleData.Count.CompareTo(y.Item1.Value.ArticleData.Count));
+            }
+            else if (column == 5)
+            {
+                elems.Sort((x, y) => get_rate(Convert.ToInt32(x.Item1.Value.ArtistName)).CompareTo(get_rate(Convert.ToInt32(y.Item1.Value.ArtistName))));
+            }
+
+            if (row == 1) elems.Reverse();
+        }
+
+        private void filter_data()
+        {
+            if (starts.HasValue)
+            {
+                elems = elems.Where(x => DateTime.Parse(x.Item1.Value.CreatedDate) >= starts).ToList();
+            }
+            if (ends.HasValue)
+            {
+                elems = elems.Where(x => DateTime.Parse(x.Item1.Value.CreatedDate) <= ends).ToList();
+            }
+        }
+
+        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> raws = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> day_before = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> elems = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+        private void show_page_impl(int page)
+        {
+            SeriesPanel.Children.Clear();
+
+            for (int i = page * show_elem_per_page; i < (page + 1) * show_elem_per_page && i < elems.Count; i++)
+            {
+                SeriesPanel.Children.Add(elems[i].Item2.Value);
+            }
         }
 
         #endregion
@@ -372,8 +484,7 @@ namespace Koromo_Copy_UX3.Utility
             stack_pointer = ptr;
             stack_regression(ptr);
         }
-
-        string latest_search = "";
+        
         private void stack_regression(int ptr)
         {
             var elem = status_stack[ptr];

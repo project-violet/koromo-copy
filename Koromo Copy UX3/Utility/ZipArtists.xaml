@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
-        Title="Zip Artists - Koromo Copy" Height="762.2" Width="1077">
+        Title="Zip Artists - Koromo Copy" Height="762.2" Width="1250">
 
     <Window.Resources>
         <ResourceDictionary>
