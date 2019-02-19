@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Koromo_Copy_UX3.Utility"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="300"  d:DesignWidth="1000" Padding="5">
+             d:DesignHeight="300"  d:DesignWidth="1000" Padding="5" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -28,16 +28,16 @@
             <BeginStoryboard>
                 <Storyboard>
                     <DoubleAnimation Storyboard.TargetProperty="ScaleX"
-                                              Storyboard.TargetName="scale" To="1.02"
+                                              Storyboard.TargetName="scale" To="1.005"
                                               Duration="0:0:0.1" />
                     <DoubleAnimation Storyboard.TargetProperty="ScaleY"
-                                              Storyboard.TargetName="scale" To="1.02"          
+                                              Storyboard.TargetName="scale" To="1.005"          
                                               Duration="0:0:0.1" />
                     <DoubleAnimation Storyboard.TargetProperty="X"
                                               Storyboard.TargetName="trans" To="-2"          
                                               Duration="0:0:0.1" />
                     <DoubleAnimation Storyboard.TargetProperty="Y"
-                                              Storyboard.TargetName="trans" To="-2"          
+                                              Storyboard.TargetName="trans" To="-0.5"          
                                               Duration="0:0:0.1" />
                 </Storyboard>
             </BeginStoryboard>
@@ -65,7 +65,7 @@
     <materialDesign:Card Background="#2C2C2C" x:Name="Card">
         <Grid Margin="8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -101,62 +101,28 @@
                     </Button>
                 </StackPanel>
             </materialDesign:PopupBox>
-            
+
+            <Grid Grid.Column="0" Margin="10 0 5 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Margin="0 10 0 2" Text="작가" FontSize="15"  Foreground="#E2E2E2"/>
+                <TextBox x:Name="ArtistTextBox" Grid.Row="1" HorizontalAlignment="Stretch" FontSize="15" BorderBrush="#303030" Background="#232323"  Foreground="#E2E2E2"/>
+
+                <TextBlock x:Name="ScoreLabel" Grid.Row="2" Margin="0 20 0 2" Text="태그" FontSize="15" Foreground="#E2E2E2"/>
+                <TextBox x:Name="ScoreTextBox" Grid.Row="3" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" MaxHeight="98" BorderBrush="#303030" Background="#232323"  Foreground="#E2E2E2"/>
+            </Grid>
+
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 0 0">
-                <Image x:Name="Image1" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
-                    <Image.Resources>
-                        <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
-                    </Image.Resources>
-                    <Image.ToolTip>
-                        <ToolTip x:Name="ImageToolTip1" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                            <Image x:Name="ToolTipImage1" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
-                        </ToolTip>
-                    </Image.ToolTip>
-                </Image>
-
-                <Image x:Name="Image2" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
-                    <Image.Resources>
-                        <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
-                    </Image.Resources>
-                    <Image.ToolTip>
-                        <ToolTip x:Name="ImageToolTip2" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                            <Image x:Name="ToolTipImage2" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
-                        </ToolTip>
-                    </Image.ToolTip>
-                </Image>
-
-                <Image x:Name="Image3" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
-                    <Image.Resources>
-                        <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
-                    </Image.Resources>
-                    <Image.ToolTip>
-                        <ToolTip x:Name="ImageToolTip3" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                            <Image x:Name="ToolTipImage3" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
-                        </ToolTip>
-                    </Image.ToolTip>
-                </Image>
-
-                <Image x:Name="Image4" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
-                    <Image.Resources>
-                        <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
-                    </Image.Resources>
-                    <Image.ToolTip>
-                        <ToolTip x:Name="ImageToolTip4" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                            <Image x:Name="ToolTipImage4" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
-                        </ToolTip>
-                    </Image.ToolTip>
-                </Image>
-
-                <Image x:Name="Image5" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0">
-                    <Image.Resources>
-                        <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
-                    </Image.Resources>
-                    <Image.ToolTip>
-                        <ToolTip x:Name="ImageToolTip5" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                            <Image x:Name="ToolTipImage5" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
-                        </ToolTip>
-                    </Image.ToolTip>
-                </Image>
+                <Image x:Name="Image1" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image2" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image3" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image4" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image5" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform"  MouseMove="Image_MouseMove" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
             </StackPanel>
         </Grid>
     </materialDesign:Card>
