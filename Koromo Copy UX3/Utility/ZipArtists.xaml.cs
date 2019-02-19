@@ -71,6 +71,7 @@ namespace Koromo_Copy_UX3.Utility
                     ProgressText.Text = x.Item1;
                 }));
                 Dictionary<string, HitomiJsonModel> article_data = new Dictionary<string, HitomiJsonModel>();
+                DateTime last_create_time = DateTime.Now;
                 foreach (var file in x.Item3)
                 {
                     try
@@ -83,6 +84,8 @@ namespace Koromo_Copy_UX3.Utility
                             var json_model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
                             article_data.Add(Path.GetFileName(file.FullName), json_model);
                         }
+                        if (file.LastWriteTime < last_create_time)
+                            last_create_time = file.LastWriteTime;
                     }
                     catch (Exception e)
                     {
@@ -90,7 +93,7 @@ namespace Koromo_Copy_UX3.Utility
                     }
                 }
                 if (article_data.Count == 0) continue;
-                artist_dic.Add(x.Item1.Substring(root_directory.Length), new ZipArtistsArtistModel { ArticleData = article_data, CreatedDate = Directory.GetCreationTime(x.Item1).ToString(), ArtistName = Path.GetFileName(Path.GetDirectoryName(x.Item1)), Size = (long)x.Item2});
+                artist_dic.Add(x.Item1.Substring(root_directory.Length), new ZipArtistsArtistModel { ArticleData = article_data, CreatedDate = last_create_time.ToString(), ArtistName = Path.GetFileName(Path.GetDirectoryName(x.Item1)), Size = (long)x.Item2});
             }
 
             model = new ZipArtistsModel();
@@ -98,9 +101,9 @@ namespace Koromo_Copy_UX3.Utility
             model.Tag = path;
             model.ArtistList = artist_dic.ToArray();
             var tick = DateTime.Now.Ticks;
-            ZipArtistsModelManager.SaveModel($"zipartists-result-{tick}.json", model);
+            ZipArtistsModelManager.SaveModel($"zipartists-{Path.GetFileName(root_directory)}-{tick}.json", model);
 
-            rate_filename = $"zipartists-result-{tick}-rating.json";
+            rate_filename = $"zipartists-{Path.GetFileName(root_directory)}-{tick}-rating.json";
             
             artist_list = artist_dic.ToList();
             elems.Clear();
@@ -426,6 +429,7 @@ namespace Koromo_Copy_UX3.Utility
         public struct ZipListingStackElements
         {
             public int selected_page;
+            public int max_page;
             public int current_page_segment;
             public double scroll_status;
             
@@ -454,6 +458,7 @@ namespace Koromo_Copy_UX3.Utility
             status_stack.Add(new ZipListingStackElements
             {
                 selected_page = selected_page,
+                max_page = max_page,
                 current_page_segment = current_page_segment,
                 scroll_status = ScrollViewer.VerticalOffset,
 
@@ -488,17 +493,17 @@ namespace Koromo_Copy_UX3.Utility
         private void stack_regression(int ptr)
         {
             var elem = status_stack[ptr];
-            //elems = raws;
+            elems = raws;
             starts = elem.starts;
             ends = elem.ends;
             align_row = elem.align_row;
             align_column = elem.align_column;
 
-            //max_page = elem.max_page;
+            max_page = elem.max_page;
             current_page_segment = elem.current_page_segment;
 
-            //sort_data(align_column, align_row);
-            //filter_data();
+            sort_data(align_column, align_row);
+            filter_data();
             initialize_page(false);
             show_page(elem.selected_page);
             ScrollViewer.ScrollToVerticalOffset(elem.scroll_status);

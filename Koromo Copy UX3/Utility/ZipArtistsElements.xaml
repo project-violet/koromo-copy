@@ -128,11 +128,11 @@
             </Grid>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 0 0">
-                <Image x:Name="Image1" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
-                <Image x:Name="Image2" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
-                <Image x:Name="Image3" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
-                <Image x:Name="Image4" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
-                <Image x:Name="Image5" Height="200" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image1" Height="205" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image2" Height="205" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image3" Height="205" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image4" Height="205" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
+                <Image x:Name="Image5" Height="205" Width="150" RenderOptions.BitmapScalingMode="HighQuality" Margin="5 0 0 0" Stretch="Uniform" Panel.ZIndex="0" ToolTipService.InitialShowDelay="0"/>
             </StackPanel>
         </Grid>
     </materialDesign:Card>
