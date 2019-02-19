@@ -10,6 +10,7 @@ using Koromo_Copy;
 using Koromo_Copy_UX3.Domain;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace Koromo_Copy_UX3.Utility
     {
         string path;
         List<string> sub_folder;
+        bool offline;
 
         public ZipArtistsElements(string path, ZipArtistsArtistModel model, int rating, bool offline = false)
         {
@@ -63,6 +65,9 @@ namespace Koromo_Copy_UX3.Utility
             ScoreTextBox.Text = string.Join("\r\n", tag_list.Select(x => x.Key));
 
             Loaded += ZipArtistsElements_Loaded;
+
+            if (offline == true)
+                OpenFolder.IsEnabled = false;
         }
         
         Stream[] load_stream = new Stream[5];
@@ -145,7 +150,12 @@ namespace Koromo_Copy_UX3.Utility
 
         private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
         {
+            var button = sender as Button;
 
+            if (button.Tag.ToString() == "Folder")
+            {
+                Process.Start(path);
+            }
         }
         
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
