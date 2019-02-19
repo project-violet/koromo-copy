@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
-        Title="Zip Artists - Koromo Copy" Height="762.2" Width="1250">
+        Title="Zip Artists - Koromo Copy" Height="762.2" Width="1235">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -118,6 +118,13 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="ChartBar" Height="24" Width="24" Margin="10 0 0 0"/>
                                 <TextBlock Text="통계" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListBoxItem>
+
+                        <ListBoxItem PreviewMouseUp="StackPanel_MouseDown" Tag="Tool">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Wrench" Height="24" Width="24" Margin="10 0 0 0"/>
+                                <TextBlock Text="도구" Margin="20 0 0 0" FontSize="15" VerticalAlignment="Center"/>
                             </StackPanel>
                         </ListBoxItem>
                     </ListBox>

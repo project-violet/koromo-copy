@@ -66,6 +66,7 @@ namespace Koromo_Copy_UX3.Utility
 
             Loaded += ZipArtistsElements_Loaded;
 
+            this.offline = offline;
             if (offline == true)
                 OpenFolder.IsEnabled = false;
         }
@@ -86,13 +87,12 @@ namespace Koromo_Copy_UX3.Utility
                 
                 for (int i = 0, j = 0; i < 5 && j < sub_folder.Count; j++)
                 {
-                    string ttitle = sub_folder[i].Split('|')[0];
-                    if (titles.Count > 0 && !titles.TrueForAll((title) => Strings.ComputeLevenshteinDistance(ttitle, title) > Settings.Instance.Hitomi.TextMatchingAccuracy)) continue;
+                    //string ttitle = sub_folder[i].Split('|')[0];
+                    //if (titles.Count > 0 && !titles.TrueForAll((title) => Strings.ComputeLevenshteinDistance(ttitle, title) > Settings.Instance.Hitomi.TextMatchingAccuracy)) continue;
 
-                    titles.Add(ttitle);
+                    //titles.Add(ttitle);
                     paths.Add(path+sub_folder[i]);
                     i++;
-
                 }
                 require_count = paths.Count;
                 loaded_count = 0;
