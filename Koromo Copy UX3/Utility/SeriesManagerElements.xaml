@@ -101,7 +101,7 @@
 
                 <TextBlock x:Name="Title" Cursor="Hand" Grid.Row="0" Margin="0 10 0 0" MouseUp="Title_MouseDown" Text="Title" FontSize="20" FontWeight="Medium" Foreground="White" TextWrapping="WrapWithOverflow"/>
 
-                <materialDesign:PopupBox x:Name="Popup" Visibility="Collapsed" Foreground="White" Background="#232323" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 5 10 0">
+                <materialDesign:PopupBox x:Name="Popup" Visibility="Visible" Foreground="White" Background="#232323" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 5 10 0">
                     <materialDesign:PopupBox.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
