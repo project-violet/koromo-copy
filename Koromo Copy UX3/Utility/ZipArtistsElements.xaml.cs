@@ -41,13 +41,30 @@ namespace Koromo_Copy_UX3.Utility
             InitializeComponent();
 
             ArtistTextBox.Text = model.ArtistName;
+            Date.Text = model.CreatedDate;
+            ArticleCount.Text = model.ArticleData.Count + " Articles";
+
             this.path = path;
             sub_folder = model.ArticleData.Select(x => x.Key).ToList();
             sub_folder.Sort((x,y) => SortAlgorithm.ComparePath(y,x));
 
+            var tags = new Dictionary<string, int>();
+            foreach (var v in model.ArticleData)
+                if (v.Value.Tags != null)
+                    foreach (var tag in v.Value.Tags)
+                        if (tags.ContainsKey(tag))
+                            tags[tag] += 1;
+                        else
+                            tags.Add(tag, 1);
+
+            var tag_list = tags.ToList();
+            tag_list.Sort((x, y) => y.Value.CompareTo(x.Value));
+            
+            ScoreTextBox.Text = string.Join("\r\n", tag_list.Select(x => x.Key));
+
             Loaded += ZipArtistsElements_Loaded;
         }
-
+        
         Stream[] load_stream = new Stream[5];
         ZipArchive[] archives = new ZipArchive[5];
         BitmapImage[] BitmapImage = new BitmapImage[5];
@@ -130,12 +147,7 @@ namespace Koromo_Copy_UX3.Utility
         {
 
         }
-
-        private void Image_MouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
-
+        
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
             Popup.Visibility = Visibility.Visible;

@@ -42,6 +42,9 @@ namespace Koromo_Copy_UX3.Tools
                 case "ZipListing":
                     (new ZipListing()).Show();
                     break;
+                case "ZipArtists":
+                    (new ZipArtists()).Show();
+                    break;
                 case "MangaCrawler":
                     (new MangaCrawler()).Show();
                     break;

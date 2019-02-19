@@ -80,6 +80,34 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
+                        <TextBlock Text="압축파일 폴더 분석기 (Zip Artists, Ctrl + A)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="hitomi.la에서 다운로드되었으며, Koromo copy의 압축설정을 통해 압축된 파일들에 한해 사용가능합니다. 이 도구는 특정 하위폴더에있는 다운로드된 압축파일을 폴더 단위로 분석하여 독립된 탐색환경을 제공합니다. 작가별로 분류된 폴더를 탐색하는데 매우 유용합니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="ZipArtists" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Files" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
                         <TextBlock Text="커스텀 크롤러 (Custom Crawler)" FontWeight="SemiBold" FontSize="14"/>
                         <TextBlock Text="크롤러를 직접 제작하거나, 제작에 도움을 줄 수 있는 유용한 도구 모음입니다." TextWrapping="Wrap" FontSize="13"/>
                     </StackPanel>
