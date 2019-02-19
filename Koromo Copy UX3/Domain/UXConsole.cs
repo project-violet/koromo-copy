@@ -222,6 +222,16 @@ namespace Koromo_Copy_UX3.Domain
                     }));
                     break;
 
+                case "zip-artists":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        ZipArtists za = new ZipArtists();
+                        za.Show();
+                    }));
+                    break;
+                    
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;

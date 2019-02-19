@@ -1,0 +1,49 @@
+﻿/***
+
+   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Koromo_Copy_UX3.Utility
+{
+    /// <summary>
+    /// ZipArtistsElements.xaml에 대한 상호 작용 논리
+    /// </summary>
+    public partial class ZipArtistsElements : UserControl
+    {
+        public ZipArtistsElements(ZipArtistsArtistModel model, bool offline = false)
+        {
+            InitializeComponent();
+        }
+
+        List<Stream> load_stream = new List<Stream>();
+
+        private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Image_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+    }
+}
