@@ -44,7 +44,7 @@ namespace Koromo_Copy_UX.Utility
             InitializeComponent();
 
             ArtistTextBox.Text = model.ArtistName;
-            Date.Text = model.CreatedDate;
+            Date.Text = model.LastAccessDate;
             ArticleCount.Text = model.ArticleData.Count + " Articles";
 
             this.path = path;
