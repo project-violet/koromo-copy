@@ -32,14 +32,14 @@ namespace Koromo_Copy.Component.Hitomi
         public static HitomiMetadata ArticleToMetadata(HitomiArticle article)
         {
             HitomiMetadata metadata = new HitomiMetadata();
-            metadata.Artists = article.Artists;
-            metadata.Characters = article.Characters;
-            metadata.Groups = article.Groups;
+            if (article.Artists != null) metadata.Artists = article.Artists;
+            if (article.Characters != null) metadata.Characters = article.Characters;
+            if (article.Groups != null) metadata.Groups = article.Groups;
             metadata.ID = Convert.ToInt32(article.Magic);
             metadata.Language = LegalizeLanguage(article.Language);
             metadata.Name = article.Title;
-            metadata.Parodies = article.Series;
-            try { metadata.Tags = article.Tags.Select(x => LegalizeTag(x)).ToArray(); } catch { }
+            if (article.Series != null) metadata.Parodies = article.Series;
+            if (article.Tags != null) metadata.Tags = article.Tags.Select(x => LegalizeTag(x)).ToArray();
             metadata.Type = article.Type;
             return metadata;
         }
