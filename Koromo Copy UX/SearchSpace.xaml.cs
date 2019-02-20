@@ -18,7 +18,6 @@ using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Koromo_Copy.Net.DPI;
 using Koromo_Copy.Net.Driver;
-using Koromo_Copy.Plugin;
 using Koromo_Copy.Script;
 using Koromo_Copy_UX3.Domain;
 using System;

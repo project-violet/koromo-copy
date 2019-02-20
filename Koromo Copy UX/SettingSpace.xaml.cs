@@ -65,13 +65,7 @@ namespace Koromo_Copy_UX3
             //    Header = "유저 인터페이스",
             //    DataContext = new SettingViewUI()
             //});
-
-            //SettingsTree.Items.Add(new TreeViewItem
-            //{
-            //    Header = "플러그인",
-            //    DataContext = new SettingViewPlugin()
-            //});
-
+            
             SettingsTree.Items.Add(new TreeViewItem
             {
                 Header = "인터페이스",
