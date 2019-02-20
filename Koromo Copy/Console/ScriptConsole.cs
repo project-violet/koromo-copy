@@ -6,9 +6,9 @@
 
 ***/
 
+using Koromo_Copy.Crypto;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Script.SRCAL;
-using Koromo_Copy_Base.Crypto;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

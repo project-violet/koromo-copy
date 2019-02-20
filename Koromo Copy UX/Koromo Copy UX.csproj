@@ -688,10 +688,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Koromo Copy Base\Koromo Copy Base.csproj">
-      <Project>{34bbfaf4-c723-4e01-9ba2-4b90ae6ed3a7}</Project>
-      <Name>Koromo Copy Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Koromo Copy\Koromo Copy.csproj">
       <Project>{41065ea7-bd36-4d4d-848e-d35f5a34ccad}</Project>
       <Name>Koromo Copy</Name>
