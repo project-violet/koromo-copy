@@ -81,22 +81,16 @@
                     </ResourceDictionary>
                 </materialDesign:PopupBox.Resources>
                 <StackPanel>
-                    <!--<Button Click="MenuPopupButton_OnClick" Tag="Detail">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Magnify" Opacity=".56"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">자세히 보기</TextBlock>
-                        </StackPanel>
-                    </Button>-->
                     <Button x:Name="OpenFolder" Click="MenuPopupButton_OnClick" Tag="Folder">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Folder" Opacity=".56"/>
                             <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">폴더 열기</TextBlock>
                         </StackPanel>
                     </Button>
-                    <Button Click="MenuPopupButton_OnClick" Tag="Bookmark">
+                    <Button Click="MenuPopupButton_OnClick" Tag="Detail">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Sync" Opacity=".56"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">북마크에 추가</TextBlock>
+                            <materialDesign:PackIcon Kind="Magnify" Opacity=".56"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">자세히 보기</TextBlock>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -112,8 +106,11 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Margin="0 10 0 2" Text="작가" FontSize="15"  Foreground="#E2E2E2"/>
-                <TextBox x:Name="ArtistTextBox" Grid.Row="1" HorizontalAlignment="Stretch" FontSize="15" BorderBrush="#303030" Background="#232323"  Foreground="#E2E2E2"/>
+                <StackPanel Grid.Row="0" Margin="0 10 0 2" Orientation="Horizontal">
+                    <TextBlock Text="작가" FontSize="15"  Foreground="#E2E2E2"/>
+                    <materialDesign:PackIcon x:Name="Bookmark" PreviewMouseLeftButtonDown="Bookmark_MouseLeftButtonDown" Kind="StarOutline" Height="20" Width="20" Foreground="White" Margin="0 0 0 0"/>
+                </StackPanel>
+                <TextBox x:Name="ArtistTextBox" Grid.Row="1" HorizontalAlignment="Stretch" FontSize="15" BorderBrush="#303030" Background="#232323" Foreground="#E2E2E2" IsReadOnly="True"/>
 
                 <TextBlock x:Name="ScoreLabel" Grid.Row="2" Margin="0 10 0 2" Text="태그" FontSize="15" Foreground="#E2E2E2"/>
                 <TextBox x:Name="ScoreTextBox" Grid.Row="3" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" MaxHeight="98" BorderBrush="#303030" Background="#232323"  Foreground="#E2E2E2"/>
