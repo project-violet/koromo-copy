@@ -12,7 +12,6 @@ using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Html;
 using Koromo_Copy.Interface;
-using Koromo_Copy.Plugin;
 using Koromo_Copy.Script;
 using Koromo_Copy.Utility.Develop;
 using System.Threading;
@@ -88,11 +87,7 @@ namespace Koromo_Copy.Console.Utility
                     });
                     t.Start();
                     break;
-
-                case "plugin":
-                    PlugInManager.Instance.GetLoadedPlugins().ForEach(x => Console.Instance.WriteLine(x));
-                    break;
-
+                    
                 case "preempt_dq":
                     DownloadConsole.Instance.queue.Preempt();
                     break;

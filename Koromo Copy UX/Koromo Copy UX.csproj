@@ -251,9 +251,6 @@
     <Compile Include="SettingViewPixiv.xaml.cs">
       <DependentUpon>SettingViewPixiv.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingViewPlugin.xaml.cs">
-      <DependentUpon>SettingViewPlugin.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SettingViewScript.xaml.cs">
       <DependentUpon>SettingViewScript.xaml</DependentUpon>
     </Compile>
@@ -514,10 +511,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingViewPlugin.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="SettingViewScript.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -698,10 +691,6 @@
     <ProjectReference Include="..\Koromo Copy Base\Koromo Copy Base.csproj">
       <Project>{34bbfaf4-c723-4e01-9ba2-4b90ae6ed3a7}</Project>
       <Name>Koromo Copy Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Koromo Copy PlugIn\Koromo Copy PlugIn.csproj">
-      <Project>{006c0a9e-0729-47c1-836b-e407fa973a2d}</Project>
-      <Name>Koromo Copy PlugIn</Name>
     </ProjectReference>
     <ProjectReference Include="..\Koromo Copy\Koromo Copy.csproj">
       <Project>{41065ea7-bd36-4d4d-848e-d35f5a34ccad}</Project>
