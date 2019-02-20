@@ -12,6 +12,7 @@ using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Koromo_Copy_UX.Domain;
+using Microsoft.WindowsAPICodePack.Taskbar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -94,6 +96,11 @@ namespace Koromo_Copy_UX
         private void Instance_DownloadComplete(object sender, EventArgs e)
         {
             MainWindow.Instance.FadeOut_MiddlePopup("다운로드가 완료되었습니다!", false);
+            Application.Current.Dispatcher.Invoke(new Action(
+            delegate
+            {
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+            }));
         }
 
         private void Instance_Complete(object sender, Tuple<string, string, object> e)
@@ -104,6 +111,8 @@ namespace Koromo_Copy_UX
                 Progress.Value += 1;
                 Status.Text = $"{Progress.Value} / {Progress.Maximum}";
                 view_model.Items.Remove(view_model.Items.Where(x => x.경로 == e.Item2).ToList()[0]);
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
+                TaskbarManager.Instance.SetProgressValue((int)Progress.Value, (int)Progress.Maximum);
             }));
             
             Monitor.Instance.Push("[Complete File] " + e.Item2 + " " + e.Item1);
@@ -171,12 +180,14 @@ namespace Koromo_Copy_UX
                 DownloadGroup.Instance.Preempt();
                 MainWindow.Instance.FadeOut_MiddlePopup("다운로드 일시정지", false);
                 Pause.Content = "다시시작";
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Paused);
             }
             else
             {
                 DownloadGroup.Instance.Reactivation();
                 MainWindow.Instance.FadeOut_MiddlePopup("다운로드 다시시작", false);
                 Pause.Content = "일시정지";
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
             }
         }
         
