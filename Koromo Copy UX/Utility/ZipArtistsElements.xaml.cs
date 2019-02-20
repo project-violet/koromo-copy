@@ -76,6 +76,7 @@ namespace Koromo_Copy_UX.Utility
         Stream[] load_stream = new Stream[5];
         ZipArchive[] archives = new ZipArchive[5];
         BitmapImage[] BitmapImage = new BitmapImage[5];
+        string[] zip_paths = new string[5];
 
         bool IsDataLoaded = false;
         private void ZipArtistsElements_Loaded(object sender, RoutedEventArgs e)
@@ -112,12 +113,12 @@ namespace Koromo_Copy_UX.Utility
                 }
                 require_count = paths.Count;
                 loaded_count = 0;
-                Image[] images = { Image1, Image2, Image3, Image4, Image5 };
                 for (int i = 0; i < paths.Count; i++)
                 {
                     archives[i] = ZipFile.Open(paths[i], ZipArchiveMode.Read);
                     var zipEntry = !archives[i].Entries[0].Name.EndsWith(".json") ? archives[i].Entries[0] : archives[i].Entries[1];
                     load_stream[i] = zipEntry.Open();
+                    zip_paths[i] = paths[i];
 
                     int j = i;
                     Application.Current.Dispatcher.BeginInvoke(new Action(
@@ -149,6 +150,7 @@ namespace Koromo_Copy_UX.Utility
                     if (BitmapImage[i] == sender)
                     {
                         images[i].Source = BitmapImage[i];
+                        images[i].Tag = zip_paths[i];
                         break;
                     }
 
@@ -203,6 +205,17 @@ namespace Koromo_Copy_UX.Utility
                 Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.Star;
                 (BookmarkButton.FindResource("GlowOn") as Storyboard).Begin(BookmarkButton);
                 Bookmark.Foreground = new SolidColorBrush(parent.GetBookmarkColor(ArtistTextBox.Text));
+            }
+        }
+        
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+            {
+                if (((Image)sender).Tag is string path)
+                {
+                    Process.Start(path);
+                }
             }
         }
     }
