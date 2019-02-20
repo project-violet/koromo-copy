@@ -29,6 +29,9 @@ namespace Koromo_Copy_UX.Utility
         public string CreatedDate;
 
         [JsonProperty]
+        public string LastAccessDate;
+
+        [JsonProperty]
         public long Size;
 
         [JsonProperty]

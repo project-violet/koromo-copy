@@ -92,7 +92,8 @@ namespace Koromo_Copy_UX.Utility
                     ProgressText.Text = x.Item1;
                 }));
                 Dictionary<string, HitomiJsonModel> article_data = new Dictionary<string, HitomiJsonModel>();
-                DateTime last_create_time = DateTime.Now;
+                DateTime last_access_time = DateTime.MinValue;
+                DateTime craete_time = DateTime.Now;
                 foreach (var file in x.Item3)
                 {
                     try
@@ -105,8 +106,10 @@ namespace Koromo_Copy_UX.Utility
                             var json_model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
                             article_data.Add(Path.GetFileName(file.FullName), json_model);
                         }
-                        if (file.LastWriteTime < last_create_time)
-                            last_create_time = file.LastWriteTime;
+                        if (file.LastWriteTime < craete_time)
+                            craete_time = file.LastWriteTime;
+                        if (last_access_time < file.LastWriteTime)
+                            last_access_time = file.LastWriteTime;
                     }
                     catch (Exception e)
                     {
@@ -114,7 +117,7 @@ namespace Koromo_Copy_UX.Utility
                     }
                 }
                 if (article_data.Count == 0) continue;
-                artist_dic.Add(x.Item1.Substring(root_directory.Length), new ZipArtistsArtistModel { ArticleData = article_data, CreatedDate = last_create_time.ToString(), ArtistName = Path.GetFileName(Path.GetDirectoryName(x.Item1)), Size = (long)x.Item2});
+                artist_dic.Add(x.Item1.Substring(root_directory.Length), new ZipArtistsArtistModel { ArticleData = article_data, CreatedDate = craete_time.ToString(), LastAccessDate = last_access_time.ToString(), ArtistName = Path.GetFileName(Path.GetDirectoryName(x.Item1)), Size = (long)x.Item2});
             }
 
             model = new ZipArtistsModel();
@@ -251,7 +254,7 @@ namespace Koromo_Copy_UX.Utility
             else if (item.Tag.ToString() == "Filter")
             {
                 if (raws.Count == 0) return;
-                var dialog = new ZipArtistsFilter(raws.Select(x => DateTime.Parse(x.Item1.Value.CreatedDate)).ToList(), starts, ends, show_bookmark);
+                var dialog = new ZipArtistsFilter(raws.Select(x => DateTime.Parse(x.Item1.Value.LastAccessDate)).ToList(), starts, ends, show_bookmark);
                 if ((bool)(await DialogHost.Show(dialog, "RootDialog")))
                 {
                     if (dialog.StartDate.SelectedDate.HasValue)
@@ -289,7 +292,7 @@ namespace Koromo_Copy_UX.Utility
             }
             else if (column == 1)
             {
-                elems.Sort((x, y) => DateTime.Parse(x.Item1.Value.CreatedDate).CompareTo(DateTime.Parse(y.Item1.Value.CreatedDate)));
+                elems.Sort((x, y) => DateTime.Parse(x.Item1.Value.LastAccessDate).CompareTo(DateTime.Parse(y.Item1.Value.LastAccessDate)));
             }
             else if (column == 2)
             {
@@ -315,11 +318,11 @@ namespace Koromo_Copy_UX.Utility
         {
             if (starts.HasValue)
             {
-                elems = elems.Where(x => DateTime.Parse(x.Item1.Value.CreatedDate) >= starts).ToList();
+                elems = elems.Where(x => DateTime.Parse(x.Item1.Value.LastAccessDate) >= starts).ToList();
             }
             if (ends.HasValue)
             {
-                elems = elems.Where(x => DateTime.Parse(x.Item1.Value.CreatedDate) <= ends).ToList();
+                elems = elems.Where(x => DateTime.Parse(x.Item1.Value.LastAccessDate) <= ends).ToList();
             }
             if (show_bookmark && rating_model != null)
             {

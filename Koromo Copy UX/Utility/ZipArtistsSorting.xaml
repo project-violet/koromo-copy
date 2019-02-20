@@ -49,7 +49,7 @@
                     </ResourceDictionary>
                 </ComboBox.Resources>
                 <ComboBoxItem Content="폴더경로순으로 정렬"/>
-                <ComboBoxItem Content="폴더생성 날짜순으로 정렬"/>
+                <ComboBoxItem Content="폴더 마지막 수정 날짜순으로 정렬"/>
                 <ComboBoxItem Content="폴더크기순으로 정렬"/>
                 <ComboBoxItem Content="이름순으로 정렬"/>
                 <ComboBoxItem Content="작품 개수순으로 정렬"/>
