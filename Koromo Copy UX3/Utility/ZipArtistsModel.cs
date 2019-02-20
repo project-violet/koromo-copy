@@ -58,8 +58,12 @@ namespace Koromo_Copy_UX3.Utility
     public class ZipArtistsRatingModel
     {
         public Dictionary<string, int> Rating;
-
-        public List<string> Bookmark;
+        
+        /// <summary>
+        /// 튜플의 첫 번째 요소는 작가의 이름, 두 번째 요소는 카테고리입니다.
+        /// 하나의 작가라도 여러개의 카테고리를 가질 수 있습니다.
+        /// </summary>
+        public List<Tuple<string,string>> BookmarkCategory;
     }
 
     public class ZipArtistsModelManager

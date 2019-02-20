@@ -8,7 +8,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
         mc:Ignorable="d"
-        Title="Zip Artists - Koromo Copy" Height="762.2" Width="1235">
+        Title="Zip Artists - Koromo Copy" Height="762.2" Width="1235" 
+        SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -29,7 +30,39 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="#232323" Height="60"/>
+            <Grid Grid.Row="0" Background="#232323" Height="60">
+                <Grid MaxHeight="50" MaxWidth="570" Margin="50 0 50 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="SearchText" KeyDown="SearchText_KeyDown" PreviewKeyDown="SearchText_PreviewKeyDown" KeyUp="SearchText_KeyUp" Grid.Column="0" Height="30" BorderBrush="#303030" Background="#121212" Text="검색" Foreground="#E2E2E2" FontSize="15" Padding="3"/>
+
+                    <controls:NonTopmostPopup x:Name="AutoComplete" PlacementTarget="{Binding ElementName=SearchText}" Placement="Bottom" IsTopmost="False">
+                        <materialDesign:Card>
+                            <ListBox x:Name="AutoCompleteList" FontSize="15" Width="350" Height="300" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
+                        </materialDesign:Card>
+                    </controls:NonTopmostPopup>
+
+                    <Button x:Name="SearchButton" MinWidth="70" Height="30" Cursor="Hand" Grid.Column="1" BorderBrush="#303030" Background="#303030" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" PreviewMouseLeftButtonDown="Button_MouseDown" PreviewMouseLeftButtonUp="Button_MouseUp" Click="Button_Click_1">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <materialDesign:PackIcon x:Name="PathIcon" Kind="Search" Height="24" Width="24" Foreground="#717171"/>
+                    </Button>
+                </Grid>
+            </Grid>
 
             <Grid Grid.Row="1" Background="#121212">
 

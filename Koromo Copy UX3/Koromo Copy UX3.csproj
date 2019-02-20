@@ -326,12 +326,19 @@
     <Compile Include="Utility\ZipArtists.xaml.cs">
       <DependentUpon>ZipArtists.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ZipArtistsAutoComplete.cs" />
     <Compile Include="Utility\ZipArtistsElements.xaml.cs">
       <DependentUpon>ZipArtistsElements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\ZipArtistsFilter.xaml.cs">
+      <DependentUpon>ZipArtistsFilter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ZipArtistsModel.cs" />
     <Compile Include="Utility\ZipArtistsSorting.xaml.cs">
       <DependentUpon>ZipArtistsSorting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\ZipArtistsTool.xaml.cs">
+      <DependentUpon>ZipArtistsTool.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ZipListing.xaml.cs">
       <DependentUpon>ZipListing.xaml</DependentUpon>
@@ -615,7 +622,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Utility\ZipArtistsFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Utility\ZipArtistsSorting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipArtistsTool.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -69,6 +69,7 @@ namespace Koromo_Copy_UX3.Utility
             this.offline = offline;
             if (offline == true)
                 OpenFolder.IsEnabled = false;
+
         }
         
         Stream[] load_stream = new Stream[5];
@@ -80,6 +81,17 @@ namespace Koromo_Copy_UX3.Utility
         {
             if (IsDataLoaded) return;
             IsDataLoaded = true;
+
+            var parent = ((ZipArtists)Window.GetWindow(this));
+            if (parent.IsBookmarked(ArtistTextBox.Text))
+            {
+                Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.Star;
+            }
+            else
+            {
+                Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.StarOutline;
+            }
+
             Task.Run(() =>
             {
                 List<string> titles = new List<string>();
@@ -166,6 +178,21 @@ namespace Koromo_Copy_UX3.Utility
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             Popup.Visibility = Visibility.Collapsed;
+        }
+
+        private void Bookmark_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var parent = ((ZipArtists)Window.GetWindow(this));
+            if (parent.IsBookmarked(ArtistTextBox.Text))
+            {
+                parent.RemoveBookmark(ArtistTextBox.Text);
+                Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.StarOutline;
+            }
+            else
+            {
+                parent.AddBookmark(ArtistTextBox.Text);
+                Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.Star;
+            }
         }
     }
 }

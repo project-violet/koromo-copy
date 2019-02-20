@@ -22,6 +22,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -45,6 +47,25 @@ namespace Koromo_Copy_UX3.Utility
                 page_number_buttons.Add(page_number as Button);
             }
             initialize_page();
+
+            logic = new AutoCompleteBase(algorithm, SearchText, AutoComplete, AutoCompleteList);
+            
+            SearchText.GotFocus += SearchText_GotFocus;
+            SearchText.LostFocus += SearchText_LostFocus;
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var offset = AutoComplete.HorizontalOffset;
+            AutoComplete.HorizontalOffset = offset + 1;
+            AutoComplete.HorizontalOffset = offset;
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            var offset = AutoComplete.HorizontalOffset;
+            AutoComplete.HorizontalOffset = offset + 1;
+            AutoComplete.HorizontalOffset = offset;
         }
 
         #region IO
@@ -104,7 +125,8 @@ namespace Koromo_Copy_UX3.Utility
             ZipArtistsModelManager.SaveModel($"zipartists-{Path.GetFileName(root_directory)}-{tick}.json", model);
 
             rate_filename = $"zipartists-{Path.GetFileName(root_directory)}-{tick}-rating.json";
-            
+
+            algorithm.Build(model);
             artist_list = artist_dic.ToList();
             elems.Clear();
             artist_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipArtistsElements>(() =>
@@ -132,6 +154,7 @@ namespace Koromo_Copy_UX3.Utility
         int align_column = 0;
         DateTime? starts;
         DateTime? ends;
+        bool show_bookmark = false;
         private async void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListBoxItem;
@@ -180,7 +203,8 @@ namespace Koromo_Copy_UX3.Utility
                             return;
                         offline = true;
                     }
-                    
+
+                    algorithm.Build(model);
                     artist_list = model.ArtistList.ToList();
 
                     // 초기화
@@ -227,7 +251,7 @@ namespace Koromo_Copy_UX3.Utility
             else if (item.Tag.ToString() == "Filter")
             {
                 if (raws.Count == 0) return;
-                var dialog = new ZipListingFilter(raws.Select(x => DateTime.Parse(x.Item1.Value.CreatedDate)).ToList(), starts, ends);
+                var dialog = new ZipArtistsFilter(raws.Select(x => DateTime.Parse(x.Item1.Value.CreatedDate)).ToList(), starts, ends, show_bookmark);
                 if ((bool)(await DialogHost.Show(dialog, "RootDialog")))
                 {
                     if (dialog.StartDate.SelectedDate.HasValue)
@@ -237,6 +261,10 @@ namespace Koromo_Copy_UX3.Utility
                     if (dialog.EndDate.SelectedDate.HasValue)
                     {
                         ends = dialog.EndDate.SelectedDate.Value.AddMilliseconds(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999);
+                    }
+                    if (dialog.ShowBookmark.IsChecked.HasValue)
+                    {
+                        show_bookmark = dialog.ShowBookmark.IsChecked.Value;
                     }
                     elems = day_before;
                     filter_data();
@@ -288,6 +316,10 @@ namespace Koromo_Copy_UX3.Utility
             {
                 elems = elems.Where(x => DateTime.Parse(x.Item1.Value.CreatedDate) <= ends).ToList();
             }
+            if (show_bookmark && rating_model != null)
+            {
+                elems = elems.Where(x => rating_model.BookmarkCategory.Any(y => x.Item1.Value.ArtistName == y.Item1)).ToList();
+            }
         }
 
         List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> raws = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
@@ -327,6 +359,38 @@ namespace Koromo_Copy_UX3.Utility
             //else
             //    rating_model.Rating.Add(magic, rate);
             //ZipArtistsModelManager.SaveRatingModel(rate_filename, rating_model);
+        }
+        
+        public bool IsBookmarked(string artist)
+        {
+            if (rating_model == null)
+                return false;
+            return rating_model.BookmarkCategory.Any(x => x.Item1 == artist);
+        }
+
+        public void AddBookmark(string artist, string category = "None")
+        {
+            if (rating_model == null)
+            {
+                rating_model = new ZipArtistsRatingModel();
+                rating_model.BookmarkCategory = new List<Tuple<string, string>>();
+                rating_model.Rating = new Dictionary<string, int>();
+            }
+
+            if (rating_model.BookmarkCategory.Any(x => x.Item1 == artist && x.Item2 == category))
+                return;
+
+            rating_model.BookmarkCategory.Add(Tuple.Create(artist, category));
+            ZipArtistsModelManager.SaveRatingModel(rate_filename, rating_model);
+        }
+
+        public void RemoveBookmark(string artist, string category = "None")
+        {
+            if (rating_model == null)
+                return;
+
+            rating_model.BookmarkCategory.RemoveAll(x => x.Item1 == artist && x.Item2 == category);
+            ZipArtistsModelManager.SaveRatingModel(rate_filename, rating_model);
         }
 
         #endregion
@@ -432,9 +496,11 @@ namespace Koromo_Copy_UX3.Utility
             public int max_page;
             public int current_page_segment;
             public double scroll_status;
-            
+
+            public string search_text;
             public DateTime? starts;
             public DateTime? ends;
+            public bool show_bookmark;
             public int align_row;
             public int align_column;
         }
@@ -446,6 +512,7 @@ namespace Koromo_Copy_UX3.Utility
         {
             status_stack.Clear();
             stack_pointer = -1;
+            latest_search = null;
         }
 
         private void stack_push()
@@ -464,6 +531,8 @@ namespace Koromo_Copy_UX3.Utility
 
                 align_column = align_column,
                 align_row = align_row,
+                search_text = latest_search_text,
+                show_bookmark = show_bookmark,
                 starts = starts,
                 ends = ends,
             });
@@ -489,15 +558,23 @@ namespace Koromo_Copy_UX3.Utility
             stack_pointer = ptr;
             stack_regression(ptr);
         }
-        
+
+        string latest_search = null;
         private void stack_regression(int ptr)
         {
             var elem = status_stack[ptr];
             elems = raws;
             starts = elem.starts;
             ends = elem.ends;
+            show_bookmark = elem.show_bookmark;
             align_row = elem.align_row;
             align_column = elem.align_column;
+            if (latest_search == null || latest_search != elem.search_text)
+            {
+                day_before = elems = Search(elem.search_text, raws);
+                SearchText.Text = elem.search_text;
+                latest_search = elem.search_text;
+            }
 
             max_page = elem.max_page;
             current_page_segment = elem.current_page_segment;
@@ -507,6 +584,152 @@ namespace Koromo_Copy_UX3.Utility
             initialize_page(false);
             show_page(elem.selected_page);
             ScrollViewer.ScrollToVerticalOffset(elem.scroll_status);
+        }
+
+        #endregion
+
+        #region Search 
+
+        private void SearchText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchText.Text))
+                SearchText.Text = "검색";
+        }
+
+        private void SearchText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (SearchText.Text == "검색")
+                SearchText.Text = "";
+        }
+
+        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            PathIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0x9A, 0x9A));
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs e)
+        {
+            PathIcon.Foreground = new SolidColorBrush(Color.FromRgb(0x71, 0x71, 0x71));
+        }
+
+        private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            PathIcon.Margin = new Thickness(2, 0, 0, 0);
+        }
+
+        private void Button_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            PathIcon.Margin = new Thickness(0, 0, 0, 0);
+        }
+
+        string latest_search_text = "";
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (SearchText.Text != "검색")
+            {
+                if (!string.IsNullOrEmpty(SearchText.Text.Trim()))
+                {
+                    day_before = elems = Search(SearchText.Text, raws);
+                    SearchResult.Visibility = Visibility.Visible;
+                    SearchResult.Text = $"검색결과: {elems.Count.ToString("#,#")}개";
+                }
+                else
+                {
+                    day_before = elems = raws;
+                    SearchResult.Visibility = Visibility.Collapsed;
+                }
+                latest_search_text = SearchText.Text;
+                filter_data();
+                sort_data(align_column, align_row);
+                max_page = elems.Count / show_elem_per_page;
+                initialize_page();
+                stack_push();
+            }
+        }
+
+        public static List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> Search(string serach_text, List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> raw)
+        {
+            HitomiDataQuery query = new HitomiDataQuery();
+            List<string> positive_data = new List<string>();
+            List<string> negative_data = new List<string>();
+            List<string> request_number = new List<string>();
+
+            serach_text.Trim().Split(' ').ToList().ForEach((a) => { if (!a.Contains(":") && a.Trim() != "") positive_data.Add(a.Trim()); });
+            query.Common = positive_data;
+            foreach (var elem in from elem in serach_text.Trim().Split(' ') where elem.Contains(":") select elem)
+            {
+                if (elem.StartsWith("artist:"))
+                    if (query.Artists == null)
+                        query.Artists = new List<string>() { elem.Substring("artist:".Length) };
+                    else
+                        query.Artists.Add(elem.Substring("artist:".Length));
+                else
+                {
+                    Koromo_Copy.Console.Console.Instance.WriteErrorLine($"Unknown rule '{elem}'.");
+                    return null;
+                }
+            }
+
+            var result = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+
+            for (int i = 0; i < raw.Count; i++)
+            {
+                if (query.Artists != null && !query.Artists.Contains(raw[i].Item1.Value.ArtistName.Replace(' ', '_')))
+                    continue;
+                if (query.Common.Count != 0 && !query.Common.Contains(raw[i].Item1.Value.ArtistName.Replace(' ', '_')))
+                    continue;
+                result.Add(raw[i]);
+            }
+            
+            return result;
+        }
+        #endregion
+
+        #region Search Helper
+
+        ZipArtistsAutoComplete algorithm = new ZipArtistsAutoComplete();
+        AutoCompleteBase logic;
+
+        private void SearchText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (SearchText.Text != "검색")
+                {
+                    if (e.Key == Key.Return && !logic.skip_enter)
+                    {
+                        ButtonAutomationPeer peer = new ButtonAutomationPeer(SearchButton);
+                        IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                        invokeProv.Invoke();
+                        logic.ClosePopup();
+                    }
+                    logic.skip_enter = false;
+                }
+            }
+        }
+
+        private void SearchText_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            AutoCompleteList.Width = SearchText.RenderSize.Width;
+            logic.SearchText_PreviewKeyDown(sender, e);
+        }
+
+        private void SearchText_KeyUp(object sender, KeyEventArgs e)
+        {
+            AutoCompleteList.Width = SearchText.RenderSize.Width;
+            logic.SearchText_KeyUp(sender, e);
+        }
+
+        private void AutoCompleteList_KeyUp(object sender, KeyEventArgs e)
+        {
+            AutoCompleteList.Width = SearchText.RenderSize.Width;
+            logic.AutoCompleteList_KeyUp(sender, e);
+        }
+
+        private void AutoCompleteList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AutoCompleteList.Width = SearchText.RenderSize.Width;
+            logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
 
         #endregion
