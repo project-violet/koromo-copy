@@ -373,14 +373,14 @@ namespace Koromo_Copy_UX3.Utility
             if (rating_model == null)
             {
                 rating_model = new ZipArtistsRatingModel();
-                rating_model.BookmarkCategory = new List<Tuple<string, string>>();
+                rating_model.BookmarkCategory = new List<Tuple<string, string, Color>>();
                 rating_model.Rating = new Dictionary<string, int>();
             }
 
             if (rating_model.BookmarkCategory.Any(x => x.Item1 == artist && x.Item2 == category))
                 return;
 
-            rating_model.BookmarkCategory.Add(Tuple.Create(artist, category));
+            rating_model.BookmarkCategory.Add(Tuple.Create(artist, category, Colors.White));
             ZipArtistsModelManager.SaveRatingModel(rate_filename, rating_model);
         }
 
@@ -391,6 +391,11 @@ namespace Koromo_Copy_UX3.Utility
 
             rating_model.BookmarkCategory.RemoveAll(x => x.Item1 == artist && x.Item2 == category);
             ZipArtistsModelManager.SaveRatingModel(rate_filename, rating_model);
+        }
+
+        public Color GetBookmarkColor(string artist)
+        {
+            return rating_model.BookmarkCategory.First(x => x.Item1 == artist).Item3;
         }
 
         #endregion

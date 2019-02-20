@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Koromo_Copy_UX3.Utility
 {
@@ -60,10 +61,10 @@ namespace Koromo_Copy_UX3.Utility
         public Dictionary<string, int> Rating;
         
         /// <summary>
-        /// 튜플의 첫 번째 요소는 작가의 이름, 두 번째 요소는 카테고리입니다.
+        /// 튜플의 첫 번째 요소는 작가의 이름, 두 번째 요소는 카테고리, 세 번째 요소는 대표색 입니다.
         /// 하나의 작가라도 여러개의 카테고리를 가질 수 있습니다.
         /// </summary>
-        public List<Tuple<string,string>> BookmarkCategory;
+        public List<Tuple<string,string,Color>> BookmarkCategory;
     }
 
     public class ZipArtistsModelManager
