@@ -51,15 +51,15 @@ namespace Koromo_Copy.Html
 
         public void CreateImageServer(string title, string[] imgs)
         {
-            manager.Title = title;
-
-            var builder = new StringBuilder();
-            foreach (var img in imgs)
-            {
-                builder.Append($"<img src=\"{img}\">\r\n");
-            }
-
-            manager.Body = builder.ToString();
+            //manager.Title = title;
+            //
+            //var builder = new StringBuilder();
+            //foreach (var img in imgs)
+            //{
+            //    builder.Append($"<img src=\"{img}\">\r\n");
+            //}
+            //
+            //manager.Body = builder.ToString();
         }
     }
 }
