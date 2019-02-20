@@ -7,7 +7,7 @@
 ***/
 
 using Koromo_Copy;
-using Koromo_Copy_UX3.Domain;
+using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,7 +28,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     /// <summary>
     /// ZipArtistsElements.xaml에 대한 상호 작용 논리

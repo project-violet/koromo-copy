@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Koromo_Copy_UX3.Domain
+namespace Koromo_Copy_UX.Domain
 {
     /// <summary>
     /// UX Setting의 wrapping입니다. 이 오브젝트는 UX에 의존합니다.

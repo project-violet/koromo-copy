@@ -6,7 +6,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace Koromo_Copy_UX3.Controls
+namespace Koromo_Copy_UX.Controls
 {
     // https://stackoverflow.com/questions/7606954/popup-always-stays-on-top
     public class NonTopmostPopup : Popup

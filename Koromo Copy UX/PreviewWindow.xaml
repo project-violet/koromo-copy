@@ -1,11 +1,11 @@
-﻿<Window x:Class="Koromo_Copy_UX3.PreviewWindow"
+﻿<Window x:Class="Koromo_Copy_UX.PreviewWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Koromo_Copy_UX3"
-        xmlns:domain="clr-namespace:Koromo_Copy_UX3.Domain"
-        xmlns:controls="clr-namespace:Koromo_Copy_UX3.Controls"
+        xmlns:local="clr-namespace:Koromo_Copy_UX"
+        xmlns:domain="clr-namespace:Koromo_Copy_UX.Domain"
+        xmlns:controls="clr-namespace:Koromo_Copy_UX.Controls"
         mc:Ignorable="d"
         Title="미리보기" Height="789" Width="994" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>

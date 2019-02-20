@@ -8,11 +8,11 @@
 
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
-using Koromo_Copy_UX3.Controls;
-using Koromo_Copy_UX3.Utility;
+using Koromo_Copy_UX.Controls;
+using Koromo_Copy_UX.Utility;
 using System.Windows;
 
-namespace Koromo_Copy_UX3.Domain
+namespace Koromo_Copy_UX.Domain
 {
     public class UXConsoleOption : IConsoleOption
     {

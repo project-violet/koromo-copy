@@ -8,7 +8,7 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
-using Koromo_Copy_UX3.Domain;
+using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +24,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX
 {
     /// <summary>
     /// GroupInfoWindow.xaml에 대한 상호 작용 논리

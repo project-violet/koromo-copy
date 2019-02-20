@@ -15,7 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     /// <summary>
     /// 이 판넬은 높이가 다른 하위 컨트롤들 사이의 빈공간을 채워 정렬하는 판넬입니다.

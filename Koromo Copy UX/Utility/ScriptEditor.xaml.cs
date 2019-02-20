@@ -13,7 +13,7 @@ using ICSharpCode.AvalonEdit.Indentation.CSharp;
 using Koromo_Copy;
 using Koromo_Copy.Script;
 using Koromo_Copy.Script.SRCAL;
-using Koromo_Copy_UX3.Properties;
+using Koromo_Copy_UX.Properties;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ using System.Windows.Threading;
 using System.Xml;
 using static Koromo_Copy.Script.SRCAL.SRCALEngine;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     /// <summary>
     /// ScriptEditor.xaml에 대한 상호 작용 논리

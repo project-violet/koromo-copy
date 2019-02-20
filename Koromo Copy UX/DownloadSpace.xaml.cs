@@ -11,7 +11,7 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
-using Koromo_Copy_UX3.Domain;
+using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,7 +30,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX
 {
     /// <summary>
     /// DownloadSpace.xaml에 대한 상호 작용 논리

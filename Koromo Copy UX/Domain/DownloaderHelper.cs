@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 
-namespace Koromo_Copy_UX3.Domain
+namespace Koromo_Copy_UX.Domain
 {
     public class DownloaderHelper
     {

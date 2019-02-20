@@ -9,7 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Fs;
-using Koromo_Copy_UX3.Domain;
+using Koromo_Copy_UX.Domain;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -33,7 +33,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     /// <summary>
     /// ZipListing.xaml에 대한 상호 작용 논리

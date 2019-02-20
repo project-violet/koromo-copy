@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Koromo_Copy_UX3.Domain
+namespace Koromo_Copy_UX.Domain
 {
     public static class SortAlgorithm
     {

@@ -9,7 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hitomi.Analysis;
-using Koromo_Copy_UX3.Domain;
+using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX
 {
     /// <summary>
     /// CustomArtistsRecommendWindow.xaml에 대한 상호 작용 논리

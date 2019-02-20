@@ -11,8 +11,8 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net.DPI;
-using Koromo_Copy_UX3.Domain;
-using Koromo_Copy_UX3.Utility;
+using Koromo_Copy_UX.Domain;
+using Koromo_Copy_UX.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,7 +37,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX
 {
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
