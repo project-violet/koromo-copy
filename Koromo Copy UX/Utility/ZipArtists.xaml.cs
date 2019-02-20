@@ -523,7 +523,6 @@ namespace Koromo_Copy_UX.Utility
         {
             status_stack.Clear();
             stack_pointer = -1;
-            latest_search = null;
         }
 
         private void stack_push()
@@ -570,7 +569,7 @@ namespace Koromo_Copy_UX.Utility
             stack_regression(ptr);
         }
 
-        string latest_search = null;
+        string latest_search = "";
         private void stack_regression(int ptr)
         {
             var elem = status_stack[ptr];
@@ -580,7 +579,7 @@ namespace Koromo_Copy_UX.Utility
             show_bookmark = elem.show_bookmark;
             align_row = elem.align_row;
             align_column = elem.align_column;
-            if (latest_search == null || latest_search != elem.search_text)
+            if (latest_search != elem.search_text)
             {
                 day_before = elems = Search(elem.search_text, raws);
                 SearchText.Text = elem.search_text;
@@ -592,7 +591,8 @@ namespace Koromo_Copy_UX.Utility
 
             sort_data(align_column, align_row);
             filter_data();
-            initialize_page(false);
+            page_number_buttons.ForEach(x => x.Visibility = Visibility.Visible);
+            set_page_segment(current_page_segment);
             show_page(elem.selected_page);
             ScrollViewer.ScrollToVerticalOffset(elem.scroll_status);
         }
