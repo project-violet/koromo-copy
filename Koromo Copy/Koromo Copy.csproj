@@ -92,7 +92,9 @@
     <Compile Include="Component\SeriesInfo.cs" />
     <Compile Include="Component\SeriesLog.cs" />
     <Compile Include="Component\Youtube\YTStream.cs" />
+    <Compile Include="Console\CommandLineParser.cs" />
     <Compile Include="Console\ScriptConsole.cs" />
+    <Compile Include="Crypto\Hash.cs" />
     <Compile Include="Elo\EloSystem.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Component\Hitomi\HitomiDataSearchAdvanced.cs" />
@@ -132,6 +134,11 @@
     <Compile Include="Html\HtmlLocalServer.cs" />
     <Compile Include="Html\HtmlManager.cs" />
     <Compile Include="Html\HtmlTree.cs" />
+    <Compile Include="Interface\IArticle.cs" />
+    <Compile Include="Interface\IConsole.cs" />
+    <Compile Include="Interface\ILazy.cs" />
+    <Compile Include="Interface\IManager.cs" />
+    <Compile Include="Interface\ISemaphore.cs" />
     <Compile Include="Internal.cs" />
     <Compile Include="Component\EH\EHentaiArticle.cs" />
     <Compile Include="Component\EH\ExHentaiTool.cs" />
@@ -312,12 +319,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Koromo Copy Base\Koromo Copy Base.csproj">
-      <Project>{34BBFAF4-C723-4E01-9BA2-4B90AE6ED3A7}</Project>
-      <Name>Koromo Copy Base</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
