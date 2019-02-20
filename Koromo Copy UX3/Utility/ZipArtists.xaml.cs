@@ -274,6 +274,11 @@ namespace Koromo_Copy_UX3.Utility
                     stack_push();
                 }
             }
+            else if (item.Tag.ToString() == "Tool")
+            {
+                var dialog = new ZipArtistsTool();
+                await DialogHost.Show(dialog, "RootDialog");
+            }
         }
 
         private void sort_data(int column, int row)
@@ -427,6 +432,7 @@ namespace Koromo_Copy_UX3.Utility
 
             show_page_impl(i);
             selected_page = i;
+            ScrollViewer.ScrollToTop();
         }
 
         private void set_page_segment(int seg)
