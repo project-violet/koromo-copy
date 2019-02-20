@@ -7,8 +7,8 @@
 ***/
 
 using Koromo_Copy.Script;
-using Koromo_Copy_UX3.Domain;
-using Koromo_Copy_UX3.Utility;
+using Koromo_Copy_UX.Domain;
+using Koromo_Copy_UX.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX
 {
     /// <summary>
     /// ScriptInfoElemetns.xaml에 대한 상호 작용 논리

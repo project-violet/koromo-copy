@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Koromo_Copy_UX3.Properties
+namespace Koromo_Copy_UX.Properties
 {
 
 

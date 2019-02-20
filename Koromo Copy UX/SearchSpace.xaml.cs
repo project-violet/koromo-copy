@@ -19,7 +19,7 @@ using Koromo_Copy.Net;
 using Koromo_Copy.Net.DPI;
 using Koromo_Copy.Net.Driver;
 using Koromo_Copy.Script;
-using Koromo_Copy_UX3.Domain;
+using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -36,7 +36,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX
 {
     /// <summary>
     /// SearchPanel.xaml에 대한 상호 작용 논리

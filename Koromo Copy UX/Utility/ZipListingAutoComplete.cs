@@ -7,14 +7,14 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
-using Koromo_Copy_UX3.Domain;
+using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     public class ZipListingAutoComplete : IAutoCompleteAlgorithm
     {

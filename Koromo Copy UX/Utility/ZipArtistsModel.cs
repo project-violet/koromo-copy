@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     public class ZipArtistsArtistModel
     {

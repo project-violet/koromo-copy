@@ -23,7 +23,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     /// <summary>
     /// SeriesManager.xaml에 대한 상호 작용 논리

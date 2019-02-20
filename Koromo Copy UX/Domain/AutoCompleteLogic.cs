@@ -19,7 +19,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Koromo_Copy_UX3.Domain
+namespace Koromo_Copy_UX.Domain
 {
     public class AutoCompleteLogic
     {

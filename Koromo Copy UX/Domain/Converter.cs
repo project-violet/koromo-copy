@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Koromo_Copy_UX3.Domain
+namespace Koromo_Copy_UX.Domain
 {
     public class ColorToSolidColorBrushValueConverter : IValueConverter
     {

@@ -22,7 +22,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX
 {
     /// <summary>
     /// SearchElements.xaml에 대한 상호 작용 논리

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Koromo_Copy_UX3
+namespace Koromo_Copy_UX
 {
     /// <summary>
     /// App.xaml에 대한 상호 작용 논리

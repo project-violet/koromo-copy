@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     public class TableLayoutStrategy
     {

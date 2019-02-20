@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Koromo_Copy_UX3.Utility
+namespace Koromo_Copy_UX.Utility
 {
     public class PackPanel : Panel
     {
