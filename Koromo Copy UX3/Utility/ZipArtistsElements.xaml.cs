@@ -23,6 +23,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -86,10 +87,13 @@ namespace Koromo_Copy_UX3.Utility
             if (parent.IsBookmarked(ArtistTextBox.Text))
             {
                 Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.Star;
+                (BookmarkButton.FindResource("GlowOn") as Storyboard).Begin(BookmarkButton);
+                Bookmark.Foreground = new SolidColorBrush(parent.GetBookmarkColor(ArtistTextBox.Text));
             }
             else
             {
                 Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.StarOutline;
+                (BookmarkButton.FindResource("GlowOff") as Storyboard).Begin(BookmarkButton);
             }
 
             Task.Run(() =>
@@ -168,6 +172,10 @@ namespace Koromo_Copy_UX3.Utility
             {
                 Process.Start(path);
             }
+            else if (button.Tag.ToString() == "Detail")
+            {
+                (new ZipViewer(path)).Show();
+            }
         }
         
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
@@ -179,19 +187,22 @@ namespace Koromo_Copy_UX3.Utility
         {
             Popup.Visibility = Visibility.Collapsed;
         }
-
-        private void Bookmark_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             var parent = ((ZipArtists)Window.GetWindow(this));
             if (parent.IsBookmarked(ArtistTextBox.Text))
             {
                 parent.RemoveBookmark(ArtistTextBox.Text);
                 Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.StarOutline;
+                (BookmarkButton.FindResource("GlowOff") as Storyboard).Begin(BookmarkButton);
             }
             else
             {
                 parent.AddBookmark(ArtistTextBox.Text);
                 Bookmark.Kind = MaterialDesignThemes.Wpf.PackIconKind.Star;
+                (BookmarkButton.FindResource("GlowOn") as Storyboard).Begin(BookmarkButton);
+                Bookmark.Foreground = new SolidColorBrush(parent.GetBookmarkColor(ArtistTextBox.Text));
             }
         }
     }
