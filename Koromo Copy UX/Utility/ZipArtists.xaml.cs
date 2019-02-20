@@ -54,6 +54,16 @@ namespace Koromo_Copy_UX.Utility
             SearchText.LostFocus += SearchText_LostFocus;
         }
 
+        #region IO
+        
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.B && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                Explorer.OpenFolderAndSelectFiles(model.RootDirectory, model.ArtistList.Where(x => IsBookmarked(x.Value.ArtistName)).Select(x => model.RootDirectory + x.Key).ToArray());
+            }
+        }
+
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var offset = AutoComplete.HorizontalOffset;
@@ -67,8 +77,6 @@ namespace Koromo_Copy_UX.Utility
             AutoComplete.HorizontalOffset = offset + 1;
             AutoComplete.HorizontalOffset = offset;
         }
-
-        #region IO
 
         List<KeyValuePair<string, ZipArtistsArtistModel>> artist_list;
         ZipArtistsModel model;

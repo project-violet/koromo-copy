@@ -96,6 +96,7 @@
     <Compile Include="Console\ScriptConsole.cs" />
     <Compile Include="Crypto\Hash.cs" />
     <Compile Include="Elo\EloSystem.cs" />
+    <Compile Include="Fs\Explorer.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Component\Hitomi\HitomiDataSearchAdvanced.cs" />
     <Compile Include="Component\Hitomi\HitomiDate.cs" />
