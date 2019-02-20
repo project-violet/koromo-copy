@@ -9,7 +9,7 @@
         xmlns:controls="clr-namespace:Koromo_Copy_UX.Controls"
         mc:Ignorable="d"
         Title="Zip Artists - Koromo Copy" Height="762.2" Width="1235" 
-        SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
+        SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <ResourceDictionary>
