@@ -56,9 +56,6 @@
   <PropertyGroup>
     <ApplicationIcon>TETO.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Console|AnyCPU'">
-    <OutputPath>bin\Console\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=3.1.6.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\Koromo Copy\packages\Costura.Fody.3.1.6\lib\net46\Costura.dll</HintPath>
