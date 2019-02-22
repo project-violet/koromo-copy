@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Koromo_Copy_UX.Utility
+namespace Koromo_Copy_UX.Utility.ZipArtists
 {
     public class ZipArtistsAutoComplete : IAutoCompleteAlgorithm
     {

@@ -31,7 +31,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Koromo_Copy_UX.Utility
+namespace Koromo_Copy_UX.Utility.ZipArtists
 {
     /// <summary>
     /// ZipArtists.xaml에 대한 상호 작용 논리

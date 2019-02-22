@@ -320,21 +320,24 @@
     <Compile Include="Utility\UniversalDownloadManager.xaml.cs">
       <DependentUpon>UniversalDownloadManager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\ZipArtists.xaml.cs">
+    <Compile Include="Utility\ZipArtists\ZipArtists.xaml.cs">
       <DependentUpon>ZipArtists.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\ZipArtistsAutoComplete.cs" />
-    <Compile Include="Utility\ZipArtistsElements.xaml.cs">
+    <Compile Include="Utility\ZipArtists\ZipArtistsAutoComplete.cs" />
+    <Compile Include="Utility\ZipArtists\ZipArtistsElements.xaml.cs">
       <DependentUpon>ZipArtistsElements.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\ZipArtistsFilter.xaml.cs">
+    <Compile Include="Utility\ZipArtists\ZipArtistsFilter.xaml.cs">
       <DependentUpon>ZipArtistsFilter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\ZipArtistsModel.cs" />
-    <Compile Include="Utility\ZipArtistsSorting.xaml.cs">
+    <Compile Include="Utility\ZipArtists\ZipArtistsModel.cs" />
+    <Compile Include="Utility\ZipArtists\ZipArtistsSetting.xaml.cs">
+      <DependentUpon>ZipArtistsSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\ZipArtists\ZipArtistsSorting.xaml.cs">
       <DependentUpon>ZipArtistsSorting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\ZipArtistsTool.xaml.cs">
+    <Compile Include="Utility\ZipArtists\ZipArtistsTool.xaml.cs">
       <DependentUpon>ZipArtistsTool.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\ZipListing.xaml.cs">
@@ -607,23 +610,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\ZipArtists.xaml">
+    <Page Include="Utility\ZipArtists\ZipArtists.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\ZipArtistsElements.xaml">
+    <Page Include="Utility\ZipArtists\ZipArtistsElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\ZipArtistsFilter.xaml">
+    <Page Include="Utility\ZipArtists\ZipArtistsFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\ZipArtistsSorting.xaml">
+    <Page Include="Utility\ZipArtists\ZipArtistsSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\ZipArtistsTool.xaml">
+    <Page Include="Utility\ZipArtists\ZipArtistsSorting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipArtists\ZipArtistsTool.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

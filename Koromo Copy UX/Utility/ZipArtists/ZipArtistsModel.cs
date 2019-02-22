@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace Koromo_Copy_UX.Utility
+namespace Koromo_Copy_UX.Utility.ZipArtists
 {
     public class ZipArtistsArtistModel
     {
@@ -68,6 +68,20 @@ namespace Koromo_Copy_UX.Utility
         /// 하나의 작가라도 여러개의 카테고리를 가질 수 있습니다.
         /// </summary>
         public List<Tuple<string,string,Color>> BookmarkCategory;
+    }
+
+    public class ZipArtistsSettingModel
+    {
+        /// <summary>
+        /// 한 페이지에 보여줄 최대 요소 개수입니다.
+        /// </summary>
+        public int PerElements;
+
+        /// <summary>
+        /// 페이지가 이동될 때마다 스크롤을 맨 위로 올립니다.
+        /// 이 설정이 꺼져있는 경우 스크롤의 위치는 전 페이지의 위치와 동일하게 설정됩니다.
+        /// </summary>
+        public bool InitScroll;
     }
 
     public class ZipArtistsModelManager
