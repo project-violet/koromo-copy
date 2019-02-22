@@ -82,8 +82,15 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
         ZipArtistsModel model;
         ZipArtistsRatingModel rating_model;
 
+        /// <summary>
+        /// 한 페이지에 표시될 작가의 개수입니다.
+        /// </summary>
         int show_elem_per_page = 5;
 
+        /// <summary>
+        /// 디렉토리를 탐색하고 데이터베이스 파일을 생성합니다.
+        /// </summary>
+        /// <param name="path"></param>
         private async void ProcessPath(string path)
         {
             FileIndexor fi = new FileIndexor();
@@ -104,25 +111,18 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
                 DateTime craete_time = DateTime.Now;
                 foreach (var file in x.Item3)
                 {
-                    try
+                    if (!file.FullName.EndsWith(".zip")) continue;
+                    var zipFile = ZipFile.Open(file.FullName, ZipArchiveMode.Read);
+                    if (zipFile.GetEntry("Info.json") == null) continue;
+                    using (var reader = new StreamReader(zipFile.GetEntry("Info.json").Open()))
                     {
-                        if (!file.FullName.EndsWith(".zip")) continue;
-                        var zipFile = ZipFile.Open(file.FullName, ZipArchiveMode.Read);
-                        if (zipFile.GetEntry("Info.json") == null) continue;
-                        using (var reader = new StreamReader(zipFile.GetEntry("Info.json").Open()))
-                        {
-                            var json_model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
-                            article_data.Add(Path.GetFileName(file.FullName), json_model);
-                        }
-                        if (file.LastWriteTime < craete_time)
-                            craete_time = file.LastWriteTime;
-                        if (last_access_time < file.LastWriteTime)
-                            last_access_time = file.LastWriteTime;
+                        var json_model = JsonConvert.DeserializeObject<HitomiJsonModel>(reader.ReadToEnd());
+                        article_data.Add(Path.GetFileName(file.FullName), json_model);
                     }
-                    catch (Exception e)
-                    {
-                        Monitor.Instance.Push($"[Zip Artists] {e.Message}");
-                    }
+                    if (file.LastWriteTime < craete_time)
+                        craete_time = file.LastWriteTime;
+                    if (last_access_time < file.LastWriteTime)
+                        last_access_time = file.LastWriteTime;
                 }
                 if (article_data.Count == 0) continue;
                 artist_dic.Add(x.Item1.Substring(root_directory.Length), new ZipArtistsArtistModel { ArticleData = article_data, CreatedDate = craete_time.ToString(), LastAccessDate = last_access_time.ToString(), ArtistName = Path.GetFileName(Path.GetDirectoryName(x.Item1)), Size = (long)x.Item2});
@@ -338,8 +338,19 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             }
         }
 
+        /// <summary>
+        /// 원본 요소들 입니다.
+        /// </summary>
         List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> raws = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+
+        /// <summary>
+        /// 필터가 적용되지 않은 요소들 입니다.
+        /// </summary>
         List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> day_before = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+
+        /// <summary>
+        /// 페이저에 표시될 요소들 입니다.
+        /// </summary>
         List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> elems = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
         private void show_page_impl(int page)
         {
@@ -424,6 +435,10 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
 
         List<Button> page_number_buttons = new List<Button>();
 
+        /// <summary>
+        /// 페이저를 초기화합니다.
+        /// </summary>
+        /// <param name="show"></param>
         private void initialize_page(bool show = true)
         {
             current_page_segment = 0;
@@ -432,6 +447,10 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             if (show) show_page(0);
         }
 
+        /// <summary>
+        /// 특정 페이지로 이동합니다.
+        /// </summary>
+        /// <param name="i"></param>
         private void show_page(int i)
         {
             page_number_buttons.ForEach(x => {
@@ -446,6 +465,10 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             ScrollViewer.ScrollToTop();
         }
 
+        /// <summary>
+        /// 페이저 세그먼트의 표시여부를 설정합니다.
+        /// </summary>
+        /// <param name="seg"></param>
         private void set_page_segment(int seg)
         {
             for (int i = 0, j = current_page_segment * 10; i < 10; i++, j++)
