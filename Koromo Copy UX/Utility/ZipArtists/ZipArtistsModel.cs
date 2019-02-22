@@ -101,6 +101,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
                     InitScroll = true
                 };
             }
+            SaveSetting();
         }
 
         public void SaveSetting()
