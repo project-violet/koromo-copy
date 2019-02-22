@@ -298,6 +298,12 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
                     stack_push();
                 }
             }
+            else if (item.Tag.ToString() == "Statistics")
+            {
+                if (artist_list == null || artist_list.Count == 0) return;
+                var dialog = new ZipArtistsStatistics(artist_list);
+                await DialogHost.Show(dialog, "RootDialog");
+            }
             else if (item.Tag.ToString() == "Tool")
             {
                 var dialog = new ZipArtistsTool();

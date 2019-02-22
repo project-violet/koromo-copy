@@ -334,6 +334,9 @@
     <Compile Include="Utility\ZipArtists\ZipArtistsSorting.xaml.cs">
       <DependentUpon>ZipArtistsSorting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ZipArtists\ZipArtistsStatistics.xaml.cs">
+      <DependentUpon>ZipArtistsStatistics.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ZipArtists\ZipArtistsTool.xaml.cs">
       <DependentUpon>ZipArtistsTool.xaml</DependentUpon>
     </Compile>
@@ -624,6 +627,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\ZipArtists\ZipArtistsSorting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipArtists\ZipArtistsStatistics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
