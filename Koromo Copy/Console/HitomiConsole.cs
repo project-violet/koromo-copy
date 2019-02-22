@@ -530,6 +530,19 @@ namespace Koromo_Copy.Console
                     }
                     break;
 
+                case 5:
+                    {
+                        var bytes = File.ReadAllBytes("metadata.compress");
+                        File.WriteAllText("metadata.json", bytes.Unzip());
+                    }
+                    break;
+                case 6:
+                    {
+                        var bytes = File.ReadAllBytes("hiddendata.compress");
+                        File.WriteAllText("hiddendata.json", bytes.Unzip());
+                    }
+                    break;
+
             }
         }
 
