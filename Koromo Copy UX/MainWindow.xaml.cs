@@ -13,6 +13,7 @@ using Koromo_Copy.Interface;
 using Koromo_Copy.Net.DPI;
 using Koromo_Copy_UX.Domain;
 using Koromo_Copy_UX.Utility;
+using Koromo_Copy_UX.Utility.ZipArtists;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
