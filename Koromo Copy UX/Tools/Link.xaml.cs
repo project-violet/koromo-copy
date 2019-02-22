@@ -1,5 +1,14 @@
-﻿using Koromo_Copy.Utility;
+﻿/***
+
+   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Utility;
 using Koromo_Copy_UX.Utility;
+using Koromo_Copy_UX.Utility.ZipArtists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
