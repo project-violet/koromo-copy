@@ -52,10 +52,17 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             
             SearchText.GotFocus += SearchText_GotFocus;
             SearchText.LostFocus += SearchText_LostFocus;
+            Loaded += ZipArtists_Loaded;
         }
 
         #region IO
-        
+
+        private void ZipArtists_Loaded(object sender, RoutedEventArgs e)
+        {
+            show_elem_per_page = ZipArtistsModelManager.Instance.Setting.PerElements;
+            init_scroll = ZipArtistsModelManager.Instance.Setting.InitScroll;
+        }
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.B && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
@@ -86,6 +93,12 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
         /// 한 페이지에 표시될 작가의 개수입니다.
         /// </summary>
         int show_elem_per_page = 5;
+
+        /// <summary>
+        /// 페이지가 이동될 때마다 스크롤을 맨 위로 올립니다.
+        /// 이 설정이 꺼져있는 경우 스크롤의 위치는 전 페이지의 위치와 동일하게 설정됩니다.
+        /// </summary>
+        bool init_scroll = true;
 
         /// <summary>
         /// 디렉토리를 탐색하고 데이터베이스 파일을 생성합니다.
@@ -462,7 +475,8 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
 
             show_page_impl(i);
             selected_page = i;
-            ScrollViewer.ScrollToTop();
+
+            if (init_scroll) ScrollViewer.ScrollToTop();
         }
 
         /// <summary>

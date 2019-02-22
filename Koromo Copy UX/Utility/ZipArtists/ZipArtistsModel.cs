@@ -8,6 +8,7 @@
 
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -84,8 +85,35 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
         public bool InitScroll;
     }
 
-    public class ZipArtistsModelManager
+    public class ZipArtistsModelManager : ILazy<ZipArtistsModelManager>
     {
+        ZipArtistsSettingModel setting;
+        const string setting_path = "za-setting.json";
+
+        public ZipArtistsModelManager()
+        {
+            if (File.Exists(setting_path)) setting = JsonConvert.DeserializeObject<ZipArtistsSettingModel>(File.ReadAllText(setting_path));
+            if (setting == null)
+            {
+                setting = new ZipArtistsSettingModel
+                {
+                    PerElements = 5,
+                    InitScroll = true
+                };
+            }
+        }
+
+        public void SaveSetting()
+        {
+            string json = JsonConvert.SerializeObject(setting, Formatting.Indented);
+            using (var fs = new StreamWriter(new FileStream(setting_path, FileMode.Create, FileAccess.Write)))
+            {
+                fs.Write(json);
+            }
+        }
+
+        public ZipArtistsSettingModel Setting { get { return setting; } }
+
         public static void SaveModel(string filename, ZipArtistsModel model)
         {
             JsonSerializer serializer = new JsonSerializer();
