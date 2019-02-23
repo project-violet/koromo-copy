@@ -1,4 +1,11 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿/***
+
+   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,19 +24,13 @@ using System.Windows.Shapes;
 namespace Koromo_Copy_UX.Utility.ZipArtists
 {
     /// <summary>
-    /// ZipArtistsTool.xaml에 대한 상호 작용 논리
+    /// ZipArtistsToolMove.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ZipArtistsTool : UserControl
+    public partial class ZipArtistsToolMove : UserControl
     {
-        public ZipArtistsTool()
+        public ZipArtistsToolMove()
         {
             InitializeComponent();
-        }
-
-        private async void Button_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            var dialog = new ZipArtistsToolMove();
-            await DialogHost.Show(dialog, "AnotherDialog");
         }
     }
 }
