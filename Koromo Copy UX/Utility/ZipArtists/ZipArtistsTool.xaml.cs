@@ -1,4 +1,12 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿/***
+
+   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+   
+   Author: Koromo Copy Developer
+
+***/
+
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +36,17 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
 
         private async void Button_ClickAsync(object sender, RoutedEventArgs e)
         {
-            var dialog = new ZipArtistsToolMove();
-            await DialogHost.Show(dialog, "AnotherDialog");
+            var tag = (sender as Button).Tag.ToString();
+            if (tag == "Move")
+            {
+                var dialog = new ZipArtistsToolMove();
+                await DialogHost.Show(dialog, "AnotherDialog");
+            }
+            else if (tag == "Transform")
+            {
+                var dialog = new ZipArtistsToolMove();
+                await DialogHost.Show(dialog, "AnotherDialog");
+            }
         }
     }
 }

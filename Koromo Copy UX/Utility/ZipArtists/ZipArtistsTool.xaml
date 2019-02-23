@@ -30,20 +30,78 @@
 
         <Grid Margin="0 6 0 0" Grid.Row="0">
             <materialDesign:DialogHost Identifier="AnotherDialog"/>
-            <Button HorizontalAlignment="Right" Margin="0 0 100 0" Click="Button_ClickAsync">
-                <Button.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                        </ResourceDictionary.MergedDictionaries>
-                    </ResourceDictionary>
-                </Button.Resources>
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="PlaneShield"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                    <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">Move</TextBlock>
-                </StackPanel>
-            </Button>
+            <WrapPanel>
+                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Move">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Transfer"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">Move</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Transform">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Transition"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">Transform</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Copy">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ContentCopy"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">Copy</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Rename">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="RenameBox"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">Rename</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Merge">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Tournament"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">Merge</TextBlock>
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
         </Grid>
 
 
