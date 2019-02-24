@@ -28,8 +28,94 @@
         </Grid.RowDefinitions>
 
         <Grid Margin="0 6 0 0" Grid.Row="0">
-        </Grid>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="경로 :" HorizontalAlignment="Right" FontSize="16" Margin="0 0 10 0" VerticalAlignment="Center"/>
+            <TextBox x:Name="Folder" Grid.Column="1" Grid.Row="0" FontSize="16" VerticalAlignment="Center" Margin="0 0 10 0" HorizontalAlignment="Left" Width="400"/>
+            <Button Grid.Column="2" Grid.Row="0" Click="Button_ClickAsync" Tag="SelectFolder">
+                <Button.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </Button.Resources>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Folder" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                    <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">폴더 선택</TextBlock>
+                </StackPanel>
+            </Button>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="옵션 :" HorizontalAlignment="Right" FontSize="16" Margin="0 8 10 0" VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0 8 0 0">
+                <TextBlock Text="JSon 파일 생성(대치) " VerticalAlignment="Center" FontSize="16"/>
+                <ToggleButton x:Name="JSonFile" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 0 0" IsChecked="True">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Red.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+                <TextBlock Text="  대상 폴더 압축 " VerticalAlignment="Center" FontSize="16"/>
+                <ToggleButton x:Name="Zip" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 0 0" IsChecked="True">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Red.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+            </StackPanel>
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="실행 :" HorizontalAlignment="Right" FontSize="16" Margin="0 8 10 0" VerticalAlignment="Center"/>
+            <WrapPanel Grid.Column="1" Grid.Row="2" Margin="0 8 0 0" VerticalAlignment="Center">
+                <Button Click="Button_ClickAsync" Tag="LoadFolder">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <TextBlock VerticalAlignment="Center">전처리</TextBlock>
+                </Button>
+                <Button Click="Button_ClickAsync" Tag="Start" Margin="4 0 0 0">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <TextBlock VerticalAlignment="Center">시작</TextBlock>
+                </Button>
+            </WrapPanel>
+
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="상태 :" HorizontalAlignment="Right" FontSize="16" Margin="0 8 10 0" VerticalAlignment="Center"/>
+            <TextBlock x:Name="Status" Grid.Column="1" Grid.Row="3" Text="대기중" FontSize="16" Margin="0 8 0 0" VerticalAlignment="Center"/>
+        </Grid>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
             <Button IsDefault="True" Style="{DynamicResource MaterialDesignFlatButton}"

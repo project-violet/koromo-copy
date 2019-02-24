@@ -44,7 +44,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             }
             else if (tag == "Transform")
             {
-                var dialog = new ZipArtistsToolMove();
+                var dialog = new ZipArtistsToolTransform();
                 await DialogHost.Show(dialog, "AnotherDialog");
             }
         }
