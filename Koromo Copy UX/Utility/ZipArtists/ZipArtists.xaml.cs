@@ -69,6 +69,16 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             {
                 Explorer.OpenFolderAndSelectFiles(model.RootDirectory, model.ArtistList.Where(x => IsBookmarked(x.Value.ArtistName)).Select(x => model.RootDirectory + x.Key).ToArray());
             }
+            else if (e.Key == Key.E && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (rating_model == null) return;
+                var artists = new List<string>();
+                rating_model.BookmarkCategory.ForEach(x => artists.Add(x.Item1));
+                artists.Sort();
+                var builder = new StringBuilder();
+                artists.ForEach(x => builder.Append(x + "\r\n"));
+                Monitor.Instance.Push("[Zip Artists] bookmark: \r\n" + builder);
+            }
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
