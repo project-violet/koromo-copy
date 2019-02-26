@@ -77,6 +77,7 @@
     <Compile Include="Component\EH\ExHentaiData.cs" />
     <Compile Include="Component\HCommander.cs" />
     <Compile Include="Component\Hitomi\HitomiBookmark.cs" />
+    <Compile Include="Component\Hitomi\HitomiExplore.cs" />
     <Compile Include="Component\Hiyobi\HiyobiNonHManager.cs" />
     <Compile Include="Component\Manazero\ManazeroArticle.cs" />
     <Compile Include="Component\Manazero\ManazeroManager.cs" />

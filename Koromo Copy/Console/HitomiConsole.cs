@@ -543,6 +543,11 @@ namespace Koromo_Copy.Console
                     }
                     break;
 
+                case 7:
+                    {
+                        HitomiExplore.exploreNullSpace().ForEach(x => Console.Instance.WriteLine($"{x.Item1} {x.Item2} {x.Item3}"));
+                    }
+                    break;
             }
         }
 
