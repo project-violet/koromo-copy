@@ -163,10 +163,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             algorithm.Build(model);
             artist_list = artist_dic.ToList();
             elems.Clear();
-            artist_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipArtistsElements>(() =>
-            {
-                return new ZipArtistsElements(root_directory + x.Key, x.Value, 0);
-            }))));
+            artist_list.ForEach(x => elems.Add(Tuple.Create(x, Tuple.Create(root_directory + x.Key, 0, false))));
             day_before = raws = elems;
             sort_data(align_column, align_row);
 
@@ -243,10 +240,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
 
                     // 초기화
                     elems.Clear();
-                    artist_list.ForEach(x => elems.Add(Tuple.Create(x, new Lazy<ZipArtistsElements>(() =>
-                    {
-                        return new ZipArtistsElements(model.RootDirectory + x.Key, x.Value, 0, offline);
-                    }))));
+                    artist_list.ForEach(x => elems.Add(Tuple.Create(x, Tuple.Create(model.RootDirectory + x.Key, 0, offline))));
                     day_before = raws = elems;
                     sort_data(align_column, align_row);
                     ArticleCount.Text = $"작가 {artist_list.Count.ToString("#,#")}명";
@@ -370,24 +364,24 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
         /// <summary>
         /// 원본 요소들 입니다.
         /// </summary>
-        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> raws = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>> raws = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>>();
 
         /// <summary>
         /// 필터가 적용되지 않은 요소들 입니다.
         /// </summary>
-        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> day_before = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>> day_before = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>>();
 
         /// <summary>
         /// 페이저에 표시될 요소들 입니다.
         /// </summary>
-        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> elems = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+        List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>> elems = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>>();
         private void show_page_impl(int page)
         {
             SeriesPanel.Children.Clear();
 
             for (int i = page * show_elem_per_page; i < (page + 1) * show_elem_per_page && i < elems.Count; i++)
             {
-                SeriesPanel.Children.Add(elems[i].Item2.Value);
+                SeriesPanel.Children.Add(new ZipArtistsElements(elems[i].Item2.Item1, elems[i].Item1.Value, elems[i].Item2.Item2, elems[i].Item2.Item3));
             }
         }
 
@@ -722,7 +716,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             }
         }
 
-        public static List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> Search(string serach_text, List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>> raw)
+        public static List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>> Search(string serach_text, List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>> raw)
         {
             HitomiDataQuery query = new HitomiDataQuery();
             List<string> positive_data = new List<string>();
@@ -745,7 +739,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
                 }
             }
 
-            var result = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Lazy<ZipArtistsElements>>>();
+            var result = new List<Tuple<KeyValuePair<string, ZipArtistsArtistModel>, Tuple<string, int, bool>>>();
 
             for (int i = 0; i < raw.Count; i++)
             {
