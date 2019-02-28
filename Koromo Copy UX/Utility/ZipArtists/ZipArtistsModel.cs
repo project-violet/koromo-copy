@@ -83,6 +83,21 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
         /// 이 설정이 꺼져있는 경우 스크롤의 위치는 전 페이지의 위치와 동일하게 설정됩니다.
         /// </summary>
         public bool InitScroll;
+
+        /// <summary>
+        /// Online에서 이미지를 불러옵니다.
+        /// </summary>
+        public bool LoadFromOnline;
+
+        /// <summary>
+        /// 제목이 비슷한 작품들을 표시하지 않습니다.
+        /// </summary>
+        public bool UsingTextMatchingAccuracy;
+
+        /// <summary>
+        /// 제목이 비슷한 작품들을 표시하지않도록 설정하는 고유값입니다.
+        /// </summary>
+        public int TextMatchingAccuracy;
     }
 
     public class ZipArtistsModelManager : ILazy<ZipArtistsModelManager>
@@ -98,7 +113,10 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
                 setting = new ZipArtistsSettingModel
                 {
                     PerElements = 5,
-                    InitScroll = true
+                    InitScroll = true,
+                    LoadFromOnline = false,
+                    UsingTextMatchingAccuracy = false,
+                    TextMatchingAccuracy = 5
                 };
             }
             SaveSetting();

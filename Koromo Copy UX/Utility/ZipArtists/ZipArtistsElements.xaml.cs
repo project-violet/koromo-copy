@@ -7,6 +7,8 @@
 ***/
 
 using Koromo_Copy;
+using Koromo_Copy.Component;
+using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,6 +40,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
     {
         string path;
         List<string> sub_folder;
+        List<string> magics;
         bool offline;
 
         public ZipArtistsElements(string path, ZipArtistsArtistModel model, int rating, bool offline = false)
@@ -50,6 +54,8 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             this.path = path;
             sub_folder = model.ArticleData.Select(x => x.Key).ToList();
             sub_folder.Sort((x,y) => SortAlgorithm.ComparePath(y,x));
+            magics = model.ArticleData.Select(x => x.Value.Id).ToList();
+            magics.Sort((x, y) => y.CompareTo(x));
 
             var tags = new Dictionary<string, int>();
             foreach (var v in model.ArticleData)
@@ -101,39 +107,112 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             {
                 List<string> titles = new List<string>();
                 List<string> paths = new List<string>();
+                List<string> ids = new List<string>();
                 
                 for (int i = 0, j = 0; i < 5 && j < sub_folder.Count; j++)
                 {
-                    //string ttitle = sub_folder[i].Split('|')[0];
-                    //if (titles.Count > 0 && !titles.TrueForAll((title) => Strings.ComputeLevenshteinDistance(ttitle, title) > Settings.Instance.Hitomi.TextMatchingAccuracy)) continue;
+                    string ttitle = sub_folder[i].Split('|')[0];
+                    if (ZipArtistsModelManager.Instance.Setting.UsingTextMatchingAccuracy && titles.Count > 0 && !titles.TrueForAll((title) =>
+                        Strings.ComputeLevenshteinDistance(ttitle, title) > ZipArtistsModelManager.Instance.Setting.TextMatchingAccuracy)) continue;
 
-                    //titles.Add(ttitle);
+                    titles.Add(ttitle);
                     paths.Add(path+sub_folder[i]);
+                    ids.Add(magics[i]);
                     i++;
                 }
-                require_count = paths.Count;
-                loaded_count = 0;
-                for (int i = 0; i < paths.Count; i++)
-                {
-                    archives[i] = ZipFile.Open(paths[i], ZipArchiveMode.Read);
-                    var zipEntry = !archives[i].Entries[0].Name.EndsWith(".json") ? archives[i].Entries[0] : archives[i].Entries[1];
-                    load_stream[i] = zipEntry.Open();
-                    zip_paths[i] = paths[i];
 
-                    int j = i;
-                    Application.Current.Dispatcher.BeginInvoke(new Action(
-                    delegate
-                    {
-                        BitmapImage[j] = new BitmapImage();
-                        BitmapImage[j].BeginInit();
-                        BitmapImage[j].DecodePixelWidth = 150;
-                        BitmapImage[j].StreamSource = load_stream[j];
-                        BitmapImage[j].CacheOption = BitmapCacheOption.OnLoad;
-                        BitmapImage[j].DownloadCompleted += ZipArtistsElements_DownloadCompleted;
-                        BitmapImage[j].EndInit();
-                    }));
-                }
+                if (!ZipArtistsModelManager.Instance.Setting.LoadFromOnline)
+                    ImageLoadFromOffline(paths);
+                else
+                    ImageLoadFromOnline(ids);
             });
+        }
+
+        #region Image Loading
+
+        private void ImageLoadFromOffline(List<string> paths)
+        {
+            require_count = paths.Count;
+            loaded_count = 0;
+
+            for (int i = 0; i < paths.Count; i++)
+            {
+                archives[i] = ZipFile.Open(paths[i], ZipArchiveMode.Read);
+                var zipEntry = !archives[i].Entries[0].Name.EndsWith(".json") ? archives[i].Entries[0] : archives[i].Entries[1];
+                load_stream[i] = zipEntry.Open();
+                zip_paths[i] = paths[i];
+
+                int j = i;
+                Application.Current.Dispatcher.BeginInvoke(new Action(
+                delegate
+                {
+                    BitmapImage[j] = new BitmapImage();
+                    BitmapImage[j].BeginInit();
+                    BitmapImage[j].DecodePixelWidth = 150;
+                    BitmapImage[j].StreamSource = load_stream[j];
+                    BitmapImage[j].CacheOption = BitmapCacheOption.OnLoad;
+                    BitmapImage[j].DownloadCompleted += ZipArtistsElements_DownloadCompleted;
+                    BitmapImage[j].EndInit();
+                }));
+            }
+        }
+
+        private async Task<string> GetThumbnailAddress(string id)
+        {
+            try
+            {
+                var url = $"{HitomiCommon.HitomiGalleryBlock}{id}.html";
+                lock (Koromo_Copy.Monitor.Instance) Koromo_Copy.Monitor.Instance.Push($"Download string: {url}");
+                using (var wc = Koromo_Copy.Net.NetCommon.GetDefaultClient())
+                {
+                    wc.Encoding = Encoding.UTF8;
+                    wc.Headers.Add(HttpRequestHeader.Accept, "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+                    wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36");
+                    var html = await wc.DownloadStringTaskAsync(url);
+                    return HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(html).Thumbnail;
+                }
+            }
+            catch
+            {
+                var har = HCommander.GetArticleData(Convert.ToInt32(id));
+                if (!har.HasValue)
+                    return "";
+                return har.Value.Thumbnail;
+            }
+        }
+
+        private void ImageLoadFromOnline(List<string> ids)
+        {
+            require_count = ids.Count;
+            loaded_count = 0;
+
+            for (int i = 0; i < ids.Count; i++)
+            {
+                int j = i;
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        var req = WebRequest.Create(await GetThumbnailAddress(ids[j]));
+                        load_stream[j] = req.GetResponse().GetResponseStream();
+                        await Application.Current.Dispatcher.BeginInvoke(new Action(
+                        delegate
+                        {
+                            BitmapImage[j] = new BitmapImage();
+                            BitmapImage[j].BeginInit();
+                            BitmapImage[j].DecodePixelWidth = 150;
+                            BitmapImage[j].StreamSource = load_stream[j];
+                            BitmapImage[j].CacheOption = BitmapCacheOption.OnLoad;
+                            BitmapImage[j].DownloadCompleted += ZipArtistsElements_DownloadCompleted;
+                            BitmapImage[j].EndInit();
+                        }));
+                    }
+                    catch (Exception e)
+                    {
+                        Koromo_Copy.Monitor.Instance.Push($"[Zip AritstsE] {e.Message}");
+                    }
+                });
+            }
         }
 
         int require_count;
@@ -160,11 +239,15 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
                     {
                         load_stream[i].Close();
                         load_stream[i].Dispose();
-                        archives[i].Dispose();
+
+                        if (!ZipArtistsModelManager.Instance.Setting.LoadFromOnline)
+                            archives[i].Dispose();
                     }
                 }
             }));
         }
+
+        #endregion
 
         private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
         {
