@@ -117,6 +117,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
 
                     titles.Add(ttitle);
                     paths.Add(path+sub_folder[i]);
+                    zip_paths[i] = (path + sub_folder[i]);
                     ids.Add(magics[i]);
                     i++;
                 }
@@ -140,7 +141,6 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
                 archives[i] = ZipFile.Open(paths[i], ZipArchiveMode.Read);
                 var zipEntry = !archives[i].Entries[0].Name.EndsWith(".json") ? archives[i].Entries[0] : archives[i].Entries[1];
                 load_stream[i] = zipEntry.Open();
-                zip_paths[i] = paths[i];
 
                 int j = i;
                 Application.Current.Dispatcher.BeginInvoke(new Action(

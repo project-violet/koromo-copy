@@ -53,6 +53,8 @@
                 <ComboBoxItem Content="폴더크기순으로 정렬"/>
                 <ComboBoxItem Content="이름순으로 정렬"/>
                 <ComboBoxItem Content="작품 개수순으로 정렬"/>
+                <ComboBoxItem Content="페이지 개수순으로 정렬"/>
+                <ComboBoxItem Content="평균 페이지 개수순으로 정렬"/>
                 <!--<ComboBoxItem Content="레이팅순으로 정렬"/>-->
             </ComboBox>
 

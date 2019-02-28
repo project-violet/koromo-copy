@@ -337,9 +337,18 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             {
                 elems.Sort((x, y) => x.Item1.Value.ArticleData.Count.CompareTo(y.Item1.Value.ArticleData.Count));
             }
+            //else if (column == 5)
+            //{
+            //    elems.Sort((x, y) => get_rate(Convert.ToInt32(x.Item1.Value.ArtistName)).CompareTo(get_rate(Convert.ToInt32(y.Item1.Value.ArtistName))));
+            //}
             else if (column == 5)
             {
-                elems.Sort((x, y) => get_rate(Convert.ToInt32(x.Item1.Value.ArtistName)).CompareTo(get_rate(Convert.ToInt32(y.Item1.Value.ArtistName))));
+                elems.Sort((x, y) => x.Item1.Value.ArticleData.Select(z => z.Value.Pages).Sum().CompareTo(y.Item1.Value.ArticleData.Select(z => z.Value.Pages).Sum()));
+            }
+            else if (column == 6)
+            {
+                elems.Sort((x, y) => ((double)x.Item1.Value.ArticleData.Select(z => z.Value.Pages).Sum() / x.Item1.Value.ArticleData.Count).CompareTo(
+                    ((double)y.Item1.Value.ArticleData.Select(z => z.Value.Pages).Sum() / y.Item1.Value.ArticleData.Count)));
             }
 
             if (row == 1) elems.Reverse();
