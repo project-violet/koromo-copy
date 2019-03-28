@@ -76,6 +76,7 @@ namespace Hitomi_Copy_3._403
             }
             catch (Exception ex)
             {
+                Koromo_Copy.Console.Console.Instance.WriteLine(ex.Message + " " + i);
             }
 
         FINISH:

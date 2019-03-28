@@ -29,7 +29,7 @@ namespace Koromo_Copy.Component.Hitomi
             HtmlNode nodes = document.DocumentNode.SelectNodes("/div")[0];
 
             article.Magic = nodes.SelectSingleNode("./a").GetAttributeValue("href", "").Split('/')[2].Split('.')[0];
-            article.Thumbnail = nodes.SelectSingleNode("./a//img").GetAttributeValue("src", "").Substring("//tn.hitomi.la/".Length);
+            article.Thumbnail = nodes.SelectSingleNode("./a//img").GetAttributeValue("data-src", "").Substring("//tn.hitomi.la/".Length).Replace("smallbig","big");
             article.Title = nodes.SelectSingleNode("./h1").InnerText;
 
             try { article.Artists = nodes.SelectNodes(".//div[@class='artist-list']//li").Select(node => node.SelectSingleNode("./a").InnerText).ToArray(); }
