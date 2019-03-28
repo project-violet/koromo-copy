@@ -70,19 +70,15 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.7 Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.9 Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 데이터 동기화 방식 변경"/>
-                        <LineBreak/>
-                        <Run Text="   (히토미 정책 변경으로 더이상 히토미에서 직접 메타데이터를 내려받지 않습니다."/>
-                        <LineBreak/>
-                        <Run Text="    대신 수동으로 업데이트되는 저장소에서 데이터를 다운받아 최근 데이터가 늦게 올라올 수 있습니다.)"/>
+                        <Run Text=" - 썸네일 로딩 오류 해결"/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 랭크 시뮬레이터 추가"/>
                         <LineBreak/>
-                        <Run Text="   Elo-Rating 기반의 태그/작가 랭크 시뮬레이터입니다."/>
+                        <LineBreak/>
+                        <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
