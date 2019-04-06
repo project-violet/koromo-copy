@@ -146,7 +146,9 @@ namespace Koromo_Copy.Component
                 }
                 catch
                 {
-                    var url = $"https://exhentai.org/g/{magic}/{f[0] ^ 1L * magic_number << 40:x}/";
+                    var x = $"f[0] ^ 1L * magic_number << 40:x";
+                    if (x.Length == "787da3694".Length) x = "0" + x;
+                    var url = $"https://exhentai.org/g/{magic}/{x}/";
                     var html2 = NetCommon.DownloadExHentaiString(url);
                     var article = ExHentaiParser.ParseArticleData(html2);
                     return ConvertTo(article, url, magic);
