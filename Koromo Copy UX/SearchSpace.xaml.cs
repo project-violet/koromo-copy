@@ -124,8 +124,8 @@ namespace Koromo_Copy_UX
                 RecommendSpace.Instance.Update();
                 if (Koromo_Copy.Version.RequireTidy(System.Reflection.Assembly.GetExecutingAssembly().Location))
                 {
-                    //(new PatchNoteWindow()).Show();
-                    Process.Start("https://github.com/dc-koromo/koromo-copy/blob/master/Document/Update.md");
+                    (new PatchNoteWindow()).Show();
+                    //Process.Start("https://github.com/dc-koromo/koromo-copy/blob/master/Document/Update.md");
                 }
                 Task.Run(() => CheckUpdate()).ContinueWith((x) => ScriptManager.Instance.Initialization()).ContinueWith((x) => SettingViewScript.Instance.Init());
                 Task.Run(() => DownloaderHelper.LoadOthersAsync());

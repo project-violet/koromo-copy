@@ -14,11 +14,11 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Bypass.md
 
-## 최신 릴리즈 (2018/03/28)
+## 최신 릴리즈 (2019/04/09)
 
-Koromo Copy 1.9.7026.22806 Beta
+Koromo Copy 1.10.7038.24376 Beta
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/1.9.7026.2280
+https://github.com/dc-koromo/koromo-copy/releases/tag/1.10.7038.24376
 
 ![hitomi history](Document/Images/1.png)
 
