@@ -70,12 +70,13 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.9 Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.10 Emergency Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
                         <Run Text=" - 썸네일 로딩 오류 해결"/>
                         <LineBreak/>
                         <LineBreak/>
+                        <Run Text=" - 다운로드 문제 해결"/>
                         <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
