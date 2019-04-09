@@ -223,6 +223,12 @@ namespace Koromo_Copy.Net
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
                 se.RunPass(ref request);
 
+                // Temporary Assignments
+                if (uri.Contains("hitomi.la"))
+                {
+                    request.Referer = $"https://hitomi.la/galleries/{uri.Split('/')[5]}.html";
+                }
+
                 request.Timeout = timeout_infinite ? Timeout.Infinite : timeout_ms;
                 request.KeepAlive = true;
                 request.Proxy = proxy;
