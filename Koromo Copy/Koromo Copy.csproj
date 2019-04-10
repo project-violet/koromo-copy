@@ -195,10 +195,10 @@
     <Compile Include="Net\NetSetting.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\Script\ScriptEngine.cs" />
-    <Compile Include="Utility\Script\ScriptManager.cs" />
-    <Compile Include="Utility\Script\ScriptSetting.cs" />
-    <Compile Include="Utility\Script\SRCAL\SRCALEngine.cs" />
+    <Compile Include="Script\ScriptEngine.cs" />
+    <Compile Include="Script\ScriptManager.cs" />
+    <Compile Include="Script\ScriptSetting.cs" />
+    <Compile Include="Script\SRCAL\SRCALEngine.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Strings.cs" />
