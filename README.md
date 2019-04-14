@@ -24,7 +24,7 @@ https://github.com/dc-koromo/koromo-copy/releases/tag/1.10.7038.24376
 지역화를 위한 번역에 도움을 주실 분을 찾습니다.
 관심있으신 분들은 아래 이메일로 연락주세요!
 
-We're look for someone to help translate for localization.
+We're looking for someone to help translate for localization.
 If you're interested, please contact us by email below!
 
 地域化のための翻訳を手伝ってくれる方を探します。
