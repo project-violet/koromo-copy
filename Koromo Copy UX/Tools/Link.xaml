@@ -9,10 +9,10 @@
              d:DesignHeight="2000" d:DesignWidth="300">
     <Grid Margin="20">
         <StackPanel>
-            <TextBlock FontSize="25" Text="도구 및 유틸리티 모음" FontWeight="Thin"/>
-            <TextBlock FontSize="13" Text="Koromo Copy에는 다운로드 및 다운로드된 파일을 관리하기 위한 여러가지 도구들이 포함되어 있습니다." FontWeight="Thin"/>
+            <TextBlock FontSize="25" Text="{DynamicResource tools_and_utility_collection}" FontWeight="Thin"/>
+            <TextBlock FontSize="13" Text="{DynamicResource desc_tools_and_utilities}" FontWeight="Thin"/>
 
-            <TextBlock Margin="0 16 0 0" FontSize="20" Text="관리되는 항목" FontWeight="Thin"/>
+            <TextBlock Margin="0 16 0 0" FontSize="20" Text="{DynamicResource manages}" FontWeight="Thin"/>
 
 
             <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 4 0 0">
@@ -23,8 +23,8 @@
                     </Grid.ColumnDefinitions>
                     
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="압축파일 폴더 뷰어 (Zip Viewer, Ctrl + E)" FontWeight="SemiBold" FontSize="14"/>
-                        <TextBlock Text="압축파일들이 포함된 폴더를 Drag &amp; Drop하여 해당파일들의 썸네일을 볼 수 있습니다. 탐색기의 미리보기 기능과 유사합니다. 만약, 압축된 파일이 hitomi.la를 통해 다운로드되었다면, 압축파일에 포함된 Info.json파일을 분석하여 간략한 정보를 보여줍니다." TextWrapping="Wrap" FontSize="13"/>
+                        <TextBlock Text="{DynamicResource zip_viewer}" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="{DynamicResource desc_zip_viewer}" TextWrapping="Wrap" FontSize="13"/>
                     </StackPanel>
                     <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="ZipViewer" Click="Button_Click">
                         <Button.Resources>
@@ -37,7 +37,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ZipBox" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -52,8 +52,8 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="압축파일 분석기 (Zip Listing, Ctrl + L)" FontWeight="SemiBold" FontSize="14"/>
-                        <TextBlock Text="hitomi.la에서 다운로드되었으며, Koromo copy의 압축설정을 통해 압축된 파일들에 한해 사용가능합니다. 이 도구는 특정 하위폴더에있는 다운로드된 압축파일을 모두 분석하여 독립된 검색환경을 제공합니다." TextWrapping="Wrap" FontSize="13"/>
+                        <TextBlock Text="{DynamicResource zip_listing}" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="{DynamicResource desc_zip_listing}" TextWrapping="Wrap" FontSize="13"/>
                     </StackPanel>
                     <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="ZipListing" Click="Button_Click">
                         <Button.Resources>
@@ -66,7 +66,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Files" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -80,8 +80,8 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="압축파일 폴더 분석기 (Zip Artists, Ctrl + A)" FontWeight="SemiBold" FontSize="14"/>
-                        <TextBlock Text="hitomi.la에서 다운로드되었으며, Koromo copy의 압축설정을 통해 압축된 파일들에 한해 사용가능합니다. 이 도구는 특정 하위폴더에있는 다운로드된 압축파일을 폴더 단위로 분석하여 독립된 탐색환경을 제공합니다. 작가별로 분류된 폴더를 탐색하는데 매우 유용합니다." TextWrapping="Wrap" FontSize="13"/>
+                        <TextBlock Text="{DynamicResource zip_artists}" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="{DynamicResource desc_zip_artists}" TextWrapping="Wrap" FontSize="13"/>
                     </StackPanel>
                     <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="ZipArtists" Click="Button_Click">
                         <Button.Resources>
@@ -94,7 +94,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Files" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -122,7 +122,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Lumx" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -150,7 +150,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Bug" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -178,13 +178,13 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Crown" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
             </Border>
 
-            <TextBlock Margin="0 16 0 0" FontSize="20" Text="관리되지 않는 항목" FontWeight="Thin"/>
+            <TextBlock Margin="0 16 0 0" FontSize="20" Text="{DynamicResource unmanages}" FontWeight="Thin"/>
 
             <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 4 0 0">
                 <Grid Margin="4">
@@ -208,7 +208,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Images" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -236,7 +236,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Lumx" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -264,7 +264,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Explore" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -292,7 +292,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="FileTree" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -320,7 +320,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Tag" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -348,7 +348,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="CodeString" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">실행</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>
                 </Grid>

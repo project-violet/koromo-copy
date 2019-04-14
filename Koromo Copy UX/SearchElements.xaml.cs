@@ -32,6 +32,7 @@ namespace Koromo_Copy_UX
         public SearchElements()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
         }
 
         private bool _Select = false;
@@ -64,17 +65,18 @@ namespace Koromo_Copy_UX
         public SearchElements(IArticle article)
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             Article = article;
 
             HitomiArticle ha = article as HitomiArticle;
             if (HitomiLog.Instance.Contains(ha.Magic))
                 Downloaded.Visibility = Visibility.Visible;
-            Title.Text = $"제목 : {ha.Title}";
+            Title.Text = $"{FindResource("title")} : {ha.Title}";
             if (ha.Artists != null)
                 InfoPanel.Children.Add(new TextBlock
                 {
-                    Text = $"작가 : " + string.Join(", ", ha.Artists),
+                    Text = $"{FindResource("artist")} : " + string.Join(", ", ha.Artists),
                     FontSize = 17,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
@@ -83,7 +85,7 @@ namespace Koromo_Copy_UX
             if (ha.Groups != null)
                 InfoPanel.Children.Add(new TextBlock
                 {
-                    Text = $"그룹 : " + string.Join(", ", ha.Groups),
+                    Text = $"{FindResource("group")} : " + string.Join(", ", ha.Groups),
                     FontSize = 17,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
@@ -92,7 +94,7 @@ namespace Koromo_Copy_UX
             if (ha.Series != null)
                 InfoPanel.Children.Add(new TextBlock
                 {
-                    Text = $"시리즈 : " + string.Join(", ", ha.Series),
+                    Text = $"{FindResource("series")} : " + string.Join(", ", ha.Series),
                     FontSize = 17,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
@@ -101,7 +103,7 @@ namespace Koromo_Copy_UX
             if (ha.Characters != null)
                 InfoPanel.Children.Add(new TextBlock
                 {
-                    Text = $"캐릭터 : " + string.Join(", ", ha.Characters),
+                    Text = $"{FindResource("character")} : " + string.Join(", ", ha.Characters),
                     FontSize = 17,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,

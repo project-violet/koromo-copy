@@ -2,6 +2,85 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:Koromo_Copy_UX.Language">
-  <!-- Main Window -->
-  <system:String x:Key="download">Download</system:String>
+    <!--
+                        Global Token
+    -->
+    <x:Static x:Key="count_postfix" Member="system:String.Empty"/>
+    <x:Static x:Key="score_postfix" Member="system:String.Empty"/>
+
+    <!--
+                  Main Window Component Tokens
+    -->
+    <system:String x:Key="search">Search</system:String>
+    <system:String x:Key="download">Download</system:String>
+    <system:String x:Key="artists_recommend">Artists</system:String>
+    <system:String x:Key="tools">Tools</system:String>
+    <system:String x:Key="setting">Setting</system:String>
+    <!-- Search Space -->
+    <system:String x:Key="searched">Search Result</system:String>
+    <system:String x:Key="searched_default">Search Result: 0</system:String>
+    <system:String x:Key="tidy">Tidy</system:String>
+    <system:String x:Key="selectall">Select All</system:String>
+    <system:String x:Key="selectallcancel">Deselect All</system:String>
+    <!-- Search Elements -->
+    <system:String x:Key="uploaded_date">Uploaded</system:String>
+    <system:String x:Key="tag">Tags</system:String>
+    <system:String x:Key="find_artists">Find Artists</system:String>
+    <system:String x:Key="find_groups">Find Groups</system:String>
+    <system:String x:Key="preview">Preview</system:String>
+    <system:String x:Key="find_comment">Comments</system:String>
+    <system:String x:Key="find_exh">View ex-hentai</system:String>
+    <system:String x:Key="title">Title</system:String>
+    <system:String x:Key="artist">Artists</system:String>
+    <system:String x:Key="group">Groups</system:String>
+    <system:String x:Key="series">Series</system:String>
+    <system:String x:Key="character">Characters</system:String>
+    <!-- Download Space -->
+    <system:String x:Key="index">Index</system:String>
+    <system:String x:Key="index2">Index</system:String>
+    <system:String x:Key="download_status">Download Status</system:String>
+    <system:String x:Key="total_download_size">Total Download Size</system:String>
+    <system:String x:Key="downloaded_size">Downloaded Size</system:String>
+    <system:String x:Key="download_speed">Download Speed</system:String>
+    <system:String x:Key="pause">Pause</system:String>
+    <system:String x:Key="resume">Resume</system:String>
+    <system:String x:Key="path">Path</system:String>
+    <!-- Recommend Space -->
+    <system:String x:Key="custom_artists_recommendation">Custom</system:String>
+    <system:String x:Key="hide_downloaded_artists" xml:space="preserve">Hide Downloaded Artists </system:String>
+    <system:String x:Key="take_picture">Save as Image</system:String>
+    <!-- Recommend Artists Elements -->
+    <system:String x:Key="score">Score</system:String>
+    <system:String x:Key="detail_view">View Detail</system:String>
+    <!-- Tool Space -->
+    <system:String x:Key="tools_and_utility">Tools and Utilities</system:String>
+    <system:String x:Key="statistics">Statistics</system:String>
+    <!-- Link -->
+    <system:String x:Key="tools_and_utility_collection">Tools and Utilities Collection</system:String>
+    <system:String x:Key="desc_tools_and_utilities">Koromo Copy includes several tools for managing downloading and downloaded files.</system:String>
+    <system:String x:Key="manages">Managed Tools</system:String>
+    <system:String x:Key="unmanages">Unmanaged Tools</system:String>
+    <system:String x:Key="run">Run</system:String>
+    <system:String x:Key="zip_viewer">Zipped-File Folder Viewer (Zip Viewer, Ctrl + E)</system:String>
+    <system:String x:Key="desc_zip_viewer">You can view the thumbnails of the files by dragging and dropping the folder containing the compressed files. It is similar to the preview function in Explorer. If the compressed file was downloaded via hitomi.la, it analyzes the Info.json file included in the compressed file and displays brief information.</system:String>
+    <system:String x:Key="zip_listing">Zipped-File Analyzer (Zip Listing, Ctrl + L)</system:String>
+    <system:String x:Key="desc_zip_listing">It is available only for compressed files with compression setting of Koromo copy. This tool analyzes all downloaded compressed files in specific subfolders to provide a separate search environment.</system:String>
+    <system:String x:Key="zip_artists">Zipped-File Folder Analyzer (Zip Artists, Ctrl + A)</system:String>
+    <system:String x:Key="desc_zip_artists">It is available only for compressed files with compression setting of Koromo copy. This tool provides a separate browsing environment by analyzing downloaded compressed files in specific subfolders on a folder-by-folder basis. It is very useful for searching folders classified by artist.</system:String>
+    <!-- Statistics -->
+    <system:String x:Key="trends">Trends</system:String>
+    <!-- Setting Space -->
+    <system:String x:Key="information">Information</system:String>
+    <system:String x:Key="downloader">Downloader</system:String>
+    <system:String x:Key="hitomi">Hitomi</system:String>
+    <system:String x:Key="pixiv">Pixiv</system:String>
+    <system:String x:Key="interface">Interface</system:String>
+    <system:String x:Key="script">Script</system:String>
+    <system:String x:Key="update">Update</system:String>
+    <system:String x:Key="advanced_setting">Advanced</system:String>
+
+
+    <!--
+                             Messages
+    -->
 </ResourceDictionary>

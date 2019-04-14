@@ -52,12 +52,12 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Resources>
-                <Button Content="정리" Width="120" Height="20" BorderBrush="LightPink" Foreground="White" Margin="0 0 5 0" Click="Button_Click"/>
-                <Button Content="커스텀 작가 추천" Width="150" Height="20" BorderBrush="LightPink" Foreground="White" Click="Button_Click_1"/>
+                <Button Content="{DynamicResource tidy}" Width="120" Height="20" BorderBrush="LightPink" Foreground="White" Margin="0 0 5 0" Click="Button_Click"/>
+                <Button Content="{DynamicResource custom_artists_recommendation}" Width="150" Height="20" BorderBrush="LightPink" Foreground="White" Click="Button_Click_1"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 2 0 0" Grid.Column="1">
-                <TextBlock Text="다운로드된 작가 숨기기 ">
+                <TextBlock Text="{DynamicResource hide_downloaded_artists}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -95,7 +95,7 @@
                                 </ResourceDictionary.MergedDictionaries>
                             </ResourceDictionary>
                         </ContextMenu.Resources>
-                        <MenuItem Header="사진으로 저장" InputGestureText="Ctrl+S" Tag="S" Click="MenuItem_Click"/>
+                        <MenuItem Header="{DynamicResource take_picture}" InputGestureText="Ctrl+S" Tag="S" Click="MenuItem_Click"/>
                     </ContextMenu>
                 </controls:WheelSpeedScrollViewer.ContextMenu>
                 <StackPanel x:Name="RecommendList" Background="White"/>

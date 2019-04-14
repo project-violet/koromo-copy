@@ -80,7 +80,7 @@
                     <ListBox x:Name="AutoCompleteList" Width="350" Height="150" KeyUp="AutoCompleteList_KeyUp" PreviewKeyDown="AutoCompleteList_KeyUp" MouseDoubleClick="AutoCompleteList_MouseDoubleClick"/>
                 </controls:NonTopmostPopup>
                 <Button x:Name="SearchButton" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="78" Click="Button_Click" 
-                        Grid.ColumnSpan="2" Tag="Search" BorderBrush="LightPink" Foreground="White" Content="검색">
+                        Grid.ColumnSpan="2" Tag="Search" BorderBrush="LightPink" Foreground="White" Content="{DynamicResource search}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="Pink"/>
@@ -186,9 +186,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" x:Name="SearchCount" VerticalAlignment="Center">
-                        검색된 항목: 0개
-                    </TextBlock>
+                    <TextBlock Grid.Column="0" x:Name="SearchCount" VerticalAlignment="Center" Text="{DynamicResource searched_default}"/>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                         <StackPanel.Resources>
@@ -213,10 +211,10 @@
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Resources>
-                        <Button Click="Button_Click" Grid.Column="1" HorizontalAlignment="Center"  BorderBrush="LightPink" Foreground="White" Width="100" Tag="Tidy">정리</Button>
-                        <Button Click="Button_Click" Width="100" Margin="20 0 3 0" BorderBrush="LightPink" Foreground="White" Tag="SelectAll">모두 선택</Button>
-                        <Button Click="Button_Click" Height="20" Width="100" Tag="DeSelectAll" BorderBrush="LightPink" Foreground="White" >모두 선택 취소</Button>
-                        <Button Click="Button_Click" Grid.Column="1" Margin="20 0 0 0" Width="100" BorderBrush="LightPink" Foreground="White" Tag="Download">다운로드</Button>
+                        <Button Click="Button_Click" Grid.Column="1" HorizontalAlignment="Center"  BorderBrush="LightPink" Foreground="White" Width="100" Tag="Tidy" Content="{DynamicResource tidy}"/>
+                        <Button Click="Button_Click" Width="100" Margin="20 0 3 0" BorderBrush="LightPink" Foreground="White" Tag="SelectAll" Content="{DynamicResource selectall}"/>
+                        <Button Click="Button_Click" Height="20" Width="100" Tag="DeSelectAll" BorderBrush="LightPink" Foreground="White" Content="{DynamicResource selectallcancel}"/>
+                        <Button Click="Button_Click" Grid.Column="1" Margin="20 0 0 0" Width="100" BorderBrush="LightPink" Foreground="White" Tag="Download" Content="{DynamicResource download}"/>
                     </StackPanel>
                 </Grid>
             </Grid>
