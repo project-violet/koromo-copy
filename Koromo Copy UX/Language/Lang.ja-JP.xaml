@@ -2,6 +2,98 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:Koromo_Copy_UX.Language">
-    <!-- Main Window -->
+    <!--
+                        Global Token
+    -->
+    <system:String x:Key="count_postfix">個</system:String>
+    <system:String x:Key="score_postfix">点</system:String>
+
+    <!--
+                  Main Window Component Tokens
+    -->
+    <system:String x:Key="search">検索</system:String>
     <system:String x:Key="download">ダウンロード</system:String>
+    <system:String x:Key="artists_recommend">作家推薦</system:String>
+    <system:String x:Key="tools">ツール</system:String>
+    <system:String x:Key="setting">設定</system:String>
+    <!-- Search Space -->
+    <system:String x:Key="searched">検索結果</system:String>
+    <system:String x:Key="searched_default">検索結果: 0個</system:String>
+    <system:String x:Key="tidy">片付ける</system:String>
+    <system:String x:Key="selectall">すべて選択</system:String>
+    <system:String x:Key="selectallcancel">すべて選択解除</system:String>
+    <!-- Search Elements -->
+    <system:String x:Key="uploaded_date">日付時刻</system:String>
+    <system:String x:Key="tag">タグ</system:String>
+    <system:String x:Key="find_artists">作家検索</system:String>
+    <system:String x:Key="find_groups">団体検索</system:String>
+    <system:String x:Key="preview">プレビュー</system:String>
+    <system:String x:Key="find_comment">コメント</system:String>
+    <system:String x:Key="find_exh">ex-hentai を見る</system:String>
+    <system:String x:Key="title">タイトル</system:String>
+    <system:String x:Key="artist">アーティスト</system:String>
+    <system:String x:Key="group">グループ</system:String>
+    <system:String x:Key="series">シリーズ</system:String>
+    <system:String x:Key="character">キャラクター</system:String>
+    <!-- Download Space -->
+    <system:String x:Key="index">インデックス</system:String>
+    <system:String x:Key="index2">索引</system:String>
+    <system:String x:Key="download_status">ダウンロード状況</system:String>
+    <system:String x:Key="total_download_size">合計ダウンロードサイズ</system:String>
+    <system:String x:Key="downloaded_size">ダウンロードサイズ</system:String>
+    <system:String x:Key="download_speed">ダウンロード速度</system:String>
+    <system:String x:Key="pause">一時停止</system:String>
+    <system:String x:Key="resume">履歴書</system:String>
+    <system:String x:Key="path">アドレス</system:String>
+    <!-- Recommend Space -->
+    <system:String x:Key="custom_artists_recommendation">カスタム作家推薦</system:String>
+    <system:String x:Key="hide_downloaded_artists" xml:space="preserve">ダウンロードしたアーティストを隠す </system:String>
+    <system:String x:Key="take_picture">画像として保存</system:String>
+    <!-- Recommend Artists Elements -->
+    <system:String x:Key="score">スコア</system:String>
+    <system:String x:Key="detail_view">詳細を表示</system:String>
+    <!-- Tool Space -->
+    <system:String x:Key="tools_and_utility">ツールとユーティリティ</system:String>
+    <system:String x:Key="statistics">統計</system:String>
+    <!-- Link -->
+    <system:String x:Key="tools_and_utility_collection">ツールとユーティリティのコレクション</system:String>
+    <system:String x:Key="desc_tools_and_utilities">Koromo Copyには、ダウンロードファイルとダウンロードファイルを管理するためのツールがいくつか含まれています。</system:String>
+    <system:String x:Key="manages">管理ツール</system:String>
+    <system:String x:Key="unmanages">管理されていないツール</system:String>
+    <system:String x:Key="run">実行</system:String>
+    <system:String x:Key="zip_viewer">Zipped-File Folder Viewer (Zip Viewer, Ctrl + E)</system:String>
+    <system:String x:Key="desc_zip_viewer">You can view the thumbnails of the files by dragging and dropping the folder containing the compressed files. It is similar to the preview function in Explorer. If the compressed file was downloaded via hitomi.la, it analyzes the Info.json file included in the compressed file and displays brief information.</system:String>
+    <system:String x:Key="zip_listing">Zipped-File Analyzer (Zip Listing, Ctrl + L)</system:String>
+    <system:String x:Key="desc_zip_listing">It is available only for compressed files with compression setting of Koromo copy. This tool analyzes all downloaded compressed files in specific subfolders to provide a separate search environment.</system:String>
+    <system:String x:Key="zip_artists">Zipped-File Folder Analyzer (Zip Artists, Ctrl + A)</system:String>
+    <system:String x:Key="desc_zip_artists">It is available only for compressed files with compression setting of Koromo copy. This tool provides a separate browsing environment by analyzing downloaded compressed files in specific subfolders on a folder-by-folder basis. It is very useful for searching folders classified by artist.</system:String>
+    <!-- Statistics -->
+    <system:String x:Key="trends">Trends</system:String>
+    <!-- Setting Space -->
+    <system:String x:Key="information">Information</system:String>
+    <system:String x:Key="downloader">Downloader</system:String>
+    <system:String x:Key="hitomi">Hitomi</system:String>
+    <system:String x:Key="pixiv">Pixiv</system:String>
+    <system:String x:Key="interface">Interface</system:String>
+    <system:String x:Key="script">Script</system:String>
+    <system:String x:Key="update">Update</system:String>
+    <system:String x:Key="advanced_setting">Advanced</system:String>
+
+    <!--
+                             Messages
+    -->
+    <system:String x:Key="msg_loading_data">Loding database ...</system:String>
+    <system:String x:Key="msg_unknown_error" xml:space="preserve">An unhandled error occurred within the program. If the error persists, please contact the developers. </system:String>
+    <system:String x:Key="msg_memory_cleanup">Clean-up memory!</system:String>
+    <system:String x:Key="msg_download_metadata">Downloading metadata...</system:String>
+    <system:String x:Key="msg_download_hiddendata">Downloading hiddendata...</system:String>
+    <system:String x:Key="msg_download_data_complete">Downloaded all of data.!</system:String>
+    <system:String x:Key="msg_new_update">There are new updates! Please check in Settings -> Update!</system:String>
+    <system:String x:Key="msg_incorret_search_grammar">Search grammar is invalid.</system:String>
+    <system:String x:Key="msg_tidy" xml:space="preserve"> items has organized!</system:String>
+    <system:String x:Key="msg_download_start" xml:space="preserve"> start downloading...</system:String>
+    <system:String x:Key="msg_download_complete">Download complete!</system:String>
+    <system:String x:Key="msg_download_pause">Downloading Pause</system:String>
+    <system:String x:Key="msg_download_resume">Downloading Resume</system:String>
+
 </ResourceDictionary>
