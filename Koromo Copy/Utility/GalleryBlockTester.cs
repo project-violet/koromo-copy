@@ -45,6 +45,8 @@ namespace Hitomi_Copy_3._403
                 exists.Add(metadata.ID);
             }
             textBox1.BackColor = Color.White;
+            textBox1.Text = (HitomiData.Instance.metadata_collection[0].ID - 2000).ToString();
+            textBox2.Text = (HitomiData.Instance.metadata_collection[0].ID + 2000).ToString();
         }
 
         DateTime start;
