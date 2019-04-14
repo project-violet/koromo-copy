@@ -49,6 +49,7 @@ namespace Koromo_Copy_UX
         public SearchSpace()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
                 SearchMaterialPanel.Visibility = Visibility.Collapsed;
@@ -225,8 +226,8 @@ namespace Koromo_Copy_UX
                 
                 if (start_element != 0 && start_element <= result.Count) result.RemoveRange(0, start_element);
                 if (count_element != 0 && count_element < result.Count) result.RemoveRange(count_element, result.Count - count_element);
-
-                SearchCount.Text = $"검색된 항목: {result.Count.ToString("#,#")}개";
+                
+                SearchCount.Text = $"{FindResource("searched")}: {result.Count.ToString("#,#")}{(FindResource("count_postfix"))}";
                 _ = Task.Run(() => LoadThumbnail(result));
             }
             catch

@@ -41,6 +41,7 @@ namespace Koromo_Copy_UX
         public RecommendSpace()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             Instance = this;
             InstanceMonitor.Instances.Add("recommendspace", Instance);

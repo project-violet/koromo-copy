@@ -49,12 +49,24 @@
                     </ResourceDictionary>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="79" Header="인덱스"
-                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 제목}" Width="354" Header="제목" 
-                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 경로}" Width="630" Header="경로" 
-                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="79"
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                        <materialDesign:MaterialDataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource index}"/>
+                        </materialDesign:MaterialDataGridTextColumn.Header>
+                    </materialDesign:MaterialDataGridTextColumn>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 제목}" Width="354"
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                        <materialDesign:MaterialDataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource title}"/>
+                        </materialDesign:MaterialDataGridTextColumn.Header>
+                    </materialDesign:MaterialDataGridTextColumn>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 경로}" Width="630"
+                                                               EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                        <materialDesign:MaterialDataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource path}"/>
+                        </materialDesign:MaterialDataGridTextColumn.Header>
+                    </materialDesign:MaterialDataGridTextColumn>
                 </DataGrid.Columns>
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
@@ -88,16 +100,28 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="다운로드 상태 : " FontSize="13" HorizontalAlignment="Right"/>
-                    <TextBlock Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Text="총 다운로드 크기 : " FontSize="13" HorizontalAlignment="Right"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="다운받은 크기 : " FontSize="13" HorizontalAlignment="Right"/>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="다운로드 속도 : " FontSize="13" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="13" HorizontalAlignment="Right">
+                        <Run Text="{DynamicResource download_status}"/>
+                        <Run Text=" : "/>
+                    </TextBlock>
+                    <TextBlock Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" FontSize="13" HorizontalAlignment="Right">
+                        <Run Text="{DynamicResource total_download_size}"/>
+                        <Run Text=" : "/>
+                    </TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0" FontSize="13" HorizontalAlignment="Right">
+                        <Run Text="{DynamicResource downloaded_size}"/>
+                        <Run Text=" : "/>
+                    </TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="0" FontSize="13" HorizontalAlignment="Right">
+                        <Run Text="{DynamicResource download_speed}"/>
+                        <Run Text=" : "/>
+                    </TextBlock>
 
                     <TextBlock x:Name="Status" Grid.Row="0" Grid.Column="1" Text="0 / 0" Margin="5 0 0 0" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="TotalSize" Grid.Row="1" Grid.Column="1" Text="0 MB" Margin="5 10 0 0" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="DownloadSize" Grid.Row="2" Grid.Column="1" Text="0 MB" Margin="5 0 0 0" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="DownloadSpeed" Grid.Row="3" Grid.Column="1" Text="0 KB/S" Margin="5 0 0 0" HorizontalAlignment="Left"/>
-                    <Button Grid.RowSpan="4" Margin="0 0 30 0" Grid.Column="3" x:Name="Pause" Content="일시정지" Height="40" Width="200" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="State" HorizontalAlignment="Right"/>
+                    <Button Grid.RowSpan="4" Margin="0 0 30 0" Grid.Column="3" x:Name="Pause" Content="{DynamicResource pause}" Height="40" Width="200" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="State" HorizontalAlignment="Right"/>
 
                 </Grid>
             </StackPanel>

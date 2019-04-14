@@ -18,36 +18,68 @@
     <system:String x:Key="setting">설정</system:String>
     <!-- Search Space -->
     <system:String x:Key="searched">검색된 항목</system:String>
+    <system:String x:Key="searched_default">검색된 항목: 0개</system:String>
     <system:String x:Key="tidy">정리</system:String>
     <system:String x:Key="selectall">모두 선택</system:String>
     <system:String x:Key="selectallcancel">모두 선택 취소</system:String>
     <!-- Search Elements -->
     <system:String x:Key="uploaded_date">업로드된 날짜</system:String>
     <system:String x:Key="tag">태그</system:String>
-    <system:String x:Key="find_artsts">작가 찾기</system:String>
+    <system:String x:Key="find_artists">작가 찾기</system:String>
     <system:String x:Key="find_groups">그룹 찾기</system:String>
     <system:String x:Key="preview">미리보기</system:String>
     <system:String x:Key="find_comment">댓글 보기</system:String>
     <system:String x:Key="find_exh">익헨에서 보기</system:String>
+    <system:String x:Key="title">제목</system:String>
+    <system:String x:Key="artist">작가</system:String>
+    <system:String x:Key="group">그룹</system:String>
+    <system:String x:Key="series">시리즈</system:String>
+    <system:String x:Key="character">캐릭터</system:String>
     <!-- Download Space -->
     <system:String x:Key="index">인덱스</system:String>
     <system:String x:Key="index2">항목</system:String>
-    <system:String x:Key="title">제목</system:String>
     <system:String x:Key="download_status">다운로드 상태</system:String>
     <system:String x:Key="total_download_size">총 다운로드 크기</system:String>
     <system:String x:Key="downloaded_size">다운받은 크기</system:String>
     <system:String x:Key="download_speed">다운로드 속도</system:String>
     <system:String x:Key="pause">일시정지</system:String>
     <system:String x:Key="resume">다시시작</system:String>
+    <system:String x:Key="path">경로</system:String>
     <!-- Recommend Space -->
     <system:String x:Key="custom_artists_recommendation">커스텀 작가 추천</system:String>
-    <system:String x:Key="hide_downloaded_artists">다운로드된 작가 숨기기</system:String>
+    <system:String x:Key="hide_downloaded_artists" xml:space="preserve">다운로드된 작가 숨기기 </system:String>
+    <system:String x:Key="take_picture">사진으로 저장</system:String>
     <!-- Recommend Artists Elements -->
-    <system:String x:Key="artist">작가</system:String>
     <system:String x:Key="score">점수</system:String>
     <system:String x:Key="detail_view">자세히 보기</system:String>
-
-
+    <!-- Tool Space -->
+    <system:String x:Key="tools_and_utility">도구 및 유틸리티</system:String>
+    <system:String x:Key="statistics">통계</system:String>
+    <!-- Link -->
+    <system:String x:Key="tools_and_utility_collection">도구 및 유틸리티 모음</system:String>
+    <system:String x:Key="desc_tools_and_utilities">Koromo Copy에는 다운로드 및 다운로드된 파일을 관리하기 위한 여러가지 도구들이 포함되어 있습니다.</system:String>
+    <system:String x:Key="manages">관리되는 항목</system:String>
+    <system:String x:Key="unmanages">관리되지 않는 항목</system:String>
+    <system:String x:Key="run">실행</system:String>
+    <system:String x:Key="zip_viewer">압축파일 폴더 뷰어 (Zip Viewer, Ctrl + E)</system:String>
+    <system:String x:Key="desc_zip_viewer">압축파일들이 포함된 폴더를 Drag &amp; Drop하여 해당파일들의 썸네일을 볼 수 있습니다. 탐색기의 미리보기 기능과 유사합니다. 만약, 압축된 파일이 hitomi.la를 통해 다운로드되었다면, 압축파일에 포함된 Info.json파일을 분석하여 간략한 정보를 보여줍니다.</system:String>
+    <system:String x:Key="zip_listing">압축파일 분석기 (Zip Listing, Ctrl + L)</system:String>
+    <system:String x:Key="desc_zip_listing">hitomi.la에서 다운로드되었으며, Koromo copy의 압축설정을 통해 압축된 파일들에 한해 사용가능합니다. 이 도구는 특정 하위폴더에있는 다운로드된 압축파일을 모두 분석하여 독립된 검색환경을 제공합니다.</system:String>
+    <system:String x:Key="zip_artists">압축파일 폴더 분석기 (Zip Artists, Ctrl + A)</system:String>
+    <system:String x:Key="desc_zip_artists">hitomi.la에서 다운로드되었으며, Koromo copy의 압축설정을 통해 압축된 파일들에 한해 사용가능합니다. 이 도구는 특정 하위폴더에있는 다운로드된 압축파일을 폴더 단위로 분석하여 독립된 탐색환경을 제공합니다. 작가별로 분류된 폴더를 탐색하는데 매우 유용합니다.</system:String>
+    <!-- Statistics -->
+    <system:String x:Key="trends">트렌드</system:String>
+    <!-- Setting Space -->
+    <system:String x:Key="information">정보</system:String>
+    <system:String x:Key="downloader">다운로드</system:String>
+    <system:String x:Key="hitomi">히토미</system:String>
+    <system:String x:Key="pixiv">픽시브</system:String>
+    <system:String x:Key="interface">인터페이스</system:String>
+    <system:String x:Key="script">스크립트</system:String>
+    <system:String x:Key="update">업데이트</system:String>
+    <system:String x:Key="advanced_setting">고급설정</system:String>
+    
+    
     <!--
                              Messages
     -->

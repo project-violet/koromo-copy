@@ -32,15 +32,16 @@ namespace Koromo_Copy_UX
         public ToolSpace()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             ToolsTree.Items.Add(new TreeViewItem
             {
-                Header = "도구 및 유틸리티",
+                Header = FindResource("tools_and_utility"),
                 DataContext = new Link()
             });
             ToolsTree.Items.Add(new TreeViewItem
             {
-                Header = "통계",
+                Header = FindResource("statistics"),
                 DataContext = new Statistics()
             });
             //ToolsTree.Items.Add(new TreeViewItem
@@ -50,7 +51,7 @@ namespace Koromo_Copy_UX
             //});
             ToolsTree.Items.Add(new TreeViewItem
             {
-                Header = "인덱스",
+                Header = FindResource("index"),
                 DataContext = new Index()
             });
 

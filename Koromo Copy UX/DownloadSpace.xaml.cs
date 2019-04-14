@@ -46,6 +46,7 @@ namespace Koromo_Copy_UX
         public DownloadSpace()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             Instance = this;
             InstanceMonitor.Instances.Add("downloadspace", Instance);
@@ -175,18 +176,18 @@ namespace Koromo_Copy_UX
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Pause.Content.ToString() == "일시정지")
+            if (Pause.Content.ToString() == FindResource("pause"))
             {
                 DownloadGroup.Instance.Preempt();
                 MainWindow.Instance.FadeOut_MiddlePopup("다운로드 일시정지", false);
-                Pause.Content = "다시시작";
+                Pause.Content = FindResource("resume");
                 TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Paused);
             }
             else
             {
                 DownloadGroup.Instance.Reactivation();
                 MainWindow.Instance.FadeOut_MiddlePopup("다운로드 다시시작", false);
-                Pause.Content = "일시정지";
+                Pause.Content = FindResource("pause");
                 TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
             }
         }

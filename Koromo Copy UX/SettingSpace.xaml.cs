@@ -32,21 +32,22 @@ namespace Koromo_Copy_UX
         public SettingSpace()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             SettingsTree.Items.Add(new TreeViewItem
             {
-                Header="정보",
+                Header=FindResource("information"),
                 DataContext = new SettingViewInformation()
             });
 
             var downloader = new TreeViewItem
             {
-                Header="다운로더",
+                Header = FindResource("downloader"),
                 DataContext = new SettingViewDownloader { DataContext = new SettingDownloaderViewModel() }
             };
             downloader.Items.Add(new TreeViewItem
             {
-                Header = "히토미",
+                Header = FindResource("hitomi"),
                 DataContext = new SettingViewHitomi { DataContext = new SettingHitomiViewModel() }
             });
             //downloader.Items.Add(new TreeViewItem
@@ -55,7 +56,7 @@ namespace Koromo_Copy_UX
             //});
             downloader.Items.Add(new TreeViewItem
             {
-                Header = "픽시브",
+                Header = FindResource("pixiv"),
                 DataContext = new SettingViewPixiv {  }
             });
             SettingsTree.Items.Add(downloader);
@@ -68,25 +69,25 @@ namespace Koromo_Copy_UX
             
             SettingsTree.Items.Add(new TreeViewItem
             {
-                Header = "인터페이스",
+                Header = FindResource("interface"),
                 DataContext = new SettingViewInterface { DataContext = new SettingViewInterfaceModel() }
             });
 
             SettingsTree.Items.Add(new TreeViewItem
             {
-                Header = "스크립트",
+                Header = FindResource("script"),
                 DataContext = new SettingViewScript { }
             });
 
             SettingsTree.Items.Add(new TreeViewItem
             {
-                Header = "업데이트",
+                Header = FindResource("update"),
                 DataContext = new SettingViewUpdate()
             });
 
             SettingsTree.Items.Add(new TreeViewItem
             {
-                Header = "고급설정",
+                Header = FindResource("advanced_setting"),
                 DataContext = new SettingViewAdvanced()
             });
 

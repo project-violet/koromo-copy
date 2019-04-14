@@ -273,19 +273,19 @@
             </Grid>
 
             <TabControl x:Name="MainTab" Grid.Row="2" Margin="10" BorderThickness="0" FontSize="13" Style="{DynamicResource TabControlStyle1}">
-                <TabItem Header="검색" BorderThickness="0">
+                <TabItem Header="{DynamicResource search}" BorderThickness="0">
                     <local:SearchSpace/>
                 </TabItem>
-                <TabItem Header="다운로드" x:Name="DownloadTab">
+                <TabItem Header="{DynamicResource download}" x:Name="DownloadTab">
                     <local:DownloadSpace/>
                 </TabItem>
-                <TabItem Header="작가추천" x:Name="RecommendTab">
+                <TabItem Header="{DynamicResource artists_recommend}" x:Name="RecommendTab">
                     <local:RecommendSpace/>
                 </TabItem>
-                <TabItem Header="도구">
+                <TabItem Header="{DynamicResource tools}">
                     <local:ToolSpace/>
                 </TabItem>
-                <TabItem Header="설정">
+                <TabItem Header="{DynamicResource setting}">
                     <!--<TabItem.Header>
                         <materialDesign:Badged Badge="3">
                            설정

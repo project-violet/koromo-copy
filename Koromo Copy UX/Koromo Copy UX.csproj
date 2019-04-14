@@ -190,6 +190,7 @@
       <DependentUpon>GroupViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\NonTopmostPopup.cs" />
+    <Compile Include="Language\Lang.cs" />
     <Compile Include="PatchNoteElements.xaml.cs">
       <DependentUpon>PatchNoteElements.xaml</DependentUpon>
     </Compile>
@@ -439,6 +440,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GroupViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Language\Lang.ko-KR.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -713,6 +718,14 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Page Include="Language\Lang.en-US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Language\Lang.ja-JP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

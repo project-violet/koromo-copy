@@ -34,7 +34,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Margin="0 10 0 2" Text="작가" FontSize="15"/>
+            <TextBlock Grid.Row="0" Margin="0 10 0 2" Text="{DynamicResource artist}" FontSize="15"/>
             <TextBox x:Name="ArtistTextBox" Grid.Row="1" HorizontalAlignment="Stretch" SelectionBrush="Pink">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
@@ -176,7 +176,7 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Resources>
-            <Button VerticalAlignment="Center" HorizontalAlignment="Center" Content="자세히 보기" BorderBrush="LightPink" Foreground="White" Width="100" Height="50" Margin="25 0 0 0" Click="Button_Click"/>
+            <Button VerticalAlignment="Center" HorizontalAlignment="Center" Content="{DynamicResource detail_view}" BorderBrush="LightPink" Foreground="White" Width="100" Height="50" Margin="25 0 0 0" Click="Button_Click"/>
         </Grid>
     </Grid>
 </UserControl>

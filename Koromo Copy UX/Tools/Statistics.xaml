@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="10">
         <StackPanel>
-            <TextBlock FontSize="20" Text="트렌드"/>
+            <TextBlock FontSize="20" Text="{DynamicResource trends}"/>
             <ComboBox x:Name="Trend" DropDownClosed="Trend_DropDownClosed" Margin="0 5 0 10">
                 <ComboBox.Resources>
                     <ResourceDictionary>

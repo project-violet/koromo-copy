@@ -34,6 +34,7 @@ namespace Koromo_Copy_UX
         public RecommendArtistElements()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
         }
 
         public string Artist;
@@ -41,14 +42,15 @@ namespace Koromo_Copy_UX
         public RecommendArtistElements(string artist, string score, string detail)
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             ArtistTextBox.Text = artist;
             ScoreTextBox.Text = detail;
 
             if (score.Length > 8)
-                ScoreLabel.Text = $"점수 : {score.Remove(8)} 점";
+                ScoreLabel.Text = $"{FindResource("score")} : {score.Remove(8)} {FindResource("score_postfix")}";
             else
-                ScoreLabel.Text = $"점수 : {score} 점";
+                ScoreLabel.Text = $"{FindResource("score")} : {score} {FindResource("score_postfix")}";
             Artist = artist;
 
             Loaded += RecommendArtistElements_Loaded;
