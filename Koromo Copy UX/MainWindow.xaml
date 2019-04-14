@@ -126,7 +126,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <ProgressBar x:Name="PopupProgress" Grid.Column="0" Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
-                            <TextBlock x:Name="PopupText" Grid.Column="1" Text="데이터를 로딩중 입니다 ..." VerticalAlignment="Center" Margin="5" Foreground="White"/>
+                            <TextBlock x:Name="PopupText" Grid.Column="1" Text="{DynamicResource msg_loading_data}" VerticalAlignment="Center" Margin="5" Foreground="White"/>
                         </Grid>
                         <Grid x:Name="PopupGridComplete" Visibility="Collapsed">
                             <Grid.ColumnDefinitions>

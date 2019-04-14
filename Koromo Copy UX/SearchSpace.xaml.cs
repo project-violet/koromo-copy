@@ -81,14 +81,14 @@ namespace Koromo_Copy_UX
 //                    Koromo_Copy.Monitor.Instance.Push("다운로드가 계속 진행되지 않는다면 이 창에서 Enter키를 눌러주세요");
 //                    Koromo_Copy.Console.Console.Instance.Show();
 //#endif
-                    MainWindow.Instance.Fade_MiddlePopup(true, "데이터를 다운로드 중입니다...");
+                    MainWindow.Instance.Fade_MiddlePopup(true, (string)FindResource("msg_download_metadata"));
 #if true
                     HitomiData.Instance.MetadataDownloadStatusEvent = UpdateDownloadText;
                     await HitomiData.Instance.DownloadMetadata();
 #endif
-                    MainWindow.Instance.ModifyText_MiddlePopup("히든 데이터를 다운로드 중입니다...");
+                    MainWindow.Instance.ModifyText_MiddlePopup((string)FindResource("msg_download_hiddendata"));
                     await HitomiData.Instance.DownloadHiddendata();
-                    MainWindow.Instance.FadeOut_MiddlePopup("데이터를 모두 다운로드했습니다!", false);
+                    MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_download_data_complete"), false);
                     Koromo_Copy.Monitor.Instance.ControlEnable = false;
                 }
                 else
@@ -150,13 +150,13 @@ namespace Koromo_Copy_UX
 
         private void UpdateDownloadText(string text)
         {
-            MainWindow.Instance.ModifyText_MiddlePopup($"데이터를 다운로드 중입니다... {text}");
+            MainWindow.Instance.ModifyText_MiddlePopup($"{(string)FindResource("msg_download_metadata")} {text}");
         }
 
         private void CheckUpdate()
         {
             if (Koromo_Copy.Version.UpdateRequired())
-                MainWindow.Instance.FadeOut_MiddlePopup("새로운 업데이트가 있습니다! 설정->업데이트에서 확인해주세요!", false);
+                MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_new_update"), false);
         }
 
         public bool IsMetadataLoaded = false;
@@ -232,7 +232,7 @@ namespace Koromo_Copy_UX
             }
             catch
             {
-                SearchCount.Text = "검색 문법이 잘못되었습니다.";
+                SearchCount.Text = (string)FindResource("msg_incorret_search_grammar");
             }
         }
 
@@ -283,7 +283,7 @@ namespace Koromo_Copy_UX
                     SearchPanel.Children.Clear();
                     GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
                     if (count > 0)
-                        MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목을 정리했습니다!", false);
+                        MainWindow.Instance.FadeOut_MiddlePopup($"{count}{(string)FindResource("msg_tidy")}", false);
                 }
                 else
                 {
@@ -291,7 +291,7 @@ namespace Koromo_Copy_UX
                     SearchMaterialPanel.Children.Clear();
                     GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
                     if (count > 0)
-                        MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목을 정리했습니다!", false);
+                        MainWindow.Instance.FadeOut_MiddlePopup($"{count}{(string)FindResource("msg_tidy")}", false);
                 }
             }
             else if (tag == "SelectAll")
@@ -331,7 +331,7 @@ namespace Koromo_Copy_UX
                         }
                         count++;
                     });
-                    if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                    if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}{(string)FindResource("msg_download_start")}");
                 }
                 else
                 {
@@ -354,7 +354,7 @@ namespace Koromo_Copy_UX
                         }
                         count++;
                     });
-                    if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                    if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}{(string)FindResource("msg_download_start")}");
                 }
             }
         }

@@ -79,8 +79,21 @@
     <system:String x:Key="update">업데이트</system:String>
     <system:String x:Key="advanced_setting">고급설정</system:String>
     
-    
     <!--
                              Messages
     -->
+    <system:String x:Key="msg_loading_data">데이터를 로딩중 입니다 ...</system:String>
+    <system:String x:Key="msg_unknown_error" xml:space="preserve">프로그램 내부에서 예외처리되지 않은 오류가 발생했습니다. 오류가 계속된다면 개발자에게 문의하십시오. </system:String>
+    <system:String x:Key="msg_memory_cleanup">메모리 최적화 완료!</system:String>
+    <system:String x:Key="msg_download_metadata">데이터를 다운로드 중입니다...</system:String>
+    <system:String x:Key="msg_download_hiddendata">히든 데이터를 다운로드 중입니다...</system:String>
+    <system:String x:Key="msg_download_data_complete">데이터를 모두 다운로드했습니다!</system:String>
+    <system:String x:Key="msg_new_update">새로운 업데이트가 있습니다! 설정->업데이트에서 확인해주세요!</system:String>
+    <system:String x:Key="msg_incorret_search_grammar">검색 문법이 잘못되었습니다.</system:String>
+    <system:String x:Key="msg_tidy">개 항목을 정리했습니다!</system:String>
+    <system:String x:Key="msg_download_start">개 항목 다운로드 시작...</system:String>
+    <system:String x:Key="msg_download_complete">다운로드가 완료되었습니다!</system:String>
+    <system:String x:Key="msg_download_pause">다운로드 일시정지</system:String>
+    <system:String x:Key="msg_download_resume">다운로드 다시시작</system:String>
+    
 </ResourceDictionary>

@@ -80,7 +80,7 @@ namespace Koromo_Copy_UX
         
         private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MessageBox.Show("프로그램 내부에서 예외처리되지 않은 오류가 발생했습니다. 오류가 계속된다면 개발자에게 문의하십시오. " + (e.ExceptionObject as Exception).Source + "\nStackTrace: " + (e.ExceptionObject as Exception).StackTrace,
+            MessageBox.Show(Instance.FindResource("msg_unknown_error") + (e.ExceptionObject as Exception).Source + "\nStackTrace: " + (e.ExceptionObject as Exception).StackTrace,
                 Koromo_Copy.Version.Name + " " + Koromo_Copy.Version.Text, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
@@ -221,7 +221,7 @@ namespace Koromo_Copy_UX
         private void MemoryStatus_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
-            FadeOut_MiddlePopup("메모리 최적화 완료!", false);
+            FadeOut_MiddlePopup(FindResource("msg_memory_cleanup") as string, false);
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

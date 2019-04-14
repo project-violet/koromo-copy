@@ -96,7 +96,7 @@ namespace Koromo_Copy_UX
 
         private void Instance_DownloadComplete(object sender, EventArgs e)
         {
-            MainWindow.Instance.FadeOut_MiddlePopup("다운로드가 완료되었습니다!", false);
+            MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_download_complete"), false);
             Application.Current.Dispatcher.Invoke(new Action(
             delegate
             {
@@ -179,14 +179,14 @@ namespace Koromo_Copy_UX
             if (Pause.Content.ToString() == FindResource("pause"))
             {
                 DownloadGroup.Instance.Preempt();
-                MainWindow.Instance.FadeOut_MiddlePopup("다운로드 일시정지", false);
+                MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_download_pause"), false);
                 Pause.Content = FindResource("resume");
                 TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Paused);
             }
             else
             {
                 DownloadGroup.Instance.Reactivation();
-                MainWindow.Instance.FadeOut_MiddlePopup("다운로드 다시시작", false);
+                MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_download_resume"), false);
                 Pause.Content = FindResource("pause");
                 TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
             }
