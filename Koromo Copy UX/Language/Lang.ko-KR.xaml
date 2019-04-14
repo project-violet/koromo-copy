@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:Koromo_Copy_UX.Language">
+    <!--
+                        Global Token
+    -->
+    <system:String x:Key="count_postfix">개</system:String>
+    <system:String x:Key="score_postfix">점</system:String>
+    
+    <!--
+                  Main Window Component Tokens
+    -->
+    <system:String x:Key="search">검색</system:String>
+    <system:String x:Key="download">다운로드</system:String>
+    <system:String x:Key="artists_recommend">작가추천</system:String>
+    <system:String x:Key="tools">도구</system:String>
+    <system:String x:Key="setting">설정</system:String>
+    <!-- Search Space -->
+    <system:String x:Key="searched">검색된 항목</system:String>
+    <system:String x:Key="tidy">정리</system:String>
+    <system:String x:Key="selectall">모두 선택</system:String>
+    <system:String x:Key="selectallcancel">모두 선택 취소</system:String>
+    <!-- Search Elements -->
+    <system:String x:Key="uploaded_date">업로드된 날짜</system:String>
+    <system:String x:Key="tag">태그</system:String>
+    <system:String x:Key="find_artsts">작가 찾기</system:String>
+    <system:String x:Key="find_groups">그룹 찾기</system:String>
+    <system:String x:Key="preview">미리보기</system:String>
+    <system:String x:Key="find_comment">댓글 보기</system:String>
+    <system:String x:Key="find_exh">익헨에서 보기</system:String>
+    <!-- Download Space -->
+    <system:String x:Key="index">인덱스</system:String>
+    <system:String x:Key="index2">항목</system:String>
+    <system:String x:Key="title">제목</system:String>
+    <system:String x:Key="download_status">다운로드 상태</system:String>
+    <system:String x:Key="total_download_size">총 다운로드 크기</system:String>
+    <system:String x:Key="downloaded_size">다운받은 크기</system:String>
+    <system:String x:Key="download_speed">다운로드 속도</system:String>
+    <system:String x:Key="pause">일시정지</system:String>
+    <system:String x:Key="resume">다시시작</system:String>
+    <!-- Recommend Space -->
+    <system:String x:Key="custom_artists_recommendation">커스텀 작가 추천</system:String>
+    <system:String x:Key="hide_downloaded_artists">다운로드된 작가 숨기기</system:String>
+    <!-- Recommend Artists Elements -->
+    <system:String x:Key="artist">작가</system:String>
+    <system:String x:Key="score">점수</system:String>
+    <system:String x:Key="detail_view">자세히 보기</system:String>
+
+
+    <!--
+                             Messages
+    -->
+</ResourceDictionary>
