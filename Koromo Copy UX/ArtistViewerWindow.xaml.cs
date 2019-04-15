@@ -35,6 +35,7 @@ namespace Koromo_Copy_UX
         public ArtistViewerWindow()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             DataContext = new Domain.ArtistDataGridViewModel();
 
@@ -60,10 +61,11 @@ namespace Koromo_Copy_UX
         public ArtistViewerWindow(string artist)
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             DataContext = new Domain.ArtistDataGridViewModel();
             TagList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<ArtistDataGridItemViewModel>(TagList).SortHandler);
-            Title += artist;
+            Title = $"{FindResource("artist")} : {artist}";
             Artist = artist;
 
             if (Settings.Instance.Hitomi.DisableArtistViewToast)
@@ -103,7 +105,7 @@ namespace Koromo_Copy_UX
                     {
                         if (hpa.Rank[current_item].Item1 == Artist) continue;
                         RecommendArtist.Children.Add(new ArtistViewerToastElements(
-                            $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"점수: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
+                            $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"{FindResource("score")}: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
                         j++;
                         current_load++;
                     }
@@ -195,7 +197,7 @@ namespace Koromo_Copy_UX
                     }
                     count++;
                 });
-                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}{FindResource("msg_download_start")}");
                 MainWindow.Instance.Activate();
                 MainWindow.Instance.FocusDownload();
                 Close();
@@ -222,7 +224,7 @@ namespace Koromo_Copy_UX
                     }
                     count++;
                 });
-                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}개 항목 다운로드 시작...");
+                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}{FindResource("msg_download_start")}");
                 MainWindow.Instance.Activate();
                 MainWindow.Instance.FocusDownload();
             }
@@ -326,7 +328,7 @@ namespace Koromo_Copy_UX
             {
                 if (hpa.Rank[current_item].Item1 == Artist) continue;
                 RecommendArtist.Children.Add(new ArtistViewerToastElements(
-                    $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"점수: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
+                    $"{current_load + 1}. {hpa.Rank[current_item].Item1} ({HitomiAnalysis.Instance.ArtistCount[hpa.Rank[current_item].Item1]})", $"{FindResource("score")}: {hpa.Rank[current_item].Item2}", hpa.Rank[current_item].Item1));
                 j++;
                 current_load++;
             }
