@@ -68,32 +68,32 @@
     <system:String x:Key="zip_artists">Zipped-File Folder Analyzer (Zip Artists, Ctrl + A)</system:String>
     <system:String x:Key="desc_zip_artists">It is available only for compressed files with compression setting of Koromo copy. This tool provides a separate browsing environment by analyzing downloaded compressed files in specific subfolders on a folder-by-folder basis. It is very useful for searching folders classified by artist.</system:String>
     <!-- Statistics -->
-    <system:String x:Key="trends">Trends</system:String>
+    <system:String x:Key="trends">傾向</system:String>
     <!-- Setting Space -->
-    <system:String x:Key="information">Information</system:String>
-    <system:String x:Key="downloader">Downloader</system:String>
+    <system:String x:Key="information">情報</system:String>
+    <system:String x:Key="downloader">ダウンローダ</system:String>
     <system:String x:Key="hitomi">Hitomi</system:String>
     <system:String x:Key="pixiv">Pixiv</system:String>
-    <system:String x:Key="interface">Interface</system:String>
-    <system:String x:Key="script">Script</system:String>
-    <system:String x:Key="update">Update</system:String>
-    <system:String x:Key="advanced_setting">Advanced</system:String>
+    <system:String x:Key="interface">インタフェース</system:String>
+    <system:String x:Key="script">スクリプト</system:String>
+    <system:String x:Key="update">アップデート</system:String>
+    <system:String x:Key="advanced_setting">高級</system:String>
 
     <!--
                              Messages
     -->
-    <system:String x:Key="msg_loading_data">Loding database ...</system:String>
-    <system:String x:Key="msg_unknown_error" xml:space="preserve">An unhandled error occurred within the program. If the error persists, please contact the developers. </system:String>
-    <system:String x:Key="msg_memory_cleanup">Clean-up memory!</system:String>
-    <system:String x:Key="msg_download_metadata">Downloading metadata...</system:String>
-    <system:String x:Key="msg_download_hiddendata">Downloading hiddendata...</system:String>
-    <system:String x:Key="msg_download_data_complete">Downloaded all of data.!</system:String>
-    <system:String x:Key="msg_new_update">There are new updates! Please check in Settings -> Update!</system:String>
-    <system:String x:Key="msg_incorret_search_grammar">Search grammar is invalid.</system:String>
-    <system:String x:Key="msg_tidy" xml:space="preserve"> items has organized!</system:String>
-    <system:String x:Key="msg_download_start" xml:space="preserve"> start downloading...</system:String>
-    <system:String x:Key="msg_download_complete">Download complete!</system:String>
-    <system:String x:Key="msg_download_pause">Downloading Pause</system:String>
-    <system:String x:Key="msg_download_resume">Downloading Resume</system:String>
+    <system:String x:Key="msg_loading_data">データベースを読み込んでいます ...</system:String>
+    <system:String x:Key="msg_unknown_error" xml:space="preserve">プログラム内部で例外処理されていないエラーが発生しました。エラーが続けば、開発者にお問い合わせください。 </system:String>
+    <system:String x:Key="msg_memory_cleanup">メモリの最適化完了！</system:String>
+    <system:String x:Key="msg_download_metadata">Dデータをダウンロード中です...</system:String>
+    <system:String x:Key="msg_download_hiddendata">隠しデータをダウンロード中です...</system:String>
+    <system:String x:Key="msg_download_data_complete">すべてのデータをダウンロードしました！</system:String>
+    <system:String x:Key="msg_new_update">新しい更新があります！設定 -> アップデートで確認してください！</system:String>
+    <system:String x:Key="msg_incorret_search_grammar">検索文法が間違っています。</system:String>
+    <system:String x:Key="msg_tidy" xml:space="preserve">個のアイテムをまとめました！</system:String>
+    <system:String x:Key="msg_download_start" xml:space="preserve">個のアイテムのダウンロードを開始...</system:String>
+    <system:String x:Key="msg_download_complete">ダウンロードが完了しました！</system:String>
+    <system:String x:Key="msg_download_pause">ダウンロードを一時停止</system:String>
+    <system:String x:Key="msg_download_resume">ダウンロード再開</system:String>
 
 </ResourceDictionary>
