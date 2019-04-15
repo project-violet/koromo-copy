@@ -53,7 +53,7 @@ namespace Hitomi_Copy_3._403
         private void button1_Click(object sender, EventArgs e)
         {
             status = minimum = Convert.ToInt32(textBox1.Text);
-            progressBar1.Maximum = maximum = Convert.ToInt32(textBox2.Text);
+            progressBar1.Maximum = maximum = textBox2.Text.ToInt32() - textBox1.Text.ToInt32();
             start = DateTime.Now;
             button1.Enabled = false;
             textBox1.Enabled = false;
