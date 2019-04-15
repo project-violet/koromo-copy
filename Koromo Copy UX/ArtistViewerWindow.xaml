@@ -51,7 +51,7 @@
                         <Border  CornerRadius="6" Margin="10 10 0 0" Background="Black" Width="150" MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" MouseLeftButtonDown="Border_MouseLeftButtonDown">
                             <Grid>
                                 <Border x:Name="CoverRectangle" Grid.RowSpan="2" CornerRadius="6" Opacity=".7" IsHitTestVisible="False" Background="Transparent"/>
-                                <TextBlock Text="더보기" HorizontalAlignment="Center" Margin="5" Foreground="White"/>
+                                <TextBlock Text="{DynamicResource view_more}" HorizontalAlignment="Center" Margin="5" Foreground="White"/>
                             </Grid>
                         </Border>
                     </StackPanel>
