@@ -80,6 +80,19 @@
     <system:String x:Key="advanced_setting">高級</system:String>
 
     <!--
+                  Artists Viewer Window Component Tokens
+    -->
+    <system:String x:Key="count">カウント</system:String>
+    <system:String x:Key="download_all">すべてのダウンロード</system:String>
+    <system:String x:Key="select_inverse">選択反転</system:String>
+    <system:String x:Key="deselect_title_similar">タイトル似作品の選択を解除</system:String>
+    <system:String x:Key="deselect_downloaded">既にダウンロードされた作品の選択を解除</system:String>
+    <system:String x:Key="view_detail_information">詳細情報を表示する</system:String>
+    <system:String x:Key="msg_ddclick_car">ダブルクリックすると、作家推薦リストに更新されます！</system:String>
+    <system:String x:Key="similar_artists">似たような作家</system:String>
+    <system:String x:Key="view_more">もっと見る</system:String>
+
+    <!--
                              Messages
     -->
     <system:String x:Key="msg_loading_data">データベースを読み込んでいます ...</system:String>

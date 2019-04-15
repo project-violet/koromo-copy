@@ -80,6 +80,19 @@
     <system:String x:Key="advanced_setting">Advanced</system:String>
 
     <!--
+                  Artists Viewer Window Component Tokens
+    -->
+    <system:String x:Key="count">Count</system:String>
+    <system:String x:Key="download_all">Download All</system:String>
+    <system:String x:Key="select_inverse">Inverse Selection</system:String>
+    <system:String x:Key="deselect_title_similar">Deselect Title Similar Works</system:String>
+    <system:String x:Key="deselect_downloaded">Deselect Already Downloaded Works</system:String>
+    <system:String x:Key="view_detail_information">Display Detailed Information</system:String>
+    <system:String x:Key="msg_ddclick_car">Update to the artists recommendation list in Main-Window, if double-click!</system:String>
+    <system:String x:Key="similar_artists">Similar Artists</system:String>
+    <system:String x:Key="view_more">View More</system:String>
+
+    <!--
                              Messages
     -->
     <system:String x:Key="msg_loading_data">Loding database ...</system:String>
