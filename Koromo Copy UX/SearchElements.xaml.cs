@@ -253,7 +253,7 @@ namespace Koromo_Copy_UX
 
             if (tag == "FindArtist")
             {
-                if (ha.Artists != null)
+                if (ha.Artists != null && ha.Artists[0] != "N/A")
                 {
                     ArtistViewerWindow avw = new ArtistViewerWindow(ha.Artists[0]);
                     avw.Show();
