@@ -78,6 +78,14 @@
     <system:String x:Key="script">スクリプト</system:String>
     <system:String x:Key="update">アップデート</system:String>
     <system:String x:Key="advanced_setting">高級</system:String>
+    <!-- Setting Information Space -->
+    <system:String x:Key="latest_sync" xml:space="preserve">最後に同期した日付 : </system:String>
+    <system:String x:Key="sync">同期化</system:String>
+    <system:String x:Key="progress">進行度:</system:String>
+    <system:String x:Key="total_byte">全バイト:</system:String>
+    <system:String x:Key="downloaded_byte">ダウンロードされたバイト:</system:String>
+    <system:String x:Key="progress_time">進行時間:</system:String>
+    <system:String x:Key="remain_time">残り時間:</system:String>
 
     <!--
                   Artists Viewer Window Component Tokens

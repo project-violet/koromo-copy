@@ -40,6 +40,7 @@ namespace Koromo_Copy_UX
         public SettingViewInformation()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             VersionText.Text += Koromo_Copy.Version.Text + " (x64)";
             UpdateSyncDate();

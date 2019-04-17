@@ -38,7 +38,7 @@
 
             <Separator Height="5"  Margin="0 40 0 0"/>
             <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-                <TextBlock Text="마지막으로 데이터를 동기화한 날짜 : "/>
+                <TextBlock Text="{DynamicResource latest_sync}"/>
                 <TextBlock x:Name="SyncDate" Text="2000년 00월 00일 (0일 지남)"/>
                 <TextBlock x:Name="NNSync" Foreground="Red" Text=" -- 데이터동기화가 필요합니다." Visibility="Collapsed"/>
             </StackPanel>
@@ -59,16 +59,16 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="진행도:" HorizontalAlignment="Right"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="전체 바이트:" HorizontalAlignment="Right"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="다운로드된 바이트:" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource progress}" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource total_byte}" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource downloaded_byte}" HorizontalAlignment="Right"/>
 
                     <TextBlock x:Name="SyncPercent" Margin="5 0 20 0" Grid.Row="0" Grid.Column="1" Text="0.0 %" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="SyncTotalBytes" Margin="5 0 20 0" Grid.Row="1" Grid.Column="1" Text="0 KB" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="SyncDownloadBytes" Margin="5 0 20 0" Grid.Row="2" Grid.Column="1" Text="0 KB" HorizontalAlignment="Left"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="진행 시간:" HorizontalAlignment="Right"/>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="남은 시간:" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{DynamicResource progress_time}" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{DynamicResource remain_time}" HorizontalAlignment="Right"/>
 
                     <TextBlock x:Name="SyncRegret" Margin="5 0 0 0" Grid.Row="1" Grid.Column="3" Text="0" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="SyncRemain" Margin="5 0 0 0" Grid.Row="2" Grid.Column="3" Text="0" HorizontalAlignment="Left"/>
@@ -85,7 +85,7 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Sync"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">동기화</TextBlock>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource sync}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
