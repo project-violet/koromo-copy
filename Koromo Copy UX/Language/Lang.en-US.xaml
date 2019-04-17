@@ -78,6 +78,14 @@
     <system:String x:Key="script">Script</system:String>
     <system:String x:Key="update">Update</system:String>
     <system:String x:Key="advanced_setting">Advanced</system:String>
+    <!-- Setting Information Space -->
+    <system:String x:Key="latest_sync" xml:space="preserve">Lastest Synced Date : </system:String>
+    <system:String x:Key="sync">Synchronization</system:String>
+    <system:String x:Key="progress">Progress:</system:String>
+    <system:String x:Key="total_byte">Total Bytes:</system:String>
+    <system:String x:Key="downloaded_byte">Downloaded Bytes:</system:String>
+    <system:String x:Key="progress_time">Progress Time:</system:String>
+    <system:String x:Key="remain_time">Remain Time:</system:String>
 
     <!--
                   Artists Viewer Window Component Tokens

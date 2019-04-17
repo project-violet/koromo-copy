@@ -78,6 +78,14 @@
     <system:String x:Key="script">스크립트</system:String>
     <system:String x:Key="update">업데이트</system:String>
     <system:String x:Key="advanced_setting">고급설정</system:String>
+    <!-- Setting Information Space -->
+    <system:String x:Key="latest_sync" xml:space="preserve">마지막으로 데이터를 동기화한 날짜 : </system:String>
+    <system:String x:Key="sync">동기화</system:String>
+    <system:String x:Key="progress">진행도:</system:String>
+    <system:String x:Key="total_byte">전체 바이트:</system:String>
+    <system:String x:Key="downloaded_byte">다운로드된 바이트:</system:String>
+    <system:String x:Key="progress_time">진행 시간:</system:String>
+    <system:String x:Key="remain_time">남은 시간:</system:String>
     
     <!--
                   Artists Viewer Window Component Tokens
