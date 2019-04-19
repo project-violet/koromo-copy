@@ -42,9 +42,10 @@ namespace Koromo_Copy.Net
         ErrorCallBack err_callback;
 
         object notify_lock = new object();
-        object shutdown_lock = new object();
+        SpinLock shutdown_lock = new SpinLock();
         object task_lock = new object();
         volatile bool preempt_take = false;
+        bool shutdown_lock_taken = false;
 
         /// <summary>
         /// 다운로드 큐의 생성자 입니다.
@@ -124,7 +125,10 @@ namespace Koromo_Copy.Net
         {
             lock (requests)
             {
-                lock (shutdown_lock) shutdown = true;
+                shutdown_lock_taken = false;
+                shutdown_lock.Enter(ref shutdown_lock_taken);
+                shutdown = true;
+                shutdown_lock.Exit();
 
                 lock (queue)
                 {
@@ -258,7 +262,10 @@ namespace Koromo_Copy.Net
                                     bytesRead = inputStream.Read(buffer, 0, buffer.Length);
                                     outputStream.Write(buffer, 0, bytesRead);
                                     lock (status_callback) status_callback(uri, bytesRead, obj);
-                                    lock (shutdown_lock) if (shutdown) break;
+                                    shutdown_lock_taken = false;
+                                    shutdown_lock.Enter(ref shutdown_lock_taken);
+                                    if (shutdown) { shutdown_lock.Exit(); break; }
+                                    shutdown_lock.Exit(); 
                                     if (preempt_take)
                                     {
                                         Monitor.Instance.Push($"[Preempt Queue] {uri}");
@@ -268,12 +275,16 @@ namespace Koromo_Copy.Net
                                     }
                                 } while (bytesRead != 0);
                             }
-                            lock (shutdown_lock) if (shutdown)
-                                {
-                                    File.Delete(fileName);
-                                    Monitor.Instance.Push($"[Shutdown] {uri}");
-                                    return;
-                                }
+                            shutdown_lock_taken = false;
+                            shutdown_lock.Enter(ref shutdown_lock_taken);
+                            if (shutdown)
+                            {
+                                shutdown_lock.Exit();
+                                File.Delete(fileName);
+                                Monitor.Instance.Push($"[Shutdown] {uri}");
+                                return;
+                            }
+                            shutdown_lock.Exit();
                         }
                     }
                 }
