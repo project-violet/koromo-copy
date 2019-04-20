@@ -32,6 +32,9 @@ namespace Koromo_Copy.Utility
                 case "GalleryBlockTester":
                     (new GalleryBlockTester()).Show();
                     break;
+                case "Record":
+                    (new Record()).Show();
+                    break;
             }
         }
     }

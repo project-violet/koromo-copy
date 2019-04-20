@@ -89,7 +89,6 @@
     <Compile Include="Component\Pinterest\PinSetting.cs" />
     <Compile Include="Component\SeriesInfo.cs" />
     <Compile Include="Component\SeriesLog.cs" />
-    <Compile Include="Component\Youtube\YTStream.cs" />
     <Compile Include="Console\CommandLineParser.cs" />
     <Compile Include="Console\ScriptConsole.cs" />
     <Compile Include="Crypto\Hash.cs" />
@@ -232,6 +231,12 @@
     <Compile Include="Utility\MetadataDownloader.Designer.cs">
       <DependentUpon>MetadataDownloader.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\Record.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\Record.Designer.cs">
+      <DependentUpon>Record.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\RelatedTags\GraphViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,6 +294,9 @@
     <EmbeddedResource Include="Utility\MetadataDownloader.resx">
       <DependentUpon>MetadataDownloader.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Utility\Record.resx">
+      <DependentUpon>Record.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Utility\RelatedTags\GraphViewer.resx">
       <DependentUpon>GraphViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -312,10 +320,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Component\Gelbooru\" />
-    <Folder Include="Component\SoundCloud\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />
   </ItemGroup>
