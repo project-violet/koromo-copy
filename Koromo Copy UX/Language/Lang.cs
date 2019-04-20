@@ -27,9 +27,9 @@ namespace Koromo_Copy_UX.Language
             {
                 case "ja-JP":
                 case "ko-KR":
-                    //dict.Source = new Uri($@"..\Language\Lang.{lang}.xaml", UriKind.Relative);
+                    dict.Source = new Uri($@"..\Language\Lang.{lang}.xaml", UriKind.Relative);
                     //dict.Source = new Uri($@"..\Language\Lang.en-US.xaml", UriKind.Relative);
-                    dict.Source = new Uri($@"..\Language\Lang.ja-JP.xaml", UriKind.Relative);
+                    //dict.Source = new Uri($@"..\Language\Lang.ja-JP.xaml", UriKind.Relative);
                     break;
                 default:
                     dict.Source = new Uri($@"..\Language\Lang.en-US.xaml", UriKind.Relative);
