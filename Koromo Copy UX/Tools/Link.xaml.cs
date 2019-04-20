@@ -72,6 +72,7 @@ namespace Koromo_Copy_UX.Tools
                 case "RelatedTagsTest":
                 case "StringTools":
                 case "GalleryBlockTester":
+                case "Record":
                     UtilityDelegator.Run(tag);
                     break;
             }
