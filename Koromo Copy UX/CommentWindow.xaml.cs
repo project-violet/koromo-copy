@@ -1,4 +1,12 @@
-﻿using Koromo_Copy.Component.EH;
+﻿/***
+
+   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+
+   Author: Koromo Copy Developer
+
+***/
+
+using Koromo_Copy.Component.EH;
 using Koromo_Copy.Net;
 using System;
 using System.Collections.Generic;
