@@ -60,6 +60,11 @@ namespace Koromo_Copy.Component.DC
 
         public static SortedDictionary<string, string> GetMinorGalleryList()
         {
+            return JsonConvert.DeserializeObject<SortedDictionary<string, string>>(Net.NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/dcinside-minor-gallery.json"));
+        }
+
+        public static SortedDictionary<string, string> GetMinorGalleryListRaw()
+        {
             var dic = new SortedDictionary<string, string>();
             var html = Net.NetCommon.DownloadString("https://gall.dcinside.com/m");
             
