@@ -16,6 +16,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -67,6 +68,7 @@ namespace Koromo_Copy_UX
             InitializeComponent();
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
+            article.Title = HttpUtility.HtmlDecode(article.Title);
             Article = article;
 
             HitomiArticle ha = article as HitomiArticle;
