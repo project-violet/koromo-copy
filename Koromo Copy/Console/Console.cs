@@ -271,6 +271,7 @@ namespace Koromo_Copy.Console
                 {"hiyobi", new HiyobiConsole()},
                 {"youtube", new YoutubeConsole()},
                 {"script", new ScriptConsole()},
+                {"dcinside", new DCInsideConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
