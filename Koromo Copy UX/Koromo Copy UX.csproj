@@ -215,6 +215,9 @@
     <Compile Include="ScriptInfoElements.xaml.cs">
       <DependentUpon>ScriptInfoElements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\DCTools.xaml.cs">
+      <DependentUpon>DCTools.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ForbiddenTester.xaml.cs">
       <DependentUpon>ForbiddenTester.xaml</DependentUpon>
     </Compile>
@@ -584,6 +587,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\CustomCrawlerTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\DCTools.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

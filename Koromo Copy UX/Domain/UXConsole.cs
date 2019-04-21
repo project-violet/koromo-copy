@@ -232,7 +232,17 @@ namespace Koromo_Copy_UX.Domain
                         za.Show();
                     }));
                     break;
-                    
+
+                case "dctools":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        DCTools dct = new DCTools();
+                        dct.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;

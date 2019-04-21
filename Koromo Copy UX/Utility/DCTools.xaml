@@ -1,0 +1,22 @@
+﻿<Window x:Class="Koromo_Copy_UX.Utility.DCTools"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX.Utility"
+        mc:Ignorable="d"
+        Title="DCTools - Koromo Copy" Height="397" Width="566">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="갤러리: " VerticalAlignment="Center" FontSize="15"/>
+        <ComboBox x:Name="gall_list" Grid.Row="0" Grid.Column="1"/>
+    </Grid>
+</Window>
