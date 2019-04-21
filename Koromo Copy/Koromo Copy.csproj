@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\DC\DCArticle.cs" />
+    <Compile Include="Component\DC\DCCommon.cs" />
     <Compile Include="Component\DC\DCParser.cs" />
     <Compile Include="Component\EH\ExHentaiData.cs" />
     <Compile Include="Component\HCommander.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Component\SeriesInfo.cs" />
     <Compile Include="Component\SeriesLog.cs" />
     <Compile Include="Console\CommandLineParser.cs" />
+    <Compile Include="Console\DCInsideConsole.cs" />
     <Compile Include="Console\ScriptConsole.cs" />
     <Compile Include="Crypto\Hash.cs" />
     <Compile Include="Elo\EloSystem.cs" />
