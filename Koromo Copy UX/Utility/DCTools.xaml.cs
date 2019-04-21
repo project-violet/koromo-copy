@@ -35,14 +35,34 @@ namespace Koromo_Copy_UX.Utility
             Loaded += DCTools_Loaded;
         }
 
+        SortedDictionary<string, string> gallery_list = new SortedDictionary<string, string>();
+        SortedDictionary<string, string> mgallery_list = new SortedDictionary<string, string>();
+        SortedDictionary<string, string> gl = new SortedDictionary<string, string>();
+
         bool loaded = false;
         private void DCTools_Loaded(object sender, RoutedEventArgs e)
         {
             if (loaded) return;
             loaded = true;
 
-            var gl = DCCommon.GetGalleryList();
-            var mgl = DCCommon.GetMinorGalleryList();
+            gallery_list = DCCommon.GetGalleryList();
+            mgallery_list = DCCommon.GetMinorGalleryList();
+            
+            gallery_list.ToList().ForEach(x => gl.Add(x.Key + " 갤러리", x.Value));
+            mgallery_list.ToList().ForEach(x => { gl.Add(x.Key + " 마이너 갤러리", x.Value); });
+
+            gl.ToList().ForEach(x => gall_list.Items.Add(new ComboBoxItem() { Content = $"{x.Key} ({x.Value})" }));
+        }
+
+        private void gall_list_TextInput(object sender, TextCompositionEventArgs e)
+        {
+            gall_list.IsDropDownOpen = true;
+            gl.ToList().Where(p => p.Key.Contains(e.Text)).ToList().ForEach(x => gall_list.Items.Add(new ComboBoxItem() { Content = $"{x.Key} ({x.Value})" }));
+        }
+
+        private void gall_list_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            gall_list.IsDropDownOpen = true;
         }
     }
 }

@@ -17,6 +17,12 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="갤러리: " VerticalAlignment="Center" FontSize="15"/>
-        <ComboBox x:Name="gall_list" Grid.Row="0" Grid.Column="1"/>
+        <ComboBox x:Name="gall_list" Grid.Row="0" Grid.Column="1" IsEditable="True" IsTextSearchEnabled="True" TextBoxBase.TextChanged="gall_list_TextChanged">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
     </Grid>
 </Window>
