@@ -93,6 +93,14 @@ namespace Koromo_Copy.Console
                     var url = "https://gall.dcinside.com/board/lists?id=watch";
                     var g = DCParser.ParseGallery(Net.NetCommon.DownloadString(url));
                     break;
+
+                case "galllist":
+                    Console.Instance.WriteLine(DCCommon.GetGalleryList());
+                    break;
+
+                case "mgalllist":
+                    Console.Instance.WriteLine(DCCommon.GetMinorGalleryList());
+                    break;
             }
         }
     }
