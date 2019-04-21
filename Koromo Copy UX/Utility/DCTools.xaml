@@ -5,18 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Koromo_Copy_UX.Utility"
         mc:Ignorable="d"
-        Title="DCTools - Koromo Copy" Height="397" Width="566">
+        Title="DCTools - Koromo Copy" Height="420" Width="887">
     <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="갤러리: " VerticalAlignment="Center" FontSize="15"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="갤러리: " VerticalAlignment="Center" FontSize="15" HorizontalAlignment="Right"/>
         <ComboBox x:Name="gall_list" Grid.Row="0" Grid.Column="1" IsEditable="True" IsTextSearchEnabled="True" TextBoxBase.TextChanged="gall_list_TextChanged">
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -24,5 +27,12 @@
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
         </ComboBox>
+        <Button Grid.Row="0" Grid.Column="2" Content="추적 시작" Margin="8 0 0 0" Width="100" Click="Button_Click"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="추적: " VerticalAlignment="Center" FontSize="15" HorizontalAlignment="Right" Margin="0 4 0 0"/>
+        <TextBox x:Name="nick" Grid.Row="1" Grid.Column="1" Margin="0 4 0 0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="추적 상태: " VerticalAlignment="Top" FontSize="15" HorizontalAlignment="Right" Margin="0 4 0 0"/>
+        <TextBox x:Name="result" Grid.Row="2" Grid.Column="1" Margin="0 4 0 0"/>
     </Grid>
 </Window>

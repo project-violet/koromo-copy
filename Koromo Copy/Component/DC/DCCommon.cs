@@ -33,6 +33,19 @@ namespace Koromo_Copy.Component.DC
             return JsonConvert.DeserializeObject<DCComment>(Encoding.UTF8.GetString(wc.UploadValues("https://gall.dcinside.com/board/comment/", "POST", wc.QueryString)));
         }
 
+        public static DCComment GetComments(DCGallery g, DCPageArticle article, string page)
+        {
+            var wc = Net.NetCommon.GetDefaultClient();
+            wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            wc.QueryString.Add("id", g.id);
+            wc.QueryString.Add("no", article.no);
+            wc.QueryString.Add("cmt_id", g.id);
+            wc.QueryString.Add("cmt_no", article.no);
+            wc.QueryString.Add("e_s_n_o", g.esno);
+            wc.QueryString.Add("comment_page", page);
+            return JsonConvert.DeserializeObject<DCComment>(Encoding.UTF8.GetString(wc.UploadValues("https://gall.dcinside.com/board/comment/", "POST", wc.QueryString)));
+        }
+
         public static SortedDictionary<string, string> GetGalleryList()
         {
             var dic = new SortedDictionary<string, string>();
