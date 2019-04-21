@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -46,6 +47,7 @@ namespace Koromo_Copy_UX
         {
             InitializeComponent();
 
+            article.Title = HttpUtility.HtmlDecode(article.Title);
             Article = article;
             var ha = (HitomiArticle)(article);
             if (HitomiLog.Instance.Contains(ha.Magic))
