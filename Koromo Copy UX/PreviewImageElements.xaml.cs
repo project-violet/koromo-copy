@@ -6,9 +6,12 @@
 
 ***/
 
+using Koromo_Copy;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -45,29 +48,41 @@ namespace Koromo_Copy_UX
 
         string ImageUrl = "";
         public BitmapImage BitmapImage = new BitmapImage();
-
-        private void B_DownloadCompleted(object sender, EventArgs e)
-        {
-            Image.Stretch = Stretch.Uniform;
-            Image.Height = BitmapImage.Height * 600 / BitmapImage.Width;
-        }
-
+        
+        Stream image_stream;
         private void PreviewImageElements_Loaded(object sender, RoutedEventArgs e)
         {
             Task.Run(() =>
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(
-                delegate
+                try
                 {
-                    BitmapImage.BeginInit();
-                    BitmapImage.UriSource = new Uri(ImageUrl);
-                    BitmapImage.EndInit();
-                    BitmapImage.DownloadCompleted += B_DownloadCompleted;
-                    Image.Source = BitmapImage;
-                    Image.Stretch = Stretch.Uniform;
-                    Image.Height = BitmapImage.Height * 600 / BitmapImage.Width;
-                }));
+                    var req = (HttpWebRequest)WebRequest.Create(ImageUrl);
+                    if (ImageUrl.Contains("hitomi.la"))
+                    {
+                        req.Referer = $"https://hitomi.la/galleries/{ImageUrl.Split('/')[4]}.html";
+                    }
+                    image_stream = req.GetResponse().GetResponseStream();
+                    Application.Current.Dispatcher.BeginInvoke(new Action(
+                    delegate
+                    {
+                        BitmapImage.BeginInit();
+                        BitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        BitmapImage.StreamSource = image_stream;
+                        BitmapImage.DownloadCompleted += BitmapImage_DownloadCompleted;
+                        BitmapImage.EndInit();
+                        Image.Source = BitmapImage;
+                    }));
+                }
+                catch (Exception ex) { Monitor.Instance.Push($"[Preview Image] Load Error {ex.Message} {ex.StackTrace}"); }
             });
+        }
+
+        private void BitmapImage_DownloadCompleted(object sender, EventArgs e)
+        {
+            Image.Stretch = Stretch.Uniform;
+            Image.Height = BitmapImage.Height * 600 / BitmapImage.Width;
+            image_stream.Close();
+            image_stream.Dispose();
         }
 
         private void Image_MouseMove(object sender, MouseEventArgs e)
