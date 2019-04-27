@@ -102,6 +102,7 @@ namespace Koromo_Copy_UX
                 if (!Settings.Instance.Hitomi.UsingAdvancedSearch || content.Contains("recent:"))
                 {
                     result = await HitomiDataParser.SearchAsync(content.Trim());
+                    end = sw.ElapsedMilliseconds - end;
                     sw.Stop();
                     if (content.Contains("recent:"))
                     {
@@ -121,7 +122,7 @@ namespace Koromo_Copy_UX
                 else
                 {
                     result = await HitomiDataSearchAdvanced.Search(content.Trim());
-                    end = sw.ElapsedMilliseconds;
+                    end = sw.ElapsedMilliseconds - end;
                     sw.Stop();
                 }
 
