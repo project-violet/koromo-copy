@@ -49,7 +49,9 @@ namespace Koromo_Copy_UX
 
         public MainWindow()
         {
+            Profiler.Push("Starts program");
             InitializeComponent();
+            Profiler.Push("Load MainWindow");
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             // GC 설정
@@ -76,6 +78,7 @@ namespace Koromo_Copy_UX
             
             AppDomain.CurrentDomain.UnhandledException += UnhandledException;
             GlobalImpl.InitGlobal();
+            Profiler.Push("Loaded program");
         }
         
         private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -86,6 +89,7 @@ namespace Koromo_Copy_UX
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            Profiler.Push("Loaded event on MainWindow");
             Window w = Window.GetWindow(this);
             // 이거 지우면 디자이너 오류남
             if (w != null)
