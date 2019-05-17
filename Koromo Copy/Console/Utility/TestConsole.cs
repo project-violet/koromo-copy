@@ -14,6 +14,8 @@ using Koromo_Copy.Html;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Script;
 using Koromo_Copy.Utility.Develop;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -141,6 +143,7 @@ namespace Koromo_Copy.Console.Utility
                 case "ls":
                     HtmlLocalServer.Instance.Start();
                     break;
+
             }
         }
     }

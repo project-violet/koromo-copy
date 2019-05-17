@@ -74,6 +74,7 @@ namespace Koromo_Copy_UX
             Task.Run(async () => {
                 if (IsMetadataLoaded || StartsLoading) return;
                 StartsLoading = true;
+                Profiler.Push("Check metadata exists");
                 if (!HitomiData.Instance.CheckMetadataExist() || Settings.Instance.Hitomi.AutoSync)
                 {
 //#if !DEBUG
@@ -81,6 +82,7 @@ namespace Koromo_Copy_UX
 //                    Koromo_Copy.Monitor.Instance.Push("다운로드가 계속 진행되지 않는다면 이 창에서 Enter키를 눌러주세요");
 //                    Koromo_Copy.Console.Console.Instance.Show();
 //#endif
+                    Profiler.Push("Start download metadata");
                     MainWindow.Instance.Fade_MiddlePopup(true, (string)FindResource("msg_download_metadata"));
 #if true
                     HitomiData.Instance.MetadataDownloadStatusEvent = UpdateDownloadText;
@@ -93,10 +95,12 @@ namespace Koromo_Copy_UX
                 }
                 else
                 {
+                    Profiler.Push("Load metadata, hiddendata");
                     HitomiData.Instance.LoadMetadataJson();
                     HitomiData.Instance.LoadHiddendataJson();
                     MainWindow.Instance.Fade_MiddlePopup(false);
                 }
+                Profiler.Push("Rebuild tag data");
                 HitomiData.Instance.RebuildTagData();
                 if (HitomiData.Instance.metadata_collection != null)
                 {

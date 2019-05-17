@@ -131,6 +131,7 @@
     </Compile>
     <Compile Include="Format.cs" />
     <Compile Include="Html\HtmlCAL.cs" />
+    <Compile Include="Html\HtmlCALEX.cs" />
     <Compile Include="Html\HtmlDiff.cs" />
     <Compile Include="Html\HtmlLocalServer.cs" />
     <Compile Include="Html\HtmlManager.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Component\Pixiv\Pixeez\Pixeez.cs" />
     <Compile Include="Component\Pixiv\PixivTool.cs" />
     <Compile Include="Net\NetSetting.cs" />
+    <Compile Include="Profiler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script\ScriptEngine.cs" />
@@ -323,7 +325,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" />
   </ItemGroup>
