@@ -55,7 +55,7 @@ namespace Koromo_Copy_UX.Utility.ZipArtists
             sub_folder = model.ArticleData.Select(x => x.Key).ToList();
             sub_folder.Sort((x,y) => SortAlgorithm.ComparePath(y,x));
             magics = model.ArticleData.Select(x => x.Value.Id).ToList();
-            magics.Sort((x, y) => y.CompareTo(x));
+            magics.Sort((x, y) => y.ToInt32().CompareTo(x.ToInt32()));
 
             var tags = new Dictionary<string, int>();
             foreach (var v in model.ArticleData)

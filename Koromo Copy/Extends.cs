@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Koromo_Copy
 {
-    static class Extends
+    public static class Extends
     {
         public static T Send<T>(this Control control, Func<T> func)
             => control.InvokeRequired ? (T)control.Invoke(func) : func();
