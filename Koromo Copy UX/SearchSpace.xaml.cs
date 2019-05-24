@@ -96,9 +96,16 @@ namespace Koromo_Copy_UX
                 else
                 {
                     Profiler.Push("Load metadata, hiddendata");
-                    HitomiData.Instance.LoadMetadataJson();
-                    HitomiData.Instance.LoadHiddendataJson();
-                    MainWindow.Instance.Fade_MiddlePopup(false);
+                    try
+                    {
+                        HitomiData.Instance.LoadMetadataJson();
+                        HitomiData.Instance.LoadHiddendataJson();
+                        MainWindow.Instance.Fade_MiddlePopup(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Koromo_Copy.Monitor.Instance.Push($"[Hitomi DataLoad] {ex.Message}\r\n{ex.StackTrace}");
+                    }
                 }
                 Profiler.Push("Rebuild tag data");
                 HitomiData.Instance.RebuildTagData();

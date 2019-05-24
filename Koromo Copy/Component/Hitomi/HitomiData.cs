@@ -140,6 +140,8 @@ namespace Koromo_Copy.Component.Hitomi
                 }
                 SortMetadata();
             }
+            else
+                Monitor.Instance.Push("[Hitomi] Hiddendata not found!");
         }
 
         public bool CheckMetadataExist()
