@@ -99,6 +99,7 @@
     <system:String x:Key="msg_ddclick_car">더블클릭하면 작가추천 목록으로 업데이트 됩니다!</system:String>
     <system:String x:Key="similar_artists">비슷한 작가</system:String>
     <system:String x:Key="view_more">더보기</system:String>
+    <system:String x:Key="last_download">마지막 다운로드</system:String>
 
     <!--
                              Messages

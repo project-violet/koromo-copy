@@ -99,6 +99,7 @@
     <system:String x:Key="msg_ddclick_car">ダブルクリックすると、作家推薦リストに更新されます！</system:String>
     <system:String x:Key="similar_artists">似たような作家</system:String>
     <system:String x:Key="view_more">もっと見る</system:String>
+    <system:String x:Key="last_download">Last Download</system:String>
 
     <!--
                              Messages

@@ -99,11 +99,12 @@
     <system:String x:Key="msg_ddclick_car">Update to the artists recommendation list in Main-Window, if double-click!</system:String>
     <system:String x:Key="similar_artists">Similar Artists</system:String>
     <system:String x:Key="view_more">View More</system:String>
+    <system:String x:Key="last_download">Last Download</system:String>
 
     <!--
                              Messages
     -->
-    <system:String x:Key="msg_loading_data">Loding database ...</system:String>
+    <system:String x:Key="msg_loading_data">Loading database ...</system:String>
     <system:String x:Key="msg_unknown_error" xml:space="preserve">An unhandled error occurred within the program. If the error persists, please contact the developers. </system:String>
     <system:String x:Key="msg_memory_cleanup">Clean-up memory!</system:String>
     <system:String x:Key="msg_download_metadata">Downloading metadata...</system:String>

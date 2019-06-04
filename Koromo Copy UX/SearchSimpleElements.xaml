@@ -107,7 +107,7 @@
 
                                                 <Border x:Name="Rectangle" Grid.RowSpan="2" CornerRadius="6" Opacity=".7" IsHitTestVisible="False" Background="Transparent"/>
 
-                                                <TextBlock Grid.Row="0" Text="마지막 다운로드" VerticalAlignment="Center" Margin="5" Foreground="White"/>
+                                                <TextBlock Grid.Row="0" Text="{DynamicResource last_download}" VerticalAlignment="Center" Margin="5" Foreground="White"/>
                                                 <TextBlock Grid.Row="1" x:Name="Date" Text="" VerticalAlignment="Center" Margin="5 0 5 5" Foreground="White"/>
                                             </Grid>
                                         </Border>
