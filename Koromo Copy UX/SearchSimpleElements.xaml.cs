@@ -37,6 +37,7 @@ namespace Koromo_Copy_UX
         public SearchSimpleElements()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
         }
 
         private void SearchSimpleElements_MouseLeave(object sender, MouseEventArgs e)
