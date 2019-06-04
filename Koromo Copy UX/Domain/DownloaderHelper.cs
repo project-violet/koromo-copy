@@ -370,10 +370,11 @@ namespace Koromo_Copy_UX.Domain
             {
                 if (unstable) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
                 var pages = ExHentaiParser.GetPagesUri(NetCommon.DownloadExHentaiString(commander.URL));
-                var pages_html = EmiliaJobEXH.Instance.AddJob(pages.ToList(), x => { }).Select(x => ExHentaiParser.GetImagesUri(x));
+                var pages_html = EmiliaJobEXH.Instance.AddJob(pages.ToList(), x => { }, Enumerable.Range(0,pages.Length).OfType<object>().ToList()).Select(x => new Tuple<object, string[]> (x.Item1, ExHentaiParser.GetImagesUri(x.Item2))).ToList();
+                pages_html.Sort((x, y) => ((int)x.Item1).CompareTo((int)y.Item1));
                 List<string> pages_all = new List<string>();
-                pages_html.ToList().ForEach(x => pages_all.AddRange(x));
-                var imagelink = EmiliaJobEXH.Instance.AddJob(pages_all, x => { }).Select(x => ExHentaiParser.GetImagesAddress(x));
+                pages_html.ToList().ForEach(x => pages_all.AddRange(x.Item2));
+                var imagelink = EmiliaJobEXH.Instance.AddJob(pages_all, x => { }, Enumerable.Range(0, pages.Length).OfType<object>().ToList()).Select(x => new Tuple<object, string>(x.Item1, ExHentaiParser.GetImagesAddress(x.Item2))).ToList();
                 List<string> tags = new List<string>();
                 if (commander.male != null) tags.AddRange(commander.male.Select(x => "male:" + x.Replace(' ', '_')));
                 if (commander.female != null) tags.AddRange(commander.female.Select(x => "female:" + x.Replace(' ', '_')));
@@ -390,13 +391,14 @@ namespace Koromo_Copy_UX.Domain
                     Characters = commander.character
                 };
                 string dir = HitomiCommon.MakeDownloadDirectory(article);
-                article.ImagesLink = imagelink.ToList();
+                imagelink.Sort((x, y) => ((int)x.Item1).CompareTo((int)y.Item1));
+                article.ImagesLink = imagelink.Select(x => x.Item2).ToList();
                 Directory.CreateDirectory(dir);
                 var se = Koromo_Copy.Interface.SemaphoreExtends.MakeDefault();
                 se.Cookie = "igneous=30e0c0a66;ipb_member_id=2742770;ipb_pass_hash=6042be35e994fed920ee7dd11180b65f;";
                 DownloadSpace.Instance.RequestDownload(article.Title,
-                    imagelink.ToArray(),
-                    imagelink.Select(y => Path.Combine(dir, y.Split('/').Last())).ToArray(),
+                    imagelink.Select(x => x.Item2).ToArray(),
+                    imagelink.Select(y => Path.Combine(dir, y.Item2.Split('/').Last())).ToArray(),
                     se, dir, article);
                 if (unstable) Interlocked.Decrement(ref unstable_request);
                 if (unstable && unstable_request != 0) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
