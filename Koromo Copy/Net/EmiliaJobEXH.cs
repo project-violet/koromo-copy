@@ -26,10 +26,11 @@ namespace Koromo_Copy.Net
     {
         public int capacity = 32;
         public int job_count = 0;
-        public List<Tuple<string, object, SemaphoreCallBack>> queue = new List<Tuple<string, object, SemaphoreCallBack>>();
+        public List<Tuple<string, int, object, SemaphoreCallBack>> queue = new List<Tuple<string, int, object, SemaphoreCallBack>>();
         public List<Thread> threads = new List<Thread>();
         public List<ManualResetEvent> interrupt = new List<ManualResetEvent>();
         public List<List<string>> results = new List<List<string>>();
+        public List<List<Tuple<object, string>>> results2 = new List<List<Tuple<object, string>>>();
         public List<Action<int>> count_events = new List<Action<int>>();
 
         public EmiliaJobEXH()
@@ -48,7 +49,7 @@ namespace Koromo_Copy.Net
         /// 작업을 추가하고 끝날때까지 기다립니다.
         /// </summary>
         /// <param name="url"></param>
-        public List<string> AddJob(List<string> urls, Action<int> action)
+        public List<Tuple<object, string>> AddJob(List<string> urls, Action<int> action, List<object> obj = null)
         {
             int job = -1;
             lock (queue)
@@ -56,7 +57,15 @@ namespace Koromo_Copy.Net
                 job = job_count;
                 results.Add(new List<string>());
                 count_events.Add(action);
-                urls.ForEach(url => queue.Add(new Tuple<string, object, SemaphoreCallBack>(url, job_count, callback)));
+                if (obj == null)
+                    urls.ForEach(url => queue.Add(new Tuple<string, int, object, SemaphoreCallBack>(url, job_count, null, callback)));
+                else
+                {
+                    for (int i = 0; i < urls.Count; i++)
+                    {
+                        queue.Add(new Tuple<string, int, object, SemaphoreCallBack>(urls[i], job_count, obj[i], callback));
+                    }
+                }
                 interrupt.ForEach(x => x.Set());
                 job_count++;
             }
@@ -71,19 +80,21 @@ namespace Koromo_Copy.Net
                 Thread.Sleep(500);
             }
 
-            return results[job];
+            return results2[job];
         }
 
         private void callback(string url, string filename, object obj)
         {
+            Tuple<int, object> io = (Tuple<int, object>)obj;
             int count = -1;
             lock (results)
             {
-                results[(int)obj].Add(filename);
-                count = results[(int)obj].Count;
+                results[io.Item1].Add(filename);
+                results2[io.Item1].Add(new Tuple<object, string>(io, filename));
+                count = results[io.Item1].Count;
             }
 
-            lock (count_events[(int)obj]) count_events[(int)obj](count);
+            lock (count_events[io.Item1]) count_events[io.Item1](count);
         }
 
         private void remote_download_thread_handler(object i)
@@ -93,7 +104,7 @@ namespace Koromo_Copy.Net
             {
                 interrupt[index].WaitOne();
 
-                Tuple<string, object, SemaphoreCallBack> job;
+                Tuple<string, int, object, SemaphoreCallBack> job;
 
                 lock (queue)
                 {
@@ -110,12 +121,13 @@ namespace Koromo_Copy.Net
                 }
 
                 string uri = job.Item1;
+                int job_count = job.Item2;
                 object obj = job.Item2;
-                SemaphoreCallBack callback = job.Item3;
+                SemaphoreCallBack callback = job.Item4;
 
                 try
                 {
-                    lock (callback) callback(uri, NetCommon.DownloadExHentaiString(uri), obj);
+                    lock (callback) callback(uri, NetCommon.DownloadExHentaiString(uri), new Tuple<int, object> (job_count, obj));
                 }
                 catch (Exception e)
                 {
