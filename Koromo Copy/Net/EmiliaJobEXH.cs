@@ -122,7 +122,7 @@ namespace Koromo_Copy.Net
 
                 string uri = job.Item1;
                 int job_count = job.Item2;
-                object obj = job.Item2;
+                object obj = job.Item3;
                 SemaphoreCallBack callback = job.Item4;
 
                 try
