@@ -43,12 +43,11 @@ namespace Koromo_Copy.Component.Hitomi
             metadata.Type = article.Type;
             return metadata;
         }
-
-        public class CompareMetadata : IComparer<HitomiMetadata> { public int Compare(HitomiMetadata x, HitomiMetadata y) { return y.ID.CompareTo(x.ID); } }
+        
         public static HitomiMetadata? GetMetadataFromMagic(string magic)
         {
             HitomiMetadata tmp = new HitomiMetadata() { ID = Convert.ToInt32(magic) };
-            var pos = HitomiData.Instance.metadata_collection.BinarySearch(tmp, new CompareMetadata());
+            var pos = HitomiData.Instance.metadata_collection.BinarySearch(tmp, Comparer<HitomiMetadata>.Create((x,y) => y.ID.CompareTo(x.ID)));
             if (pos < 0) return null;
             return HitomiData.Instance.metadata_collection[pos];
         }
