@@ -8,6 +8,10 @@
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
+## 개발 계획
+
+https://github.com/dc-koromo/koromo-copy/blob/master/Document/Plan.md
+
 ## 최신 릴리즈 Latest Release (2019/04/09)
 
 Koromo Copy 1.10.7038.24376 Beta
