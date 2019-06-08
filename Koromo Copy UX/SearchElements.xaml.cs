@@ -231,7 +231,10 @@ namespace Koromo_Copy_UX
                         BitmapImage.EndInit();
                         BitmapImage.DownloadCompleted += B_DownloadCompleted;
                     }
-                    Page.Text = ha.ImagesLink.Count + " Pages";
+                    if (!ha.IsUnstable)
+                        Page.Text = ha.ImagesLink.Count + " Pages";
+                    else
+                        Page.Text = ha.UnstableModel.Length + " Pages";
                     Image.Source = BitmapImage;
                     Image.Stretch = Stretch.Uniform;
                     Image.Width = BitmapImage.Width * 200 / BitmapImage.Height;

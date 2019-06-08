@@ -374,7 +374,7 @@ namespace Koromo_Copy_UX.Domain
                 pages_html.Sort((x, y) => ((int)x.Item1).CompareTo((int)y.Item1));
                 List<string> pages_all = new List<string>();
                 pages_html.ToList().ForEach(x => pages_all.AddRange(x.Item2));
-                var imagelink = EmiliaJobEXH.Instance.AddJob(pages_all, x => { }, Enumerable.Range(0, pages.Length).OfType<object>().ToList()).Select(x => new Tuple<object, string>(x.Item1, ExHentaiParser.GetImagesAddress(x.Item2))).ToList();
+                var imagelink = EmiliaJobEXH.Instance.AddJob(pages_all, x => { }, Enumerable.Range(0, pages_all.Count).OfType<object>().ToList()).Select(x => new Tuple<object, string>(x.Item1, ExHentaiParser.GetImagesAddress(x.Item2))).ToList();
                 List<string> tags = new List<string>();
                 if (commander.male != null) tags.AddRange(commander.male.Select(x => "male:" + x.Replace(' ', '_')));
                 if (commander.female != null) tags.AddRange(commander.female.Select(x => "female:" + x.Replace(' ', '_')));
