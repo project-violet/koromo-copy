@@ -56,6 +56,7 @@ namespace Koromo_Copy.Net
             {
                 job = job_count;
                 results.Add(new List<string>());
+                results2.Add(new List<Tuple<object, string>>());
                 count_events.Add(action);
                 if (obj == null)
                     urls.ForEach(url => queue.Add(new Tuple<string, int, object, SemaphoreCallBack>(url, job_count, null, callback)));
@@ -90,7 +91,7 @@ namespace Koromo_Copy.Net
             lock (results)
             {
                 results[io.Item1].Add(filename);
-                results2[io.Item1].Add(new Tuple<object, string>(io, filename));
+                results2[io.Item1].Add(new Tuple<object, string>(io.Item2, filename));
                 count = results[io.Item1].Count;
             }
 
