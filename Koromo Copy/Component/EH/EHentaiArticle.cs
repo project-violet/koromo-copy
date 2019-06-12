@@ -56,6 +56,8 @@ namespace Koromo_Copy.Component.EH
         public string Published;
         public string Files;
         public string Type;
+
+        public Dictionary<string, List<string>> Descripts;
     }
 
 }

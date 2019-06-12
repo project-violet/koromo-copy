@@ -257,5 +257,67 @@ namespace Koromo_Copy.Component.EH
 
             return result;
         }
+
+        /// <summary>
+        /// 결과 페이지를 분석합니다.
+        /// ex: https://exhentai.org/?inline_set=dm_e
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public static List<EHentaiResultArticle> ParseResultPageExtendedListView(string html)
+        {
+            var result = new List<EHentaiResultArticle>();
+
+            var document = new HtmlDocument();
+            document.LoadHtml(html);
+            var nodes = document.DocumentNode.SelectNodes("//table[@class='itg glte']/tbody");
+
+            foreach (var node in nodes)
+            {
+                try
+                {
+                    var article = new EHentaiResultArticle();
+
+                    article.URL = node.SelectSingleNode(".//a").GetAttributeValue("href", "");
+                    try { article.Thumbnail = node.SelectSingleNode(".//img").GetAttributeValue("src", ""); } catch { }
+
+                    var g13 = node.SelectSingleNode(".//div[@class='g13e']");
+
+                    article.Type = g13.SelectSingleNode("./div").InnerText.ToLower();
+                    article.Published = g13.SelectSingleNode("./div[2]").InnerText;
+                    article.Uploader = g13.SelectSingleNode("./div[4]").InnerText;
+                    article.Files = g13.SelectSingleNode("./div[5]").InnerText;
+
+                    var gref = node.SelectSingleNode("./td[2]/div/a/div");
+
+                    article.Title = gref.SelectSingleNode("./div").InnerText;
+
+                    var desc = gref.SelectNodes("./div/table/tbody");
+                    var desc_dic = new Dictionary<string, List<string>>();
+
+                    foreach (var nn in desc)
+                    {
+                        var cont = nn.SelectSingleNode("./td").InnerText.Trim();
+                        cont = cont.Remove(cont.Length - 1);
+
+                        var cc = new List<string>();
+
+                        foreach (var ccc in nn.SelectNodes("./td[2]"))
+                        {
+                            cc.Add(ccc.InnerText);
+                        }
+
+                        desc_dic.Add(cont, cc);
+                    }
+
+                    article.Descripts = desc_dic;
+                    
+                    result.Add(article);
+                }
+                catch { }
+            }
+
+            return result;
+        }
     }
 }
