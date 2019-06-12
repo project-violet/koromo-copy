@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace Koromo_Copy.Console
@@ -40,6 +41,8 @@ namespace Koromo_Copy.Console
         public string[] Paging;
         [CommandLine("-expun", CommandType.ARGUMENTS, Help = "use -expun xxx")]
         public string[] Expun;
+        [CommandLine("-hashing", CommandType.OPTION, Help = "use -hashing")]
+        public bool Hashing;
         [CommandLine("-xxx", CommandType.OPTION, Help = "?")]
         public bool XXX;
     }
@@ -82,6 +85,10 @@ namespace Koromo_Copy.Console
             else if (option.Expun != null)
             {
                 ProcessExpun(option.Expun);
+            }
+            else if (option.Hashing)
+            {
+                ProcessHashing();
             }
             else if (option.XXX)
             {
@@ -153,11 +160,12 @@ namespace Koromo_Copy.Console
             {
                 try
                 {
-                    var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&f_search=language%3Akorean&f_apply=Apply+Filter&inline_set=dm_l";
-                    var url2 = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&advsearch=1&f_search=language%3Akorean&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&f_apply=Apply+Filter";
+                    var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&&f_cats=0&f_search=lang:korean&f_sname=on&f_stags=on&f_sh=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&inline_set=dm_e";
+                    //var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&f_search=language%3Akorean&f_apply=Apply+Filter&inline_set=dm_e";
+                    //var url2 = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&advsearch=1&f_search=language%3Akorean&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&f_apply=Apply+Filter";
                     //           https://exhentai.org/?page=1&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sh=on&f_apply=Apply+Filter
-                    var html = NetCommon.DownloadExHentaiString(url2);
-                    result.AddRange(ExHentaiParser.ParseResultPageListView(html));
+                    var html = NetCommon.DownloadExHentaiString(url);
+                    result.AddRange(ExHentaiParser.ParseResultPageExtendedListView(html));
                     Monitor.Instance.Push($"[Paging] {i+1}/1457");
                 }
                 catch (Exception e)
@@ -172,6 +180,37 @@ namespace Koromo_Copy.Console
             {
                 fs.Write(json);
             }
+        }
+
+        static void ProcessHashing()
+        {
+            var result = new List<string>();
+
+            for (int i = 2955; i < 13000; i++)
+            {
+                try
+                {
+                    var url = $"https://exhentai.org/?page={i}&f_sname=on&f_stags=on&f_sh=on&advsearch=1";
+                    var html = NetCommon.DownloadExHentaiString(url);
+
+                    var regex = new Regex(@"https://exhentai.org/g/\d+/\w+/");
+                    var match = regex.Matches(html);
+
+                    foreach (var m in match)
+                    {
+                        result.Add(((Match)m).Value);
+                        Console.Instance.WriteLine(((Match)m).Value);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Instance.WriteErrorLine($"[Error] {i} {e.Message}");
+                }
+            }
+
+            var builder = new StringBuilder();
+            result.ForEach(x => builder.Append(x + "\r\n"));
+            File.WriteAllText("rr.txt", builder.ToString());
         }
 
         /// <summary>
