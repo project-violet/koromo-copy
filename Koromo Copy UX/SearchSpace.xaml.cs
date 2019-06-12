@@ -238,7 +238,7 @@ namespace Koromo_Copy_UX
                 if (start_element != 0 && start_element <= result.Count) result.RemoveRange(0, start_element);
                 if (count_element != 0 && count_element < result.Count) result.RemoveRange(count_element, result.Count - count_element);
                 
-                SearchCount.Text = $"{FindResource("searched")}: {result.Count.ToString("#,#")}{(FindResource("count_postfix"))}";
+                SearchCount.Text = $"{FindResource("searched")}: {(result.Count != 0 ? result.Count.ToString("#,#") : "0")}{(FindResource("count_postfix"))}";
                 _ = Task.Run(() => LoadThumbnail(result));
             }
             catch
