@@ -209,35 +209,44 @@ namespace Koromo_Copy_UX
                 Application.Current.Dispatcher.BeginInvoke(new Action(
                 delegate
                 {
-                    if (ha.IsUnstable && ha.UnstableModel.ArticleType == HArticleType.EXHentai)
+                    try
                     {
-                        var image = NetCommon.GetExHentaiClient().DownloadData(new Uri(ha.UnstableModel.Thumbnail));
-                        using (var ms = new System.IO.MemoryStream(image))
+                        if (ha.IsUnstable && ha.UnstableModel.ArticleType == HArticleType.EXHentai)
+                        {
+                            var image = NetCommon.GetExHentaiClient().DownloadData(new Uri(ha.UnstableModel.Thumbnail));
+                            using (var ms = new System.IO.MemoryStream(image))
+                            {
+                                BitmapImage.BeginInit();
+                                if (Settings.Instance.Model.LowQualityImage)
+                                    BitmapImage.DecodePixelWidth = 100;
+                                BitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                                BitmapImage.StreamSource = ms;
+                                BitmapImage.EndInit();
+                            }
+                        }
+                        else
                         {
                             BitmapImage.BeginInit();
+                            BitmapImage.UriSource = new Uri(ha.Thumbnail);
                             if (Settings.Instance.Model.LowQualityImage)
                                 BitmapImage.DecodePixelWidth = 100;
-                            BitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                            BitmapImage.StreamSource = ms;
                             BitmapImage.EndInit();
+                            BitmapImage.DownloadCompleted += B_DownloadCompleted;
                         }
+                        if (!ha.IsUnstable)
+                            Page.Text = ha.ImagesLink.Count + " Pages";
+                        else
+                            Page.Text = ha.UnstableModel.Length + " Pages";
+                        Image.Source = BitmapImage;
+                        Image.Stretch = Stretch.Uniform;
+                        Image.Width = BitmapImage.Width * 200 / BitmapImage.Height;
                     }
-                    else
+                    catch (Exception e)
                     {
-                        BitmapImage.BeginInit();
-                        BitmapImage.UriSource = new Uri(ha.Thumbnail);
-                        if (Settings.Instance.Model.LowQualityImage)
-                            BitmapImage.DecodePixelWidth = 100;
-                        BitmapImage.EndInit();
-                        BitmapImage.DownloadCompleted += B_DownloadCompleted;
+                        Monitor.Instance.Push($"[Search Elements] isunstable={ha.IsUnstable} article_type={ha.UnstableModel}" + 
+                            $" thumbnail={(ha.UnstableModel.Thumbnail != null ? ha.UnstableModel.Thumbnail : ha.Thumbnail)}" +
+                            $"\r\n{e.Message}\r\n{e.StackTrace}");
                     }
-                    if (!ha.IsUnstable)
-                        Page.Text = ha.ImagesLink.Count + " Pages";
-                    else
-                        Page.Text = ha.UnstableModel.Length + " Pages";
-                    Image.Source = BitmapImage;
-                    Image.Stretch = Stretch.Uniform;
-                    Image.Width = BitmapImage.Width * 200 / BitmapImage.Height;
                 }));
             });
         }
