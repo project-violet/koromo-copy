@@ -11,6 +11,7 @@ using Koromo_Copy.Interface;
 using Koromo_Copy_UX.Controls;
 using Koromo_Copy_UX.Utility;
 using Koromo_Copy_UX.Utility.ZipArtists;
+using SkyrimGallery;
 using System.Windows;
 
 namespace Koromo_Copy_UX.Domain
@@ -240,6 +241,16 @@ namespace Koromo_Copy_UX.Domain
                     {
                         DCTools dct = new DCTools();
                         dct.Show();
+                    }));
+                    break;
+
+                case "gex":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        GalleryExplorer ge = new GalleryExplorer();
+                        ge.Show();
                     }));
                     break;
 
