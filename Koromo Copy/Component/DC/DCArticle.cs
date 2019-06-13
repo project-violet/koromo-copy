@@ -31,6 +31,7 @@ namespace Koromo_Copy.Component.DC
     public class DCPageArticle
     {
         public string no;
+        public string classify;
         public string type;
         public string title;
         public string replay_num;

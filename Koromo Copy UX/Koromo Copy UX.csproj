@@ -221,6 +221,12 @@
     <Compile Include="Utility\ForbiddenTester.xaml.cs">
       <DependentUpon>ForbiddenTester.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\GalleryExplorer\AutoCompleteBase2.cs" />
+    <Compile Include="Utility\GalleryExplorer\GalleryDataGridViewModel.cs" />
+    <Compile Include="Utility\GalleryExplorer\GalleryExplorer.xaml.cs">
+      <DependentUpon>GalleryExplorer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\GalleryExplorer\SkyrimGalleryAnalyzer.cs" />
     <Compile Include="Utility\RankSimulator.xaml.cs">
       <DependentUpon>RankSimulator.xaml</DependentUpon>
     </Compile>
@@ -601,6 +607,10 @@
     <Page Include="Utility\ForbiddenTester.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\GalleryExplorer\GalleryExplorer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Utility\MangaCrawler.xaml">
       <SubType>Designer</SubType>
