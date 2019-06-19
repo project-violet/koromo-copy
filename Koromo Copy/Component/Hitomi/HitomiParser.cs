@@ -48,6 +48,62 @@ namespace Koromo_Copy.Component.Hitomi
         }
 
         /// <summary>
+        /// 갤러리를 파싱합니다.
+        /// 그룹/시리즈만 파싱함
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        static public HitomiArticle ParseGallery(string source)
+        {
+            HitomiArticle article = new HitomiArticle();
+
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(source);
+            HtmlNode nodes = document.DocumentNode.SelectSingleNode("/div[@class='gallery-info']/table/tbody");
+            //HtmlNode nodes = document.DocumentNode.SelectSingleNode("/div[@class='content']");
+
+            //article.Magic = nodes.SelectSingleNode("./div[3]/h1/a").GetAttributeValue("href", "").Split('/')[1].Split('.')[0];
+            //article.Title = nodes.SelectSingleNode("./div[3]/h1").InnerText.Trim();
+            //article.Thumbnail = nodes.SelectSingleNode("./div[2]/div/a/img").GetAttributeValue("src", "");
+            //article.Artists = nodes.SelectSingleNode(".")
+            
+            foreach (var tr in nodes.SelectNodes("./tr").ToList())
+            {
+                var tt = tr.SelectSingleNode("./td").InnerText.ToLower().Trim();
+                if (tt == "group")
+                {
+                    article.Groups = tr.SelectNodes(".//a").Select(x => x.InnerText.Trim()).ToArray();
+                }
+                else if (tt == "characters")
+                {
+                    article.Characters = tr.SelectNodes(".//a").Select(x => x.InnerText.Trim()).ToArray();
+                }
+            }
+
+            return article;
+        }
+
+        static public void FillGallery(string source, HitomiArticle article)
+        {
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(source);
+            HtmlNode nodes = document.DocumentNode.SelectSingleNode("/div[@class='gallery-info']/table/tbody");
+
+            foreach (var tr in nodes.SelectNodes("./tr").ToList())
+            {
+                var tt = tr.SelectSingleNode("./td").InnerText.ToLower().Trim();
+                if (tt == "group")
+                {
+                    article.Groups = tr.SelectNodes(".//a").Select(x => x.InnerText.Trim()).ToArray();
+                }
+                else if (tt == "characters")
+                {
+                    article.Characters = tr.SelectNodes(".//a").Select(x => x.InnerText.Trim()).ToArray();
+                }
+            }
+        }
+
+        /// <summary>
         /// 이미지 링크를 파싱합니다.
         /// </summary>
         /// <param name="json"></param>
