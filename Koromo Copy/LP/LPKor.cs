@@ -120,7 +120,7 @@ namespace Koromo_Copy.LP
                 else if (hhh.Length - 1 != i)
                 {
                     if (IndexHangulMedialDu2.Contains(hhh[i + 1]))
-                        jksaveput((hhh[i] + hhh[i + 1]).ToString(), IndexHangulMedialCh2, ref medial, ref i);
+                        jksaveput(new string(new[] { hhh[i], hhh[i + 1] }), IndexHangulMedialCh2, ref medial, ref i);
                 }
                 if (hhh.Length - 1 == i)
                 {
@@ -155,7 +155,7 @@ namespace Koromo_Copy.LP
                 if (hhh.Length - 1 >= i + 1 && !stop_force)
                 {
                     if (IndexHangulFinalDu2.Contains(hhh[i + 1]))
-                        jksaveput((hhh[i] + hhh[i + 1]).ToString(), IndexHangulFinalCh2, ref final, ref i);
+                        jksaveput(new string(new[] { hhh[i], hhh[i + 1] }), IndexHangulFinalCh2, ref final, ref i);
                 }
                 retstr += hangul_comination(initial, medial, final);
             }
@@ -212,7 +212,7 @@ namespace Koromo_Copy.LP
                 else if (hhh.Length - 1 != i)
                 {
                     if (IndexHangulInitialDu3.Contains(hhh[i + 1]))
-                        jksaveput((hhh[i] + hhh[i + 1]).ToString(), IndexHangulInitialCh3, ref initial, ref i);
+                        jksaveput(new string(new[] { hhh[i], hhh[i + 1] }), IndexHangulInitialCh3, ref initial, ref i);
                 }
                 i += 1;
                 
@@ -247,7 +247,7 @@ namespace Koromo_Copy.LP
                 else if (hhh.Length - 1 != i)
                 {
                     if (IndexHangulMedialDu3.Contains(hhh[i + 1]))
-                        jksaveput((ntx + hhh[i + 1]).ToString(), IndexHangulMedialCh3, ref medial, ref i);
+                        jksaveput(new string(new[] { hhh[i], hhh[i + 1] }), IndexHangulMedialCh3, ref medial, ref i);
                 }
                 if (hhh.Length - 1 == i)
                 {
@@ -286,7 +286,7 @@ namespace Koromo_Copy.LP
                 if (hhh.Length - 1 >= i + 1 && !stop_force)
                 {
                     if (IndexHangulFinalDu3.Contains(hhh[i + 1]))
-                        jksaveput((hhh[i] + hhh[i + 1]).ToString(), IndexHangulFinalCh3, ref final, ref i);
+                        jksaveput(new string(new[] { hhh[i], hhh[i + 1] }), IndexHangulFinalCh3, ref final, ref i);
                 }
                 retstr += hangul_comination(initial, medial, final);
             }
