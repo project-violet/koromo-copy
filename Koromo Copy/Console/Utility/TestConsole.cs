@@ -12,6 +12,7 @@ using Koromo_Copy.Component.Hiyobi;
 using Koromo_Copy.Component.Mangashow;
 using Koromo_Copy.Html;
 using Koromo_Copy.Interface;
+using Koromo_Copy.LP;
 using Koromo_Copy.Script;
 using Koromo_Copy.Utility.Develop;
 using System;
@@ -144,6 +145,18 @@ namespace Koromo_Copy.Console.Utility
                     HtmlLocalServer.Instance.Start();
                     break;
 
+                case "lpkor":
+                    var x = "진화론의 시야에서 벗어난 생물학은 아무 의미가 없다.";
+                    var xl = string.Join("", x.Select(y => LPKor.IsHangul(y) ? LPKor.Disassembly(y) : y.ToString()));
+                    Console.Instance.WriteLine(xl);
+                    var xr = LPKor.Assembly(xl);
+                    Console.Instance.WriteLine(xr);
+
+                    xl = string.Join("", x.Select(y => LPKor.IsHangul3(y) ? LPKor.Disassembly3(y) : y.ToString()));
+                    Console.Instance.WriteLine(xl);
+                    xr = LPKor.Assembly3(xl);
+                    Console.Instance.WriteLine(xr);
+                    break;
             }
         }
     }
