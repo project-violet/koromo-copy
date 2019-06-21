@@ -14,7 +14,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
 {
     public class HitomiAnalysisGallery
     {
-        public List<KeyValuePair<int, Tuple<double, HitomiMetadata>>> gallery_data;
+        public List<KeyValuePair<int, Tuple<double, HitomiIndexMetadata>>> gallery_data;
         public HitomiAnalysisGallery()
         {
             Dictionary<string, int> tag_rank = new Dictionary<string, int>();
@@ -26,19 +26,19 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
                     tag_rank.Add(legalize, 1);
             }
 
-            Dictionary<int, Tuple<double, HitomiMetadata>> datas = new Dictionary<int, Tuple<double, HitomiMetadata>>();
+            Dictionary<int, Tuple<double, HitomiIndexMetadata>> datas = new Dictionary<int, Tuple<double, HitomiIndexMetadata>>();
             double total_score = 0.0;
-            int count_metadata = HitomiData.Instance.metadata_collection.Count;
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
+            int count_metadata = HitomiIndex.Instance.metadata_collection.Count;
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
             {
                 double score = 0.0;
                 if (metadata.Tags != null)
                 {
-                    score = metadata.Tags.Where(tag => tag_rank.ContainsKey(tag)).Aggregate(score, (current, tag) => current + tag_rank[tag]);
+                    score = metadata.Tags.Where(tag => tag_rank.ContainsKey(HitomiIndex.Instance.index.Tags[tag])).Aggregate(score, (current, tag) => current + tag_rank[HitomiIndex.Instance.index.Tags[tag]]);
                     score /= metadata.Tags.Length;
                 }
                 total_score += score;
-                datas.Add(metadata.ID, new Tuple<double, HitomiMetadata>(score, metadata));
+                datas.Add(metadata.ID, new Tuple<double, HitomiIndexMetadata>(score, metadata));
             }
 
             gallery_data = datas.ToList();

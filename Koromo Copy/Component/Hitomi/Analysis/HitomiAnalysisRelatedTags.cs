@@ -35,12 +35,13 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
 
             bool IFM = IncludeFemaleMaleOnly;
 
-            foreach (var data in HitomiData.Instance.metadata_collection)
+            foreach (var data in HitomiIndex.Instance.metadata_collection)
             {
                 if (data.Tags != null)
                 {
-                    foreach (var tag in data.Tags)
+                    foreach (var _tag in data.Tags)
                     {
+                        var tag = HitomiIndex.Instance.index.Tags[_tag];
                         if (IFM && !tag.StartsWith("female:") && !tag.StartsWith("male:")) continue;
                         if (tags_dic.ContainsKey(tag))
                             tags_dic[tag].Add(data.ID);

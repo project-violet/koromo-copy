@@ -75,7 +75,7 @@ namespace Koromo_Copy_UX
                 if (IsMetadataLoaded || StartsLoading) return;
                 StartsLoading = true;
                 Profiler.Push("Check metadata exists");
-                if (!HitomiData.Instance.CheckMetadataExist() || Settings.Instance.Hitomi.AutoSync)
+                if (!HitomiIndex.Instance.CheckMetadataExist() || Settings.Instance.Hitomi.AutoSync)
                 {
 //#if !DEBUG
 //                    Koromo_Copy.Monitor.Instance.ControlEnable = true;
@@ -85,11 +85,9 @@ namespace Koromo_Copy_UX
                     Profiler.Push("Start download metadata");
                     MainWindow.Instance.Fade_MiddlePopup(true, (string)FindResource("msg_download_metadata"));
 #if true
-                    HitomiData.Instance.MetadataDownloadStatusEvent = UpdateDownloadText;
-                    await HitomiData.Instance.DownloadMetadata();
+                    //HitomiIndex.Instance.MetadataDownloadStatusEvent = UpdateDownloadText;
+                    await HitomiIndex.Instance.DownloadMetadata();
 #endif
-                    MainWindow.Instance.ModifyText_MiddlePopup((string)FindResource("msg_download_hiddendata"));
-                    await HitomiData.Instance.DownloadHiddendata();
                     MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_download_data_complete"), false);
                     Koromo_Copy.Monitor.Instance.ControlEnable = false;
                 }
@@ -109,16 +107,16 @@ namespace Koromo_Copy_UX
                     }
                 }
                 Profiler.Push("Rebuild tag data");
-                HitomiData.Instance.RebuildTagData();
-                //HitomiIndex.Instance.RebuildTagData();
-                if (HitomiData.Instance.metadata_collection != null)
+                //HitomiData.Instance.RebuildTagData();
+                HitomiIndex.Instance.RebuildTagData();
+                if (HitomiIndex.Instance.metadata_collection != null)
                 {
-                    Koromo_Copy.Monitor.Instance.Push($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+                    Koromo_Copy.Monitor.Instance.Push($"Loaded metadata: '{HitomiIndex.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
 
                     if (Settings.Instance.Hitomi.UsingOptimization)
                     {
-                        HitomiData.Instance.OptimizeMetadata();
-                        Koromo_Copy.Monitor.Instance.Push($"Optimize metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+                        //HitomiIndex.Instance.OptimizeMetadata();
+                        Koromo_Copy.Monitor.Instance.Push($"Optimize metadata: '{HitomiIndex.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
                     }
                 }
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
@@ -194,7 +192,7 @@ namespace Koromo_Copy_UX
 
             try
             {
-                List<HitomiMetadata> result;
+                List<HitomiIndexMetadata> result;
 
                 int start_element = 0;
                 int count_element = 0;
@@ -249,7 +247,7 @@ namespace Koromo_Copy_UX
             }
         }
 
-        private void LoadThumbnail(List<HitomiMetadata> md)
+        private void LoadThumbnail(List<HitomiIndexMetadata> md)
         {
             List<Task> task = new List<Task>();
             foreach (var metadata in md)
@@ -259,7 +257,7 @@ namespace Koromo_Copy_UX
             }
         }
 
-        private void LoadThumbnail(HitomiMetadata md)
+        private void LoadThumbnail(HitomiIndexMetadata md)
         {
             Application.Current.Dispatcher.Invoke(new Action(
             delegate

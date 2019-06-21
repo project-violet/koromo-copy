@@ -28,22 +28,22 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
         
         public List<HitomiAnalysisTrendElement> samples = new List<HitomiAnalysisTrendElement>();
 
-        List<KeyValuePair<int, List<HitomiMetadata>>> datas;
+        List<KeyValuePair<int, List<HitomiIndexMetadata>>> datas;
 
         public HitomiAnalysisTrend()
         {
-            Dictionary<int, List<HitomiMetadata>> sorted_gallery_number = new Dictionary<int, List<HitomiMetadata>>();
+            Dictionary<int, List<HitomiIndexMetadata>> sorted_gallery_number = new Dictionary<int, List<HitomiIndexMetadata>>();
 
             int max_id = 0;
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
                 if (max_id < metadata.ID)
                     max_id = metadata.ID;
             
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
                 if (sorted_gallery_number.ContainsKey(max_id-(max_id-metadata.ID) / interval * interval))
                     sorted_gallery_number[max_id - (max_id - metadata.ID) / interval * interval].Add(metadata);
                 else
-                    sorted_gallery_number.Add(max_id - (max_id - metadata.ID) / interval * interval, new List<HitomiMetadata>() { metadata });
+                    sorted_gallery_number.Add(max_id - (max_id - metadata.ID) / interval * interval, new List<HitomiIndexMetadata>() { metadata });
 
             datas = sorted_gallery_number.ToList();
             datas.Sort((p1, p2) => p1.Key.CompareTo(p2.Key));
@@ -90,19 +90,22 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> tag_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
                 if (metadata.Tags != null)
-                    foreach (var tag in metadata.Tags.Where(tag => !tag_list.ContainsKey(tag)))
-                        tag_list.Add(tag, new Dictionary<int, int>());
+                    foreach (var tag in metadata.Tags.Where(tag => !tag_list.ContainsKey(HitomiIndex.Instance.index.Tags[tag])))
+                        tag_list.Add(HitomiIndex.Instance.index.Tags[tag], new Dictionary<int, int>());
 
             foreach (var data in datas)
                 foreach (var metadata in data.Value)
                     if (metadata.Tags != null)
-                        foreach (var tag in metadata.Tags)
+                        foreach (var _tag in metadata.Tags)
+                        {
+                            var tag = HitomiIndex.Instance.index.Tags[_tag];
                             if (tag_list[tag].ContainsKey(data.Key))
                                 tag_list[tag][data.Key] += 1;
                             else
                                 tag_list[tag].Add(data.Key, 1);
+                        }
             
             foreach (var tag in tag_list)
             {
@@ -128,20 +131,31 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> tag_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Tags != null)
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Tags != null)
                     foreach (var tag in metadata.Tags)
-                        if (!tag_list.ContainsKey(tag))
-                            tag_list.Add(tag, new Dictionary<int, int>());
+                        if (!tag_list.ContainsKey(HitomiIndex.Instance.index.Tags[tag]))
+                            tag_list.Add(HitomiIndex.Instance.index.Tags[tag], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 foreach (var metadata in data.Value)
-                    if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Tags != null)
-                        foreach (var tag in metadata.Tags)
+                {
+                    var lang = "n/a";
+                    if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                    if (lang == Settings.Instance.Hitomi.Language && metadata.Tags != null)
+                        foreach (var _tag in metadata.Tags)
+                        {
+                            var tag = HitomiIndex.Instance.index.Tags[_tag];
                             if (tag_list[tag].ContainsKey(data.Key))
                                 tag_list[tag][data.Key] += 1;
                             else
                                 tag_list[tag].Add(data.Key, 1);
+                        }
+                }
 
             foreach (var tag in tag_list)
             {
@@ -167,21 +181,32 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> tag_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Tags != null)
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Tags != null)
                     foreach (var tag in metadata.Tags)
-                        if (!tag_list.ContainsKey(tag))
-                            tag_list.Add(tag, new Dictionary<int, int>());
+                        if (!tag_list.ContainsKey(HitomiIndex.Instance.index.Tags[tag]))
+                            tag_list.Add(HitomiIndex.Instance.index.Tags[tag], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 if (data.Key > 1125000)
-                foreach (var metadata in data.Value)
-                    if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Tags != null)
-                        foreach (var tag in metadata.Tags)
-                            if (tag_list[tag].ContainsKey(data.Key))
-                                tag_list[tag][data.Key] += 1;
-                            else
-                                tag_list[tag].Add(data.Key, 1);
+                    foreach (var metadata in data.Value)
+                    {
+                        var lang = "n/a";
+                        if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                        if (lang == Settings.Instance.Hitomi.Language && metadata.Tags != null)
+                            foreach (var _tag in metadata.Tags)
+                            {
+                                var tag = HitomiIndex.Instance.index.Tags[_tag];
+                                if (tag_list[tag].ContainsKey(data.Key))
+                                    tag_list[tag][data.Key] += 1;
+                                else
+                                    tag_list[tag].Add(data.Key, 1);
+                            }
+                    }
 
             foreach (var tag in tag_list)
             {
@@ -216,24 +241,27 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
         #endregion
 
         #region Artists
-        public void UpdateArtistsIncremetns(bool specifictag = false, string tag = "")
+        public void UpdateArtistsIncremetns(bool specifictag = false, int tag = -1)
         {
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> artist_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
                 if (metadata.Artists != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                    foreach (var artist in metadata.Artists.Where(artist => !artist_list.ContainsKey(artist)))
-                        artist_list.Add(artist, new Dictionary<int, int>());
+                    foreach (var artist in metadata.Artists.Where(artist => !artist_list.ContainsKey(HitomiIndex.Instance.index.Artists[artist])))
+                        artist_list.Add(HitomiIndex.Instance.index.Artists[artist], new Dictionary<int, int>());
 
             foreach (var data in datas)
                 foreach (var metadata in data.Value)
                     if (metadata.Artists != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                        foreach (var artist in metadata.Artists)
+                        foreach (var _artist in metadata.Artists)
+                        {
+                            var artist = HitomiIndex.Instance.index.Artists[_artist];
                             if (artist_list[artist].ContainsKey(data.Key))
                                 artist_list[artist][data.Key] += 1;
                             else
                                 artist_list[artist].Add(data.Key, 1);
+                        }
 
             foreach (var artist in artist_list)
             {
@@ -254,24 +282,35 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
         }
 
-        public void UpdateArtistsKoreanIncremetns(bool specifictag = false, string tag = "")
+        public void UpdateArtistsKoreanIncremetns(bool specifictag = false, int tag = -1)
         {
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> artist_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Artists != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                    foreach (var artist in metadata.Artists.Where(artist => !artist_list.ContainsKey(artist)))
-                        artist_list.Add(artist, new Dictionary<int, int>());
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Artists != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
+                    foreach (var artist in metadata.Artists.Where(artist => !artist_list.ContainsKey(HitomiIndex.Instance.index.Artists[artist])))
+                        artist_list.Add(HitomiIndex.Instance.index.Artists[artist], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 foreach (var metadata in data.Value)
-                    if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Artists != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                        foreach (var artist in metadata.Artists)
+                {
+                    var lang = "n/a";
+                    if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                    if (lang == Settings.Instance.Hitomi.Language && metadata.Artists != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
+                        foreach (var _artist in metadata.Artists)
+                        {
+                            var artist = HitomiIndex.Instance.index.Artists[_artist];
                             if (artist_list[artist].ContainsKey(data.Key))
                                 artist_list[artist][data.Key] += 1;
                             else
                                 artist_list[artist].Add(data.Key, 1);
+                        }
+                }
 
             foreach (var artist in artist_list)
             {
@@ -297,20 +336,31 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> artist_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Artists != null)
-                    foreach (var artist in metadata.Artists.Where(artist => !artist_list.ContainsKey(artist)))
-                        artist_list.Add(artist, new Dictionary<int, int>());
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Artists != null)
+                    foreach (var artist in metadata.Artists.Where(artist => !artist_list.ContainsKey(HitomiIndex.Instance.index.Artists[artist])))
+                        artist_list.Add(HitomiIndex.Instance.index.Artists[artist], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 if (data.Key > 1125000)
                     foreach (var metadata in data.Value)
-                        if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Artists != null)
-                            foreach (var artist in metadata.Artists)
+                    {
+                        var lang = "n/a";
+                        if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                        if (lang == Settings.Instance.Hitomi.Language && metadata.Artists != null)
+                            foreach (var _artist in metadata.Artists)
+                            {
+                                var artist = HitomiIndex.Instance.index.Artists[_artist];
                                 if (artist_list[artist].ContainsKey(data.Key))
                                     artist_list[artist][data.Key] += 1;
                                 else
                                     artist_list[artist].Add(data.Key, 1);
+                            }
+                    }
 
             foreach (var artist in artist_list)
             {
@@ -344,25 +394,36 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
         #endregion
 
         #region Group
-        public void UpdateGroupsKoreanIncremetns(bool specifictag = false, string tag = "")
+        public void UpdateGroupsKoreanIncremetns(bool specifictag = false, int tag = -1)
         {
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> group_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Groups != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Groups != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
                     foreach (var group in metadata.Groups)
-                        if (!group_list.ContainsKey(group))
-                            group_list.Add(group, new Dictionary<int, int>());
+                        if (!group_list.ContainsKey(HitomiIndex.Instance.index.Groups[group]))
+                            group_list.Add(HitomiIndex.Instance.index.Groups[group], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 foreach (var metadata in data.Value)
-                    if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Groups != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                        foreach (var group in metadata.Groups)
+                {
+                    var lang = "n/a";
+                    if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                    if (lang == Settings.Instance.Hitomi.Language && metadata.Groups != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
+                        foreach (var _group in metadata.Groups)
+                        {
+                            var group = HitomiIndex.Instance.index.Groups[_group];
                             if (group_list[group].ContainsKey(data.Key))
                                 group_list[group][data.Key] += 1;
                             else
                                 group_list[group].Add(data.Key, 1);
+                        }
+                }
 
             foreach (var group in group_list)
             {
@@ -388,21 +449,32 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> group_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Groups != null)
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Groups != null)
                     foreach (var group in metadata.Groups)
-                        if (!group_list.ContainsKey(group))
-                            group_list.Add(group, new Dictionary<int, int>());
+                        if (!group_list.ContainsKey(HitomiIndex.Instance.index.Groups[group]))
+                            group_list.Add(HitomiIndex.Instance.index.Groups[group], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 if (data.Key > 1125000)
                     foreach (var metadata in data.Value)
-                        if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Groups != null)
-                            foreach (var group in metadata.Groups)
+                    {
+                        var lang = "n/a";
+                        if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                        if (lang == Settings.Instance.Hitomi.Language && metadata.Groups != null)
+                            foreach (var _group in metadata.Groups)
+                            {
+                                var group = HitomiIndex.Instance.index.Groups[_group];
                                 if (group_list[group].ContainsKey(data.Key))
                                     group_list[group][data.Key] += 1;
                                 else
                                     group_list[group].Add(data.Key, 1);
+                            }
+                    }
 
             foreach (var group in group_list)
             {
@@ -436,24 +508,35 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
         #endregion
 
         #region Series
-        public void UpdateSeriesKoreanIncremetns(bool specifictag = false, string tag = "")
+        public void UpdateSeriesKoreanIncremetns(bool specifictag = false, int tag = -1)
         {
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> series_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Parodies != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                    foreach (var series in metadata.Parodies.Where(series => !series_list.ContainsKey(series)))
-                        series_list.Add(series, new Dictionary<int, int>());
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Parodies != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
+                    foreach (var series in metadata.Parodies.Where(series => !series_list.ContainsKey(HitomiIndex.Instance.index.Series[series])))
+                        series_list.Add(HitomiIndex.Instance.index.Series[series], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 foreach (var metadata in data.Value)
-                    if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Parodies != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                        foreach (var series in metadata.Parodies)
+                {
+                    var lang = "n/a";
+                    if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                    if (lang == Settings.Instance.Hitomi.Language && metadata.Parodies != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
+                        foreach (var _series in metadata.Parodies)
+                        {
+                            var series = HitomiIndex.Instance.index.Series[_series];
                             if (series_list[series].ContainsKey(data.Key))
                                 series_list[series][data.Key] += 1;
                             else
                                 series_list[series].Add(data.Key, 1);
+                        }
+                }
 
             foreach (var series in series_list)
             {
@@ -479,20 +562,31 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> series_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Parodies != null)
-                    foreach (var series in metadata.Parodies.Where(series => !series_list.ContainsKey(series)))
-                        series_list.Add(series, new Dictionary<int, int>());
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Parodies != null)
+                    foreach (var series in metadata.Parodies.Where(series => !series_list.ContainsKey(HitomiIndex.Instance.index.Series[series])))
+                        series_list.Add(HitomiIndex.Instance.index.Series[series], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 if (data.Key > 1125000)
                     foreach (var metadata in data.Value)
-                        if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Parodies != null)
-                            foreach (var series in metadata.Parodies)
+                    {
+                        var lang = "n/a";
+                        if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                        if (lang == Settings.Instance.Hitomi.Language && metadata.Parodies != null)
+                            foreach (var _series in metadata.Parodies)
+                            {
+                                var series = HitomiIndex.Instance.index.Characters[_series];
                                 if (series_list[series].ContainsKey(data.Key))
                                     series_list[series][data.Key] += 1;
                                 else
                                     series_list[series].Add(data.Key, 1);
+                            }
+                    }
 
             foreach (var series in series_list)
             {
@@ -526,24 +620,35 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
         #endregion
 
         #region Characters
-        public void UpdateCharactersKoreanIncremetns(bool specifictag = false, string tag = "")
+        public void UpdateCharactersKoreanIncremetns(bool specifictag = false, int tag = -1)
         {
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> character_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Characters != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                    foreach (var character in metadata.Characters.Where(character => !character_list.ContainsKey(character)))
-                        character_list.Add(character, new Dictionary<int, int>());
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Characters != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
+                    foreach (var character in metadata.Characters.Where(character => !character_list.ContainsKey(HitomiIndex.Instance.index.Characters[character])))
+                        character_list.Add(HitomiIndex.Instance.index.Characters[character], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 foreach (var metadata in data.Value)
-                    if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Characters != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
-                        foreach (var character in metadata.Characters)
+                {
+                    var lang = "n/a";
+                    if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                    if (lang == Settings.Instance.Hitomi.Language && metadata.Characters != null && (!specifictag || (metadata.Tags != null && metadata.Tags.Contains(tag))))
+                        foreach (var _character in metadata.Characters)
+                        {
+                            var character = HitomiIndex.Instance.index.Characters[_character];
                             if (character_list[character].ContainsKey(data.Key))
                                 character_list[character][data.Key] += 1;
                             else
                                 character_list[character].Add(data.Key, 1);
+                        }
+                }
 
             foreach (var character in character_list)
             {
@@ -569,20 +674,31 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             samples.Clear();
 
             Dictionary<string, Dictionary<int, int>> character_list = new Dictionary<string, Dictionary<int, int>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
-                if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Characters != null)
-                    foreach (var series in metadata.Characters.Where(series => !character_list.ContainsKey(series)))
-                        character_list.Add(series, new Dictionary<int, int>());
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
+            {
+                var lang = "n/a";
+                if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                if (lang == Settings.Instance.Hitomi.Language && metadata.Characters != null)
+                    foreach (var series in metadata.Characters.Where(series => !character_list.ContainsKey(HitomiIndex.Instance.index.Characters[series])))
+                        character_list.Add(HitomiIndex.Instance.index.Characters[series], new Dictionary<int, int>());
+            }
 
             foreach (var data in datas)
                 if (data.Key > 1125000)
                     foreach (var metadata in data.Value)
-                        if (metadata.Language == Settings.Instance.Hitomi.Language && metadata.Characters != null)
-                            foreach (var series in metadata.Characters)
+                    {
+                        var lang = "n/a";
+                        if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
+                        if (lang == Settings.Instance.Hitomi.Language && metadata.Characters != null)
+                            foreach (var _series in metadata.Characters)
+                            {
+                                var series = HitomiIndex.Instance.index.Characters[_series];
                                 if (character_list[series].ContainsKey(data.Key))
                                     character_list[series][data.Key] += 1;
                                 else
                                     character_list[series].Add(data.Key, 1);
+                            }
+                    }
 
             foreach (var series in character_list)
             {

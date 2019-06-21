@@ -13,7 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -30,7 +33,7 @@ namespace Koromo_Copy.Component.Hitomi
         public string[] Tags;
     }
 
-    public class HitomiIndexMetadata
+    public struct HitomiIndexMetadata
     {
         [JsonProperty(PropertyName = "a")]
         public int[] Artists { get; set; }
@@ -50,6 +53,12 @@ namespace Koromo_Copy.Component.Hitomi
         public int Type { get; set; }
         [JsonProperty(PropertyName = "id")]
         public int ID { get; set; }
+    }
+
+    public class HitomiIndexDataModel
+    {
+        public HitomiIndexModel index;
+        public List<HitomiIndexMetadata> metadata;
     }
 
     public class HitomiIndex : ILazy<HitomiIndex>
@@ -107,16 +116,16 @@ namespace Koromo_Copy.Component.Hitomi
             index.Types = pp(types);
             index.Tags = pp(tags);
 
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
+            //JsonSerializer serializer = new JsonSerializer();
+            //serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            //serializer.NullValueHandling = NullValueHandling.Ignore;
 
-            Monitor.Instance.Push("Write file: index.json");
-            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index.json")))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, index);
-            }
+            //Monitor.Instance.Push("Write file: index.json");
+            //using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index.json")))
+            //using (JsonWriter writer = new JsonTextWriter(sw))
+            //{
+            //    serializer.Serialize(writer, index);
+            //}
 
             var mdl = new List<HitomiIndexMetadata>();
 
@@ -135,24 +144,70 @@ namespace Koromo_Copy.Component.Hitomi
                 mdl.Add(him);
             }
 
+            //Monitor.Instance.Push("Write file: index-metadata.json");
+            //using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")))
+            //using (JsonWriter writer = new JsonTextWriter(sw))
+            //{
+            //    serializer.Serialize(writer, mdl);
+            //}
+
+            var result = new HitomiIndexDataModel();
+            result.index = index;
+            result.metadata = mdl;
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
             Monitor.Instance.Push("Write file: index-metadata.json");
             using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
-                serializer.Serialize(writer, mdl);
+                serializer.Serialize(writer, result);
             }
         }
 
+        public async Task DownloadMetadata()
+        {
+            Monitor.Instance.Push("Download Metadata...");
+            ServicePointManager.DefaultConnectionLimit = 999999999;
+            metadata_collection = new List<HitomiIndexMetadata>();
+
+            HttpClient client = new HttpClient();
+            client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
+            var zip = await client.GetByteArrayAsync("https://raw.githubusercontent.com/dc-koromo/e-archive/master/index-metadata.compress");
+            var data = zip.Unzip();
+            lock (metadata_collection)
+                metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiIndexMetadata>>(data));
+            Monitor.Instance.Push($"Download complete: [1/1] 1");
+            SortMetadata();
+            if (!Settings.Instance.Hitomi.AutoSync)
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+
+                Monitor.Instance.Push("Write file: index-metadata.json");
+                using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, metadata_collection);
+                }
+            }
+        }
+        
         public HitomiTagdataCollection tagdata_collection = new HitomiTagdataCollection();
         public List<HitomiIndexMetadata> metadata_collection = new List<HitomiIndexMetadata>();
         public HitomiIndexModel index;
 
         public void Load()
         {
-            if (CheckIndexExist())
-                index = JsonConvert.DeserializeObject<HitomiIndexModel>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index.json")));
             if (CheckMetadataExist())
-                metadata_collection = JsonConvert.DeserializeObject<List<HitomiIndexMetadata>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")));
+            {
+                var re = JsonConvert.DeserializeObject<HitomiIndexDataModel>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")));
+                metadata_collection = re.metadata;
+                index = re.index;
+            }
         }
 
         public bool CheckMetadataExist()
@@ -170,11 +225,6 @@ namespace Koromo_Copy.Component.Hitomi
             return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"));
         }
         
-        public bool CheckIndexExist()
-        {
-            return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index.json"));
-        }
-
 #region TagData
 
         public void SortTagdata()
@@ -222,8 +272,8 @@ namespace Koromo_Copy.Component.Hitomi
 
             foreach (var metadata in metadata_collection)
             {
-                string lang = index.Languages[metadata.Language];
-                if (metadata.Language < 0) lang = "n/a";
+                string lang = "n/a";
+                if (metadata.Language >= 0) lang = index.Languages[metadata.Language];
                 Add(language, lang);
                 if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang) continue;
@@ -232,8 +282,18 @@ namespace Koromo_Copy.Component.Hitomi
                 if (metadata.Groups != null) metadata.Groups.ToList().ForEach(x => Add(group, index.Groups[x]));
                 if (metadata.Characters != null) metadata.Characters.ToList().ForEach(x => Add(character, index.Characters[x]));
                 if (metadata.Parodies != null) metadata.Parodies.ToList().ForEach(x => Add(series, index.Series[x]));
-                if (metadata.Type < 0) Add(type, index.Types[metadata.Type]);
+                if (metadata.Type >= 0) Add(type, index.Types[metadata.Type]);
             }
+
+            tagdata_collection.artist = artist.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.tag = tag.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.female = female.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.male = male.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.group = group.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.character = character.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.series = series.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.type = type.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.language = language.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
 
             SortTagdata();
 

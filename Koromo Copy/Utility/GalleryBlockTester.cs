@@ -40,13 +40,13 @@ namespace Hitomi_Copy_3._403
         List<HitomiArticle> result = new List<HitomiArticle>();
         private void GalleryBlockTester_Load(object sender, EventArgs e)
         {
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
             {
                 exists.Add(metadata.ID);
             }
             textBox1.BackColor = Color.White;
-            textBox1.Text = (HitomiData.Instance.metadata_collection[0].ID - 2000).ToString();
-            textBox2.Text = (HitomiData.Instance.metadata_collection[0].ID + 2000).ToString();
+            textBox1.Text = (HitomiIndex.Instance.metadata_collection[0].ID - 2000).ToString();
+            textBox2.Text = (HitomiIndex.Instance.metadata_collection[0].ID + 2000).ToString();
         }
 
         DateTime start;

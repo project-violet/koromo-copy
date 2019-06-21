@@ -116,7 +116,7 @@ namespace Koromo_Copy.Utility
         {
             if (listView1.SelectedItems.Count > 0)
             {
-                var hitomi_data = HitomiData.Instance.metadata_collection;
+                var hitomi_data = HitomiIndex.Instance.metadata_collection;
                 string target = listView1.SelectedItems[0].SubItems[0].Text;
                 foreach (var metadata in hitomi_data)
                 {

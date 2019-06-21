@@ -71,42 +71,42 @@ namespace Koromo_Copy.Component.Hitomi
             }
         }
 
-        public async Task DownloadHiddendata()
-        {
-            Monitor.Instance.Push("Download Hiddendata...");
-            thumbnail_collection = new Dictionary<string, string>();
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
-            var zip = await client.GetByteArrayAsync(hidden_data_url);
-            var data = zip.Unzip();
+        //public async Task DownloadHiddendata()
+        //{
+        //    Monitor.Instance.Push("Download Hiddendata...");
+        //    thumbnail_collection = new Dictionary<string, string>();
+        //    HttpClient client = new HttpClient();
+        //    client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
+        //    var zip = await client.GetByteArrayAsync(hidden_data_url);
+        //    var data = zip.Unzip();
 
-            List<HitomiArticle> articles = JsonConvert.DeserializeObject<List<HitomiArticle>>(data);
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
+        //    List<HitomiArticle> articles = JsonConvert.DeserializeObject<List<HitomiArticle>>(data);
+        //    JsonSerializer serializer = new JsonSerializer();
+        //    serializer.Converters.Add(new JavaScriptDateTimeConverter());
+        //    serializer.NullValueHandling = NullValueHandling.Ignore;
 
-            if (!Settings.Instance.Hitomi.AutoSync)
-            {
-                Monitor.Instance.Push("Write file: hiddendata.json");
-                using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json")))
-                using (JsonWriter writer = new JsonTextWriter(sw))
-                {
-                    serializer.Serialize(writer, articles);
-                }
-            }
+        //    if (!Settings.Instance.Hitomi.AutoSync)
+        //    {
+        //        Monitor.Instance.Push("Write file: hiddendata.json");
+        //        using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json")))
+        //        using (JsonWriter writer = new JsonTextWriter(sw))
+        //        {
+        //            serializer.Serialize(writer, articles);
+        //        }
+        //    }
 
-            HashSet<string> overlap = new HashSet<string>();
-            metadata_collection.ForEach(x => overlap.Add(x.ID.ToString()));
-            foreach (var article in articles)
-            {
-                if (overlap.Contains(article.Magic)) continue;
-                metadata_collection.Add(HitomiLegalize.ArticleToMetadata(article));
-                if (!thumbnail_collection.ContainsKey(article.Magic))
-                    thumbnail_collection.Add(article.Magic, article.Thumbnail);
-            }
-            SortMetadata();
-            return;
-        }
+        //    HashSet<string> overlap = new HashSet<string>();
+        //    metadata_collection.ForEach(x => overlap.Add(x.ID.ToString()));
+        //    foreach (var article in articles)
+        //    {
+        //        if (overlap.Contains(article.Magic)) continue;
+        //        metadata_collection.Add(HitomiLegalize.ArticleToMetadata(article));
+        //        if (!thumbnail_collection.ContainsKey(article.Magic))
+        //            thumbnail_collection.Add(article.Magic, article.Thumbnail);
+        //    }
+        //    SortMetadata();
+        //    return;
+        //}
 
         public void SortMetadata()
         {
@@ -135,8 +135,8 @@ namespace Koromo_Copy.Component.Hitomi
                 {
                     if (overlap.Contains(article.Magic)) continue;
                     metadata_collection.Add(HitomiLegalize.ArticleToMetadata(article));
-                    if (!thumbnail_collection.ContainsKey(article.Magic))
-                        thumbnail_collection.Add(article.Magic, article.Thumbnail);
+                    //if (!thumbnail_collection.ContainsKey(article.Magic))
+                    //    thumbnail_collection.Add(article.Magic, article.Thumbnail);
                 }
                 SortMetadata();
             }
@@ -286,7 +286,7 @@ namespace Koromo_Copy.Component.Hitomi
             metadata_collection?.Clear();
             thumbnail_collection?.Clear();
             await Task.Run(() => DownloadMetadata());
-            await Task.Run(() => DownloadHiddendata());
+            //await Task.Run(() => DownloadHiddendata());
             await Task.Run(() => RebuildTagData());
             await Task.Run(() => SortTagdata());
             if (Settings.Instance.Hitomi.UsingOptimization)

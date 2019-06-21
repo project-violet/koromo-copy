@@ -78,7 +78,7 @@ namespace Koromo_Copy_UX
         {
             try
             {
-                List<HitomiMetadata> result;
+                List<HitomiIndexMetadata> result;
                 Stopwatch sw = Stopwatch.StartNew();
                 var end = sw.ElapsedMilliseconds;
                 
@@ -137,13 +137,13 @@ namespace Koromo_Copy_UX
                     {
                         아이디 = article.ID.ToString(),
                         제목 = article.Name,
-                        타입 = article.Type,
-                        작가 = string.Join(",", article.Artists ?? Enumerable.Empty<string>()),
-                        그룹 = string.Join(",", article.Groups ?? Enumerable.Empty<string>()),
-                        시리즈 = string.Join(",", article.Parodies ?? Enumerable.Empty<string>()),
-                        캐릭터 = string.Join(",", article.Characters ?? Enumerable.Empty<string>()),
+                        타입 = HitomiIndex.Instance.index.Types[article.Type],
+                        작가 = string.Join(",", (article.Artists ?? Enumerable.Empty<int>()).Select(x => HitomiIndex.Instance.index.Artists[x])),
+                        그룹 = string.Join(",", (article.Groups ?? Enumerable.Empty<int>()).Select(x => HitomiIndex.Instance.index.Groups[x])),
+                        시리즈 = string.Join(",", (article.Parodies ?? Enumerable.Empty<int>()).Select(x => HitomiIndex.Instance.index.Series[x])),
+                        캐릭터 = string.Join(",", (article.Characters ?? Enumerable.Empty<int>()).Select(x => HitomiIndex.Instance.index.Characters[x])),
                         업로드_시간 = HitomiDate.estimate_datetime(article.ID).ToString(),
-                        태그 = string.Join(",", article.Tags ?? Enumerable.Empty<string>()),
+                        태그 = string.Join(",", (article.Tags ?? Enumerable.Empty<int>()).Select(x => HitomiIndex.Instance.index.Tags[x])),
                         다운 = HitomiLog.Instance.Contains(article.ID.ToString()) ? "★" : ""
                     });
 

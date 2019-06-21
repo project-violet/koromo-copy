@@ -68,12 +68,12 @@ namespace Koromo_Copy_UX.Utility
             {
                 HashSet<string> id = new HashSet<string>();
 
-                foreach (var article in HitomiData.Instance.metadata_collection)
+                foreach (var article in HitomiIndex.Instance.metadata_collection)
                 {
                     if (article.Artists != null)
-                        id.Add(article.Artists[0].Replace(' ', '_'));
+                        id.Add(HitomiIndex.Instance.index.Artists[article.Artists[0]].Replace(' ', '_'));
                     else if (article.Groups != null)
-                        id.Add(article.Groups[0].Replace(' ', '_'));
+                        id.Add(HitomiIndex.Instance.index.Artists[article.Groups[0]].Replace(' ', '_'));
                 }
                 
                 sys.AppendPlayer(id.Count);

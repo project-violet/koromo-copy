@@ -54,9 +54,9 @@ namespace Koromo_Copy_UX
 
         private void UpdateSyncDate()
         {
-            if (HitomiData.Instance.CheckMetadataExist())
+            if (HitomiIndex.Instance.CheckMetadataExist())
             {
-                var dt = HitomiData.Instance.DateTimeHiddendata();
+                var dt = HitomiIndex.Instance.DateTimeMetadata();
                 var dd = (DateTime.Now - dt).Days;
                 var dh = (DateTime.Now - dt).Hours;
                 SyncDate.Text = $"{dt.ToString("yyyy년 MM월 dd일 ")} ({dd}일 {dh}시간 지남)";
@@ -100,7 +100,7 @@ namespace Koromo_Copy_UX
             t1.Start();
             await t1;
 #endif
-            Task t2 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/raw/master/hiddendata.compress"));
+            Task t2 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/raw/master/index-metadata.compress"));
             t2.Start();
             await t2;
 
@@ -116,7 +116,7 @@ namespace Koromo_Copy_UX
             }
 
             //HitomiData.Instance.metadata_collection = metadata_collection;
-            HitomiData.Instance.LoadHiddendataJson();
+            //HitomiIndex.Instance.LoadHiddendataJson();
 
             SyncButton.IsEnabled = true;
             UpdateSyncDate();
@@ -152,7 +152,7 @@ namespace Koromo_Copy_UX
         int seconds = 0;
         long prev_bytes = 0;
         
-        public List<HitomiMetadata> metadata_collection = new List<HitomiMetadata>();
+        public List<HitomiIndexMetadata> metadata_collection = new List<HitomiIndexMetadata>();
         public List<HitomiArticle> hiddendata_collection = new List<HitomiArticle>();
 
         private object post_length_lock = new object();
@@ -258,10 +258,10 @@ namespace Koromo_Copy_UX
                                 lock (metadata_collection)
                                 {
                                     var str = (outputStream as MemoryStream).ToArray().Unzip();
-                                    metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiMetadata>>(str));
+                                    metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiIndexMetadata>>(str));
                                 }
                             }
-                            else if (url == "https://github.com/dc-koromo/e-archive/raw/master/hiddendata.compress")
+                            else if (url == "https://github.com/dc-koromo/e-archive/raw/master/index-metadata.compress")
                             {
                                 lock (hiddendata_collection)
                                 {

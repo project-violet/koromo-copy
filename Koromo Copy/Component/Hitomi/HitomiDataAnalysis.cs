@@ -19,13 +19,13 @@ namespace Koromo_Copy.Component.Hitomi
     {
         public static List<string> GetLanguageList()
         {
-            return HitomiData.Instance.tagdata_collection.language.Select(x => x.Tag).ToList();
+            return HitomiIndex.Instance.tagdata_collection.language.Select(x => x.Tag).ToList();
         }
 
         public static List<HitomiTagdata> GetLanguageList(string startswith, bool constains = false)
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.language)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.language)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').StartsWith(startswith.ToLower()))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             return result;
@@ -36,13 +36,13 @@ namespace Koromo_Copy.Component.Hitomi
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
             {
-                foreach (var tagdata in HitomiData.Instance.tagdata_collection.artist)
+                foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.artist)
                     if (tagdata.Tag.ToLower().Replace(' ', '_').StartsWith(startswith.ToLower()))
                     { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             }
             else
             {
-                foreach (var tagdata in HitomiData.Instance.tagdata_collection.artist)
+                foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.artist)
                     if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(startswith))
                     { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             }
@@ -52,9 +52,9 @@ namespace Koromo_Copy.Component.Hitomi
         public static List<HitomiTagdata> GetTagList(string startswith, bool constains = false)
         {
             List<HitomiTagdata> target = new List<HitomiTagdata>();
-            target.AddRange(HitomiData.Instance.tagdata_collection.female);
-            target.AddRange(HitomiData.Instance.tagdata_collection.male);
-            target.AddRange(HitomiData.Instance.tagdata_collection.tag);
+            target.AddRange(HitomiIndex.Instance.tagdata_collection.female);
+            target.AddRange(HitomiIndex.Instance.tagdata_collection.male);
+            target.AddRange(HitomiIndex.Instance.tagdata_collection.tag);
             target.Sort((a, b) => b.Count.CompareTo(a.Count));
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
@@ -77,13 +77,13 @@ namespace Koromo_Copy.Component.Hitomi
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
             {
-                foreach (var tagdata in HitomiData.Instance.tagdata_collection.group)
+                foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.group)
                     if (tagdata.Tag.ToLower().Replace(' ', '_').StartsWith(startswith.ToLower()))
                     { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             }
             else
             {
-                foreach (var tagdata in HitomiData.Instance.tagdata_collection.group)
+                foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.group)
                     if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(startswith.ToLower()))
                     { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             }
@@ -95,13 +95,13 @@ namespace Koromo_Copy.Component.Hitomi
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
             {
-                foreach (var tagdata in HitomiData.Instance.tagdata_collection.series)
+                foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.series)
                     if (tagdata.Tag.ToLower().Replace(' ', '_').StartsWith(startswith.ToLower()))
                     { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             }
             else
             {
-                foreach (var tagdata in HitomiData.Instance.tagdata_collection.series)
+                foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.series)
                     if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(startswith.ToLower()))
                     { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             }
@@ -113,13 +113,13 @@ namespace Koromo_Copy.Component.Hitomi
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             if (!constains)
             {
-                foreach (var tagdata in HitomiData.Instance.tagdata_collection.character)
+                foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.character)
                     if (tagdata.Tag.ToLower().Replace(' ', '_').StartsWith(startswith.ToLower()))
                     { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             }
             else
             {
-                foreach (var tagdata in HitomiData.Instance.tagdata_collection.character)
+                foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.character)
                     if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(startswith.ToLower()))
                     { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             }
@@ -129,7 +129,7 @@ namespace Koromo_Copy.Component.Hitomi
         public static List<HitomiTagdata> GetTypeList(string startswith)
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.type)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.type)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').StartsWith(startswith.ToLower()))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             return result;
@@ -140,31 +140,31 @@ namespace Koromo_Copy.Component.Hitomi
             if (Settings.Instance.Hitomi.UsingFuzzy) return GetTotalListFuzzy(contains);
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             List<HitomiTagdata> target = new List<HitomiTagdata>();
-            target.AddRange(HitomiData.Instance.tagdata_collection.female);
-            target.AddRange(HitomiData.Instance.tagdata_collection.male);
+            target.AddRange(HitomiIndex.Instance.tagdata_collection.female);
+            target.AddRange(HitomiIndex.Instance.tagdata_collection.male);
             contains = contains.ToLower();
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.artist)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.artist)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(contains))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = "artist:" + tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.group)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.group)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(contains))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = "group:" + tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.series)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.series)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(contains))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = "series:" + tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.character)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.character)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(contains))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = "character:" + tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.type)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.type)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(contains))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = "type:" + tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.language)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.language)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(contains))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = "lang:" + tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             foreach (var tagdata in target)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(contains))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.tag)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.tag)
                 if (tagdata.Tag.ToLower().Replace(' ', '_').Contains(contains))
                 { HitomiTagdata data = new HitomiTagdata(); data.Tag = "tag:" + tagdata.Tag.ToLower().Replace(' ', '_'); data.Count = tagdata.Count; result.Add(data); }
             result.Sort((a, b) => b.Count.CompareTo(a.Count));
@@ -175,30 +175,30 @@ namespace Koromo_Copy.Component.Hitomi
         {
             List<HitomiTagdata> result = new List<HitomiTagdata>();
             List<HitomiTagdata> target = new List<HitomiTagdata>();
-            target.AddRange(HitomiData.Instance.tagdata_collection.female);
-            target.AddRange(HitomiData.Instance.tagdata_collection.male);
+            target.AddRange(HitomiIndex.Instance.tagdata_collection.female);
+            target.AddRange(HitomiIndex.Instance.tagdata_collection.male);
             search = search.ToLower();
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.artist)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.artist)
             {
                 HitomiTagdata data = new HitomiTagdata(); data.Tag = "artist:" + tagdata.Tag.ToLower().Replace(' ', '_');
                 data.Count = -Strings.ComputeLevenshteinDistance(search, tagdata.Tag.ToLower().Replace(' ', '_')); result.Add(data);
             }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.group)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.group)
             {
                 HitomiTagdata data = new HitomiTagdata(); data.Tag = "group:" + tagdata.Tag.ToLower().Replace(' ', '_');
                 data.Count = -Strings.ComputeLevenshteinDistance(search, tagdata.Tag.ToLower().Replace(' ', '_')); result.Add(data);
             }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.series)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.series)
             {
                 HitomiTagdata data = new HitomiTagdata(); data.Tag = "series:" + tagdata.Tag.ToLower().Replace(' ', '_');
                 data.Count = -Strings.ComputeLevenshteinDistance(search, tagdata.Tag.ToLower().Replace(' ', '_')); result.Add(data);
             }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.character)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.character)
             {
                 HitomiTagdata data = new HitomiTagdata(); data.Tag = "character:" + tagdata.Tag.ToLower().Replace(' ', '_');
                 data.Count = -Strings.ComputeLevenshteinDistance(search, tagdata.Tag.ToLower().Replace(' ', '_')); result.Add(data);
             }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.type)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.type)
             {
                 HitomiTagdata data = new HitomiTagdata(); data.Tag = "type:" + tagdata.Tag.ToLower().Replace(' ', '_');
                 data.Count = -Strings.ComputeLevenshteinDistance(search, tagdata.Tag.ToLower().Replace(' ', '_')); result.Add(data);
@@ -208,7 +208,7 @@ namespace Koromo_Copy.Component.Hitomi
                 HitomiTagdata data = new HitomiTagdata(); data.Tag = tagdata.Tag.ToLower().Replace(' ', '_');
                 data.Count = -Strings.ComputeLevenshteinDistance(search, tagdata.Tag.ToLower().Replace(' ', '_')); result.Add(data);
             }
-            foreach (var tagdata in HitomiData.Instance.tagdata_collection.tag)
+            foreach (var tagdata in HitomiIndex.Instance.tagdata_collection.tag)
             {
                 HitomiTagdata data = new HitomiTagdata(); data.Tag = "tag:" + tagdata.Tag.ToLower().Replace(' ', '_');
                 data.Count = -Strings.ComputeLevenshteinDistance(search, tagdata.Tag.ToLower().Replace(' ', '_')); result.Add(data);
@@ -217,20 +217,20 @@ namespace Koromo_Copy.Component.Hitomi
             return result;
         }
         
-        public class CompareMetadata : IComparer<HitomiMetadata>
+        public class CompareMetadata : IComparer<HitomiIndexMetadata>
         {
-            public int Compare(HitomiMetadata x, HitomiMetadata y)
+            public int Compare(HitomiIndexMetadata x, HitomiIndexMetadata y)
             {
                 return y.ID.CompareTo(x.ID);
             }
         }
 
-        public static HitomiMetadata? GetMetadataFromMagic(string magic)
+        public static HitomiIndexMetadata? GetMetadataFromMagic(string magic)
         {
-            HitomiMetadata tmp = new HitomiMetadata() { ID = Convert.ToInt32(magic) };
-            var pos = HitomiData.Instance.metadata_collection.BinarySearch(tmp, new CompareMetadata());
+            HitomiIndexMetadata tmp = new HitomiIndexMetadata() { ID = Convert.ToInt32(magic) };
+            var pos = HitomiIndex.Instance.metadata_collection.BinarySearch(tmp, new CompareMetadata());
             if (pos < 0) return null;
-            return HitomiData.Instance.metadata_collection[pos];
+            return HitomiIndex.Instance.metadata_collection[pos];
         }
     }
 }
