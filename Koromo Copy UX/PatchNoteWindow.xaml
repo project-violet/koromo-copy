@@ -70,24 +70,29 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.10 Emergency Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.11 Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 썸네일 로딩 오류 해결"/>
+                        <Run Text=" - 검색창에서 그룹명과 캐릭터가 표시되지 않던 버그 수정"/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 다운로드 문제 해결"/>
+                        <Run Text=" - 히토미 데이터 저장방식 변경"/>
+                        <LineBreak/>
+                        <Run Text="   데이터 로딩시간이 빨라지고, 메모리 사용량이 줄어듭니다."/>
+                        <LineBreak/>
+                        <Run Text="   이제 데이터 최적화 옵션을 꺼도 많은 메모리를 사용하지 않습니다."/>
                         <LineBreak/>
                         <LineBreak/>
+                        <Run Text=" - 여름 개발 계획"/>
                         <LineBreak/>
-                        <LineBreak/>
-                        <LineBreak/>
+                        <Run Text="  "/>
+                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/blob/master/Document/Plan.md">https://github.com/dc-koromo/koromo-copy/blob/master/Document/Plan.md</Hyperlink>
                         <LineBreak/>
                         <LineBreak/>
                         <Run Text=" 자세한 업데이트 내역은 커밋이나 설정->업데이트를 참고하세요."/>
                         <LineBreak/>
                         <Run Text=" 커밋 : "/>
-                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.6.6965.28680...master">https://github.com/dc-koromo/koromo-copy/compare/1.6.6965.28680...master</Hyperlink>
+                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.10.7038.24376...master">https://github.com/dc-koromo/koromo-copy/compare/1.10.7038.24376...master</Hyperlink>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>

@@ -139,6 +139,64 @@ namespace Koromo_Copy_UX
 
         private void UpdatePatchNotes()
         {
+            // 1.11
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.10 Beta",
+                    Content =
+                    "[변경된 기능]\r\n" +
+                    " - 데이터 저장방식 변경\r\n\r\n" +
+                    " - 검색창에서 그룹명과 캐릭터가 표시되지 않던 오류 수정\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
+            // 1.10
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.10 Beta",
+                    Content =
+                    "[변경된 기능]\r\n" +
+                    " - 썸네일 로딩 오류 해결\r\n\r\n" +
+                    " - 다운로드 문제 해결\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
+            // 1.9
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.9 Beta",
+                    Content =
+                    "[변경된 기능]\r\n" +
+                    " - 썸네일 로딩 오류 해결\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
+            // 1.9
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.9 Beta",
+                    Content =
+                    "[변경된 기능]\r\n" +
+                    " - 썸네일 로딩 오류 해결\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.7
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements
