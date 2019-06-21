@@ -100,6 +100,7 @@ namespace Koromo_Copy_UX
                     {
                         HitomiData.Instance.LoadMetadataJson();
                         HitomiData.Instance.LoadHiddendataJson();
+                        //HitomiIndex.Instance.Load();
                         MainWindow.Instance.Fade_MiddlePopup(false);
                     }
                     catch (Exception ex)
@@ -109,6 +110,7 @@ namespace Koromo_Copy_UX
                 }
                 Profiler.Push("Rebuild tag data");
                 HitomiData.Instance.RebuildTagData();
+                //HitomiIndex.Instance.RebuildTagData();
                 if (HitomiData.Instance.metadata_collection != null)
                 {
                     Koromo_Copy.Monitor.Instance.Push($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");

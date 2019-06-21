@@ -21,13 +21,13 @@ namespace Koromo_Copy.Component.Hitomi
 {
     public class HitomiIndexModel
     {
-        public Tuple<int, string>[] Artists;
-        public Tuple<int, string>[] Groups;
-        public Tuple<int, string>[] Series;
-        public Tuple<int, string>[] Characters;
-        public Tuple<int, string>[] Languages;
-        public Tuple<int, string>[] Types;
-        public Tuple<int, string>[] Tags;
+        public string[] Artists;
+        public string[] Groups;
+        public string[] Series;
+        public string[] Characters;
+        public string[] Languages;
+        public string[] Types;
+        public string[] Tags;
     }
 
     public class HitomiIndexMetadata
@@ -69,8 +69,12 @@ namespace Koromo_Copy.Component.Hitomi
                     dic.Add(item, dic.Count);
         }
 
-        public HitomiTagdataCollection tagdata_collection = new HitomiTagdataCollection();
-        public List<HitomiIndexMetadata> metadata_collection = new List<HitomiIndexMetadata>();
+        private static string[] pp(Dictionary<string, int> dic)
+        {
+            var list = dic.ToList();
+            list.Sort((x, y) => x.Value.CompareTo(y.Value));
+            return list.Select(x => x.Key).ToArray();
+        }
 
         public static void MakeIndex()
         {
@@ -94,14 +98,14 @@ namespace Koromo_Copy.Component.Hitomi
             }
 
             var index = new HitomiIndexModel();
-
-            index.Artists = artists.Select(x => new Tuple<int, string>(x.Value, x.Key)).ToArray();
-            index.Groups = groups.Select(x => new Tuple<int, string>(x.Value, x.Key)).ToArray();
-            index.Series = series.Select(x => new Tuple<int, string>(x.Value, x.Key)).ToArray();
-            index.Characters = characters.Select(x => new Tuple<int, string>(x.Value, x.Key)).ToArray();
-            index.Languages = languages.Select(x => new Tuple<int, string>(x.Value, x.Key)).ToArray();
-            index.Types = types.Select(x => new Tuple<int, string>(x.Value, x.Key)).ToArray();
-            index.Tags = tags.Select(x => new Tuple<int, string>(x.Value, x.Key)).ToArray();
+            
+            index.Artists = pp(artists);
+            index.Groups = pp(groups);
+            index.Series = pp(series);
+            index.Characters = pp(characters);
+            index.Languages = pp(languages);
+            index.Types = pp(types);
+            index.Tags = pp(tags);
 
             JsonSerializer serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -125,8 +129,8 @@ namespace Koromo_Copy.Component.Hitomi
                 if (md.Groups != null) him.Groups = md.Groups.Select(x => groups[x]).ToArray();
                 if (md.Parodies != null) him.Parodies = md.Parodies.Select(x => series[x]).ToArray();
                 if (md.Characters != null) him.Characters = md.Characters.Select(x => characters[x]).ToArray();
-                if (md.Language != null) him.Language = languages[md.Language];
-                if (md.Type != null) him.Type = types[md.Type];
+                if (md.Language != null) him.Language = languages[md.Language]; else him.Language = -1;
+                if (md.Type != null) him.Type = types[md.Type]; else him.Type = -1;
                 if (md.Tags != null) him.Tags = md.Tags.Select(x => tags[x]).ToArray();
                 mdl.Add(him);
             }
@@ -139,8 +143,14 @@ namespace Koromo_Copy.Component.Hitomi
             }
         }
 
-        public void LoadMetadataJson()
+        public HitomiTagdataCollection tagdata_collection = new HitomiTagdataCollection();
+        public List<HitomiIndexMetadata> metadata_collection = new List<HitomiIndexMetadata>();
+        public HitomiIndexModel index;
+
+        public void Load()
         {
+            if (CheckIndexExist())
+                index = JsonConvert.DeserializeObject<HitomiIndexModel>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index.json")));
             if (CheckMetadataExist())
                 metadata_collection = JsonConvert.DeserializeObject<List<HitomiIndexMetadata>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")));
         }
@@ -159,15 +169,86 @@ namespace Koromo_Copy.Component.Hitomi
         {
             return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"));
         }
-
-        public DateTime DateTimeHiddendata()
+        
+        public bool CheckIndexExist()
         {
-            return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-hiddendata.json"));
+            return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index.json"));
         }
 
-        public bool CheckHiddendataExist()
+#region TagData
+
+        public void SortTagdata()
         {
-            return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-hiddendata.json"));
+            tagdata_collection.artist.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.tag.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.female.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.male.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.group.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.character.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.series.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.type.Sort((a, b) => b.Count.CompareTo(a.Count));
+            tagdata_collection.language.Sort((a, b) => b.Count.CompareTo(a.Count));
         }
+
+        private void Add(Dictionary<string, int> dic, string key)
+        {
+            if (dic.ContainsKey(key))
+                dic[key] += 1;
+            else
+                dic.Add(key, 1);
+        }
+
+        public void RebuildTagData()
+        {
+            tagdata_collection.artist?.Clear();
+            tagdata_collection.tag?.Clear();
+            tagdata_collection.female?.Clear();
+            tagdata_collection.male?.Clear();
+            tagdata_collection.group?.Clear();
+            tagdata_collection.character?.Clear();
+            tagdata_collection.series?.Clear();
+            tagdata_collection.type?.Clear();
+            tagdata_collection.language?.Clear();
+
+            Dictionary<string, int> artist = new Dictionary<string, int>();
+            Dictionary<string, int> tag = new Dictionary<string, int>();
+            Dictionary<string, int> female = new Dictionary<string, int>();
+            Dictionary<string, int> male = new Dictionary<string, int>();
+            Dictionary<string, int> group = new Dictionary<string, int>();
+            Dictionary<string, int> character = new Dictionary<string, int>();
+            Dictionary<string, int> series = new Dictionary<string, int>();
+            Dictionary<string, int> type = new Dictionary<string, int>();
+            Dictionary<string, int> language = new Dictionary<string, int>();
+
+            foreach (var metadata in metadata_collection)
+            {
+                string lang = index.Languages[metadata.Language];
+                if (metadata.Language < 0) lang = "n/a";
+                Add(language, lang);
+                if (Settings.Instance.Hitomi.Language != "all" &&
+                    Settings.Instance.Hitomi.Language != lang) continue;
+                if (metadata.Artists != null) metadata.Artists.ToList().ForEach(x => Add(artist, index.Artists[x]));
+                if (metadata.Tags != null) metadata.Tags.ToList().ForEach(x => { if (index.Tags[x].StartsWith("female:")) Add(female, index.Tags[x]); else if (index.Tags[x].StartsWith("male:")) Add(male, index.Tags[x]); else Add(tag, index.Tags[x]); });
+                if (metadata.Groups != null) metadata.Groups.ToList().ForEach(x => Add(group, index.Groups[x]));
+                if (metadata.Characters != null) metadata.Characters.ToList().ForEach(x => Add(character, index.Characters[x]));
+                if (metadata.Parodies != null) metadata.Parodies.ToList().ForEach(x => Add(series, index.Series[x]));
+                if (metadata.Type < 0) Add(type, index.Types[metadata.Type]);
+            }
+
+            SortTagdata();
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "tagdata.json")))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, tagdata_collection);
+            }
+        }
+
+        #endregion
+
     }
 }
