@@ -137,7 +137,7 @@ namespace Koromo_Copy_UX
                     {
                         아이디 = article.ID.ToString(),
                         제목 = article.Name,
-                        타입 = HitomiIndex.Instance.index.Types[article.Type],
+                        타입 = article.Type >= 0 ? HitomiIndex.Instance.index.Types[article.Type] : "",
                         작가 = string.Join(",", (article.Artists ?? Enumerable.Empty<int>()).Select(x => HitomiIndex.Instance.index.Artists[x])),
                         그룹 = string.Join(",", (article.Groups ?? Enumerable.Empty<int>()).Select(x => HitomiIndex.Instance.index.Groups[x])),
                         시리즈 = string.Join(",", (article.Parodies ?? Enumerable.Empty<int>()).Select(x => HitomiIndex.Instance.index.Series[x])),
