@@ -86,10 +86,8 @@ namespace Koromo_Copy_UX
                     MainWindow.Instance.Fade_MiddlePopup(true, (string)FindResource("msg_download_metadata"));
 #if true
                     //HitomiIndex.Instance.MetadataDownloadStatusEvent = UpdateDownloadText;
-                    //await HitomiIndex.Instance.DownloadMetadata();
+                    await HitomiIndex.Instance.DownloadMetadata();
 #endif
-                    MainWindow.Instance.ModifyText_MiddlePopup((string)FindResource("msg_download_hiddendata"));
-                    //await HitomiIndex.Instance.DownloadHiddendata();
                     MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_download_data_complete"), false);
                     Koromo_Copy.Monitor.Instance.ControlEnable = false;
                 }
@@ -98,9 +96,9 @@ namespace Koromo_Copy_UX
                     Profiler.Push("Load metadata, hiddendata");
                     try
                     {
-                        //HitomiData.Instance.LoadMetadataJson();
-                        //HitomiData.Instance.LoadHiddendataJson();
-                        HitomiIndex.Instance.Load();
+                        HitomiData.Instance.LoadMetadataJson();
+                        HitomiData.Instance.LoadHiddendataJson();
+                        //HitomiIndex.Instance.Load();
                         MainWindow.Instance.Fade_MiddlePopup(false);
                     }
                     catch (Exception ex)

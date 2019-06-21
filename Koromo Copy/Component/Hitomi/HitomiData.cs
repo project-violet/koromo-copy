@@ -135,8 +135,8 @@ namespace Koromo_Copy.Component.Hitomi
                 {
                     if (overlap.Contains(article.Magic)) continue;
                     metadata_collection.Add(HitomiLegalize.ArticleToMetadata(article));
-                    if (!thumbnail_collection.ContainsKey(article.Magic))
-                        thumbnail_collection.Add(article.Magic, article.Thumbnail);
+                    //if (!thumbnail_collection.ContainsKey(article.Magic))
+                    //    thumbnail_collection.Add(article.Magic, article.Thumbnail);
                 }
                 SortMetadata();
             }
