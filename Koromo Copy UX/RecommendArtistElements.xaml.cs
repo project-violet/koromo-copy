@@ -66,17 +66,17 @@ namespace Koromo_Copy_UX
                 List<string> titles = new List<string>();
                 List<string> magics = new List<string>();
 
-                for (int i = 0, j = 0; i < 5 && j < HitomiData.Instance.metadata_collection.Count; j++)
+                for (int i = 0, j = 0; i < 5 && j < HitomiIndex.Instance.metadata_collection.Count; j++)
                 {
-                    if (HitomiData.Instance.metadata_collection[j].Artists != null &&
-                       (HitomiData.Instance.metadata_collection[j].Language == Settings.Instance.Hitomi.Language || Settings.Instance.Hitomi.Language == "all") &&
-                        HitomiData.Instance.metadata_collection[j].Artists.Contains(Artist))
+                    if (HitomiIndex.Instance.metadata_collection[j].Artists != null &&
+                       ((HitomiIndex.Instance.metadata_collection[j].Language >= 0 ? Settings.Instance.Hitomi.Language == HitomiIndex.Instance.index.Languages[HitomiIndex.Instance.metadata_collection[j].Language] : Settings.Instance.Hitomi.Language == "n/a") || Settings.Instance.Hitomi.Language == "all") &&
+                        HitomiIndex.Instance.metadata_collection[j].Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).Contains(Artist))
                     {
-                        string ttitle = HitomiData.Instance.metadata_collection[j].Name.Split('|')[0];
+                        string ttitle = HitomiIndex.Instance.metadata_collection[j].Name.Split('|')[0];
                         if (titles.Count > 0 && !titles.TrueForAll((title) => Strings.ComputeLevenshteinDistance(ttitle, title) > Settings.Instance.Hitomi.TextMatchingAccuracy)) continue;
 
                         titles.Add(ttitle);
-                        magics.Add(HitomiData.Instance.metadata_collection[j].ID.ToString());
+                        magics.Add(HitomiIndex.Instance.metadata_collection[j].ID.ToString());
                         i++;
                     }
                 }

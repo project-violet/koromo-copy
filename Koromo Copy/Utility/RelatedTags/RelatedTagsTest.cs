@@ -161,13 +161,13 @@ namespace Hitomi_Copy_3
         private int get_galleries_count(string tag1, string tag2, int no)
         {
             int count = 0;
-            int min = HitomiData.Instance.metadata_collection.Count / Environment.ProcessorCount * no;
-            int max = HitomiData.Instance.metadata_collection.Count / Environment.ProcessorCount * (no + 1);
-            if (max > HitomiData.Instance.metadata_collection.Count)
-                max = HitomiData.Instance.metadata_collection.Count;
+            int min = HitomiIndex.Instance.metadata_collection.Count / Environment.ProcessorCount * no;
+            int max = HitomiIndex.Instance.metadata_collection.Count / Environment.ProcessorCount * (no + 1);
+            if (max > HitomiIndex.Instance.metadata_collection.Count)
+                max = HitomiIndex.Instance.metadata_collection.Count;
             for (int i = min; i < max; i++)
-                if (HitomiData.Instance.metadata_collection[i].Tags != null)
-                    if (HitomiData.Instance.metadata_collection[i].Tags.Contains(tag1) && HitomiData.Instance.metadata_collection[i].Tags.Contains(tag2))
+                if (HitomiIndex.Instance.metadata_collection[i].Tags != null)
+                    if (HitomiIndex.Instance.metadata_collection[i].Tags.Select(x => HitomiIndex.Instance.index.Tags[x]).Contains(tag1) && HitomiIndex.Instance.metadata_collection[i].Tags.Select(x => HitomiIndex.Instance.index.Tags[x]).Contains(tag2))
                         count++;
             return count;
         }

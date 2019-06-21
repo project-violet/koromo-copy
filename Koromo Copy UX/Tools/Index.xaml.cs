@@ -51,9 +51,9 @@ namespace Koromo_Copy_UX.Tools
             loaded = true;
 
             List<HitomiTagdata> tags = new List<HitomiTagdata>();
-            tags.AddRange(HitomiData.Instance.tagdata_collection.female);
-            tags.AddRange(HitomiData.Instance.tagdata_collection.male);
-            tags.AddRange(HitomiData.Instance.tagdata_collection.tag);
+            tags.AddRange(HitomiIndex.Instance.tagdata_collection.female);
+            tags.AddRange(HitomiIndex.Instance.tagdata_collection.male);
+            tags.AddRange(HitomiIndex.Instance.tagdata_collection.tag);
 
             List<Tuple<string, string, int>> tag_e2k = new List<Tuple<string, string, int>>();
             foreach (var tag in tags)
@@ -82,7 +82,7 @@ namespace Koromo_Copy_UX.Tools
             }
 
             List<Tuple<string, string, int>> series_e2k = new List<Tuple<string, string, int>>();
-            foreach (var tag in HitomiData.Instance.tagdata_collection.series)
+            foreach (var tag in HitomiIndex.Instance.tagdata_collection.series)
             {
                 string k_try = KoreanSeries.SeriesMap(tag.Tag);
                 if (k_try != tag.Tag)

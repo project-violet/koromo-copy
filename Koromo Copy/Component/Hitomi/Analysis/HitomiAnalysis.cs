@@ -29,14 +29,17 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
 
         public HitomiAnalysis()
         {
-            Dictionary<string, List<HitomiMetadata>> artists = new Dictionary<string, List<HitomiMetadata>>();
-            foreach (var metadata in HitomiData.Instance.metadata_collection)
+            Dictionary<string, List<HitomiIndexMetadata>> artists = new Dictionary<string, List<HitomiIndexMetadata>>();
+            foreach (var metadata in HitomiIndex.Instance.metadata_collection)
                 if (metadata.Artists != null)
-                    foreach (var artist in metadata.Artists)
+                    foreach (var _artist in metadata.Artists)
+                    {
+                        var artist = HitomiIndex.Instance.index.Artists[_artist];
                         if (artists.ContainsKey(artist))
                             artists[artist].Add(metadata);
                         else
-                            artists.Add(artist, new List<HitomiMetadata>() { metadata });
+                            artists.Add(artist, new List<HitomiIndexMetadata>() { metadata });
+                    }
 
             foreach (var pair in artists)
                 datas.Add(new HitomiAnalysisArtist(pair.Key, pair.Value));

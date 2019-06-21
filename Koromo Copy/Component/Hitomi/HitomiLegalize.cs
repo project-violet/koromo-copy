@@ -14,18 +14,18 @@ namespace Koromo_Copy.Component.Hitomi
 {
     public class HitomiLegalize
     {
-        public static HitomiArticle MetadataToArticle(HitomiMetadata metadata)
+        public static HitomiArticle MetadataToArticle(HitomiIndexMetadata metadata)
         {
             HitomiArticle article = new HitomiArticle();
-            article.Artists = metadata.Artists;
-            article.Characters = metadata.Characters;
-            article.Groups = metadata.Groups;
-            article.Language = metadata.Language;
+            article.Artists = metadata.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            if (metadata.Characters != null) article.Characters = metadata.Characters.Select(x => HitomiIndex.Instance.index.Characters[x]).ToArray();
+            if (metadata.Groups != null) article.Groups = metadata.Groups.Select(x => HitomiIndex.Instance.index.Groups[x]).ToArray();
+            if (metadata.Language >= 0) article.Language = HitomiIndex.Instance.index.Languages[metadata.Language];
             article.Magic = metadata.ID.ToString();
-            article.Series = metadata.Parodies;
-            article.Tags = metadata.Tags;
+            if (metadata.Parodies != null) article.Series = metadata.Parodies.Select(x => HitomiIndex.Instance.index.Series[x]).ToArray();
+            if (metadata.Tags != null) article.Tags = metadata.Tags.Select(x => HitomiIndex.Instance.index.Tags[x]).ToArray();
             article.Title = metadata.Name;
-            article.Type = metadata.Type;
+            if (metadata.Type >= 0) article.Type = HitomiIndex.Instance.index.Types[metadata.Type];
             return article;
         }
 
@@ -43,13 +43,13 @@ namespace Koromo_Copy.Component.Hitomi
             metadata.Type = article.Type;
             return metadata;
         }
-        
-        public static HitomiMetadata? GetMetadataFromMagic(string magic)
+
+        public static HitomiIndexMetadata? GetMetadataFromMagic(string magic)
         {
-            HitomiMetadata tmp = new HitomiMetadata() { ID = Convert.ToInt32(magic) };
-            var pos = HitomiData.Instance.metadata_collection.BinarySearch(tmp, Comparer<HitomiMetadata>.Create((x,y) => y.ID.CompareTo(x.ID)));
+            HitomiIndexMetadata tmp = new HitomiIndexMetadata() { ID = Convert.ToInt32(magic) };
+            var pos = HitomiIndex.Instance.metadata_collection.BinarySearch(tmp, Comparer<HitomiIndexMetadata>.Create((x,y) => y.ID.CompareTo(x.ID)));
             if (pos < 0) return null;
-            return HitomiData.Instance.metadata_collection[pos];
+            return HitomiIndex.Instance.metadata_collection[pos];
         }
 
         public static string LegalizeTag(string tag)

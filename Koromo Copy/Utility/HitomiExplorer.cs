@@ -125,7 +125,7 @@ namespace Koromo_Copy.Utility
 
         #region 규칙 적용 및 추출
 
-        List<Tuple<string, string, HitomiMetadata?>> metadatas = new List<Tuple<string, string, HitomiMetadata?>>();
+        List<Tuple<string, string, HitomiIndexMetadata?>> metadatas = new List<Tuple<string, string, HitomiIndexMetadata?>>();
         List<KeyValuePair<string, int>> artist_rank;
         Dictionary<string, int> artist_rank_dic;
         int visit_count = 0;
@@ -169,14 +169,18 @@ namespace Koromo_Copy.Utility
                 if (!deal_artists_with_parent_folder)
                 {
                     if (md.Item3.HasValue && md.Item3.Value.Artists != null)
-                        foreach (var artist in md.Item3.Value.Artists)
+                        foreach (var _artist in md.Item3.Value.Artists)
+                        {
+                            var artist = HitomiIndex.Instance.index.Artists[_artist];
                             if (artist_count.ContainsKey(artist))
                                 artist_count[artist] += 1;
                             else
                                 artist_count.Add(artist, 1);
+                        }
                     if (deal_group_with_artist && md.Item3.HasValue && md.Item3.Value.Groups != null)
-                        foreach (var group in md.Item3.Value.Groups)
+                        foreach (var _group in md.Item3.Value.Groups)
                         {
+                            var group = HitomiIndex.Instance.index.Artists[_group];
                             string tmp = "group:" + group;
                             if (artist_count.ContainsKey(tmp))
                                 artist_count[tmp] += 1;
@@ -224,7 +228,7 @@ namespace Koromo_Copy.Utility
                 return true;
             }))
             {
-                metadatas.Add(new Tuple<string, string, HitomiMetadata?>(node.FullPath, match, HitomiDataAnalysis.GetMetadataFromMagic(match)));
+                metadatas.Add(new Tuple<string, string, HitomiIndexMetadata?>(node.FullPath, match, HitomiDataAnalysis.GetMetadataFromMagic(match)));
                 available_count += 1;
                 if (!search_subfiles_whenever)
                     return;
@@ -240,18 +244,18 @@ namespace Koromo_Copy.Utility
 
         #region 재배치 도구
 
-        private string MakeDownloadDirectory(string source, string artists, HitomiMetadata metadata, string extension)
+        private string MakeDownloadDirectory(string source, string artists, HitomiIndexMetadata metadata, string extension)
         {
             string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
             string title = metadata.Name ?? "";
-            string type = metadata.Type ?? "";
+            string type = metadata.Type < 0 ? "" : HitomiIndex.Instance.index.Types[metadata.Type];
             string series = "";
             //if (HitomiSetting.Instance.GetModel().ReplaceArtistsWithTitle)
             //{
             //    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             //    artists = textInfo.ToTitleCase(artists);
             //}
-            if (metadata.Parodies != null) series = metadata.Parodies[0];
+            if (metadata.Parodies != null) series = HitomiIndex.Instance.index.Series[metadata.Parodies[0]];
             if (title != null)
                 foreach (char c in invalid) title = title.Replace(c.ToString(), "");
             if (artists != null)
@@ -290,10 +294,10 @@ namespace Koromo_Copy.Utility
                 List<string> artist_group = new List<string>();
                 if (md.Item3.Value.Artists != null)
                     foreach (var artist in md.Item3.Value.Artists)
-                        artist_group.Add(artist);
+                        artist_group.Add(HitomiIndex.Instance.index.Artists[artist]);
                 else if (md.Item3.Value.Groups != null)
                     foreach (var group in md.Item3.Value.Groups)
-                        artist_group.Add(group);
+                        artist_group.Add(HitomiIndex.Instance.index.Groups[group]);
                 //if (tgAEG.Checked == true && md.Item3.Value.Groups != null)
                 //    foreach (var group in md.Item3.Value.Groups)
                 //        artist_group.Add("group:" + group);
@@ -442,7 +446,7 @@ namespace Koromo_Copy.Utility
 
         private void bExtract_Click(object sender, EventArgs e)
         {
-            Dictionary<int, HitomiMetadata?> map = new Dictionary<int, HitomiMetadata?>();
+            Dictionary<int, HitomiIndexMetadata?> map = new Dictionary<int, HitomiIndexMetadata?>();
             
             foreach (var tuple in metadatas)
             {
@@ -465,7 +469,7 @@ namespace Koromo_Copy.Utility
                     if (md.HasValue)
                     {
                         if (md.Value.Artists != null)
-                            md.Value.Artists.ToList().ForEach(x => artists.Add(x));
+                            md.Value.Artists.ToList().ForEach(x => artists.Add(HitomiIndex.Instance.index.Artists[x]));
                     }
 
                     lvil.Add(new ListViewItem(new string[]

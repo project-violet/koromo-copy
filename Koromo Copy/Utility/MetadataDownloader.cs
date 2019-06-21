@@ -59,7 +59,7 @@ namespace Koromo_Copy.Utility
 
         public static int number_of_gallery_jsons = 20;
         public static string gallerie_json_uri(int no) => $"https://ltn.hitomi.la/galleries{no}.json";
-        public List<HitomiMetadata> metadata_collection = new List<HitomiMetadata>();
+        public List<HitomiIndexMetadata> metadata_collection = new List<HitomiIndexMetadata>();
 
         private object post_length_lock = new object();
         private object post_status_lock = new object();
@@ -131,7 +131,7 @@ namespace Koromo_Copy.Utility
                             lock (metadata_collection)
                             {
                                 string str = Encoding.UTF8.GetString((outputStream as MemoryStream).ToArray());
-                                metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiMetadata>>(str));
+                                metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiIndexMetadata>>(str));
                             }
                         }
                     }

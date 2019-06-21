@@ -340,7 +340,7 @@ namespace Koromo_Copy.Component.Hitomi
             return querys.Take(max + 1).ToArray();
         }
 
-        public static bool match(object[] queries, HitomiMetadata md)
+        public static bool match(object[] queries, HitomiIndexMetadata md)
         {
             bool[] checker = new bool[queries.Length];
 
@@ -360,28 +360,28 @@ namespace Koromo_Copy.Component.Hitomi
 
                             case HitomiDataAdvancedQueryTokenType.Common:
                                 if (md.Artists != null)
-                                    checker[i] = md.Artists.Any(x => x.Contains(token));
+                                    checker[i] = md.Artists.Any(x => HitomiIndex.Instance.index.Artists[x].Contains(token));
                                 if (md.Name != null)
                                     checker[i] = md.Name.ToLower().Contains(token);
                                 if (md.Groups != null)
-                                    checker[i] = md.Groups.Any(x => x.Contains(token));
+                                    checker[i] = md.Groups.Any(x => HitomiIndex.Instance.index.Groups[x].Contains(token));
                                 if (md.Parodies != null)
-                                    checker[i] = md.Parodies.Any(x => x.Contains(token));
+                                    checker[i] = md.Parodies.Any(x => HitomiIndex.Instance.index.Series[x].Contains(token));
                                 if (md.Characters != null)
-                                    checker[i] = md.Characters.Any(x => x.Contains(token));
-                                if (md.Language == token)
+                                    checker[i] = md.Characters.Any(x => HitomiIndex.Instance.index.Characters[x].Contains(token));
+                                if (md.Language >= 0 && HitomiIndex.Instance.index.Languages[md.Language] == token)
                                     checker[i] = true;
-                                if (md.Type == token)
+                                if (md.Type >= 0 && HitomiIndex.Instance.index.Types[md.Type] == token)
                                     checker[i] = true;
                                 if (md.ID.ToString() == token)
                                     checker[i] = true;
                                 if (md.Tags != null)
-                                    checker[i] = md.Tags.Contains(token);
+                                    checker[i] = md.Tags.Any(x => HitomiIndex.Instance.index.Tags[x].Contains(token));
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.Artists:
                                 if (md.Artists != null)
-                                    checker[i] = md.Artists.Contains(token);
+                                    checker[i] = md.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).Contains(token);
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.Title:
@@ -391,28 +391,28 @@ namespace Koromo_Copy.Component.Hitomi
 
                             case HitomiDataAdvancedQueryTokenType.Groups:
                                 if (md.Groups != null)
-                                    checker[i] = md.Groups.Contains(token);
+                                    checker[i] = md.Groups.Select(x => HitomiIndex.Instance.index.Groups[x]).Contains(token);
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.Series:
                                 if (md.Parodies != null)
-                                    checker[i] = md.Parodies.Contains(token);
+                                    checker[i] = md.Parodies.Select(x => HitomiIndex.Instance.index.Series[x]).Contains(token);
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.Characters:
                                 if (md.Characters != null)
-                                    checker[i] = md.Characters.Contains(token);
+                                    checker[i] = md.Characters.Select(x => HitomiIndex.Instance.index.Characters[x]).Contains(token);
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.Type:
-                                if (md.Type == token)
+                                if (md.Type >= 0 && HitomiIndex.Instance.index.Types[md.Type] == token)
                                     checker[i] = true;
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.Language:
-                                var lang = md.Language;
-                                if (string.IsNullOrEmpty(lang))
-                                    lang = "n/a";
+                                var lang = "n/a"; //md.Language;
+                                if (md.Language >= 0)
+                                    lang = HitomiIndex.Instance.index.Languages[md.Language];
                                 if (lang == token)
                                     checker[i] = true;
                                 break;
@@ -424,17 +424,17 @@ namespace Koromo_Copy.Component.Hitomi
 
                             case HitomiDataAdvancedQueryTokenType.Tag:
                                 if (md.Tags != null)
-                                    checker[i] = md.Tags.Contains(token);
+                                    checker[i] = md.Tags.Select(x => HitomiIndex.Instance.index.Tags[x]).Contains(token);
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.FemaleTag:
                                 if (md.Tags != null)
-                                    checker[i] = md.Tags.Contains("female:" + token);
+                                    checker[i] = md.Tags.Select(x => HitomiIndex.Instance.index.Tags[x]).Contains("female:" + token);
                                 break;
 
                             case HitomiDataAdvancedQueryTokenType.MaleTag:
                                 if (md.Tags != null)
-                                    checker[i] = md.Tags.Contains("male:" + token);
+                                    checker[i] = md.Tags.Select(x => HitomiIndex.Instance.index.Tags[x]).Contains("male:" + token);
                                 break;
                         }
                         if (query.option == HitomiDataAdvancedQueryTokenOption.Complement)
@@ -471,12 +471,12 @@ namespace Koromo_Copy.Component.Hitomi
         }
 
         public static object[] query = null;
-        public static async Task<List<HitomiMetadata>> Search(string query_string)
+        public static async Task<List<HitomiIndexMetadata>> Search(string query_string)
         {
             Stopwatch sw = Stopwatch.StartNew();
 
             int number = Environment.ProcessorCount;
-            int term = HitomiData.Instance.metadata_collection.Count / number;
+            int term = HitomiIndex.Instance.metadata_collection.Count / number;
 
             if (Settings.Instance.Hitomi.UsingSettingLanguageWhenAdvanceSearch)
                 query_string = "lang:" + Settings.Instance.Hitomi.Language + " " + query_string;
@@ -485,20 +485,20 @@ namespace Koromo_Copy.Component.Hitomi
             Monitor.Instance.Push("[AdvancedQuery HitomiMetadata] " + query_string);
             Monitor.Instance.Push(query[1]);
 
-            List<Task<List<HitomiMetadata>>> arr_task = new List<Task<List<HitomiMetadata>>>();
+            List<Task<List<HitomiIndexMetadata>>> arr_task = new List<Task<List<HitomiIndexMetadata>>>();
             for (int i = 0; i < number; i++)
             {
                 int k = i;
                 if (k != number - 1)
-                    arr_task.Add(new Task<List<HitomiMetadata>>(() => search_internal(k * term, k * term + term)));
+                    arr_task.Add(new Task<List<HitomiIndexMetadata>>(() => search_internal(k * term, k * term + term)));
                 else
-                    arr_task.Add(new Task<List<HitomiMetadata>>(() => search_internal(k * term, HitomiData.Instance.metadata_collection.Count)));
+                    arr_task.Add(new Task<List<HitomiIndexMetadata>>(() => search_internal(k * term, HitomiIndex.Instance.metadata_collection.Count)));
             }
 
             Parallel.ForEach(arr_task, task => task.Start());
             await Task.WhenAll(arr_task);
 
-            List<HitomiMetadata> result = new List<HitomiMetadata>();
+            List<HitomiIndexMetadata> result = new List<HitomiIndexMetadata>();
             for (int i = 0; i < number; i++)
             {
                 result.AddRange(arr_task[i].Result);
@@ -512,18 +512,18 @@ namespace Koromo_Copy.Component.Hitomi
             return result;
         }
 
-        private static List<HitomiMetadata> search_internal(int starts, int ends)
+        private static List<HitomiIndexMetadata> search_internal(int starts, int ends)
         {
-            List<HitomiMetadata> result = new List<HitomiMetadata>();
+            List<HitomiIndexMetadata> result = new List<HitomiIndexMetadata>();
             for (int i = starts; i < ends; i++)
             {
-                var v = HitomiData.Instance.metadata_collection[i];
+                var v = HitomiIndex.Instance.metadata_collection[i];
                 if (Settings.Instance.Hitomi.ExclusiveTag != null && v.Tags != null)
                 {
                     int intersec_count = 0;
                     foreach (var tag in Settings.Instance.Hitomi.ExclusiveTag)
                     {
-                        if (v.Tags.Any(vtag => vtag.ToLower().Replace(' ', '_') == tag.ToLower()))
+                        if (v.Tags.Any(vtag => HitomiIndex.Instance.index.Tags[vtag].ToLower().Replace(' ', '_') == tag.ToLower()))
                         {
                             intersec_count++;
                         }

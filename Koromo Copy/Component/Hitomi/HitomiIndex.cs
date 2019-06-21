@@ -30,7 +30,7 @@ namespace Koromo_Copy.Component.Hitomi
         public string[] Tags;
     }
 
-    public class HitomiIndexMetadata
+    public struct HitomiIndexMetadata
     {
         [JsonProperty(PropertyName = "a")]
         public int[] Artists { get; set; }
@@ -222,8 +222,8 @@ namespace Koromo_Copy.Component.Hitomi
 
             foreach (var metadata in metadata_collection)
             {
-                string lang = index.Languages[metadata.Language];
-                if (metadata.Language < 0) lang = "n/a";
+                string lang = "n/a";
+                if (metadata.Language >= 0) lang = index.Languages[metadata.Language];
                 Add(language, lang);
                 if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang) continue;
@@ -232,8 +232,18 @@ namespace Koromo_Copy.Component.Hitomi
                 if (metadata.Groups != null) metadata.Groups.ToList().ForEach(x => Add(group, index.Groups[x]));
                 if (metadata.Characters != null) metadata.Characters.ToList().ForEach(x => Add(character, index.Characters[x]));
                 if (metadata.Parodies != null) metadata.Parodies.ToList().ForEach(x => Add(series, index.Series[x]));
-                if (metadata.Type < 0) Add(type, index.Types[metadata.Type]);
+                if (metadata.Type >= 0) Add(type, index.Types[metadata.Type]);
             }
+
+            tagdata_collection.artist = artist.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.tag = tag.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.female = female.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.male = male.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.group = group.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.character = character.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.series = series.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.type = type.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
+            tagdata_collection.language = language.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
 
             SortTagdata();
 

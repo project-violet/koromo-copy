@@ -17,7 +17,7 @@ namespace Koromo_Copy.Component.Hitomi
     /// <summary>
     /// Hitomi Qurey Library
     /// </summary>
-    public class HitomiQL
+    /*public class HitomiQL
     {
         public class Artist
         {
@@ -219,5 +219,5 @@ namespace Koromo_Copy.Component.Hitomi
             return null;
         }
         #endregion
-    }
+    }*/
 }

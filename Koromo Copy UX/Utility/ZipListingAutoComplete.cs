@@ -90,8 +90,8 @@ namespace Koromo_Copy_UX.Utility
 
             if (!builded) return match;
             
-            var old_data = HitomiData.Instance.tagdata_collection;
-            HitomiData.Instance.tagdata_collection = tagdata_collection;
+            var old_data = HitomiIndex.Instance.tagdata_collection;
+            HitomiIndex.Instance.tagdata_collection = tagdata_collection;
             
             if (word.Contains(":"))
             {
@@ -156,7 +156,7 @@ namespace Koromo_Copy_UX.Utility
                 match.AddRange(data_col);
             match.AddRange(HitomiDataAnalysis.GetTotalList(word));
 
-            HitomiData.Instance.tagdata_collection = old_data;
+            HitomiIndex.Instance.tagdata_collection = old_data;
 
             return match;
         }

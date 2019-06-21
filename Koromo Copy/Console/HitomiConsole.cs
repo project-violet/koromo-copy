@@ -282,11 +282,11 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessLoadMetadata()
         {
-            HitomiData.Instance.LoadMetadataJson();
+            HitomiIndex.Instance.Load();
             
-            if (HitomiData.Instance.metadata_collection != null)
+            if (HitomiIndex.Instance.metadata_collection != null)
             {
-                Console.Instance.WriteLine($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+                Console.Instance.WriteLine($"Loaded metadata: '{HitomiIndex.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
             }
             else
             {
@@ -299,7 +299,7 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessDownloadHidden()
         {
-            Console.Instance.GlobalTask.Add(HitomiData.Instance.DownloadHiddendata());
+            //Console.Instance.GlobalTask.Add(HitomiData.Instance.DownloadHiddendata());
         }
 
         /// <summary>
@@ -307,16 +307,16 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessLoadHidden()
         {
-            HitomiData.Instance.LoadHiddendataJson();
+            //HitomiData.Instance.LoadHiddendataJson();
 
-            if (HitomiData.Instance.metadata_collection != null)
-            {
-                Console.Instance.WriteLine($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
-            }
-            else
-            {
-                Console.Instance.WriteErrorLine("'hidden.json' file does not exist or is a incorrect file.");
-            }
+            //if (HitomiData.Instance.metadata_collection != null)
+            //{
+            //    Console.Instance.WriteLine($"Loaded metadata: '{HitomiData.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
+            //}
+            //else
+            //{
+            //    Console.Instance.WriteErrorLine("'hidden.json' file does not exist or is a incorrect file.");
+            //}
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessSync()
         {
-            Console.Instance.GlobalTask.Add(HitomiData.Instance.Synchronization());
+            //Console.Instance.GlobalTask.Add(HitomiData.Instance.Synchronization());
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessSearch(string[] args, bool show_all)
         {
-            if (HitomiData.Instance.metadata_collection == null)
+            if (HitomiIndex.Instance.metadata_collection == null)
             {
                 Console.Instance.WriteErrorLine($"Please load metadatas before searching!.");
                 return;
@@ -349,34 +349,34 @@ namespace Koromo_Copy.Console
 
             Console.Instance.GlobalTask.Add(Task.Run(async () =>
             {
-                var result = await HitomiDataParser.SearchAsync(args[0] + " " + Instance.setter);
-                result.Reverse();
-                if (result.Count == 0)
-                {
-                    Console.Instance.WriteLine("No results were found for your search.");
-                    return;
-                }
-                foreach (var metadata in result)
-                {
-                    if (show_all)
-                    {
-                        string artists = metadata.Artists != null ? string.Join(", ", metadata.Artists) : "N/A";
-                        string tags = metadata.Tags != null ? string.Join(", ", metadata.Tags) : "";
-                        string series = metadata.Parodies != null ? string.Join(", ", metadata.Parodies) : "";
-                        string character = metadata.Characters != null ? string.Join(", ", metadata.Characters) : "";
-                        string group = metadata.Groups != null ? string.Join(", ", metadata.Groups) : "";
-                        string lang = metadata.Language != null ? metadata.Language : "";
-                        string type = metadata.Type != null ? metadata.Type : "";
-
-                        Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artists.PadLeft(15)} | {metadata.Name} | {lang} | {type} | {series} | {character} | {group} | {tags}");
-                    }
-                    else
-                    {
-                        string artist = metadata.Artists != null ? metadata.Artists[0] : "N/A";
-                        Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artist.PadLeft(15)} | {metadata.Name}");
-                    }
-                }
-                Console.Instance.WriteLine($"Found {result.Count} results.");
+                //var result = await HitomiDataParser.SearchAsync(args[0] + " " + Instance.setter);
+                //result.Reverse();
+                //if (result.Count == 0)
+                //{
+                //    Console.Instance.WriteLine("No results were found for your search.");
+                //    return;
+                //}
+                //foreach (var metadata in result)
+                //{
+                //    if (show_all)
+                //    {
+                //        string artists = metadata.Artists != null ? string.Join(", ", metadata.Artists) : "N/A";
+                //        string tags = metadata.Tags != null ? string.Join(", ", metadata.Tags) : "";
+                //        string series = metadata.Parodies != null ? string.Join(", ", metadata.Parodies) : "";
+                //        string character = metadata.Characters != null ? string.Join(", ", metadata.Characters) : "";
+                //        string group = metadata.Groups != null ? string.Join(", ", metadata.Groups) : "";
+                //        string lang = metadata.Language != null ? metadata.Language : "";
+                //        string type = metadata.Type != null ? metadata.Type : "";
+                //
+                //        Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artists.PadLeft(15)} | {metadata.Name} | {lang} | {type} | {series} | {character} | {group} | {tags}");
+                //    }
+                //    else
+                //    {
+                //        string artist = metadata.Artists != null ? metadata.Artists[0] : "N/A";
+                //        Console.Instance.WriteLine($"{metadata.ID.ToString().PadLeft(8)} | {artist.PadLeft(15)} | {metadata.Name}");
+                //    }
+                //}
+                //Console.Instance.WriteLine($"Found {result.Count} results.");
             }));
         }
 
@@ -385,11 +385,11 @@ namespace Koromo_Copy.Console
         /// </summary>
         static void ProcessLatest()
         {
-            Console.Instance.WriteLine($"{HitomiData.Instance.metadata_collection[0].ID}");
+            Console.Instance.WriteLine($"{HitomiIndex.Instance.metadata_collection[0].ID}");
 
             using (var wc = new System.Net.WebClient())
             {
-                string target = wc.DownloadString("https://hitomi.la/galleries/" + HitomiData.Instance.metadata_collection[0].ID + ".html");
+                string target = wc.DownloadString("https://hitomi.la/galleries/" + HitomiIndex.Instance.metadata_collection[0].ID + ".html");
                 string date_text = Regex.Split(Regex.Split(target, @"<span class=""date"">")[1], @"</span>")[0];
                 Console.Instance.WriteLine(DateTime.Parse(date_text).Ticks.ToString());
                 Console.Instance.WriteLine(DateTime.Parse(date_text).ToString());
