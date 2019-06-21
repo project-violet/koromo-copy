@@ -145,7 +145,7 @@ namespace Koromo_Copy_UX
             {
                 DataContext = new PatchNoteViewModel
                 {
-                    Version = "Koromo Copy 1.10 Beta",
+                    Version = "Koromo Copy 1.11 Beta",
                     Content =
                     "[변경된 기능]\r\n" +
                     " - 데이터 저장방식 변경\r\n\r\n" +
