@@ -79,6 +79,7 @@
     <Compile Include="Component\HCommander.cs" />
     <Compile Include="Component\Hitomi\HitomiBookmark.cs" />
     <Compile Include="Component\Hitomi\HitomiExplore.cs" />
+    <Compile Include="Component\Hitomi\HitomiIndex.cs" />
     <Compile Include="Component\Hitomi\HitomiQL.cs" />
     <Compile Include="Component\Hiyobi\HiyobiNonHManager.cs" />
     <Compile Include="Component\Manazero\ManazeroArticle.cs" />
