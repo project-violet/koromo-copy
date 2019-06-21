@@ -19,7 +19,7 @@ namespace Koromo_Copy
 {
     public class Profiler
     {
-        public const bool UsingProfiler = true;
+        public const bool UsingProfiler = false;
         public const string FileName = "profile.log";
 
         public static void Push(string str)

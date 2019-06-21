@@ -580,6 +580,15 @@ namespace Koromo_Copy.Console
                         }
                     }
                     break;
+
+                case 10:
+                    {
+                        var str = File.ReadAllText("index-metadata.json");
+                        File.WriteAllBytes("index-metadata.compress", str.Zip());
+                        var str2 = File.ReadAllText("index.json");
+                        File.WriteAllBytes("index.compress", str2.Zip());
+                    }
+                    break;
             }
         }
 
