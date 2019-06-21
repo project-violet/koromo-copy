@@ -17,7 +17,7 @@ namespace Koromo_Copy.Component.Hitomi
         public static HitomiArticle MetadataToArticle(HitomiIndexMetadata metadata)
         {
             HitomiArticle article = new HitomiArticle();
-            article.Artists = metadata.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            if (metadata.Artists != null) article.Artists = metadata.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
             if (metadata.Characters != null) article.Characters = metadata.Characters.Select(x => HitomiIndex.Instance.index.Characters[x]).ToArray();
             if (metadata.Groups != null) article.Groups = metadata.Groups.Select(x => HitomiIndex.Instance.index.Groups[x]).ToArray();
             if (metadata.Language >= 0) article.Language = HitomiIndex.Instance.index.Languages[metadata.Language];
