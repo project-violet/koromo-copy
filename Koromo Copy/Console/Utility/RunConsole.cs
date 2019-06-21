@@ -88,7 +88,6 @@ namespace Koromo_Copy.Console.Utility
             { "record", typeof(Record) },
 #if DEBUG
             { "gbt", typeof (GalleryBlockTester) },
-            { "gt", typeof(GalleriesTester) }
 #endif
         };
 

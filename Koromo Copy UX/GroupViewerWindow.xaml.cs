@@ -68,11 +68,14 @@ namespace Koromo_Copy_UX
                 foreach (var md in result)
                 {
                     if (md.Tags != null)
-                        foreach (var tag in md.Tags)
+                        foreach (var _tag in md.Tags)
+                        {
+                            var tag = HitomiIndex.Instance.index.Tags[_tag];
                             if (dictionary.ContainsKey(tag))
                                 dictionary[tag] += 1;
                             else
                                 dictionary.Add(tag, 1);
+                        }
                 }
             }).ContinueWith(t => {
                 var vm = DataContext as Domain.ArtistDataGridViewModel;
@@ -88,7 +91,7 @@ namespace Koromo_Copy_UX
 
         }
 
-        private void LoadThumbnail(List<HitomiMetadata> md)
+        private void LoadThumbnail(List<HitomiIndexMetadata> md)
         {
             List<Task> task = new List<Task>();
             foreach (var metadata in md)
@@ -98,7 +101,7 @@ namespace Koromo_Copy_UX
             }
         }
 
-        private void LoadThumbnail(HitomiMetadata md)
+        private void LoadThumbnail(HitomiIndexMetadata md)
         {
             Application.Current.Dispatcher.Invoke(new Action(
             delegate

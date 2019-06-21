@@ -110,23 +110,23 @@ namespace Koromo_Copy.Component
                 }
             }
 
-            Monitor.Instance.Push($"[HCommander] [2] {magic}");
+            //Monitor.Instance.Push($"[HCommander] [2] {magic}");
 
             //
             // 2. Hiyobi를 이용해 탐색한다
             //
-            if (search_hitomi.HasValue && search_hitomi.Value.Language == "korean")
-            {
-                try
-                {
-                    var html = NetCommon.DownloadString(HiyobiCommon.GetInfoAddress(magic));
-                    var article = HiyobiParser.ParseGalleryConents(html);
-                    return ConvertTo(article, HiyobiCommon.GetInfoAddress(magic), magic);
-                }
-                catch
-                {
-                }
-            }
+            //if (search_hitomi.HasValue && search_hitomi.Value.Language == "korean")
+            //{
+            //    try
+            //    {
+            //        var html = NetCommon.DownloadString(HiyobiCommon.GetInfoAddress(magic));
+            //        var article = HiyobiParser.ParseGalleryConents(html);
+            //        return ConvertTo(article, HiyobiCommon.GetInfoAddress(magic), magic);
+            //    }
+            //    catch
+            //    {
+            //    }
+            //}
 
             Monitor.Instance.Push($"[HCommander] [3] {magic}");
             
@@ -207,28 +207,28 @@ namespace Koromo_Copy.Component
 
         #region 프라이빗 프리베이트
 
-        private static HArticleModel ConvertTo(HitomiMetadata metadata, string url, string magic)
+        private static HArticleModel ConvertTo(HitomiIndexMetadata metadata, string url, string magic)
         {
             var article = new HArticleModel();
             article.Magic = magic;
             article.ArticleType = HArticleType.Hitomi;
             article.URL = url;
-            article.artist = metadata.Artists;
-            article.group = metadata.Groups;
-            article.parody = metadata.Parodies;
-            article.misc = metadata.Tags;
-            article.character = metadata.Characters;
-            article.Language = metadata.Language;
+            article.artist = metadata.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            article.group = metadata.Groups.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            article.parody = metadata.Parodies.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            article.misc = metadata.Tags.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            article.character = metadata.Characters.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            article.Language = HitomiIndex.Instance.index.Languages[metadata.Language];
             article.Title = metadata.Name;
-            article.Type = metadata.Type;
+            article.Type = HitomiIndex.Instance.index.Types[metadata.Type];
             article.Magic = metadata.ID.ToString();
             return article;
         }
 
-        private static HArticleModel ConvertTo(HitomiArticle article, string url, string magic)
+        /*private static HArticleModel ConvertTo(HitomiArticle article, string url, string magic)
         {
             return ConvertTo(HitomiLegalize.ArticleToMetadata(article), url, magic);
-        }
+        }*/
 
         private static HArticleModel ConvertTo(HiyobiArticle data, string url, string magic)
         {

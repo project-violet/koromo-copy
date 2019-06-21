@@ -27,9 +27,10 @@ namespace Koromo_Copy.Component.Hitomi
             int starts = 0;
             int latest = 0;
             var result = new List<Tuple<int, int, int>>();
-            foreach (var article in HitomiData.Instance.metadata_collection)
+            foreach (var article in HitomiIndex.Instance.metadata_collection)
             {
-                string lang = article.Language;
+                var lang = "n/a";
+                if (article.Language >= 0) lang = HitomiIndex.Instance.index.Languages[article.Language];
                 if (article.Language == null) lang = "n/a";
                 if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang)

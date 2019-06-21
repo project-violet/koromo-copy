@@ -41,9 +41,9 @@ namespace Koromo_Copy_UX.Utility
             EloSystem tag_sys = new EloSystem();
             HashSet<string> tags = new HashSet<string>();
 
-            foreach (var article in HitomiData.Instance.metadata_collection)
+            foreach (var article in HitomiIndex.Instance.metadata_collection)
                 if (article.Tags != null)
-                    article.Tags.ToList().ForEach(x => tags.Add(x));
+                    article.Tags.ToList().ForEach(x => tags.Add(HitomiIndex.Instance.index.Tags[x]));
 
             var list = tags.ToList();
             list.Sort();
@@ -75,9 +75,9 @@ namespace Koromo_Copy_UX.Utility
                 HashSet<string> second = new HashSet<string>();
 
                 foreach (var tag in a1.Value.Tags)
-                    first.Add(tag);
+                    first.Add(HitomiIndex.Instance.index.Tags[tag]);
                 foreach (var tag in a2.Value.Tags)
-                    second.Add(tag);
+                    second.Add(HitomiIndex.Instance.index.Tags[tag]);
 
                 // 태그 vs 태그가 아닌 작품 vs 작품의 레이팅이므로
                 // 1:1 엘로레이팅이아닌 다 vs 다 레이팅 방법을 사용함
@@ -85,8 +85,8 @@ namespace Koromo_Copy_UX.Utility
                 double r2 = 0.0;
 
                 // 먼저 작품에 포함된 태그들 레이팅의 평균을 가져온다.
-                a1.Value.Tags.ToList().ForEach(x => r1 += tag_sys.Players[tag_dic[x]].Rating);
-                a2.Value.Tags.ToList().ForEach(x => r2 += tag_sys.Players[tag_dic[x]].Rating);
+                a1.Value.Tags.ToList().ForEach(x => r1 += tag_sys.Players[tag_dic[HitomiIndex.Instance.index.Tags[x]]].Rating);
+                a2.Value.Tags.ToList().ForEach(x => r2 += tag_sys.Players[tag_dic[HitomiIndex.Instance.index.Tags[x]]].Rating);
 
                 r1 /= a1.Value.Tags.Length;
                 r2 /= a2.Value.Tags.Length;
@@ -106,7 +106,7 @@ namespace Koromo_Copy_UX.Utility
                 {
                     // a1이 승리하였으므로 Win을 갱신한다.
                     foreach (var tag in a1.Value.Tags)
-                        if (!second.Contains(tag))
+                        if (!second.Contains(HitomiIndex.Instance.index.Tags[tag]))
                         {
                             // 아래 두 과정이 의미하는 바는 다음과 같다.
                             // 리그 오브 레전드의 5vs5 실버 랭크게임을 생각해보자.
@@ -137,31 +137,31 @@ namespace Koromo_Copy_UX.Utility
                             // 45%로 계산된다. 즉, 이 게임에서 지게된다면 패작유저는 적지 않은 레이팅 점수를 잃게 될 것이다.
                             
                             // 작품의 평균레이팅에 대한 태그의 승률을 계산한다.
-                            double ew = 1 / (1 + Math.Pow(10, (r1 - tag_sys.Players[tag_dic[tag]].R) / 400));
+                            double ew = 1 / (1 + Math.Pow(10, (r1 - tag_sys.Players[tag_dic[HitomiIndex.Instance.index.Tags[tag]]].R) / 400));
 
                             // a1의 예측 승률과 ew 승률의 평균을 업데이트한다.
-                            tag_sys.UpdateWin(tag_dic[tag], (ew + e1) / 2);
+                            tag_sys.UpdateWin(tag_dic[HitomiIndex.Instance.index.Tags[tag]], (ew + e1) / 2);
                         }
                     foreach (var tag in a2.Value.Tags)
-                        if (!first.Contains(tag))
+                        if (!first.Contains(HitomiIndex.Instance.index.Tags[tag]))
                         {
-                            double ew = 1 / (1 + Math.Pow(10, (r2 - tag_sys.Players[tag_dic[tag]].R) / 400));
-                            tag_sys.UpdateLose(tag_dic[tag], (ew + e2) / 2);
+                            double ew = 1 / (1 + Math.Pow(10, (r2 - tag_sys.Players[tag_dic[HitomiIndex.Instance.index.Tags[tag]]].R) / 400));
+                            tag_sys.UpdateLose(tag_dic[HitomiIndex.Instance.index.Tags[tag]], (ew + e2) / 2);
                         }
                 }
                 else if (d.Item3 == 0)
                 {
                     foreach (var tag in a1.Value.Tags)
-                        if (!second.Contains(tag))
+                        if (!second.Contains(HitomiIndex.Instance.index.Tags[tag]))
                         {
-                            double ew = 1 / (1 + Math.Pow(10, (r1 - tag_sys.Players[tag_dic[tag]].R) / 400));
-                            tag_sys.UpdateDraw(tag_dic[tag], (ew + e1) / 2);
+                            double ew = 1 / (1 + Math.Pow(10, (r1 - tag_sys.Players[tag_dic[HitomiIndex.Instance.index.Tags[tag]]].R) / 400));
+                            tag_sys.UpdateDraw(tag_dic[HitomiIndex.Instance.index.Tags[tag]], (ew + e1) / 2);
                         }
                     foreach (var tag in a2.Value.Tags)
-                        if (!first.Contains(tag))
+                        if (!first.Contains(HitomiIndex.Instance.index.Tags[tag]))
                         {
-                            double ew = 1 / (1 + Math.Pow(10, (r2 - tag_sys.Players[tag_dic[tag]].R) / 400));
-                            tag_sys.UpdateDraw(tag_dic[tag], (ew + e2) / 2);
+                            double ew = 1 / (1 + Math.Pow(10, (r2 - tag_sys.Players[tag_dic[HitomiIndex.Instance.index.Tags[tag]]].R) / 400));
+                            tag_sys.UpdateDraw(tag_dic[HitomiIndex.Instance.index.Tags[tag]], (ew + e2) / 2);
                         }
                 }
             }
@@ -199,13 +199,13 @@ namespace Koromo_Copy_UX.Utility
             var article_cnt = new Dictionary<string, int>();
 
             // 작가 작품 수 및 태그 수 수집
-            foreach (var md in HitomiData.Instance.metadata_collection)
+            foreach (var md in HitomiIndex.Instance.metadata_collection)
             {
                 var artist = "";
                 if (md.Artists != null && md.Artists.Length != 0)
-                    artist = md.Artists[0].Replace(' ', '_');
+                    artist = HitomiIndex.Instance.index.Artists[md.Artists[0]].Replace(' ', '_');
                 else if (md.Groups != null && md.Groups.Length != 0)
-                    artist = md.Groups[0].Replace(' ', '_');
+                    artist = HitomiIndex.Instance.index.Groups[md.Groups[0]].Replace(' ', '_');
                 else
                     continue;
 
@@ -222,8 +222,9 @@ namespace Koromo_Copy_UX.Utility
                     tags = artist_tags[artist];
                 else
                     tags = new Dictionary<string, int>();
-                foreach (var tag in md.Tags)
+                foreach (var _tag in md.Tags)
                 {
+                    var tag = HitomiIndex.Instance.index.Tags[_tag];
                     if (!filter_tags.Contains(tag)) continue;
                     if (tags.ContainsKey(tag))
                         tags[tag] += 1;

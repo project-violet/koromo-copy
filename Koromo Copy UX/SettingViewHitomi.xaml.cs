@@ -125,7 +125,7 @@ namespace Koromo_Copy_UX
         {
             Settings.Instance.Hitomi.Language = HitomiLegalize.LegalizeLanguage(Language.Text);
             Settings.Instance.Save();
-            HitomiData.Instance.RebuildTagData();
+            HitomiIndex.Instance.RebuildTagData();
         }
 
         private void ExclusiveTags_LostFocus(object sender, RoutedEventArgs e)

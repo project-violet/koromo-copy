@@ -1147,12 +1147,12 @@ namespace Koromo_Copy.Component.Hitomi
 
         public static void print_datetime_data()
         {
-            int count = HitomiData.Instance.metadata_collection.Count;
-            int interval = HitomiData.Instance.metadata_collection.Count / 1000;
+            int count = HitomiIndex.Instance.metadata_collection.Count;
+            int interval = HitomiIndex.Instance.metadata_collection.Count / 1000;
 
             for (int i = 0; i < count; i += interval)
             {
-                download_list.Add(HitomiData.Instance.metadata_collection[i].ID.ToString());
+                download_list.Add(HitomiIndex.Instance.metadata_collection[i].ID.ToString());
             }
 
             for (int i = 0; i < 32; i++)

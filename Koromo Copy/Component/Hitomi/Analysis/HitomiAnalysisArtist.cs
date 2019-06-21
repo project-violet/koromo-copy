@@ -20,7 +20,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
         public int MetadataCount { get; set; } = 0;
         public string Aritst { get; set; }
 
-        public HitomiAnalysisArtist(string artist, List<HitomiMetadata> metadatas)
+        public HitomiAnalysisArtist(string artist, List<HitomiIndexMetadata> metadatas)
         {
             Dictionary<string, int> tags_map = new Dictionary<string, int>();
             Aritst = artist;
@@ -30,15 +30,16 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
                 if (metadata.Tags == null) continue;
                 if (!Settings.Instance.HitomiAnalysis.RecommendLanguageALL)
                 {
-                    string lang = metadata.Language;
-                    if (metadata.Language == null) lang = "N/A";
+                    string lang = "N/A";
+                    if (metadata.Language >= 0) lang = HitomiIndex.Instance.index.Languages[metadata.Language];
                     if (Settings.Instance.Hitomi.Language != "ALL" &&
                         Settings.Instance.Hitomi.Language != lang) continue;
                 }
                 tags_count += metadata.Tags.Length;
                 MetadataCount += 1;
-                foreach (var tag in metadata.Tags)
+                foreach (var _tag in metadata.Tags)
                 {
+                    var tag = HitomiIndex.Instance.index.Tags[_tag];
                     if (Settings.Instance.HitomiAnalysis.UsingOnlyFMTagsOnAnalysis && 
                         !tag.StartsWith("female:") && !tag.StartsWith("male:")) continue;
                     if (tags_map.ContainsKey(tag))

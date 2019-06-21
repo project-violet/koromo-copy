@@ -19,7 +19,7 @@ namespace Koromo_Copy.Component.Hitomi
     /// </summary>
     public class HitomiDataParser
     {
-        public static async Task<List<HitomiMetadata>> SearchAsync(string search)
+        public static async Task<List<HitomiIndexMetadata>> SearchAsync(string search)
         {
             HitomiDataQuery query = new HitomiDataQuery();
             List<string> positive_data = new List<string>();
@@ -118,7 +118,7 @@ namespace Koromo_Copy.Component.Hitomi
             }
             
             Stopwatch sw = Stopwatch.StartNew();
-            List<HitomiMetadata> query_result;
+            List<HitomiIndexMetadata> query_result;
             if (recent == true)
             {
                 Monitor.Instance.Push($"[Query GetSubsetOf] {recent_start} ~ {recent_count}");

@@ -38,14 +38,14 @@ namespace Koromo_Copy.Component.Hitomi
             }
         }
 
-        public static List<HitomiMetadata> GetSubsetOf(int start, int count)
+        public static List<HitomiIndexMetadata> GetSubsetOf(int start, int count)
         {
-            List<HitomiMetadata> result = new List<HitomiMetadata>();
+            List<HitomiIndexMetadata> result = new List<HitomiIndexMetadata>();
             List<string> x_tag = Settings.Instance.Hitomi.ExclusiveTag.ToList();
-            foreach (var v in HitomiData.Instance.metadata_collection)
+            foreach (var v in HitomiIndex.Instance.metadata_collection)
             {
-                string lang = v.Language;
-                if (v.Language == null) lang = "n/a";
+                string lang = "n/a";
+                if (v.Language >= 0) lang = HitomiIndex.Instance.index.Languages[v.Language];
                 if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang) continue;
                 if (v.Tags != null)
@@ -53,7 +53,7 @@ namespace Koromo_Copy.Component.Hitomi
                     int intersec_count = 0;
                     foreach (var tag in x_tag)
                     {
-                        if (v.Tags.Any(vtag => vtag.ToLower().Replace(' ', '_') == tag.ToLower()))
+                        if (v.Tags.Any(vtag => HitomiIndex.Instance.index.Tags[vtag].ToLower().Replace(' ', '_') == tag.ToLower()))
                         {
                             intersec_count++;
                         }
@@ -70,25 +70,25 @@ namespace Koromo_Copy.Component.Hitomi
             return result;
         }
 
-        public static async Task<List<HitomiMetadata>> Search3(HitomiDataQuery query)
+        public static async Task<List<HitomiIndexMetadata>> Search3(HitomiDataQuery query)
         {
             int number = Environment.ProcessorCount;
-            int term = HitomiData.Instance.metadata_collection.Count / number;
+            int term = HitomiIndex.Instance.metadata_collection.Count / number;
 
-            List<Task<List<HitomiMetadata>>> arr_task = new List<Task<List<HitomiMetadata>>>();
+            List<Task<List<HitomiIndexMetadata>>> arr_task = new List<Task<List<HitomiIndexMetadata>>>();
             for (int i = 0; i < number; i++)
             {
                 int k = i;
                 if (k != number - 1)
-                    arr_task.Add(new Task<List<HitomiMetadata>>(() => search_internal(query, k * term, k * term + term)));
+                    arr_task.Add(new Task<List<HitomiIndexMetadata>>(() => search_internal(query, k * term, k * term + term)));
                 else
-                    arr_task.Add(new Task<List<HitomiMetadata>>(() => search_internal(query, k * term, HitomiData.Instance.metadata_collection.Count)));
+                    arr_task.Add(new Task<List<HitomiIndexMetadata>>(() => search_internal(query, k * term, HitomiIndex.Instance.metadata_collection.Count)));
             }
 
             Parallel.ForEach(arr_task, task => task.Start());
             await Task.WhenAll(arr_task);
 
-            List<HitomiMetadata> result = new List<HitomiMetadata>();
+            List<HitomiIndexMetadata> result = new List<HitomiIndexMetadata>();
             for (int i = 0; i < number; i++)
             {
                 result.AddRange(arr_task[i].Result);
@@ -98,19 +98,19 @@ namespace Koromo_Copy.Component.Hitomi
             return result;
         }
 
-        private static List<HitomiMetadata> search_internal(HitomiDataQuery query, int starts, int ends)
+        private static List<HitomiIndexMetadata> search_internal(HitomiDataQuery query, int starts, int ends)
         {
-            List<HitomiMetadata> result = new List<HitomiMetadata>();
+            List<HitomiIndexMetadata> result = new List<HitomiIndexMetadata>();
             for (int i = starts; i < ends; i++)
             {
-                var v = HitomiData.Instance.metadata_collection[i];
+                var v = HitomiIndex.Instance.metadata_collection[i];
                 if (query.Common.Contains(v.ID.ToString()))
                 {
                     result.Add(v);
                     continue;
                 }
-                string lang = v.Language;
-                if (v.Language == null) lang = "n/a";
+                string lang = "n/a"; //v.Language;
+                if (v.Language >= 0) lang = HitomiIndex.Instance.index.Languages[v.Language];
                 if (Settings.Instance.Hitomi.Language != "all" &&
                     Settings.Instance.Hitomi.Language != lang) continue;
                 if (query.Language != null &&
@@ -122,7 +122,7 @@ namespace Koromo_Copy.Component.Hitomi
                         int intersec_count = 0;
                         foreach (var tag in query.TagExclude)
                         {
-                            if (v.Tags.Any(vtag => vtag.ToLower().Replace(' ', '_') == tag.ToLower()))
+                            if (v.Tags.Any(vtag => HitomiIndex.Instance.index.Tags[vtag].ToLower().Replace(' ', '_') == tag.ToLower()))
                             {
                                 intersec_count++;
                             }
@@ -136,20 +136,20 @@ namespace Koromo_Copy.Component.Hitomi
                 if (query.Common.Count > 0)
                 {
                     IntersectCountSplit(v.Name.Split(' '), query.Common, ref check);
-                    IntersectCountSplit(v.Tags, query.Common, ref check);
-                    IntersectCountSplit(v.Artists, query.Common, ref check);
-                    IntersectCountSplit(v.Groups, query.Common, ref check);
-                    IntersectCountSplit(v.Parodies, query.Common, ref check);
-                    IntersectCountSplit(v.Characters, query.Common, ref check);
+                    if (v.Tags != null) IntersectCountSplit(v.Tags.Select(x => HitomiIndex.Instance.index.Tags[x]).ToArray(), query.Common, ref check);
+                    if (v.Artists != null) IntersectCountSplit(v.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray(), query.Common, ref check);
+                    if (v.Groups != null) IntersectCountSplit(v.Groups.Select(x => HitomiIndex.Instance.index.Groups[x]).ToArray(), query.Common, ref check);
+                    if (v.Parodies != null) IntersectCountSplit(v.Parodies.Select(x => HitomiIndex.Instance.index.Series[x]).ToArray(), query.Common, ref check);
+                    if (v.Characters != null) IntersectCountSplit(v.Characters.Select(x => HitomiIndex.Instance.index.Characters[x]).ToArray(), query.Common, ref check);
                 }
                 bool connect = false;
                 if (check.Length == 0) { check = new bool[1]; check[0] = true; }
-                if (check[0] && v.Artists != null && query.Artists != null) { check[0] = IsIntersect(v.Artists, query.Artists); connect = true; } else if (query.Artists != null) check[0] = false;
-                if (check[0] && v.Tags != null && query.TagInclude != null) { check[0] = IsIntersect(v.Tags, query.TagInclude); connect = true; } else if (query.TagInclude != null) check[0] = false;
-                if (check[0] && v.Groups != null && query.Groups != null) { check[0] = IsIntersect(v.Groups, query.Groups); connect = true; } else if (query.Groups != null) check[0] = false;
-                if (check[0] && v.Parodies != null && query.Series != null) { check[0] = IsIntersect(v.Parodies, query.Series); connect = true; } else if (query.Series != null) check[0] = false;
-                if (check[0] && v.Characters != null && query.Characters != null) { check[0] = IsIntersect(v.Characters, query.Characters); connect = true; } else if (query.Characters != null) check[0] = false;
-                if (check[0] && v.Type != null && query.Type != null) { check[0] = query.Type.Any(x => x == v.Type); connect = true; } else if (query.Type != null) check[0] = false;
+                if (check[0] && v.Artists != null && query.Artists != null) { check[0] = IsIntersect(v.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray(), query.Artists); connect = true; } else if (query.Artists != null) check[0] = false;
+                if (check[0] && v.Tags != null && query.TagInclude != null) { check[0] = IsIntersect(v.Tags.Select(x => HitomiIndex.Instance.index.Tags[x]).ToArray(), query.TagInclude); connect = true; } else if (query.TagInclude != null) check[0] = false;
+                if (check[0] && v.Groups != null && query.Groups != null) { check[0] = IsIntersect(v.Groups.Select(x => HitomiIndex.Instance.index.Groups[x]).ToArray(), query.Groups); connect = true; } else if (query.Groups != null) check[0] = false;
+                if (check[0] && v.Parodies != null && query.Series != null) { check[0] = IsIntersect(v.Parodies.Select(x => HitomiIndex.Instance.index.Series[x]).ToArray(), query.Series); connect = true; } else if (query.Series != null) check[0] = false;
+                if (check[0] && v.Characters != null && query.Characters != null) { check[0] = IsIntersect(v.Characters.Select(x => HitomiIndex.Instance.index.Characters[x]).ToArray(), query.Characters); connect = true; } else if (query.Characters != null) check[0] = false;
+                if (check[0] && v.Type != null && query.Type != null) { check[0] = query.Type.Any(x => v.Type >= 0 && x == HitomiIndex.Instance.index.Characters[v.Type]); connect = true; } else if (query.Type != null) check[0] = false;
                 if (check.All((x => x)) && ((query.Common.Count == 0 && connect) || query.Common.Count > 0))
                     result.Add(v);
             }

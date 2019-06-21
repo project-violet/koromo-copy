@@ -183,19 +183,20 @@ namespace Koromo_Copy_UX
 
                    foreach (var artist in artists.Trim().Split(' '))
                    {
-                       foreach (var data in HitomiData.Instance.metadata_collection)
+                       foreach (var data in HitomiIndex.Instance.metadata_collection)
                        {
                            if (!Settings.Instance.HitomiAnalysis.RecommendLanguageALL)
                            {
-                               string lang = data.Language;
-                               if (data.Language == null) lang = "N/A";
+                               var lang = "n/a";
+                               if (data.Language >= 0) lang = HitomiIndex.Instance.index.Languages[data.Language];
                                if (Settings.Instance.Hitomi.Language != "ALL" &&
                                    Settings.Instance.Hitomi.Language != lang) continue;
                            }
-                           if (data.Artists != null && data.Tags != null && data.Artists.Contains(artist.Replace('_', ' ')))
+                           if (data.Artists != null && data.Tags != null && data.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).Contains(artist.Replace('_', ' ')))
                            {
-                               foreach (var tag in data.Tags)
+                               foreach (var _tag in data.Tags)
                                {
+                                   var tag = HitomiIndex.Instance.index.Tags[_tag];
                                    if (tags.ContainsKey(tag))
                                        tags[tag] = tags[tag] + 1;
                                    else
