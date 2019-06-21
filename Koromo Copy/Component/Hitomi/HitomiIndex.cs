@@ -325,16 +325,6 @@ namespace Koromo_Copy.Component.Hitomi
             tagdata_collection.language = language.Select(x => new HitomiTagdata() { Tag = x.Key, Count = x.Value }).ToList();
 
             SortTagdata();
-
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "tagdata.json")))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, tagdata_collection);
-            }
         }
 
         #endregion
