@@ -74,7 +74,7 @@ namespace Koromo_Copy.LP
 
         public static string Assembly(string hhh)
         {
-            string retstr = "";
+            var builder = new StringBuilder(hhh.Length);
 
             for (int i = 0; i <= hhh.Length - 1; i++)
             {
@@ -87,20 +87,20 @@ namespace Koromo_Copy.LP
                 {
                     if (SafeLetterExecuative)
                     {
-                        retstr += hhh[i]; continue;
+                        builder.Append(hhh[i]); continue;
                     }
                     
                     medial = findifexist(IndexHangulMedialCh2, hhh[i].ToString());
 
                     if (medial < 0)
-                        retstr += hhh[i];
+                        builder.Append(hhh[i]);
                     else
-                        retstr += IndexHangulMedial[medial];
+                        builder.Append(IndexHangulMedial[medial]);
                     continue;
                 }
                 if (hhh.Length - 1 == i)
                 {
-                    retstr += IndexHangulInitial[initial];
+                    builder.Append(IndexHangulInitial[initial]);
                     break;
                 }
                 i += 1;
@@ -108,13 +108,13 @@ namespace Koromo_Copy.LP
                 medial = findifexist(IndexHangulMedialCh2, hhh[i].ToString());
                 if (medial < 0)
                 {
-                    retstr += IndexHangulInitial[initial];
+                    builder.Append(IndexHangulInitial[initial]);
                     i -= 1;
                     continue;
                 }
                 if (hhh.Length - 1 == i)
                 {
-                    retstr += hangul_comination(initial, medial, 0);
+                    builder.Append(hangul_comination(initial, medial, 0));
                     continue;
                 }
                 else if (hhh.Length - 1 != i)
@@ -124,7 +124,7 @@ namespace Koromo_Copy.LP
                 }
                 if (hhh.Length - 1 == i)
                 {
-                    retstr += hangul_comination(initial, medial, 0);
+                    builder.Append(hangul_comination(initial, medial, 0));
                     break;
                 }
                 i += 1;
@@ -134,8 +134,8 @@ namespace Koromo_Copy.LP
                 {
                     if (IndexHangulMedialCh2.Contains(hhh[i + 1].ToString()))
                     {
-                           i -= 1;
-                        retstr += hangul_comination(initial, medial, 0);
+                        i -= 1;
+                        builder.Append(hangul_comination(initial, medial, 0));
                         continue;
                     }
                     else if (hhh.Length - 1 >= i + 2)
@@ -148,7 +148,7 @@ namespace Koromo_Copy.LP
                 final = findifexist(IndexHangulFinalCh2, hhh[i].ToString());
                 if (final < 0)
                 {
-                    retstr += hangul_comination(initial, medial, 0);
+                    builder.Append(hangul_comination(initial, medial, 0));
                     i -= 1;
                     continue;
                 }
@@ -157,15 +157,15 @@ namespace Koromo_Copy.LP
                     if (IndexHangulFinalDu2.Contains(hhh[i + 1]))
                         jksaveput(new string(new[] { hhh[i], hhh[i + 1] }), IndexHangulFinalCh2, ref final, ref i);
                 }
-                retstr += hangul_comination(initial, medial, final);
+                builder.Append(hangul_comination(initial, medial, final));
             }
 
-            return retstr;
+            return builder.ToString();
         }
         
         public static string Assembly3(string hhh)
         {
-            string retstr = "";
+            var builder = new StringBuilder(hhh.Length);
 
             for (int i = 0; i <= hhh.Length - 1; i++)
             {
@@ -183,30 +183,30 @@ namespace Koromo_Copy.LP
                         num_sym = findifexist(IndexNumbericCh3, hhh[i]);
 
                         if (num_sym >= 0)
-                            retstr += IndexNumberic3[num_sym];
+                            builder.Append(IndexNumberic3[num_sym]);
                         else
                         {
                             num_sym = findifexist(IndexSymbolCh3, hhh[i]);
                             if (num_sym >= 0)
-                                retstr += IndexSymbol3[num_sym];
+                                builder.Append(IndexSymbol3[num_sym]);
                             else
-                                retstr += hhh[i];
+                                builder.Append(hhh[i]);
                         }
                     }
                     else
                     {
                         if (SafeLetterExecuative)
                         {
-                            retstr += hhh[i]; continue;
+                            builder.Append(hhh[i]); continue;
                         }
 
-                        retstr += IndexHangulMedial[medial];
+                        builder.Append(IndexHangulMedial[medial]);
                     }
                     continue;
                 }
                 if (hhh.Length - 1 == i)
                 {
-                    retstr += IndexHangulInitial[initial];
+                    builder.Append(IndexHangulInitial[initial]);
                     break;
                 }
                 else if (hhh.Length - 1 != i)
@@ -234,14 +234,14 @@ namespace Koromo_Copy.LP
                     }
                     else
                     {
-                        retstr += IndexHangulInitial[initial];
+                        builder.Append(IndexHangulInitial[initial]);
                         i -= 1;
                         continue;
                     }
                 }
                 if (hhh.Length - 1 == i)
                 {
-                    retstr += hangul_comination(initial, medial, 0);
+                    builder.Append(hangul_comination(initial, medial, 0));
                     continue;
                 }
                 else if (hhh.Length - 1 != i)
@@ -251,7 +251,7 @@ namespace Koromo_Copy.LP
                 }
                 if (hhh.Length - 1 == i)
                 {
-                    retstr += hangul_comination(initial, medial, 0);
+                    builder.Append(hangul_comination(initial, medial, 0));
                     break;
                 }
                 i += 1;
@@ -262,7 +262,7 @@ namespace Koromo_Copy.LP
                     if (IndexHangulMedialCh3.Contains(hhh[i + 1].ToString()))
                     {
                         i -= 1;
-                        retstr += hangul_comination(initial, medial, 0);
+                        builder.Append(hangul_comination(initial, medial, 0));
                         continue;
                     }
                     else if (hhh.Length - 1 >= i + 2)
@@ -278,7 +278,7 @@ namespace Koromo_Copy.LP
                     final = findifexist(IndexHangulFinalCh3Do, hhh[i].ToString());
                     if (final < 0)
                     {
-                        retstr += hangul_comination(initial, medial, 0);
+                        builder.Append(hangul_comination(initial, medial, 0));
                         i -= 1;
                         continue;
                     }
@@ -288,10 +288,10 @@ namespace Koromo_Copy.LP
                     if (IndexHangulFinalDu3.Contains(hhh[i + 1]))
                         jksaveput(new string(new[] { hhh[i], hhh[i + 1] }), IndexHangulFinalCh3, ref final, ref i);
                 }
-                retstr += hangul_comination(initial, medial, final);
+                builder.Append(hangul_comination(initial, medial, final));
             }
 
-            return retstr;
+            return builder.ToString();
         }
         
         private static int findifexist<T>(T[] _array, T _item) where T : IComparable<T>
