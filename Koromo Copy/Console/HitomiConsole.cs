@@ -554,6 +554,32 @@ namespace Koromo_Copy.Console
                         HitomiIndex.MakeIndex();
                     }
                     break;
+
+                case 9:
+                    {
+                        var hidden = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json")));
+                        var gall = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "galleries.json")));
+
+                        
+                        for (int i = 0; i < gall.Count; i++)
+                            for (int j = 0; j < hidden.Count; j++)
+                                if (gall[i].Magic == hidden[j].Magic)
+                                {
+                                    hidden[j].Groups = gall[i].Groups;
+                                    hidden[j].Characters = gall[i].Characters;
+                                }
+
+                        JsonSerializer serializer = new JsonSerializer();
+                        serializer.Converters.Add(new Newtonsoft.Json.Converters.JavaScriptDateTimeConverter());
+                        serializer.NullValueHandling = NullValueHandling.Ignore;
+
+                        using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata2.json")))
+                        using (JsonWriter writer = new JsonTextWriter(sw))
+                        {
+                            serializer.Serialize(writer, hidden);
+                        }
+                    }
+                    break;
             }
         }
 

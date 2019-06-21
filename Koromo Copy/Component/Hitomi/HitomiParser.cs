@@ -59,24 +59,23 @@ namespace Koromo_Copy.Component.Hitomi
 
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(source);
-            HtmlNode nodes = document.DocumentNode.SelectSingleNode("/div[@class='gallery-info']/table/tbody");
-            //HtmlNode nodes = document.DocumentNode.SelectSingleNode("/div[@class='content']");
+            HtmlNode nodes = document.DocumentNode.SelectSingleNode("//div[@class='content']");
 
-            //article.Magic = nodes.SelectSingleNode("./div[3]/h1/a").GetAttributeValue("href", "").Split('/')[1].Split('.')[0];
+            article.Magic = nodes.SelectSingleNode("./div[3]/h1/a").GetAttributeValue("href", "").Split('/')[2].Split('.')[0];
             //article.Title = nodes.SelectSingleNode("./div[3]/h1").InnerText.Trim();
             //article.Thumbnail = nodes.SelectSingleNode("./div[2]/div/a/img").GetAttributeValue("src", "");
             //article.Artists = nodes.SelectSingleNode(".")
-            
-            foreach (var tr in nodes.SelectNodes("./tr").ToList())
+
+            foreach (var tr in document.DocumentNode.SelectNodes("//div[@class='gallery-info']/table/tr").ToList())
             {
                 var tt = tr.SelectSingleNode("./td").InnerText.ToLower().Trim();
                 if (tt == "group")
                 {
-                    article.Groups = tr.SelectNodes(".//a").Select(x => x.InnerText.Trim()).ToArray();
+                    article.Groups = tr.SelectNodes(".//a")?.Select(x => x.InnerText.Trim()).ToArray();
                 }
                 else if (tt == "characters")
                 {
-                    article.Characters = tr.SelectNodes(".//a").Select(x => x.InnerText.Trim()).ToArray();
+                    article.Characters = tr.SelectNodes(".//a")?.Select(x => x.InnerText.Trim()).ToArray();
                 }
             }
 

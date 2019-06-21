@@ -215,6 +215,12 @@
     <Compile Include="Utility\Develop\Manage.Designer.cs">
       <DependentUpon>Manage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\GalleriesTester.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\GalleriesTester.designer.cs">
+      <DependentUpon>GalleriesTester.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\GalleryBlockTester.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,6 +295,9 @@
     </Compile>
     <EmbeddedResource Include="Utility\Develop\Manage.resx">
       <DependentUpon>Manage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\GalleriesTester.resx">
+      <DependentUpon>GalleriesTester.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\GalleryBlockTester.resx">
       <DependentUpon>GalleryBlockTester.cs</DependentUpon>
