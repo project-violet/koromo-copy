@@ -103,22 +103,9 @@ namespace Koromo_Copy_UX
             Task t2 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/raw/master/index-metadata.compress"));
             t2.Start();
             await t2;
-
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
             
-            Koromo_Copy.Monitor.Instance.Push("Write file: index-metadata.json");
-            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "index-metadata.json")))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, hidm);
-            }
-
-            HitomiIndex.Instance.metadata_collection = hidm.metadata;
-            HitomiIndex.Instance.index = hidm.index;
-            //HitomiIndex.Instance.LoadHiddendataJson();
-
+            HitomiIndex.Instance.WriteData();
+            
             SyncButton.IsEnabled = true;
             UpdateSyncDate();
             MainWindow.Instance.FadeOut_MiddlePopup("데이터 동기화 완료!", false);
@@ -258,8 +245,8 @@ namespace Koromo_Copy_UX
                             {
                                 lock (metadata_collection)
                                 {
-                                    var str = (outputStream as MemoryStream).ToArray().Unzip();
-                                    hidm = JsonConvert.DeserializeObject<HitomiIndexDataModel>(str);
+                                    var str = (outputStream as MemoryStream).ToArray().UnzipByte();
+                                    HitomiIndex.Instance.LoadFromBytes(str);
                                 }
                             }
                         }

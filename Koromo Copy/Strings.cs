@@ -167,6 +167,21 @@ namespace Koromo_Copy
             }
         }
 
+        public static byte[] ZipByte(this byte[] bytes)
+        {
+            using (var msi = new MemoryStream(bytes))
+            using (var mso = new MemoryStream())
+            {
+                using (var gs = new GZipStream(mso, CompressionMode.Compress))
+                {
+                    CopyTo(msi, gs);
+                }
+
+                return mso.ToArray();
+            }
+        }
+
+
         public static string Unzip(this byte[] bytes)
         {
             using (var msi = new MemoryStream(bytes))
@@ -181,6 +196,20 @@ namespace Koromo_Copy
             }
         }
         
+        public static byte[] UnzipByte(this byte[] bytes)
+        {
+            using (var msi = new MemoryStream(bytes))
+            using (var mso = new MemoryStream())
+            {
+                using (var gs = new GZipStream(msi, CompressionMode.Decompress))
+                {
+                    CopyTo(gs, mso);
+                }
+
+                return mso.ToArray();
+            }
+        }
+
         #endregion
     }
 }
