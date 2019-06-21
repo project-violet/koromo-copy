@@ -108,14 +108,15 @@ namespace Koromo_Copy_UX
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
             serializer.NullValueHandling = NullValueHandling.Ignore;
             
-            Koromo_Copy.Monitor.Instance.Push("Write file: hiddendata.json");
-            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "hiddendata.json")))
+            Koromo_Copy.Monitor.Instance.Push("Write file: index-metadata.json");
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "index-metadata.json")))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
-                serializer.Serialize(writer, hiddendata_collection);
+                serializer.Serialize(writer, hidm);
             }
 
-            //HitomiData.Instance.metadata_collection = metadata_collection;
+            HitomiIndex.Instance.metadata_collection = hidm.metadata;
+            HitomiIndex.Instance.index = hidm.index;
             //HitomiIndex.Instance.LoadHiddendataJson();
 
             SyncButton.IsEnabled = true;
@@ -153,7 +154,7 @@ namespace Koromo_Copy_UX
         long prev_bytes = 0;
         
         public List<HitomiIndexMetadata> metadata_collection = new List<HitomiIndexMetadata>();
-        public List<HitomiArticle> hiddendata_collection = new List<HitomiArticle>();
+        public HitomiIndexDataModel hidm;
 
         private object post_length_lock = new object();
         private object post_status_lock = new object();
@@ -252,21 +253,13 @@ namespace Koromo_Copy_UX
                                 read += bytesRead;
                                 lock (post_status_lock) PostStatus(bytesRead);
                             } while (bytesRead != 0);
-
-                            if (url == "https://github.com/dc-koromo/e-archive/releases/download/metadata/metadata.compress")
+                            
+                            if (url == "https://github.com/dc-koromo/e-archive/raw/master/index-metadata.compress")
                             {
                                 lock (metadata_collection)
                                 {
                                     var str = (outputStream as MemoryStream).ToArray().Unzip();
-                                    metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiIndexMetadata>>(str));
-                                }
-                            }
-                            else if (url == "https://github.com/dc-koromo/e-archive/raw/master/index-metadata.compress")
-                            {
-                                lock (hiddendata_collection)
-                                {
-                                    var str = (outputStream as MemoryStream).ToArray().Unzip();
-                                    hiddendata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiArticle>>(str));
+                                    hidm = JsonConvert.DeserializeObject<HitomiIndexDataModel>(str);
                                 }
                             }
                         }

@@ -96,9 +96,7 @@ namespace Koromo_Copy_UX
                     Profiler.Push("Load metadata, hiddendata");
                     try
                     {
-                        HitomiData.Instance.LoadMetadataJson();
-                        HitomiData.Instance.LoadHiddendataJson();
-                        //HitomiIndex.Instance.Load();
+                        HitomiIndex.Instance.Load();
                         MainWindow.Instance.Fade_MiddlePopup(false);
                     }
                     catch (Exception ex)
@@ -107,7 +105,6 @@ namespace Koromo_Copy_UX
                     }
                 }
                 Profiler.Push("Rebuild tag data");
-                //HitomiData.Instance.RebuildTagData();
                 HitomiIndex.Instance.RebuildTagData();
                 if (HitomiIndex.Instance.metadata_collection != null)
                 {
@@ -115,7 +112,7 @@ namespace Koromo_Copy_UX
 
                     if (Settings.Instance.Hitomi.UsingOptimization)
                     {
-                        //HitomiIndex.Instance.OptimizeMetadata();
+                        HitomiIndex.Instance.OptimizeMetadata();
                         Koromo_Copy.Monitor.Instance.Push($"Optimize metadata: '{HitomiIndex.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
                     }
                 }
