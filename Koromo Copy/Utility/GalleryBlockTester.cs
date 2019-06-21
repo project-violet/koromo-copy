@@ -74,7 +74,16 @@ namespace Hitomi_Copy_3._403
                 wc.Encoding = Encoding.UTF8;
                 string x;
                 x = wc.DownloadString("https://ltn.hitomi.la/galleryblock/" + i + ".html");
-                result.Add(HitomiParser.ParseGalleryBlock(x));
+                var aa = HitomiParser.ParseGalleryBlock(x);
+                try
+                {
+                    x = wc.DownloadString("https://hitomi.la/galleries/" + i + ".html");
+                    var a2 = HitomiParser.ParseGallery(x);
+                    aa.Groups = a2.Groups;
+                    aa.Characters = a2.Characters;
+                }
+                catch { }
+                result.Add(aa);
                 PushString($"New! {i}");
             }
             catch (Exception ex)
