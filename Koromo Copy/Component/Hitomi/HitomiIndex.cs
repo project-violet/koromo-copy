@@ -177,9 +177,10 @@ namespace Koromo_Copy.Component.Hitomi
             client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
             var zip = await client.GetByteArrayAsync("https://raw.githubusercontent.com/dc-koromo/e-archive/master/index-metadata.compress");
             var data = zip.Unzip();
-            lock (metadata_collection)
-                metadata_collection.AddRange(JsonConvert.DeserializeObject<IEnumerable<HitomiIndexMetadata>>(data));
+            var re = JsonConvert.DeserializeObject<HitomiIndexDataModel>(data);
             Monitor.Instance.Push($"Download complete: [1/1] 1");
+            metadata_collection = re.metadata;
+            index = re.index;
             SortMetadata();
             if (!Settings.Instance.Hitomi.AutoSync)
             {
@@ -191,7 +192,7 @@ namespace Koromo_Copy.Component.Hitomi
                 using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")))
                 using (JsonWriter writer = new JsonTextWriter(sw))
                 {
-                    serializer.Serialize(writer, metadata_collection);
+                    serializer.Serialize(writer, re);
                 }
             }
         }
@@ -207,6 +208,7 @@ namespace Koromo_Copy.Component.Hitomi
                 var re = JsonConvert.DeserializeObject<HitomiIndexDataModel>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")));
                 metadata_collection = re.metadata;
                 index = re.index;
+                SortMetadata();
             }
         }
 
@@ -225,6 +227,23 @@ namespace Koromo_Copy.Component.Hitomi
             return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"));
         }
         
+        public void OptimizeMetadata()
+        {
+            List<HitomiIndexMetadata> tmeta = new List<HitomiIndexMetadata>();
+            int m = metadata_collection.Count;
+            for (int i = 0; i < m; i++)
+            {
+                string lang = "n/a"; ;
+                if (metadata_collection[i].Language >= 0) lang = index.Languages[metadata_collection[i].Language];
+                if (Settings.Instance.Hitomi.Language != "all" &&
+                    Settings.Instance.Hitomi.Language != lang)
+                    continue;
+                tmeta.Add(metadata_collection[i]);
+            }
+            metadata_collection.Clear();
+            metadata_collection = tmeta;
+        }
+
 #region TagData
 
         public void SortTagdata()
