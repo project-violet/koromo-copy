@@ -69,6 +69,9 @@ namespace Koromo_Copy.Component.Hitomi
                     dic.Add(item, dic.Count);
         }
 
+        public HitomiTagdataCollection tagdata_collection = new HitomiTagdataCollection();
+        public List<HitomiIndexMetadata> metadata_collection = new List<HitomiIndexMetadata>();
+
         public static void MakeIndex()
         {
             var artists = new Dictionary<string, int>();
@@ -134,6 +137,37 @@ namespace Koromo_Copy.Component.Hitomi
             {
                 serializer.Serialize(writer, mdl);
             }
+        }
+
+        public void LoadMetadataJson()
+        {
+            if (CheckMetadataExist())
+                metadata_collection = JsonConvert.DeserializeObject<List<HitomiIndexMetadata>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")));
+        }
+
+        public bool CheckMetadataExist()
+        {
+            return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"));
+        }
+
+        public void SortMetadata()
+        {
+            metadata_collection.Sort((a, b) => b.ID.CompareTo(a.ID));
+        }
+
+        public DateTime DateTimeMetadata()
+        {
+            return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"));
+        }
+
+        public DateTime DateTimeHiddendata()
+        {
+            return File.GetLastWriteTime(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-hiddendata.json"));
+        }
+
+        public bool CheckHiddendataExist()
+        {
+            return File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-hiddendata.json"));
         }
     }
 }
