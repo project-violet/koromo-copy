@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Interface;
+using MessagePack;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -22,42 +23,54 @@ using System.Windows.Forms;
 
 namespace Koromo_Copy.Component.Hitomi
 {
+    [MessagePackObject]
     public class HitomiIndexModel
     {
+        [Key(0)]
         public string[] Artists;
+        [Key(1)]
         public string[] Groups;
+        [Key(2)]
         public string[] Series;
+        [Key(3)]
         public string[] Characters;
+        [Key(4)]
         public string[] Languages;
+        [Key(5)]
         public string[] Types;
+        [Key(6)]
         public string[] Tags;
     }
 
+    [MessagePackObject]
     public struct HitomiIndexMetadata
     {
-        [JsonProperty(PropertyName = "a")]
+        [Key(0)]
         public int[] Artists { get; set; }
-        [JsonProperty(PropertyName = "g")]
+        [Key(1)]
         public int[] Groups { get; set; }
-        [JsonProperty(PropertyName = "p")]
+        [Key(2)]
         public int[] Parodies { get; set; }
-        [JsonProperty(PropertyName = "t")]
+        [Key(3)]
         public int[] Tags { get; set; }
-        [JsonProperty(PropertyName = "c")]
+        [Key(4)]
         public int[] Characters { get; set; }
-        [JsonProperty(PropertyName = "l")]
+        [Key(5)]
         public int Language { get; set; }
-        [JsonProperty(PropertyName = "n")]
+        [Key(6)]
         public string Name { get; set; }
-        [JsonProperty(PropertyName = "type")]
+        [Key(7)]
         public int Type { get; set; }
-        [JsonProperty(PropertyName = "id")]
+        [Key(8)]
         public int ID { get; set; }
     }
 
+    [MessagePackObject]
     public class HitomiIndexDataModel
     {
+        [Key(0)]
         public HitomiIndexModel index;
+        [Key(1)]
         public List<HitomiIndexMetadata> metadata;
     }
 
@@ -115,18 +128,7 @@ namespace Koromo_Copy.Component.Hitomi
             index.Languages = pp(languages);
             index.Types = pp(types);
             index.Tags = pp(tags);
-
-            //JsonSerializer serializer = new JsonSerializer();
-            //serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            //serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            //Monitor.Instance.Push("Write file: index.json");
-            //using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index.json")))
-            //using (JsonWriter writer = new JsonTextWriter(sw))
-            //{
-            //    serializer.Serialize(writer, index);
-            //}
-
+            
             var mdl = new List<HitomiIndexMetadata>();
 
             foreach (var md in HitomiData.Instance.metadata_collection)
@@ -143,27 +145,16 @@ namespace Koromo_Copy.Component.Hitomi
                 if (md.Tags != null) him.Tags = md.Tags.Select(x => tags[x]).ToArray();
                 mdl.Add(him);
             }
-
-            //Monitor.Instance.Push("Write file: index-metadata.json");
-            //using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")))
-            //using (JsonWriter writer = new JsonTextWriter(sw))
-            //{
-            //    serializer.Serialize(writer, mdl);
-            //}
-
+            
             var result = new HitomiIndexDataModel();
             result.index = index;
             result.metadata = mdl;
-
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Converters.Add(new JavaScriptDateTimeConverter());
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            Monitor.Instance.Push("Write file: index-metadata.json");
-            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")))
-            using (JsonWriter writer = new JsonTextWriter(sw))
+            
+            var bbb = MessagePackSerializer.Serialize(result);
+            using (FileStream fsStream = new FileStream(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"), FileMode.Create))
+            using (BinaryWriter sw = new BinaryWriter(fsStream))
             {
-                serializer.Serialize(writer, result);
+                sw.Write(bbb);
             }
         }
 
@@ -176,24 +167,43 @@ namespace Koromo_Copy.Component.Hitomi
             HttpClient client = new HttpClient();
             client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
             var zip = await client.GetByteArrayAsync("https://raw.githubusercontent.com/dc-koromo/e-archive/master/index-metadata.compress");
-            var data = zip.Unzip();
-            var re = JsonConvert.DeserializeObject<HitomiIndexDataModel>(data);
+            var data = zip.UnzipByte();
+            var re = MessagePackSerializer.Deserialize<HitomiIndexDataModel >(data);
             Monitor.Instance.Push($"Download complete: [1/1] 1");
             metadata_collection = re.metadata;
             index = re.index;
             SortMetadata();
             if (!Settings.Instance.Hitomi.AutoSync)
             {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Converters.Add(new JavaScriptDateTimeConverter());
-                serializer.NullValueHandling = NullValueHandling.Ignore;
-
-                Monitor.Instance.Push("Write file: index-metadata.json");
-                using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")))
-                using (JsonWriter writer = new JsonTextWriter(sw))
+                var bbb = MessagePackSerializer.Serialize(re);
+                using (FileStream fsStream = new FileStream(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"), FileMode.Create))
+                using (BinaryWriter sw = new BinaryWriter(fsStream))
                 {
-                    serializer.Serialize(writer, re);
+                    sw.Write(bbb);
                 }
+            }
+        }
+
+        public void LoadFromBytes(byte[] bb)
+        {
+            var re = MessagePackSerializer.Deserialize<HitomiIndexDataModel>(bb);
+            metadata_collection = re.metadata;
+            index = re.index;
+            SortMetadata();
+        }
+
+        public void WriteData()
+        {
+            var result = new HitomiIndexDataModel();
+            result.index = index;
+            result.metadata = metadata_collection;
+            
+            var bbb = MessagePackSerializer.Serialize(result);
+            Koromo_Copy.Monitor.Instance.Push("Write file: index-metadata.json");
+            using (FileStream fsStream = new FileStream(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"), FileMode.Create))
+            using (BinaryWriter sw = new BinaryWriter(fsStream))
+            {
+                sw.Write(bbb);
             }
         }
         
@@ -205,7 +215,7 @@ namespace Koromo_Copy.Component.Hitomi
         {
             if (CheckMetadataExist())
             {
-                var re = JsonConvert.DeserializeObject<HitomiIndexDataModel>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")));
+                var re = MessagePackSerializer.Deserialize<HitomiIndexDataModel>(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json")));
                 metadata_collection = re.metadata;
                 index = re.index;
                 SortMetadata();

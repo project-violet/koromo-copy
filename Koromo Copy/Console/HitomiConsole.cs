@@ -554,10 +554,8 @@ namespace Koromo_Copy.Console
                         HitomiData.Instance.LoadMetadataJson();
                         HitomiData.Instance.LoadHiddendataJson();
                         HitomiIndex.MakeIndex();
-                        var str = File.ReadAllText("index-metadata.json");
-                        File.WriteAllBytes("index-metadata.compress", str.Zip());
-                        var str2 = File.ReadAllText("index.json");
-                        File.WriteAllBytes("index.compress", str2.Zip());
+                        var str = File.ReadAllBytes("index-metadata.json");
+                        File.WriteAllBytes("index-metadata.compress", str.ZipByte());
                     }
                     break;
 
