@@ -12,11 +12,11 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Plan.md
 
-## 최신 릴리즈 Latest Release (2019/04/09)
+## 최신 릴리즈 Latest Release (2019/06/21)
 
-Koromo Copy 1.10.7038.24376 Beta
+Koromo Copy 1.11.7111.34827 Beta
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/1.10.7038.24376
+https://github.com/dc-koromo/koromo-copy/releases/tag/1.11.7111.34827
 
 ![hitomi history](Document/Images/1.png)
 
