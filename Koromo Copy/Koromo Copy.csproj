@@ -103,6 +103,7 @@
     <Compile Include="Component\SeriesLog.cs" />
     <Compile Include="Console\CommandLineParser.cs" />
     <Compile Include="Console\DCInsideConsole.cs" />
+    <Compile Include="Console\LPConsole.cs" />
     <Compile Include="Console\ScriptConsole.cs" />
     <Compile Include="Crypto\Hash.cs" />
     <Compile Include="Elo\EloSystem.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="Component\Hitomi\HitomiSetting.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanSeries.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanTag.cs" />
+    <Compile Include="LP\CALtoCS.cs" />
     <Compile Include="LP\LPKor.cs" />
     <Compile Include="LP\ParserGenerator.cs" />
     <Compile Include="LP\ScannerGenerator.cs" />
