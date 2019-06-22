@@ -343,6 +343,52 @@ namespace Koromo_Copy.LP
             return builder.ToString();
         }
 
+        /// <summary>
+        /// GraphViz.Net(Jamie Dixon), Microsoft.Bcl.Immutable(Microsoft) 누겟 패키지 설치 필요
+        /// 
+        /// App.config 파일 수정해야함
+        /// <?xml version="1.0" encoding="utf-8"?>
+        /// <configuration>
+        ///     <startup> 
+        ///         <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5"/>
+        ///     </startup>
+        ///     <appSettings>
+        ///       <add key="graphVizLocation" value="C:\Program Files (x86)\Graphviz2.38\bin"/>
+        ///     </appSettings>
+        /// </configuration>
+        /// 
+        /// public class Graph
+        /// {
+        ///     public static Bitmap ToImage(string str)
+        ///     {
+        ///         var getStartProcessQuery = new GetStartProcessQuery();
+        ///         var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
+        ///         var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
+        ///         
+        ///         var wrapper = new GraphGeneration(getStartProcessQuery,
+        ///                                           getProcessStartInfoQuery,
+        ///                                           registerLayoutPluginCommand);
+        /// 
+        ///         byte[] output = wrapper.GenerateGraph(str /*"digraph{a -> b; b -> c; c -> a;}"*/, Enums.GraphReturnType.Png);
+        /// 
+        ///         return ByteToImage(output);
+        ///     }
+        /// 
+        /// 
+        ///     private static Bitmap ByteToImage(byte[] blob)
+        ///     {
+        ///         MemoryStream mStream = new MemoryStream();
+        ///         byte[] pData = blob;
+        ///         mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+        ///         Bitmap bm = new Bitmap(mStream, false);
+        ///         mStream.Dispose();
+        ///         return bm;
+        ///     }
+        /// 
+        /// }
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
         private static string print_diagram_for_graphviz(diagram d)
         {
             var builder = new StringBuilder();
