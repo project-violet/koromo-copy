@@ -186,6 +186,8 @@
     <Compile Include="Component\Hitomi\Translate\KoreanSeries.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanTag.cs" />
     <Compile Include="LP\LPKor.cs" />
+    <Compile Include="LP\ParserGenerator.cs" />
+    <Compile Include="LP\ScannerGenerator.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="Net\DownloadGroup.cs" />
     <Compile Include="Net\DownloadQueue.cs" />

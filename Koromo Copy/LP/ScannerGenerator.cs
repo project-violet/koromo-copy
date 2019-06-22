@@ -62,7 +62,7 @@ namespace Koromo_Copy.LP
         public void MakeNFA(string pattern) { Diagram = make_nfa("(" + pattern + ")"); }
         public void OptimizeNFA() { while (opt_nfa(Diagram)) ; }
         public void NFAtoDFA() { Diagram = nfa2dfa(Diagram); }
-        public void MinimizeDFA() { opt_dfa_hopcroft(Diagram); }
+        public void MinimizeDFA() { opt_dfa(Diagram); }
         public string PrintDiagram() { return print_diagram(Diagram); }
 
         public static string PrintDiagram(diagram dia) { return print_diagram(dia); }
@@ -704,103 +704,13 @@ namespace Koromo_Copy.LP
         {
             return string.Join(",", dic.ToList().Select(x => $"({x.Key},{x.Value})"));
         }
-
-        /// <summary>
-        /// Minimization DFA using coloring
-        /// </summary>
-        /// <param name="dia"></param>
-        /// <returns></returns>
-        private void opt_dfa(diagram dia)
-        {
-            var color = new List<int>();
-            var color_count = 1;
-            Dictionary<string, List<int>> previous_group = null;
-            var check = new List<bool>(dia.count_of_vertex);
-            check.AddRange(Enumerable.Repeat(false, dia.count_of_vertex));
-
-            color.AddRange(Enumerable.Repeat(0, dia.count_of_vertex));
-
-#if true   // For distingushiable states
-            var color_set = new Dictionary<string, int>();
-#endif
-
-            foreach (var node in dia.nodes)
-                if (node.is_acceptable)
-                {
-                    color[node.index] = color_count;
-                    check[node.index] = true;
-
-#if true   // For distingushiable states
-                    if (node.accept_token_names != null)
-                    {
-                        if (!color_set.ContainsKey(node.accept_token_names[0]))
-                            color_set.Add(node.accept_token_names[0], color_count++);
-                        color[node.index] = color_set[node.accept_token_names[0]];
-                    }
-#endif
-                }
-
-            color_count++;
-            
-            while (true)
-            {
-                // Collect transition color
-                var dic = new Dictionary<int, SortedDictionary<char, int>>();
-                foreach (var node in dia.nodes)
-                    foreach (var ts in node.transition)
-                    {
-                        if (!dic.ContainsKey(node.index))
-                            dic.Add(node.index, new SortedDictionary<char, int>());
-                        dic[node.index].Add(ts.Item1, color[ts.Item2.index]);
-                    }
-
-                // Grouping
-                var list = dic.ToList();
-                var group = new Dictionary<string, List<int>>();
-                for (int i = 0; i < list.Count; i++)
-                {
-                    var ds = dic2str(list[i].Value);
-                    if (!group.ContainsKey(ds))
-                        group.Add(ds, new List<int>());
-                    group[ds].Add(list[i].Key);
-                }
-
-                foreach (var gi in group)
-                {
-                    foreach (var index in gi.Value)
-                        if (!check[index])
-                            color[index] = color_count;
-                    if (gi.Value.Count == 1)
-                        check[gi.Value[0]] = true;
-                    color_count++;
-                }
-
-                if (previous_group != null && previous_group.Count == group.Count)
-                    break;
-
-                previous_group = group;
-            }
-            
-            var dicc = new Dictionary<int, int>();
-            var inverse_transition = get_inverse_transtition(dia);
-            for (int i = 0; i < color.Count; i++)
-                if (!dicc.ContainsKey(color[i]))
-                    dicc.Add(color[i], i);
-                else if (inverse_transition.ContainsKey(i))
-                {
-                    foreach (var inv in inverse_transition[i])
-                        for (int j = 0; j < dia.nodes[inv].transition.Count; j++)
-                            if (dia.nodes[inv].transition[j].Item2.index == i)
-                                dia.nodes[inv].transition[j] = new Tuple<char, transition_node>(dia.nodes[inv].transition[j].Item1, dia.nodes[dicc[color[i]]]);
-                }
-        }
-
+        
         /// <summary>
         /// Minimization DFA using Hopcroft Algorithm
         /// </summary>
         /// <param name="dia"></param>
         /// <returns></returns>
-        private void opt_dfa_hopcroft(diagram dia)
+        private void opt_dfa(diagram dia)
         {
             var visit = new HashSet<string>();
             var queue = new Queue<List<int>>();
