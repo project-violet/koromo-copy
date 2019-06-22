@@ -83,7 +83,7 @@ namespace Koromo_Copy.Console
                 );
 
             var builder = new StringBuilder();
-            CommandLineParser<HitomiConsoleOption>.GetFields().ToList().ForEach(
+            CommandLineParser<ScriptConsoleOption>.GetFields().ToList().ForEach(
                 x =>
                 {
                     if (!string.IsNullOrEmpty(x.Value.Item2.Help))

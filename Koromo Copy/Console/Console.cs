@@ -272,6 +272,7 @@ namespace Koromo_Copy.Console
                 {"youtube", new YoutubeConsole()},
                 {"script", new ScriptConsole()},
                 {"dcinside", new DCInsideConsole()},
+                {"lp", new LPConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},
