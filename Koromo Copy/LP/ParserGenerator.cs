@@ -27,8 +27,8 @@ namespace Koromo_Copy.LP
         public bool isterminal;
         public List<ParserProduction> contents = new List<ParserProduction>();
         public List<List<ParserProduction>> sub_productions = new List<List<ParserProduction>>();
-        public List<Tuple<int,ParserAction>> temp_actions = new List<Tuple<int, ParserAction>>();
-        public List<List<Tuple<int, ParserAction>>> actions = new List<List<Tuple<int, ParserAction>>>();
+        public List<ParserAction> temp_actions = new List<ParserAction>();
+        public List<ParserAction> actions = new List<ParserAction>();
 
         public static ParserProduction operator +(ParserProduction p1, ParserProduction p2)
         {
@@ -38,7 +38,7 @@ namespace Koromo_Copy.LP
 
         public static ParserProduction operator +(ParserProduction pp, ParserAction ac)
         {
-            pp.temp_actions.Add(new Tuple<int, ParserAction>(pp.contents.Count, ac));
+            pp.temp_actions.Add(ac);
             return pp;
         }
 
@@ -46,7 +46,7 @@ namespace Koromo_Copy.LP
         {
             p2.contents.Insert(0, p2);
             p1.sub_productions.Add(new List<ParserProduction>(p2.contents));
-            p1.actions.Add(new List<Tuple<int, ParserAction>>(p2.temp_actions));
+            p1.actions.AddRange(p2.temp_actions);
             p2.temp_actions.Clear();
             p2.contents.Clear();
             return p1;
@@ -1292,6 +1292,7 @@ namespace Koromo_Copy.LP
             var grammar = new List<List<int>>();
             var grammar_group = new List<int>();
             var production_mapping = new List<List<int>>();
+            var semantic_rules = new List<ParserAction>();
             var pm_count = 0;
 
             foreach (var pr in production_rules)
@@ -1342,74 +1343,7 @@ namespace Koromo_Copy.LP
                     }
                 }
 
-            return new ShiftReduceParser(symbol_table, jump_table, goto_table, grammar_group.ToArray(), grammar.Select(x => x.ToArray()).ToArray());
-        }
-
-        /// <summary>
-        /// Create ShiftReduce Parser
-        /// </summary>
-        /// <returns></returns>
-        public ShiftReduceParserWithSementicActions CreateShiftReduceParserSAInstance()
-        {
-            var symbol_table = new Dictionary<string, int>();
-            var jump_table = new int[number_of_states][];
-            var goto_table = new int[number_of_states][];
-            var grammar = new List<List<int>>();
-            var grammar_group = new List<int>();
-            var production_mapping = new List<List<int>>();
-            var semantic_rules = new List<List<List<Tuple<int,ParserAction>>>>();
-            var pm_count = 0;
-
-            foreach (var pr in production_rules)
-            {
-                var ll = new List<List<int>>();
-                var pm = new List<int>();
-                foreach (var sub_pr in pr.sub_productions)
-                {
-                    ll.Add(sub_pr.Select(x => x.index).ToList());
-                    pm.Add(pm_count++);
-                    grammar_group.Add(production_mapping.Count);
-                }
-                grammar.AddRange(ll);
-                production_mapping.Add(pm);
-                semantic_rules.Add(pr.actions);
-            }
-
-            for (int i = 0; i < number_of_states; i++)
-            {
-                // Last elements is sentinel
-                jump_table[i] = new int[production_rules.Count + 1];
-                goto_table[i] = new int[production_rules.Count + 1];
-            }
-
-            foreach (var pr in production_rules)
-                symbol_table.Add(pr.production_name ?? "^", pr.index);
-            symbol_table.Add("$", production_rules.Count);
-
-            foreach (var shift in shift_info)
-                foreach (var elem in shift.Value)
-                {
-                    jump_table[shift.Key][elem.Item1] = 1;
-                    goto_table[shift.Key][elem.Item1] = elem.Item2;
-                }
-
-            foreach (var reduce in reduce_info)
-                foreach (var elem in reduce.Value)
-                {
-                    var index = elem.Item1;
-                    if (index == -1) index = production_rules.Count;
-                    if (jump_table[reduce.Key][index] != 0)
-                        throw new Exception($"Error! Shift-Reduce Conflict is not solved! Please use LALR or LR(1) parser!\r\nJump-Table: {reduce.Key} {index}");
-                    if (elem.Item2 == 0)
-                        jump_table[reduce.Key][index] = 3;
-                    else
-                    {
-                        jump_table[reduce.Key][index] = 2;
-                        goto_table[reduce.Key][index] = production_mapping[elem.Item2][elem.Item3];
-                    }
-                }
-
-            return new ShiftReduceParserWithSementicActions(symbol_table, jump_table, goto_table, grammar_group.ToArray(), grammar.Select(x => x.ToArray()).ToArray(), semantic_rules);
+            return new ShiftReduceParser(symbol_table, jump_table, goto_table, grammar_group.ToArray(), grammar.Select(x => x.ToArray()).ToArray(), semantic_rules);
         }
     }
 
@@ -1449,6 +1383,7 @@ namespace Koromo_Copy.LP
         List<string> symbol_index_name = new List<string>();
         Stack<int> state_stack = new Stack<int>();
         Stack<ParsingTree.ParsingTreeNode> treenode_stack = new Stack<ParsingTree.ParsingTreeNode>();
+        List<ParserAction> actions;
 
         // 3       1      2       0
         // Accept? Shift? Reduce? Error?
@@ -1457,115 +1392,7 @@ namespace Koromo_Copy.LP
         int[][] production;
         int[] group_table;
 
-        public ShiftReduceParser(Dictionary<string, int> symbol_table, int[][] jump_table, int[][] goto_table, int[] group_table, int[][] production)
-        {
-            symbol_name_index = symbol_table;
-            this.jump_table = jump_table;
-            this.goto_table = goto_table;
-            this.production = production;
-            this.group_table = group_table;
-            var l = symbol_table.ToList().Select(x => new Tuple<int, string>(x.Value, x.Key)).ToList();
-            l.Sort();
-            l.ForEach(x => symbol_index_name.Add(x.Item2));
-        }
-
-        bool latest_error;
-        bool latest_reduce;
-        public bool Accept() => state_stack.Count == 0;
-        public bool Error() => latest_error;
-        public bool Reduce() => latest_reduce;
-
-        public void Clear()
-        {
-            latest_error = latest_reduce = false;
-            state_stack.Clear();
-            treenode_stack.Clear();
-        }
-
-        public ParsingTree Tree => new ParsingTree(treenode_stack.Peek());
-
-        public string Stack() => string.Join(" ", new Stack<int>(state_stack));
-
-        public void Insert(string token_name, string contents) => Insert(symbol_name_index[token_name], contents);
-        public void Insert(int index, string contents)
-        {
-            if (state_stack.Count == 0)
-            {
-                state_stack.Push(0);
-                latest_error = false;
-            }
-            latest_reduce = false;
-
-            switch (jump_table[state_stack.Peek()][index])
-            {
-                case 0:
-                    // Panic mode
-                    state_stack.Clear();
-                    treenode_stack.Clear();
-                    latest_error = true;
-                    break;
-
-                case 1:
-                    // Shift
-                    state_stack.Push(goto_table[state_stack.Peek()][index]);
-                    treenode_stack.Push(ParsingTree.ParsingTreeNode.NewNode(symbol_index_name[index], contents));
-                    break;
-
-                case 2:
-                    // Reduce
-                    reduce(index);
-                    latest_reduce = true;
-                    break;
-
-                case 3:
-                    // Nothing
-                    break;
-            }
-        }
-
-        public ParsingTree.ParsingTreeNode LatestReduce() => treenode_stack.Peek();
-        private void reduce(int index)
-        {
-            var reduce_production = goto_table[state_stack.Peek()][index];
-            var reduce_treenodes = new List<ParsingTree.ParsingTreeNode>();
-
-            // Reduce Stack
-            for (int i = 0; i < production[reduce_production].Length; i++)
-            {
-                state_stack.Pop();
-                reduce_treenodes.Insert(0, treenode_stack.Pop());
-            }
-
-            state_stack.Push(goto_table[state_stack.Peek()][group_table[reduce_production]]);
-
-            var reduction_parent = ParsingTree.ParsingTreeNode.NewNode(symbol_index_name[group_table[reduce_production]]);
-            reduction_parent.ProductionRuleIndex = reduce_production - 1;
-            reduce_treenodes.ForEach(x => x.Parent = reduction_parent);
-            reduction_parent.Contents = string.Join("", reduce_treenodes.Select(x => x.Contents));
-            reduction_parent.Childs = reduce_treenodes;
-            treenode_stack.Push(reduction_parent);
-        }
-    }
-
-    /// <summary>
-    /// Shift-Reduce Parser for LR(1) with Semantic Actions
-    /// </summary>
-    public class ShiftReduceParserWithSementicActions
-    {
-        Dictionary<string, int> symbol_name_index = new Dictionary<string, int>();
-        List<string> symbol_index_name = new List<string>();
-        Stack<int> state_stack = new Stack<int>();
-        Stack<ParsingTree.ParsingTreeNode> treenode_stack = new Stack<ParsingTree.ParsingTreeNode>();
-        List<List<List<Tuple<int, ParserAction>>>> actions;
-
-        // 3       1      2       0
-        // Accept? Shift? Reduce? Error?
-        int[][] jump_table;
-        int[][] goto_table;
-        int[][] production;
-        int[] group_table;
-
-        public ShiftReduceParserWithSementicActions(Dictionary<string, int> symbol_table, int[][] jump_table, int[][] goto_table, int[] group_table, int[][] production, List<List<List<Tuple<int,ParserAction>>>> actions)
+        public ShiftReduceParser(Dictionary<string, int> symbol_table, int[][] jump_table, int[][] goto_table, int[] group_table, int[][] production, List<ParserAction> actions)
         {
             symbol_name_index = symbol_table;
             this.jump_table = jump_table;
@@ -1653,6 +1480,7 @@ namespace Koromo_Copy.LP
             reduction_parent.Contents = string.Join("", reduce_treenodes.Select(x => x.Contents));
             reduction_parent.Childs = reduce_treenodes;
             treenode_stack.Push(reduction_parent);
+            actions[reduction_parent.ProductionRuleIndex].SemanticAction(reduction_parent);
         }
     }
 }
