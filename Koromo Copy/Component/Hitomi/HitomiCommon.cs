@@ -114,7 +114,7 @@ namespace Koromo_Copy.Component.Hitomi
             path = Regex.Replace(path, "{Artists}", artists, RegexOptions.IgnoreCase);
             path = Regex.Replace(path, "{Id}", article.Magic, RegexOptions.IgnoreCase);
             path = Regex.Replace(path, "{Type}", type, RegexOptions.IgnoreCase);
-            path = Regex.Replace(path, "{Date}", DateTime.Now.ToString(), RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Date}", DateTime.Now.ToString("yyyy-MM-dd"), RegexOptions.IgnoreCase);
             path = Regex.Replace(path, "{Series}", series, RegexOptions.IgnoreCase);
             path = Regex.Replace(path, "{Search}", search, RegexOptions.IgnoreCase);
             return path;
