@@ -122,6 +122,9 @@ namespace Koromo_Copy.LP
         }
 
         #region String Hash Function
+        // 원래 해시가 아니라 set로 구현해야하는게 일반적임
+        // 집합끼리의 비교연산, 일치여부 교집합을 구해 좀 더 최적화가능하지만 귀찮으니 string-hash를 쓰도록한다.
+
         private string t2s(Tuple<int, int, int> t)
         {
             return $"{t.Item1},{t.Item2},{t.Item3}";
@@ -964,6 +967,9 @@ namespace Koromo_Copy.LP
         }
         #endregion
 
+        /// <summary>
+        /// 파싱 테이블을 집합형태로 출력합니다.
+        /// </summary>
         public void PrintStates()
         {
             print_header("FINAL STATES");
@@ -984,6 +990,9 @@ namespace Koromo_Copy.LP
             }
         }
 
+        /// <summary>
+        /// 파싱테이블을 테이블 형태로 출력합니다.
+        /// </summary>
         public void PrintTable()
         {
             var production_mapping = new List<List<int>>();
