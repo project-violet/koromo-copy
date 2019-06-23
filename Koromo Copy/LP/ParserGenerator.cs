@@ -624,7 +624,7 @@ namespace Koromo_Copy.LP
 #if true
                         print_header("SHIFT-REDUCE CONFLICTS");
                         GlobalPrinter.Append($"Shift-Reduce Conflict! {(tuple.Item1 == -1 ? "$" : production_rules[tuple.Item1].production_name)}\r\n");
-                        GlobalPrinter.Append($"States: {ms.Key} {tuple.Item2}\r\n");
+                        GlobalPrinter.Append($"States: {ms.Key} {small_shift_info[shift_tokens[tuple.Item1]].Item2}\r\n");
                         print_states(ms.Key, states[ms.Key]);
                         print_states(small_shift_info[shift_tokens[tuple.Item1]].Item2, states[small_shift_info[shift_tokens[tuple.Item1]].Item2]);
 #endif
@@ -956,7 +956,7 @@ namespace Koromo_Copy.LP
 #if true
                         print_header("SHIFT-REDUCE CONFLICTS");
                         GlobalPrinter.Append($"Shift-Reduce Conflict! {(tuple.Item1 == -1 ? "$" : production_rules[tuple.Item1].production_name)}\r\n");
-                        GlobalPrinter.Append($"States: {ms.Key} {tuple.Item2}\r\n");
+                        GlobalPrinter.Append($"States: {ms.Key} {small_shift_info[shift_tokens[tuple.Item1]].Item2}\r\n");
                         print_states(ms.Key, states[ms.Key]);
                         print_states(small_shift_info[shift_tokens[tuple.Item1]].Item2, states[small_shift_info[shift_tokens[tuple.Item1]].Item2]);
 #endif
