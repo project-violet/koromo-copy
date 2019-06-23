@@ -240,3 +240,7 @@ https://materialdesignicons.com/
 |Newtonsoft.Json|JSon 파일 분석|https://www.newtonsoft.com/json|
 |PhantomJS|스크립트 실행할 수 있는 드라이버|http://phantomjs.org|
 |Selenium.WebDriver|셀레니움 드라이버|https://www.seleniumhq.org|
+|Media Devices|MTP 디바이스 연결용 드라이버|https://github.com/Bassman2/MediaDevices|
+|Message Pack|JSon 파일 분석|https://github.com/neuecc/MessagePack-CSharp/|
+|Zstd Net|빠르고 가벼운 압축 알고리즘|https://github.com/skbkontur/ZstdNet|
+|Puppeteer sharp|스크립트 실행할 수 있는 웹 드라이버|https://github.com/kblok/puppeteer-sharp|
