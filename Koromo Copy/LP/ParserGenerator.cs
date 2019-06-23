@@ -973,9 +973,9 @@ namespace Koromo_Copy.LP
                             if (shift_reduce_conflict_solve_with_production_rule[tuple.Item2].ContainsKey(tuple.Item3))
                                 p1 = shift_reduce_conflict_solve_with_production_rule[tuple.Item2][tuple.Item3];
 
-                        if (shift_reduce_conflict_solve_with_production_rule.ContainsKey(states[tuple.Item1][0].Item1))
-                            if (shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1].ContainsKey(states[tuple.Item1][0].Item2))
-                                p2 = shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1][states[tuple.Item1][0].Item2];
+                        //if (shift_reduce_conflict_solve_with_production_rule.ContainsKey(states[tuple.Item1][0].Item1))
+                        //    if (shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1].ContainsKey(states[tuple.Item1][0].Item2))
+                        //        p2 = shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1][states[tuple.Item1][0].Item2];
 
                         if (p1 == null || p2 == null)
                             throw new Exception($"Specify the rules to resolve Shift-Reduce Conflict! Target: {production_rules[tuple.Item1].production_name} {pp.production_name}");
@@ -1386,6 +1386,7 @@ namespace Koromo_Copy.LP
                 }
                 grammar.AddRange(ll);
                 production_mapping.Add(pm);
+                semantic_rules.AddRange(pr.actions);
             }
 
             for (int i = 0; i < number_of_states; i++)
@@ -1430,7 +1431,7 @@ namespace Koromo_Copy.LP
     {
         public class ParsingTreeNode
         {
-            public string Produnction;
+            public string Production;
             public string Contents;
             public object UserContents;
             public int ProductionRuleIndex;
@@ -1440,12 +1441,12 @@ namespace Koromo_Copy.LP
             public static ParsingTreeNode NewNode()
                 => new ParsingTreeNode { Parent = null, Childs = new List<ParsingTreeNode>() };
             public static ParsingTreeNode NewNode(string production)
-                => new ParsingTreeNode { Parent = null, Childs = new List<ParsingTreeNode>(), Produnction = production };
+                => new ParsingTreeNode { Parent = null, Childs = new List<ParsingTreeNode>(), Production = production };
             public static ParsingTreeNode NewNode(string production, string contents)
-                => new ParsingTreeNode { Parent = null, Childs = new List<ParsingTreeNode>(), Produnction = production, Contents = contents };
+                => new ParsingTreeNode { Parent = null, Childs = new List<ParsingTreeNode>(), Production = production, Contents = contents };
         }
         
-        ParsingTreeNode root;
+        public ParsingTreeNode root;
 
         public ParsingTree(ParsingTreeNode root)
         {

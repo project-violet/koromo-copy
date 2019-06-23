@@ -204,7 +204,7 @@ namespace Koromo_Copy.LP
                         {
                             if (pattern[i] == '\\' && i + 1 < pattern.Length)
                             {
-                                if (@"+-?*|()[].=<>/".Contains(pattern[i + 1]))
+                                if (@"+-?*|()[].=<>/\".Contains(pattern[i + 1]))
                                     ch_list.Add(pattern[++i]);
                                 else
                                 {
