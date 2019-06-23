@@ -96,7 +96,7 @@ namespace Koromo_Copy.LP
             function |= name + op_open + argument + op_close;
 
             argument |= index;
-            argument |= argument + comma + index;
+            argument |= index + comma + argument;
 
             index |= variable;
             index |= variable + pp_open + variable + pp_close;
