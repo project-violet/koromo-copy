@@ -35,8 +35,8 @@ namespace Koromo_Copy.Console
             Info = "Print parser generator sample result table.")]
         public bool PSGample;
 
-        [CommandLine("--test", CommandType.OPTION, Pipe = true, DefaultArgument = true)]
-        public bool Test;
+        [CommandLine("--test", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true)]
+        public string[] Test;
     }
 
     /// <summary>
@@ -73,9 +73,9 @@ namespace Koromo_Copy.Console
             {
                 ProcessPGSample();
             }
-            else if (option.Test)
+            else if (option.Test != null)
             {
-                ProcessTest();
+                ProcessTest(option.Test);
             }
 
             return true;
@@ -169,8 +169,15 @@ namespace Koromo_Copy.Console
         /// <summary>
         /// 
         /// </summary>
-        static void ProcessTest()
+        static void ProcessTest(string[] args)
         {
+            switch (args[0].ToInt32())
+            {
+                case 1:
+                    var c2c = new CALtoCS("asdf");
+                    c2c.Compile();
+                    break;
+            }
         }
         
     }
