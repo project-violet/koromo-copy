@@ -30,9 +30,11 @@ namespace Koromo_Copy.LP
         public string Compile()
         {
             var pp = get_pargen();
+            var ss = get_scanner();
             return "";
         }
 
+        Scanner scanner;
         ShiftReduceParser pargen;
 
         /// <summary>
@@ -129,6 +131,34 @@ namespace Koromo_Copy.LP
             Console.Console.Instance.WriteLine(gen.GlobalPrinter.ToString());
 
             return pargen = gen.CreateShiftReduceParserInstance();
+        }
+
+        private Scanner get_scanner()
+        {
+            if (scanner != null) return scanner;
+
+            var sg = new ScannerGenerator();
+            
+            sg.PushRule("loop", "loop");
+            sg.PushRule("op_open", @"\(");
+            sg.PushRule("op_close", @"\)");
+            sg.PushRule("pp_open", @"\[");
+            sg.PushRule("pp_close", @"\]");
+            sg.PushRule("equal", @"\=");
+            sg.PushRule("to", "to");
+            sg.PushRule("scolon", ":");
+            sg.PushRule("comma", ",");
+            sg.PushRule("foreach", "foreach");
+            sg.PushRule("if", "if");
+            sg.PushRule("else", "else");
+            sg.PushRule("name", @"[_$a-zA-Z][_$a-zA-Z0-9]*");
+            sg.PushRule("const", @"[0-9]+|""[_$a-zA-Z0-9\/\?\:\,\[\]\\\#\=\&\+\-\*\|\(\)\<\>\.\{\} ]*""");
+
+            sg.Generate();
+
+            Console.Console.Instance.WriteLine(sg.PrintDiagram());
+            
+            return scanner = sg.CreateScannerInstance();
         }
     }
 }
