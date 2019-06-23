@@ -1023,6 +1023,29 @@ namespace Koromo_Copy.LP
         }
         #endregion
 
+        public void PrintProductionRules()
+        {
+            print_header("PRODUCTION RULES");
+            int count = 1;
+            var builder = new StringBuilder();
+            foreach (var pp in production_rules)
+            {
+                foreach (var p in pp.sub_productions)
+                {
+                    builder.Append($"{(count++).ToString().PadLeft(4)}: ");
+                    builder.Append($"{pp.production_name.ToString().PadLeft(10)} -> ");
+
+                    for (int i = 0; i < p.Count; i++)
+                    {
+                        builder.Append(p[i].production_name + " ");
+                    }
+
+                    builder.Append("\r\n");
+                }
+            }
+            GlobalPrinter.Append(builder.ToString());
+        }
+
         /// <summary>
         /// 파싱 테이블을 집합형태로 출력합니다.
         /// </summary>
