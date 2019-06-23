@@ -116,7 +116,7 @@ namespace Koromo_Copy.LP
             try
             {
                 gen.PushStarts(script);
-                gen.GenerateLALR();
+                gen.GenerateLR1();
                 gen.PrintStates();
                 gen.PrintTable();
             }
