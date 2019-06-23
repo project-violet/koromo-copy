@@ -19,23 +19,92 @@ namespace Koromo_Copy.LP
     /// </summary>
     public class CALtoCS
     {
-        public CALtoCS(string cal)
-        {
-        }
-
         /// <summary>
         /// SRCAL문법을 C#으로 바꿉니다.
         /// </summary>
         /// <returns></returns>
-        public string Compile()
+        public string Compile(string[] lines)
         {
             var pp = get_pargen();
             var ss = get_scanner();
+
+            pp.Clear();
+
+            Action<string, string, int, int> insert = (string x, string y, int a, int b) =>
+            {
+                pp.Insert(x, y);
+                if (pp.Error()) throw new Exception($"[COMPILER] Parser error! L:{a}, C:{b}");
+                while (pp.Reduce())
+                {
+                    var l = pp.LatestReduce();
+                    Console.Console.Instance.Write(l.Production.PadLeft(8) + " => ");
+                    Console.Console.Instance.WriteLine(string.Join(" ", l.Childs.Select(z => z.Production)));
+                    Console.Console.Instance.Write(l.Production.PadLeft(8) + " => ");
+                    Console.Console.Instance.WriteLine(string.Join(" ", l.Childs.Select(z => z.Contents)));
+                    pp.Insert(x, y);
+                    if (pp.Error()) throw new Exception($"[COMPILER] Parser error! L:{a}, C:{b}");
+                }
+            };
+
+            try
+            {
+                int ll = 0;
+                foreach (var line in lines)
+                {
+                    ll++;
+                    if (line.Trim().StartsWith("##") || line.Trim() == "") continue;
+                    ss.AllocateTarget(line.Trim());
+
+                    while (ss.Valid())
+                    {
+                        var tk = ss.Next();
+                        if (ss.Error())
+                            throw new Exception("[COMPILER] Tokenize error! '" + tk + "'");
+                        insert(tk.Item1, tk.Item2, ll, tk.Item4);
+                    }
+                }
+                if (pp.Error()) throw new Exception();
+                insert("$", "$", -1, -1);
+
+                var tree = pp.Tree;
+                PrintTree(tree.root, "", true);
+            }
+            catch (Exception e)
+            {
+                Console.Console.Instance.WriteLine(e.Message);
+            }
+
             return "";
         }
 
-        Scanner scanner;
-        ShiftReduceParser pargen;
+        public void PrintTree(ParsingTree.ParsingTreeNode node, string indent, bool last)
+        {
+            Console.Console.Instance.Write(indent);
+            if (last)
+            {
+                Console.Console.Instance.Write("+-");
+                indent += "  ";
+            }
+            else
+            {
+                Console.Console.Instance.Write("|-");
+                indent += "| ";
+            }
+
+            if (node.Childs.Count == 0)
+            {
+                Console.Console.Instance.WriteLine(node.Production + " " + node.Contents);
+            }
+            else
+            {
+                Console.Console.Instance.WriteLine(node.Production);
+            }
+            for (int i = 0; i < node.Childs.Count; i++)
+                PrintTree(node.Childs[i], indent, i == node.Childs.Count - 1);
+        }
+
+        static Scanner scanner;
+        static ShiftReduceParser pargen;
 
         /// <summary>
         /// SRCAL의 파서제너레이터를 생성합니다.
@@ -76,42 +145,43 @@ namespace Koromo_Copy.LP
             var _if = gen.CreateNewProduction("if");
             var _else = gen.CreateNewProduction("else");
 
-            script |= block;
+            script |= lines + ParserAction.Create(x => { });
+            script |= ParserGenerator.EmptyString + ParserAction.Create(x => { });
 
-            block |= pp_open + iblock + pp_close;
-            block |= line;
+            block |= pp_open + iblock + pp_close + ParserAction.Create(x => { });
+            block |= line + ParserAction.Create(x => { });
 
-            iblock |= block;
-            iblock |= lines;
-            iblock |= ParserGenerator.EmptyString;
+            iblock |= block + ParserAction.Create(x => { });
+            iblock |= lines + ParserAction.Create(x => { });
+            iblock |= ParserGenerator.EmptyString + ParserAction.Create(x => { });
 
-            line |= expr;
+            line |= expr + ParserAction.Create(x => { });
 
-            lines |= expr;
-            lines |= expr + lines;
+            lines |= expr + ParserAction.Create(x => { });
+            lines |= expr + lines + ParserAction.Create(x => { });
 
-            expr |= function;
-            expr |= name + equal + index;
-            expr |= runnable;
+            expr |= function + ParserAction.Create(x => { });
+            expr |= name + equal + index + ParserAction.Create(x => { });
+            expr |= runnable + ParserAction.Create(x => { });
 
-            function |= name + op_open + op_close;
-            function |= name + op_open + argument + op_close;
+            function |= name + op_open + op_close + ParserAction.Create(x => { });
+            function |= name + op_open + argument + op_close + ParserAction.Create(x => { });
 
-            argument |= index;
-            argument |= index + comma + argument;
+            argument |= index + ParserAction.Create(x => { });
+            argument |= index + comma + argument + ParserAction.Create(x => { });
 
-            index |= variable;
-            index |= variable + pp_open + variable + pp_close;
+            index |= variable + ParserAction.Create(x => { });
+            index |= variable + pp_open + variable + pp_close + ParserAction.Create(x => { });
 
-            variable |= name;
-            variable |= function;
-            variable |= _const;
+            variable |= name + ParserAction.Create(x => { });
+            variable |= function + ParserAction.Create(x => { });
+            variable |= _const + ParserAction.Create(x => { });
 
-            runnable |= loop + op_open + name + equal + index + to + index + op_close + block;
-            runnable |= _foreach + op_open + name + scolon + index + op_close + block;
-            runnable |= _if + op_open + index + op_close + block;
-            runnable |= _if + op_open + index + op_close + block + _else + block;
-            
+            runnable |= loop + op_open + name + equal + index + to + index + op_close + block + ParserAction.Create(x => { });
+            runnable |= _foreach + op_open + name + scolon + index + op_close + block + ParserAction.Create(x => { });
+            runnable |= _if + op_open + index + op_close + block + ParserAction.Create(x => { });
+            runnable |= _if + op_open + index + op_close + block + _else + block + ParserAction.Create(x => { });
+
             gen.PushConflictSolver(true, _else);
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(runnable, 2));
 
@@ -138,7 +208,8 @@ namespace Koromo_Copy.LP
             if (scanner != null) return scanner;
 
             var sg = new ScannerGenerator();
-            
+
+            sg.PushRule("", @"[\r\n ]");  // Skip characters
             sg.PushRule("loop", "loop");
             sg.PushRule("op_open", @"\(");
             sg.PushRule("op_close", @"\)");
@@ -152,10 +223,10 @@ namespace Koromo_Copy.LP
             sg.PushRule("if", "if");
             sg.PushRule("else", "else");
             sg.PushRule("name", @"[_$a-zA-Z][_$a-zA-Z0-9]*");
-            sg.PushRule("const", @"[0-9]+|""[_$a-zA-Z0-9\/\?\:\,\[\]\\\#\=\&\+\-\*\|\(\)\<\>\.\{\} ]*""");
-
+            sg.PushRule("const", @"[\-\+]?[0-9]+(\.[0-9]+)?([Ee][\+\-]?[0-9]+)?|""[_$a-zA-Z0-9\/\?:,\[\]\\#\=&\+\-\*\|\(\)\<\>\.{}! ]*""");
+            
             sg.Generate();
-
+            
             Console.Console.Instance.WriteLine(sg.PrintDiagram());
             
             return scanner = sg.CreateScannerInstance();

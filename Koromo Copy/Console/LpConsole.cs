@@ -10,6 +10,7 @@ using Koromo_Copy.Interface;
 using Koromo_Copy.LP;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace Koromo_Copy.Console
             Info = "Print parser generator sample result table.")]
         public bool PSGample;
 
-        [CommandLine("--test", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true)]
+        [CommandLine("-test", CommandType.ARGUMENTS, Pipe = true, DefaultArgument = true)]
         public string[] Test;
     }
 
@@ -174,8 +175,14 @@ namespace Koromo_Copy.Console
             switch (args[0].ToInt32())
             {
                 case 1:
-                    var c2c = new CALtoCS("asdf");
-                    c2c.Compile();
+                    var c2c = new CALtoCS();
+                    c2c.Compile(File.ReadAllLines("script/gugudan.srcal"));
+                    break;
+
+                case 2:
+                    var cal = new ESRCAL();
+                    cal.Compile(new[] { "5+4-(-4*(2-4)*2)/3+-(-(2*2+3)-2)*(3+1)" });
+                    //cal.Compile(new[] { "(2*2+3)" });
                     break;
             }
         }
