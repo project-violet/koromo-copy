@@ -515,6 +515,7 @@ namespace Koromo_Copy.LP
                         set.Add(t2s(psd));
                     // Find all transitions
                     var new_trans = new List<Tuple<int, int, int, HashSet<int>>>();
+                    var trans_dic = new Dictionary<string, int>();
                     foreach (var psd in goto_unit.Value)
                     {
                         if (production_rules[psd.Item1].sub_productions[psd.Item2].Count == psd.Item3) continue;
@@ -523,8 +524,17 @@ namespace Koromo_Copy.LP
                         foreach (var nts in first_nt)
                             if (!set.Contains(t2s(nts)))
                             {
-                                new_trans.Add(nts);
-                                set.Add(t2s(nts));
+                                var ts = t2s(new Tuple<int, int, int>(nts.Item1, nts.Item2, nts.Item3));
+                                if (trans_dic.ContainsKey(ts))
+                                {
+                                    nts.Item4.ToList().ForEach(x => new_trans[trans_dic[ts]].Item4.Add(x));
+                                }
+                                else
+                                {
+                                    trans_dic.Add(ts, new_trans.Count);
+                                    new_trans.Add(nts);
+                                    set.Add(t2s(nts));
+                                }
                             }
                     }
                     goto_unit.Value.AddRange(new_trans);
@@ -556,7 +566,7 @@ namespace Koromo_Copy.LP
                 //        foreach (var term in transition.Item4)
                 //            reduce_info[p].Add(new Tuple<int, int, int>(term, transition.Item1, transition.Item2));
                 //    }
-                
+
                 // Build goto transitions ignore terminal, non-terminal anywhere
                 var index_list = new List<Tuple<int, int>>();
                 foreach (var pp in gotos)
@@ -616,14 +626,16 @@ namespace Koromo_Copy.LP
                         GlobalPrinter.Append($"Shift-Reduce Conflict! {(tuple.Item1 == -1 ? "$" : production_rules[tuple.Item1].production_name)}\r\n");
                         GlobalPrinter.Append($"States: {ms.Key} {tuple.Item2}\r\n");
                         print_states(ms.Key, states[ms.Key]);
-                        print_states(shift_tokens[tuple.Item1], states[shift_tokens[tuple.Item1]]);
+                        print_states(small_shift_info[shift_tokens[tuple.Item1]].Item2, states[small_shift_info[shift_tokens[tuple.Item1]].Item2]);
 #endif
                         var pp = get_first_on_right_terminal(production_rules[tuple.Item2], tuple.Item3);
 
-                        if (!shift_reduce_conflict_solve.ContainsKey(pp.index) || !shift_reduce_conflict_solve.ContainsKey(tuple.Item1))
-                            throw new Exception($"Specify the rules to resolve Shift-Reduce Conflict! Target: {production_rules[tuple.Item1].production_name} {pp.production_name}");
-                        var p1 = shift_reduce_conflict_solve[pp.index];
-                        var p2 = shift_reduce_conflict_solve[tuple.Item1];
+                        Tuple<int, bool> p1 = null, p2 = null;
+
+                        if (shift_reduce_conflict_solve.ContainsKey(pp.index))
+                            p1 = shift_reduce_conflict_solve[pp.index];
+                        if (shift_reduce_conflict_solve.ContainsKey(tuple.Item1))
+                            p2 = shift_reduce_conflict_solve[tuple.Item1];
 
                         if (shift_reduce_conflict_solve_with_production_rule.ContainsKey(tuple.Item2))
                             if (shift_reduce_conflict_solve_with_production_rule[tuple.Item2].ContainsKey(tuple.Item3))
@@ -632,6 +644,9 @@ namespace Koromo_Copy.LP
                         if (shift_reduce_conflict_solve_with_production_rule.ContainsKey(states[tuple.Item1][0].Item1))
                             if (shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1].ContainsKey(states[tuple.Item1][0].Item2))
                                 p2 = shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1][states[tuple.Item1][0].Item2];
+
+                        if (p1 == null || p2 == null)
+                            throw new Exception($"Specify the rules to resolve Shift-Reduce Conflict! Target: {production_rules[tuple.Item1].production_name} {pp.production_name}");
 
                         if (p1.Item1 < p2.Item1 || (p1.Item1 == p2.Item1 && p1.Item2))
                         {
