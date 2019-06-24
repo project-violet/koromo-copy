@@ -86,6 +86,7 @@ namespace Koromo_Copy.Console.Utility
             { "explorer", typeof(HitomiExplorer) },
             { "tagtest", typeof(RelatedTagsTest) },
             { "record", typeof(Record) },
+            { "counter", typeof(FileLineCounter) },
 #if DEBUG
             { "gbt", typeof (GalleryBlockTester) },
 #endif
