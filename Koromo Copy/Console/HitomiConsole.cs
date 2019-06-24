@@ -561,26 +561,49 @@ namespace Koromo_Copy.Console
 
                 case 9:
                     {
-                        var hidden = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json")));
-                        var gall = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "galleries.json")));
+                        //var hidden = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata.json")));
+                        //var gall = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "galleries.json")));
 
-                        
-                        for (int i = 0; i < gall.Count; i++)
-                            for (int j = 0; j < hidden.Count; j++)
-                                if (gall[i].Magic == hidden[j].Magic)
-                                {
-                                    hidden[j].Groups = gall[i].Groups;
-                                    hidden[j].Characters = gall[i].Characters;
-                                }
 
+                        //for (int i = 0; i < gall.Count; i++)
+                        //    for (int j = 0; j < hidden.Count; j++)
+                        //        if (gall[i].Magic == hidden[j].Magic)
+                        //        {
+                        //            hidden[j].Groups = gall[i].Groups;
+                        //            hidden[j].Characters = gall[i].Characters;
+                        //        }
+
+                        //JsonSerializer serializer = new JsonSerializer();
+                        //serializer.Converters.Add(new Newtonsoft.Json.Converters.JavaScriptDateTimeConverter());
+                        //serializer.NullValueHandling = NullValueHandling.Ignore;
+
+                        //using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata2.json")))
+                        //using (JsonWriter writer = new JsonTextWriter(sw))
+                        //{
+                        //    serializer.Serialize(writer, hidden);
+                        //}
+
+                        var x = new HitomiIndexDataModel();
+                        x.index = HitomiIndex.Instance.index;
+                        x.metadata = HitomiIndex.Instance.metadata_collection;
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Converters.Add(new Newtonsoft.Json.Converters.JavaScriptDateTimeConverter());
                         serializer.NullValueHandling = NullValueHandling.Ignore;
 
-                        using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata2.json")))
+                        Monitor.Instance.Push("Write file: metadata-index.json");
+                        using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadata-index.json")))
                         using (JsonWriter writer = new JsonTextWriter(sw))
                         {
-                            serializer.Serialize(writer, hidden);
+                            serializer.Serialize(writer, x);
+                        }
+
+                        HitomiData.Instance.LoadMetadataJson();
+                        HitomiData.Instance.LoadHiddendataJson();
+                        Monitor.Instance.Push("Write file: metadata-noptimized.json");
+                        using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "metadametadata-noptimizedta.json")))
+                        using (JsonWriter writer = new JsonTextWriter(sw))
+                        {
+                            serializer.Serialize(writer, HitomiData.Instance.metadata_collection);
                         }
                     }
                     break;
