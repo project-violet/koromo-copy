@@ -607,6 +607,15 @@ namespace Koromo_Copy.Console
                         }
                     }
                     break;
+
+                case 10:
+
+                    {
+                        foreach (var x in HitomiIndex.Instance.tagdata_collection.artist)
+                            Console.Instance.Write(x.Tag + ", ");
+                    }
+
+                    break;
             }
         }
 
