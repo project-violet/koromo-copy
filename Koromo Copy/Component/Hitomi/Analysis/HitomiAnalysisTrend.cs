@@ -580,7 +580,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
                         if (lang == Settings.Instance.Hitomi.Language && metadata.Parodies != null)
                             foreach (var _series in metadata.Parodies)
                             {
-                                var series = HitomiIndex.Instance.index.Characters[_series];
+                                var series = HitomiIndex.Instance.index.Series[_series];
                                 if (series_list[series].ContainsKey(data.Key))
                                     series_list[series][data.Key] += 1;
                                 else
