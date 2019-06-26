@@ -12,10 +12,6 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Plan.md
 
-## 개발 서버
-
-http://koromo.duckdns.org/
-
 ## 최신 릴리즈 Latest Release (2019/06/21)
 
 Koromo Copy 1.11.7111.34827 Beta
