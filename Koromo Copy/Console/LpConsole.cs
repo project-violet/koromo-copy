@@ -176,7 +176,7 @@ namespace Koromo_Copy.Console
             {
                 case 1:
                     var c2c = new CALtoCS();
-                    c2c.Compile(File.ReadAllLines("script/gugudan.srcal"));
+                    c2c.Compile(File.ReadAllLines("script/danbooru-pages.srcal"));
                     break;
 
                 case 2:

@@ -149,7 +149,7 @@ namespace Koromo_Copy.Component.Hitomi
                 if (check[0] && v.Groups != null && query.Groups != null) { check[0] = IsIntersect(v.Groups.Select(x => HitomiIndex.Instance.index.Groups[x]).ToArray(), query.Groups); connect = true; } else if (query.Groups != null) check[0] = false;
                 if (check[0] && v.Parodies != null && query.Series != null) { check[0] = IsIntersect(v.Parodies.Select(x => HitomiIndex.Instance.index.Series[x]).ToArray(), query.Series); connect = true; } else if (query.Series != null) check[0] = false;
                 if (check[0] && v.Characters != null && query.Characters != null) { check[0] = IsIntersect(v.Characters.Select(x => HitomiIndex.Instance.index.Characters[x]).ToArray(), query.Characters); connect = true; } else if (query.Characters != null) check[0] = false;
-                if (check[0] && v.Type != null && query.Type != null) { check[0] = query.Type.Any(x => v.Type >= 0 && x == HitomiIndex.Instance.index.Characters[v.Type]); connect = true; } else if (query.Type != null) check[0] = false;
+                if (check[0] && v.Type != null && query.Type != null) { check[0] = query.Type.Any(x => v.Type >= 0 && x == HitomiIndex.Instance.index.Types[v.Type].Replace(' ', '_')); connect = true; } else if (query.Type != null) check[0] = false;
                 if (check.All((x => x)) && ((query.Common.Count == 0 && connect) || query.Common.Count > 0))
                     result.Add(v);
             }

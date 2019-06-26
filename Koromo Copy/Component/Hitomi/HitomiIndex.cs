@@ -114,8 +114,14 @@ namespace Koromo_Copy.Component.Hitomi
                 add(groups, md.Groups);
                 add(series, md.Parodies);
                 add(characters, md.Characters);
-                add(languages, md.Language);
-                add(types, md.Type);
+                if (md.Language != null)
+                    add(languages, md.Language.ToLower());
+                else
+                    add(languages, md.Language);
+                if (md.Type != null)
+                    add(types, md.Type.ToLower());
+                else
+                    add(types, md.Type);
                 add(tags, md.Tags);
             }
 
@@ -140,8 +146,8 @@ namespace Koromo_Copy.Component.Hitomi
                 if (md.Groups != null) him.Groups = md.Groups.Select(x => groups[x]).ToArray();
                 if (md.Parodies != null) him.Parodies = md.Parodies.Select(x => series[x]).ToArray();
                 if (md.Characters != null) him.Characters = md.Characters.Select(x => characters[x]).ToArray();
-                if (md.Language != null) him.Language = languages[md.Language]; else him.Language = -1;
-                if (md.Type != null) him.Type = types[md.Type]; else him.Type = -1;
+                if (md.Language != null) him.Language = languages[md.Language.ToLower()]; else him.Language = -1;
+                if (md.Type != null) him.Type = types[md.Type.ToLower()]; else him.Type = -1;
                 if (md.Tags != null) him.Tags = md.Tags.Select(x => tags[x]).ToArray();
                 mdl.Add(him);
             }
