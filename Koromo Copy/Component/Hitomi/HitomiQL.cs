@@ -17,7 +17,7 @@ namespace Koromo_Copy.Component.Hitomi
     /// <summary>
     /// Hitomi Qurey Library
     /// </summary>
-    /*public class HitomiQL
+    public class HitomiQL
     {
         public class Artist
         {
@@ -81,9 +81,9 @@ namespace Koromo_Copy.Component.Hitomi
 
                     foreach (var tag in md.Tags)
                     {
-                        if (!dict.ContainsKey(tag))
-                            dict.Add(tag, 0);
-                        dict[tag]++;
+                        //if (!dict.ContainsKey(tag))
+                        //    dict.Add(tag, 0);
+                        //dict[tag]++;
                     }
                 }
                 artists[i].tags = dict;
@@ -102,9 +102,9 @@ namespace Koromo_Copy.Component.Hitomi
 
                     foreach (var series in md.Parodies)
                     {
-                        if (!dict.ContainsKey(series))
-                            dict.Add(series, 0);
-                        dict[series]++;
+                        //if (!dict.ContainsKey(series))
+                        //    dict.Add(series, 0);
+                        //dict[series]++;
                     }
                 }
                 artists[i].series = dict;
@@ -121,11 +121,11 @@ namespace Koromo_Copy.Component.Hitomi
                     var md = HitomiLegalize.GetMetadataFromMagic(article.ToString()).Value;
 
                     var lang = md.Language;
-                    if (md.Language == null) lang = "n/a";
+                    //if (md.Language == null) lang = "n/a";
                     
-                    if (!dict.ContainsKey(lang))
-                        dict.Add(lang, 0);
-                    dict[lang]++;
+                    //if (!dict.ContainsKey(lang))
+                    //    dict.Add(lang, 0);
+                    //dict[lang]++;
                 }
                 artists[i].languages = dict;
             }
@@ -143,9 +143,9 @@ namespace Koromo_Copy.Component.Hitomi
 
                     foreach (var artist in md.Artists)
                     {
-                        if (!dict.ContainsKey(artist))
-                            dict.Add(artist, 0);
-                        dict[artist]++;
+                        //if (!dict.ContainsKey(artist))
+                        //    dict.Add(artist, 0);
+                        //dict[artist]++;
                     }
                 }
                 artists[i].artists = dict;
@@ -164,9 +164,9 @@ namespace Koromo_Copy.Component.Hitomi
 
                     foreach (var group in md.Groups)
                     {
-                        if (!dict.ContainsKey(group))
-                            dict.Add(group, 0);
-                        dict[group]++;
+                        //if (!dict.ContainsKey(group))
+                        //    dict.Add(group, 0);
+                        //dict[group]++;
                     }
                 }
                 artists[i].groups = dict;
@@ -183,11 +183,11 @@ namespace Koromo_Copy.Component.Hitomi
                     var md = HitomiLegalize.GetMetadataFromMagic(article.ToString()).Value;
 
                     var type = md.Type;
-                    if (md.Language == null) type = "n/a";
+                    //if (md.Language == null) type = "n/a";
 
-                    if (!dict.ContainsKey(type))
-                        dict.Add(type, 0);
-                    dict[type]++;
+                    //if (!dict.ContainsKey(type))
+                    //    dict.Add(type, 0);
+                    //dict[type]++;
                 }
                 artists[i].types = dict;
             }
@@ -219,5 +219,5 @@ namespace Koromo_Copy.Component.Hitomi
             return null;
         }
         #endregion
-    }*/
+    }
 }
