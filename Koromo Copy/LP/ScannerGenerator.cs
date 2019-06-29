@@ -1101,6 +1101,8 @@ namespace Koromo_Copy.LP
         }
 
         public int Position { get { return latest_pos; } }
+        public int Line { get { return current_line; } set { current_line = value; } }
+        public int Column { get { return current_column; } set { current_column = value; } }
 
         public Tuple<string, string, int, int> Next()
         {
@@ -1147,7 +1149,8 @@ namespace Koromo_Copy.LP
 
                 node_pos = next_transition;
             }
-
+            if (accept_table[node_pos] == null)
+                throw new Exception($"[SCANNER] Pattern not found! L:{cur_line}, C:{cur_column}, D:'{builder.ToString()}'");
             return new Tuple<string, string, int, int> (accept_table[node_pos], builder.ToString(), cur_line + 1, cur_column + 1);
         }
 
