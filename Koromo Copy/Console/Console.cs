@@ -502,6 +502,175 @@ namespace Koromo_Copy.Console
             System.Console.Out.WriteLine(contents);
         }
 
+        public class ConsoleProgressBar : IDisposable
+        {
+
+            public float CurrentProgress => writer.CurrentProgress;
+
+            private TextWriter OriginalWriter;
+            private ProgressWriter writer;
+
+            public ConsoleProgressBar()
+            {
+                OriginalWriter = System.Console.Out;
+                writer = new ProgressWriter(OriginalWriter);
+                System.Console.SetOut(writer);
+            }
+
+            public void Dispose()
+            {
+                System.Console.SetOut(OriginalWriter);
+                writer.ClearProgressBar();
+            }
+
+            public void SetProgress(float f)
+            {
+                writer.CurrentProgress = f;
+                writer.RedrawProgress();
+            }
+            public void SetProgress(int i)
+            {
+                SetProgress((float)i);
+            }
+
+            public void Increment(float f)
+            {
+                writer.CurrentProgress += f;
+                writer.RedrawProgress();
+            }
+
+            public void Increment(int i)
+            {
+                Increment((float)i);
+            }
+
+            private class ProgressWriter : TextWriter
+            {
+
+                public override Encoding Encoding => Encoding.UTF8;
+                public float CurrentProgress
+                {
+                    get { return _currentProgress; }
+                    set
+                    {
+                        _currentProgress = value;
+                        if (_currentProgress > 100)
+                        {
+                            _currentProgress = 100;
+                        }
+                        else if (CurrentProgress < 0)
+                        {
+                            _currentProgress = 0;
+                        }
+                    }
+                }
+
+                private float _currentProgress = 0;
+                private TextWriter consoleOut;
+                private const string ProgressTemplate = "Progress: {1:n2}% [{0}]";
+                private const int AllocatedTemplateSpace = 21;
+                private object SyncLock = new object();
+                public ProgressWriter(TextWriter _consoleOut)
+                {
+                    consoleOut = _consoleOut;
+                    RedrawProgress();
+                }
+
+                private void DrawProgressBar()
+                {
+                    lock (SyncLock)
+                    {
+                        int avalibleSpace = System.Console.BufferWidth - AllocatedTemplateSpace;
+                        int percentAmmount = (int)((float)avalibleSpace * (CurrentProgress / 100));
+                        var col = System.Console.ForegroundColor;
+                        var bak = System.Console.BackgroundColor;
+                        //System.Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        System.Console.BackgroundColor = ConsoleColor.Green;
+                        System.Console.ForegroundColor = ConsoleColor.Black;
+                        string progressBar = string.Concat(new string('#', percentAmmount), new string('.', avalibleSpace - percentAmmount));
+                        //consoleOut.Write(string.Format(ProgressTemplate, progressBar, CurrentProgress));
+                        //consoleOut.Write(string.Format("Progress: [{0:n2}%]", CurrentProgress));
+                        consoleOut.Write($"Progress: [{((int)(CurrentProgress)).ToString().PadLeft(3, ' ')}%]");
+                        System.Console.ForegroundColor = col;
+                        System.Console.BackgroundColor = bak;
+                        consoleOut.Write($" [{progressBar}]");
+                    }
+                }
+
+                public void RedrawProgress()
+                {
+                    lock (SyncLock)
+                    {
+                        int LastLineWidth = System.Console.CursorLeft;
+                        var consoleH = System.Console.WindowTop + System.Console.WindowHeight - 1;
+                        System.Console.SetCursorPosition(0, consoleH);
+                        DrawProgressBar();
+                        System.Console.SetCursorPosition(LastLineWidth, consoleH - 1);
+                    }
+                }
+
+                private void ClearLineEnd()
+                {
+                    lock (SyncLock)
+                    {
+                        int lineEndClear = System.Console.BufferWidth - System.Console.CursorLeft - 1;
+                        consoleOut.Write(new string(' ', lineEndClear));
+                    }
+                }
+
+                public void ClearProgressBar()
+                {
+                    lock (SyncLock)
+                    {
+                        int LastLineWidth = System.Console.CursorLeft;
+                        var consoleH = System.Console.WindowTop + System.Console.WindowHeight - 1;
+                        System.Console.SetCursorPosition(0, consoleH);
+                        ClearLineEnd();
+                        System.Console.SetCursorPosition(LastLineWidth, consoleH - 1);
+                    }
+                }
+
+                public override void Write(char value)
+                {
+                    lock (SyncLock)
+                    {
+                        consoleOut.Write(value);
+                    }
+                }
+
+                public override void Write(string value)
+                {
+                    lock (SyncLock)
+                    {
+                        consoleOut.Write(value);
+                    }
+                }
+
+                public override void WriteLine(string value)
+                {
+                    lock (SyncLock)
+                    {
+                        consoleOut.Write(value);
+                        consoleOut.Write(Environment.NewLine);
+                        ClearLineEnd();
+                        consoleOut.Write(Environment.NewLine);
+                        RedrawProgress();
+                    }
+                }
+
+                public override void WriteLine(string format, params object[] arg)
+                {
+                    WriteLine(string.Format(format, arg));
+                }
+
+                public override void WriteLine(int i)
+                {
+                    WriteLine(i.ToString());
+                }
+
+            }
+
+        }
         #endregion
     }
 }
