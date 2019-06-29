@@ -8,6 +8,7 @@
 
 using Koromo_Copy.Interface;
 using Koromo_Copy.LP;
+using Koromo_Copy.LP.Lang;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -183,6 +184,11 @@ namespace Koromo_Copy.Console
                     var cal = new ESRCAL();
                     cal.Compile(new[] { "5+4-(-4*(2-4)*2)/3+-(-(2*2+3)-2)*(3+1)" });
                     //cal.Compile(new[] { "(2*2+3)" });
+                    break;
+
+                case 3:
+                    var x = new HTMLParser();
+                    
                     break;
             }
         }
