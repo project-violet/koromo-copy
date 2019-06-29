@@ -141,6 +141,10 @@ namespace Koromo_Copy.LP
             var to = gen.CreateNewProduction("to");
             var scolon = gen.CreateNewProduction("scolon");
             var comma = gen.CreateNewProduction("comma");
+            var plus = gen.CreateNewProduction("plus");         // +
+            var minus = gen.CreateNewProduction("minus");       // -
+            var multiple = gen.CreateNewProduction("multiple"); // *
+            var divide = gen.CreateNewProduction("divide");     // /
             var _foreach = gen.CreateNewProduction("foreach");
             var _if = gen.CreateNewProduction("if");
             var _else = gen.CreateNewProduction("else");
@@ -172,6 +176,12 @@ namespace Koromo_Copy.LP
 
             index |= variable + ParserAction.Create(x => { });
             index |= variable + pp_open + variable + pp_close + ParserAction.Create(x => { });
+            index |= index + plus + index + ParserAction.Create(x => { });
+            index |= index + minus + index + ParserAction.Create(x => { });
+            index |= index + multiple + index + ParserAction.Create(x => { });
+            index |= index + divide + index + ParserAction.Create(x => { });
+            index |= minus + index + ParserAction.Create(x => { });
+            index |= op_open + index + op_close + ParserAction.Create(x => { });
 
             variable |= name + ParserAction.Create(x => { });
             variable |= function + ParserAction.Create(x => { });
@@ -184,6 +194,9 @@ namespace Koromo_Copy.LP
 
             gen.PushConflictSolver(true, _else);
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(runnable, 2));
+            gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(index, 6));
+            gen.PushConflictSolver(false, multiple, divide);
+            gen.PushConflictSolver(false, plus, minus);
 
             try
             {
