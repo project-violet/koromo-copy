@@ -91,4 +91,11 @@ namespace Koromo_Copy.Component.DC
         public int comment_cnt;
         public DCCommentElement[] comments;
     }
+
+    public class DCGalleryModel
+    {
+        public bool is_minor_gallery;
+        public string gallery_id;
+        public DCPageArticle[] articles;
+    }
 }

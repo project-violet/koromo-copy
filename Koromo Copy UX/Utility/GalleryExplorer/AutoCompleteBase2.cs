@@ -6,6 +6,7 @@
 
 ***/
 
+using DCGallery;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,11 +18,11 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace SkyrimGallery.Domain
+namespace DCGallery.Domain
 {
     public interface IAutoCompleteAlgorithm2
     {
-        List<SkyrimGalleryTagData> GetResults(ref string word, ref int position);
+        List<DCGalleryTagData> GetResults(ref string word, ref int position);
     }
 
     public class AutoCompleteBase2

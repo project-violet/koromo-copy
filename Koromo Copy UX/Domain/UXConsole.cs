@@ -6,12 +6,12 @@
 
 ***/
 
+using DCGallery;
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy_UX.Controls;
 using Koromo_Copy_UX.Utility;
 using Koromo_Copy_UX.Utility.ZipArtists;
-using SkyrimGallery;
 using System.Windows;
 
 namespace Koromo_Copy_UX.Domain
