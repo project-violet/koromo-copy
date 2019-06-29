@@ -6,9 +6,10 @@
 
 ***/
 
+using DCGallery.Domain;
 using Koromo_Copy.Component.DC;
 using Koromo_Copy_UX.Domain;
-using SkyrimGallery.Domain;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,7 +29,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SkyrimGallery
+namespace DCGallery
 {
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
@@ -42,6 +43,17 @@ namespace SkyrimGallery
             InitializeComponent();
             //Hide();
 
+            var ofd = new OpenFileDialog();
+            ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            ofd.Filter = "데이터 파일 (*.txt)|*.txt";
+            if (ofd.ShowDialog() == false)
+            {
+                MessageBox.Show("데이터 파일이 없으면 이용할 수 없습니다!", "Skyrim Gallery", MessageBoxButton.OK, MessageBoxImage.Error);
+                //Application.Current.Shutdown();
+                Close();
+                return;
+            }
+
             SearchText.GotFocus += SearchText_GotFocus;
             SearchText.LostFocus += SearchText_LostFocus;
 
@@ -54,6 +66,8 @@ namespace SkyrimGallery
             //Monitor.Instance.Start();
 
             Instance = this;
+
+            DCGalleryAnalyzer.Instance.Open(ofd.FileName);
         }
         
         #region Search
@@ -109,7 +123,7 @@ namespace SkyrimGallery
             var search = SearchText.Text;
             if (search == "검색") search = "";
 
-            SkyrimGalleryDataQuery query = new SkyrimGalleryDataQuery();
+            DCGalleryDataQuery query = new DCGalleryDataQuery();
             List<string> positive_data = new List<string>();
 
             search.Trim().Split(' ').ToList().ForEach((a) => { if (!a.Contains(":") && !a.StartsWith("/") && !a.StartsWith("?")) positive_data.Add(a.Trim()); });
@@ -143,7 +157,7 @@ namespace SkyrimGallery
             }
 
             var result = new List<DCPageArticle>();
-            foreach (var article in SkyrimGalleryAnalyzer.Instance.Articles)
+            foreach (var article in DCGalleryAnalyzer.Instance.Articles)
             {
                 if (query.Type != null)
                 {
@@ -211,7 +225,7 @@ namespace SkyrimGallery
 
         #region Search Helper
 
-        SkyrimGalleryAutoComplete algorithm = new SkyrimGalleryAutoComplete();
+        DCGalleryAutoComplete algorithm = new DCGalleryAutoComplete();
         AutoCompleteBase2 logic;
 
         private void SearchText_KeyDown(object sender, KeyEventArgs e)

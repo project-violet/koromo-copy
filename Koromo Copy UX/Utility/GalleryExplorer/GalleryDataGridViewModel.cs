@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyrimGallery.Domain
+namespace DCGallery.Domain
 {
     public class GalleryDataGridItemViewModel : INotifyPropertyChanged
     {
