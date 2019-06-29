@@ -223,8 +223,9 @@ namespace Koromo_Copy.LP
             sg.PushRule("if", "if");
             sg.PushRule("else", "else");
             sg.PushRule("name", @"[_$a-zA-Z][_$a-zA-Z0-9]*");
-            sg.PushRule("const", @"[\-\+]?[0-9]+(\.[0-9]+)?([Ee][\+\-]?[0-9]+)?|""[_$a-zA-Z0-9\/\?:,\[\]\\#\=&\+\-\*\|\(\)\<\>\.{}! ]*""");
-            
+            //sg.PushRule("const", @"[\-\+]?[0-9]+(\.[0-9]+)?([Ee][\+\-]?[0-9]+)?|""[_$a-zA-Z0-9\/\?:,\[\]\\#\=&\+\-\*\|\(\)\<\>\.{}! ]*""");
+            sg.PushRule("const", @"[\-\+]?[0-9]+(\.[0-9]+)?([Ee][\+\-]?[0-9]+)?|""([^\\""]|\\"")*""");
+
             sg.Generate();
             
             Console.Console.Instance.WriteLine(sg.PrintDiagram());

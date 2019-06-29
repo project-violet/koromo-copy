@@ -200,6 +200,12 @@ namespace Koromo_Copy.LP
                     case '[':
                         var ch_list = new List<char>();
                         i++;
+                        bool inverse = false;
+                        if (i < pattern.Length && pattern[i] == '^')
+                        {
+                            inverse = true;
+                            i++;
+                        }
                         for (; i < pattern.Length && pattern[i] != ']'; i++)
                         {
                             if (pattern[i] == '\\' && i + 1 < pattern.Length)
@@ -236,6 +242,18 @@ namespace Koromo_Copy.LP
                                 ch_list.Add(pattern[i]);
                         }
                         var ends_point2 = new transition_node { index = index_count++, transition = new List<Tuple<char, transition_node>>() };
+                        if (inverse)
+                        {
+                            var set = new bool[128];
+                            var nch_list = new List<char>();
+                            foreach (var ch2 in ch_list)
+                                set[ch2] = true;
+                            for (int j = 0; j < 128; j++)
+                                if (!set[j])
+                                    nch_list.Add((char)j);
+                            ch_list.Clear();
+                            ch_list = nch_list;
+                        }
                         foreach (var ch2 in ch_list)
                         {
                             cur.transition.Add(new Tuple<char, transition_node>(ch2, ends_point2));
