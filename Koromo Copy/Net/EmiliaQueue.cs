@@ -205,6 +205,12 @@ namespace Koromo_Copy.Net
                 object obj = job.Item3;
                 SemaphoreCallBack callback = job.Item4;
                 SemaphoreExtends se = job.Item5;
+
+                if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+                {
+                    Monitor.Instance.Push($"[Directory Not Found] {uri} is auto deleted in download queue.");
+                    goto END;
+                }
                 
                 int retry_count = 0;
             RETRY:
