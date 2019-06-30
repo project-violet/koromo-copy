@@ -77,6 +77,9 @@ namespace Koromo_Copy.Console
         [CommandLine("-taglist", CommandType.OPTION, Info = "Show downloaded articles tags list.")]
         public bool TagList;
 
+        [CommandLine("-ranking", CommandType.OPTION, Info = "Show downloaded articles artists list.")]
+        public bool Ranking;
+
         [CommandLine("-forbidden", CommandType.ARGUMENTS, Info = "use -forbidden <Hitomi Number>.")]
         public string[] Forbidden;
 
@@ -179,6 +182,13 @@ namespace Koromo_Copy.Console
             else if (option.TagList)
             {
                 ProcessTagList();
+            }
+            //
+            //  단순 통계
+            //
+            else if (option.Ranking)
+            {
+                ProcessRanking();
             }
             //
             //  Forbidden 데이터
@@ -438,6 +448,36 @@ namespace Koromo_Copy.Console
             {
                 Console.Instance.WriteLine($"{(i + 1).ToString().PadLeft(5)}: {list[i].Key} ({list[i].Value})");
             }
+        }
+
+        /// <summary>
+        /// 다운로드된 작품들의 작가들의 리스트를 보여줍니다.
+        /// </summary>
+        static void ProcessRanking()
+        {
+            var total_korean_count = HitomiIndex.Instance.tagdata_collection.language.Where(x => x.Tag == "korean").ToList()[0].Count;
+            var downloaded = HitomiLog.Instance.GetList();
+
+            Console.Instance.WriteLine("총 한국어 작품 수: ".PadLeft(20) + total_korean_count);
+            Console.Instance.WriteLine("다운로드된 작품 수: ".PadLeft(20) + downloaded.Count);
+            Console.Instance.WriteLine("다운로드된 작품 수(중복허용): ".PadLeft(20) + HitomiLog.Instance.DownloadTable.Count);
+
+            var dict = new Dictionary<string, int>();
+            foreach (var gg in downloaded)
+                if (gg.Artists != null)
+                    gg.Artists.ToList().ForEach(x =>
+                    {
+                        if (!dict.ContainsKey(x))
+                            dict.Add(x, 0);
+                        dict[x] += 1;
+                    });
+
+            var list = dict.ToList();
+            list.Sort((x, y) => y.Value.CompareTo(x.Value));
+
+            int v = 1;
+            foreach (var l in list)
+                Console.Instance.WriteLine($"{v++}위: ".PadLeft(7) + l.Key.PadLeft(20) + $" ({l.Value}회 다운로드됨)");
         }
 
         /// <summary>
