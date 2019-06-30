@@ -276,7 +276,13 @@ namespace DCGallery
         {
             if (ResultList.SelectedItems.Count > 0)
             {
-                Process.Start("https://gall.dcinside.com/mgallery/board/view/?id=tullius&no=" + (ResultList.SelectedItems[0] as GalleryDataGridItemViewModel).번호);
+                var no = (ResultList.SelectedItems[0] as GalleryDataGridItemViewModel).번호;
+                var id = DCGalleryAnalyzer.Instance.Model.gallery_id;
+
+                if (DCGalleryAnalyzer.Instance.Model.is_minor_gallery)
+                    Process.Start($"https://gall.dcinside.com/mgallery/board/view/?id={id}&no={no}");
+                else
+                    Process.Start($"https://gall.dcinside.com/board/view/?id={id}&no={no}");
             }
         }
     }
