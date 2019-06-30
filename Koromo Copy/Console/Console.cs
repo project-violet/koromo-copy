@@ -567,7 +567,6 @@ namespace Koromo_Copy.Console
 
                 private float _currentProgress = 0;
                 private TextWriter consoleOut;
-                private const string ProgressTemplate = "Progress: {1:n2}% [{0}]";
                 private const int AllocatedTemplateSpace = 21;
                 private object SyncLock = new object();
                 public ProgressWriter(TextWriter _consoleOut)
@@ -581,15 +580,12 @@ namespace Koromo_Copy.Console
                     lock (SyncLock)
                     {
                         int avalibleSpace = System.Console.BufferWidth - AllocatedTemplateSpace;
-                        int percentAmmount = (int)((float)avalibleSpace * (CurrentProgress / 100));
+                        int percentAmmount = (int)(avalibleSpace * (CurrentProgress / 100));
                         var col = System.Console.ForegroundColor;
                         var bak = System.Console.BackgroundColor;
-                        //System.Console.ForegroundColor = ConsoleColor.DarkMagenta;
                         System.Console.BackgroundColor = ConsoleColor.Green;
                         System.Console.ForegroundColor = ConsoleColor.Black;
                         string progressBar = string.Concat(new string('#', percentAmmount), new string('.', avalibleSpace - percentAmmount));
-                        //consoleOut.Write(string.Format(ProgressTemplate, progressBar, CurrentProgress));
-                        //consoleOut.Write(string.Format("Progress: [{0:n2}%]", CurrentProgress));
                         consoleOut.Write($"Progress: [{((int)(CurrentProgress)).ToString().PadLeft(3, ' ')}%]");
                         System.Console.ForegroundColor = col;
                         System.Console.BackgroundColor = bak;

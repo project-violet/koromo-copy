@@ -244,7 +244,7 @@ namespace Koromo_Copy_UX
                     catch (Exception e)
                     {
                         Monitor.Instance.Push($"[Search Elements] isunstable={ha.IsUnstable} article_type={ha.UnstableModel}" + 
-                            $" thumbnail={(ha.UnstableModel.Thumbnail != null ? ha.UnstableModel.Thumbnail : ha.Thumbnail)}" +
+                            $" thumbnail={(ha.UnstableModel.Thumbnail ?? ha.Thumbnail)}" +
                             $"\r\n{e.Message}\r\n{e.StackTrace}");
                     }
                 }));
