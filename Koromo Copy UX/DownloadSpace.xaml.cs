@@ -154,9 +154,13 @@ namespace Koromo_Copy_UX
             address = address.Remove(address.Length - 1);
             if (File.Exists($"{address}.zip"))
                 File.Delete($"{address}.zip");
-            ZipFile.CreateFromDirectory(address, $"{address}.zip");
-            Directory.Delete(address, true);
-            Monitor.Instance.Push("[Zip End] " + address);
+            try
+            {
+                ZipFile.CreateFromDirectory(address, $"{address}.zip");
+                Directory.Delete(address, true);
+                Monitor.Instance.Push("[Zip End] " + address);
+            }
+            catch (Exception e) { Monitor.Instance.Push("[Zip Error]" + e.Message + "\r\n" + e.StackTrace); }
             MainWindow.Instance.ZipCountDown();
         }
 
