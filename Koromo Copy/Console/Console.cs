@@ -273,6 +273,7 @@ namespace Koromo_Copy.Console
                 {"script", new ScriptConsole()},
                 {"dcinside", new DCInsideConsole()},
                 {"lp", new LPConsole()},
+                {"kss", new KSSConsole()},
 
                 // utility command
                 {"scan", new Utility.ScanConsole()},

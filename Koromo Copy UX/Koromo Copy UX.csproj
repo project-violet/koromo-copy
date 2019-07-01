@@ -190,6 +190,9 @@
       <DependentUpon>GroupViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\NonTopmostPopup.cs" />
+    <Compile Include="KS\KoromoService.xaml.cs">
+      <DependentUpon>KoromoService.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Language\Lang.cs" />
     <Compile Include="PatchNoteElements.xaml.cs">
       <DependentUpon>PatchNoteElements.xaml</DependentUpon>
@@ -449,6 +452,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GroupViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="KS\KoromoService.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
