@@ -10,6 +10,7 @@ using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Pinterest;
 using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Interface;
+using Koromo_Copy.KSS;
 using Koromo_Copy.Net;
 using Koromo_Copy.UX;
 using Newtonsoft.Json;
@@ -38,6 +39,9 @@ namespace Koromo_Copy
 
         [JsonProperty]
         public NetSetting Net;
+
+        [JsonProperty]
+        public KSSSetting KSS;
 
         /// <summary>
         /// 세밀한 버전 확인을 제공합니다.
@@ -222,5 +226,6 @@ namespace Koromo_Copy
         public PixivSetting Pixiv { get { return model.Pixiv; } }
         public PinSetting Pinterest { get { return model.Pinterest; } }
         public NetSetting Net { get { return model.Net; } }
+        public KSSSetting KSS { get { return model.KSS; } }
     }
 }

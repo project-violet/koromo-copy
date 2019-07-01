@@ -41,6 +41,9 @@
     <Reference Include="Costura, Version=3.1.6.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>packages\Costura.Fody.3.1.6\lib\net46\Costura.dll</HintPath>
     </Reference>
+    <Reference Include="EngineIoClientDotNet, Version=0.9.22.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EngineIoClientDotNet.0.9.22\lib\net45\EngineIoClientDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.8.7.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>packages\HtmlAgilityPack.1.8.7\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -52,6 +55,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SocketIoClientDotNet, Version=0.9.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SocketIoClientDotNet.0.9.13\lib\net45\SocketIoClientDotNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -75,6 +81,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="WebDriver, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Selenium.WebDriver.3.141.0\lib\net45\WebDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSocket4Net, Version=0.14.1.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>packages\WebSocket4Net.0.14.1\lib\net45\WebSocket4Net.dll</HintPath>
     </Reference>
     <Reference Include="YoutubeExtractor, Version=0.10.11.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\YoutubeExtractor.0.10.11\lib\net35\YoutubeExtractor.dll</HintPath>
@@ -103,6 +112,7 @@
     <Compile Include="Component\SeriesLog.cs" />
     <Compile Include="Console\CommandLineParser.cs" />
     <Compile Include="Console\DCInsideConsole.cs" />
+    <Compile Include="Console\KSSConsole.cs" />
     <Compile Include="Console\LPConsole.cs" />
     <Compile Include="Console\ScriptConsole.cs" />
     <Compile Include="Crypto\Hash.cs" />
@@ -186,6 +196,9 @@
     <Compile Include="Component\Hitomi\HitomiSetting.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanSeries.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanTag.cs" />
+    <Compile Include="KSS\KSSCommon.cs" />
+    <Compile Include="KSS\KSSCore.cs" />
+    <Compile Include="KSS\KSSSetting.cs" />
     <Compile Include="KSS\KSSTerms.cs" />
     <Compile Include="LP\CALtoCS.cs" />
     <Compile Include="LP\ESRCAL.cs" />
