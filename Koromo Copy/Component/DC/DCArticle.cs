@@ -21,7 +21,9 @@ namespace Koromo_Copy.Component.DC
         public string GalleryName { get; set; }
         public string OriginalGalleryName { get; set; }
         public string Thumbnail { get; set; }
+        public string Class { get; set; }
         public string Title { get; set; }
+        public string Contents { get; set; }
         public List<string> ImagesLink { get; set; }
         public List<string> FilesName { get; set; }
         public string Archive { get; set; }

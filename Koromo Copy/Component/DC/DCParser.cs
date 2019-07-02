@@ -19,7 +19,7 @@ namespace Koromo_Copy.Component.DC
 {
     public class DCParser
     {
-        public static DCArticle ParseBoardView(string html)
+        public static DCArticle ParseBoardView(string html, bool is_minor = false)
         {
             DCArticle article = new DCArticle();
 
@@ -30,9 +30,15 @@ namespace Koromo_Copy.Component.DC
             article.Id = Regex.Match(html, @"name=""gallery_no"" value=""(\d+)""").Groups[1].Value;
             article.GalleryName = Regex.Match(html, @"<h4 class=""block_gallname"">\[(.*?) ").Groups[1].Value;
             article.OriginalGalleryName = document.DocumentNode.SelectSingleNode("//input[@id='gallery_id']").GetAttributeValue("value", "");
+            if (is_minor)
+                article.Class = node.SelectSingleNode("//span[@class='title_headtext']").InnerText;
+            article.Contents = node.SelectSingleNode("//div[@class='writing_view_box']").InnerHtml.ToBase64();
             article.Title = node.SelectSingleNode("//span[@class='title_subject']").InnerText;
-            article.ImagesLink = node.SelectNodes("//ul[@class='appending_file']/li").Select(x => x.SelectSingleNode("./a").GetAttributeValue("href","")).ToList();
-            article.FilesName = node.SelectNodes("//ul[@class='appending_file']/li").Select(x => x.SelectSingleNode("./a").InnerText).ToList();
+            try
+            {
+                article.ImagesLink = node.SelectNodes("//ul[@class='appending_file']/li").Select(x => x.SelectSingleNode("./a").GetAttributeValue("href", "")).ToList();
+                article.FilesName = node.SelectNodes("//ul[@class='appending_file']/li").Select(x => x.SelectSingleNode("./a").InnerText).ToList();
+            } catch { }
             article.ESNO = document.DocumentNode.SelectSingleNode("//input[@id='e_s_n_o']").GetAttributeValue("value", "");
 
             return article;
