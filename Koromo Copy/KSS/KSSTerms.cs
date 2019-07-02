@@ -62,5 +62,16 @@ namespace Koromo_Copy.KSS
             "이용약관을 거부하면 KSS는 사용자의 어떠한 정보도 전송하지 않으며, 저장하지 않습니다.                                               ",
             "모든 사용자는 각 서비스를 부분적으로 허용 및 거부할 수 있으며, 부분 서비스를 거부할 경우 해당 부분 서비스를 이용할 수 없습니다.           "};
         public static string Terms => string.Join("\r\n", terms.Select(x => x.Trim()));
+
+        //<!-- Global site tag (gtag.js) - Google Analytics -->
+        //<script async src="https://www.googletagmanager.com/gtag/js?id=UA-143094487-1"></script>
+        //<script>
+        //  window.dataLayer = window.dataLayer || [];
+        //  function gtag(){dataLayer.push(arguments);}
+        //  gtag('js', new Date());
+        //
+        //  gtag('config', 'UA-143094487-1');
+        //</script>
+
     }
 }
