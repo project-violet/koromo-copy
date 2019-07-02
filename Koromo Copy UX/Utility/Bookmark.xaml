@@ -1,0 +1,32 @@
+﻿<Window x:Class="Koromo_Copy_UX.Utility.Bookmark"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koromo_Copy_UX.Utility"
+        mc:Ignorable="d"
+        Title="북마크" Height="395.388" Width="595.631">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView x:Name="ClassifyTree" MinWidth="220" Grid.Column="0" SelectedItemChanged="ClassifyTree_SelectedItemChanged">
+            <TreeView.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TreeView.xaml"/>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </TreeView.Resources>
+        </TreeView>
+        <GridSplitter BorderThickness="1" BorderBrush="Gainsboro"></GridSplitter>
+        <ScrollViewer Grid.Column="1">
+            <Grid>
+                <ContentControl x:Name="ContentControl" Content="{Binding ElementName=ClassifyTree, Path=SelectedItem.Content}"/>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

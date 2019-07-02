@@ -66,6 +66,9 @@ namespace Koromo_Copy_UX.Tools
                 case "RankSimulator":
                     (new RankSimulator()).Show();
                     break;
+                case "Bookmark":
+                    (new Bookmark()).Show();
+                    break;
 
                 case "HitomiExplorer":
                 case "FsEnumerator":
