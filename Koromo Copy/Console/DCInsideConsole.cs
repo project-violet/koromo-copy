@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Koromo_Copy.Console
@@ -31,6 +32,9 @@ namespace Koromo_Copy.Console
         [CommandLine("-parse-gallery", CommandType.ARGUMENTS, ArgumentsCount = 3, Help = "use -parse-gallery <Gallery Id> <Start Page> <End Page>",
             Info = "Parse gallery pages.")]
         public string[] ParseGallery;
+        [CommandLine("-full-parse", CommandType.ARGUMENTS, ArgumentsCount = 3, Help = "use -full-parse <Gallery Id> <Start Page> <End Page>",
+            Info = "Parse gallery, articles, comments.")]
+        public string[] FullParse;
         [CommandLine("--filter-rem", CommandType.OPTION, Help = "use --filter-rem",
             Info = "Filtering recommendation article list.")]
         public bool FilterRecommend;
@@ -56,6 +60,13 @@ namespace Koromo_Copy.Console
         [CommandLine("-collect-articles", CommandType.ARGUMENTS, ArgumentsCount = 3, Help = "use -collect-articles <Gallery Id> <Start Page> <End Page>",
             Info = "Parse gallery pages.")]
         public string[] CollectArticles;
+
+        [CommandLine("-parse-article", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use -parse-article <Gallery Id> <Article Number>",
+            Info = "Parse gallery article.")]
+        public string[] ParseArticle;
+        [CommandLine("-parse-comments", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use -parse-comments <Gallery Id> <Article Number>",
+            Info = "Parse article's comments.")]
+        public string[] ParseComments;
 
         [CommandLine("-test", CommandType.ARGUMENTS, Help = "use -test <Number>",
             Info = "Test dcinside methods.")]
@@ -88,9 +99,22 @@ namespace Koromo_Copy.Console
                 ProcessParseGallery(option.ParseGallery, option.FilterRecommend, option.FilterTitle,
                     option.FilterNick, option.FilterIp, option.FilterId, option.FilterLogined, option.FilterFixed);
             }
+            else if (option.FullParse != null)
+            {
+                ProcessFullParse(option.FullParse, option.FilterRecommend, option.FilterTitle,
+                    option.FilterNick, option.FilterIp, option.FilterId, option.FilterLogined, option.FilterFixed);
+            }
             else if (option.CollectArticles != null)
             {
                 ProcessCollectArticles(option.CollectArticles, option.FilterRecommend);
+            }
+            else if (option.ParseArticle != null)
+            {
+                ProcessParseArticle(option.ParseArticle);
+            }
+            else if (option.ParseComments != null)
+            {
+                ProcessParseComments(option.ParseComments);
             }
             else if (option.Test != null)
             {
@@ -199,6 +223,139 @@ namespace Koromo_Copy.Console
             }
         }
 
+        static void ProcessFullParse(string[] args, bool rem, string[] title, string[] nick,
+            string[] ip, string[] id, bool login, bool fix)
+        {
+            using (var progressBar = new Console.ConsoleProgressBar())
+            {
+                Console.Instance.WriteLine("Parse gallery...");
+
+                var rstarts = Convert.ToInt32(args[1]);
+                var starts = Convert.ToInt32(args[1]);
+                var ends = Convert.ToInt32(args[2]);
+
+                LoadGalleryList();
+
+                bool is_minorg = minor_galleries.ContainsValue(args[0]);
+                var articles = new List<DCPageArticle>();
+
+                //
+                //  Parse Gallery
+                //
+                for (; starts <= ends; starts++)
+                {
+                    var url = "";
+                    if (is_minorg)
+                        url = $"https://gall.dcinside.com/mgallery/board/lists/?id={args[0]}&page={starts}";
+                    else
+                        url = $"https://gall.dcinside.com/board/lists/?id={args[0]}&page={starts}";
+
+                    if (rem)
+                        url += "&exception_mode=recommend";
+
+                    var html = NetCommon.DownloadString(url);
+                    DCGallery gall = null;
+
+                    if (is_minorg)
+                        gall = DCParser.ParseMinorGallery(html);
+                    else
+                        gall = DCParser.ParseGallery(html);
+
+                    foreach (var article in gall.articles)
+                    {
+                        if (title != null && !article.title.Contains(title[0]))
+                            continue;
+                        if (nick != null && !article.nick.Contains(nick[0]))
+                            continue;
+                        if (ip != null && !article.ip.Contains(ip[0]))
+                            continue;
+                        if (id != null && !article.uid.Contains(id[0]))
+                            continue;
+                        if (login && !article.islogined)
+                            continue;
+                        if (fix && !article.isfixed)
+                            continue;
+
+                        //Console.Instance.Write(Monitor.SerializeObject(article));
+                        //Console.Instance.WriteLine(",");
+                        articles.Add(article);
+                    }
+
+                    progressBar.SetProgress((((ends - rstarts + 1) - (ends - starts)) / (float)(ends - rstarts + 1)) * 100);
+
+                    Thread.Sleep(3000);
+                }
+
+                Console.Instance.WriteLine("Parse articles...");
+                int acnt = 0;
+                var _articles = new List<DCArticle>();
+
+                //
+                //  Parse Articles
+                //
+                foreach (var article in articles)
+                {
+
+                    var url = "";
+                    if (is_minorg)
+                        url = $"https://gall.dcinside.com/mgallery/board/view/?id={args[0]}&no={article.no}";
+                    else
+                        url = $"https://gall.dcinside.com/board/view/?id={args[0]}&no={article.no}";
+
+                    var html = NetCommon.DownloadString(url);
+                    var _article = DCParser.ParseBoardView(html, is_minorg);
+
+                    _articles.Add(_article);
+
+                    acnt++;
+                    progressBar.SetProgress(((acnt) / (float)(articles.Count)) * 100);
+
+                    Thread.Sleep(3000);
+                }
+
+                var info = new List<Tuple<DCArticle, List<DCComment>>>();
+
+                if (ESNO == "")
+                {
+                    ESNO = _articles[0].ESNO;
+                }
+
+                int ccnt = 0;
+
+                //
+                //  Parse Comments
+                //
+                foreach (var article in _articles)
+                {
+                    var cc = new List<DCComment>();
+                    var comments = DCCommon.GetComments(new DCArticle { OriginalGalleryName = article.OriginalGalleryName, Id = article.Id, ESNO = article.ESNO }, "1");
+
+                    Thread.Sleep(2000);
+
+                    cc.Add(comments);
+                    int tcount = comments.total_cnt;
+                    int count = 100;
+                    for (int i = 2; count < tcount; count += 100)
+                    {
+                        comments = DCCommon.GetComments(new DCArticle { OriginalGalleryName = args[0], Id = args[1], ESNO = ESNO }, i.ToString());
+                        if (comments.comment_cnt == 0)
+                            break;
+                        count += comments.comment_cnt;
+                        cc.Add(comments);
+                        Thread.Sleep(2000);
+                    }
+
+                    info.Add(new Tuple<DCArticle, List<DCComment>>(article, cc));
+
+                    ccnt++;
+                    progressBar.SetProgress(((ccnt) / (float)(_articles.Count)) * 100);
+                }
+
+                var result = new Tuple<List<DCPageArticle>, List<Tuple<DCArticle, List<DCComment>>>>(articles, info);
+                File.WriteAllText($"dc-{args[0]}-{args[1]}-{args[2]}-{DateTime.Now.Ticks}.txt", Monitor.SerializeObject(result));
+            }
+        }
+
         static void ProcessCollectArticles(string[] args, bool rem)
         {
             var rstarts = Convert.ToInt32(args[1]);
@@ -252,6 +409,66 @@ namespace Koromo_Copy.Console
             }
         }
 
+        static void ProcessParseArticle(string[] args)
+        {
+            LoadGalleryList();
+
+            bool is_minorg = minor_galleries.ContainsValue(args[0]);
+
+            var url = "";
+            if (is_minorg)
+                url = $"https://gall.dcinside.com/mgallery/board/view/?id={args[0]}&no={args[1]}";
+            else
+                url = $"https://gall.dcinside.com/board/view/?id={args[0]}&no={args[1]}";
+
+            var html = NetCommon.DownloadString(url);
+            var article = DCParser.ParseBoardView(html, is_minorg);
+
+            Console.Instance.WriteLine(article);
+        }
+
+        static string ESNO = "";
+
+        static void ProcessParseComments(string[] args)
+        {
+            LoadGalleryList();
+
+            bool is_minorg = minor_galleries.ContainsValue(args[0]);
+
+            if (ESNO == "")
+            {
+                var url = "";
+                if (is_minorg)
+                    url = $"https://gall.dcinside.com/mgallery/board/view/?id={args[0]}&no={args[1]}";
+                else
+                    url = $"https://gall.dcinside.com/board/view/?id={args[0]}&no={args[1]}";
+
+                var html = NetCommon.DownloadString(url);
+                var article = DCParser.ParseBoardView(html, is_minorg);
+
+                ESNO = article.ESNO;
+            }
+
+            var comments = DCCommon.GetComments(new DCArticle { OriginalGalleryName = args[0], Id = args[1], ESNO = ESNO }, "1");
+
+            Console.Instance.WriteLine(comments);
+
+            using (var progressBar = new Console.ConsoleProgressBar())
+            {
+                int tcount = comments.total_cnt;
+                int count = comments.comment_cnt;
+                for (int i = 2; count < tcount; i++)
+                {
+                    progressBar.SetProgress(((count) / (float)(tcount)) * 100);
+                    comments = DCCommon.GetComments(new DCArticle { OriginalGalleryName = args[0], Id = args[1], ESNO = ESNO }, i.ToString());
+                    if (comments.comment_cnt == 0)
+                        break;
+                    Console.Instance.WriteLine(comments);
+                    count += comments.comment_cnt;
+                }
+            }
+        }
+
         static void ProcessTest(string[] args)
         {
             switch (args[0])
@@ -279,5 +496,6 @@ namespace Koromo_Copy.Console
                     break;
             }
         }
+
     }
 }
