@@ -191,6 +191,10 @@ namespace Koromo_Copy_UX
             {
                 (new ZipArtists()).Show();
             }
+            else if (e.Key == Key.B && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                (new Bookmark()).Show();
+            }
         }
 
         int zip_status = 0;
