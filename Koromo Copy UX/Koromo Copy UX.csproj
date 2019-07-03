@@ -81,9 +81,8 @@
       <HintPath>..\Koromo Copy\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.0.1205, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Koromo Copy\packages\MaterialDesignThemes.2.5.0.1205\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.1.1345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Koromo Copy\packages\MaterialDesignThemes.2.5.1\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.3.3, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
       <HintPath>..\Koromo Copy\packages\Microsoft-WindowsAPICodePack-Core.1.1.3.3\lib\net452\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -220,6 +219,17 @@
     </Compile>
     <Compile Include="Utility\Bookmark.xaml.cs">
       <DependentUpon>Bookmark.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\BookmarkEditClass.xaml.cs">
+      <DependentUpon>BookmarkEditClass.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\BookmarkModel.cs" />
+    <Compile Include="Utility\BookmarkPage.xaml.cs">
+      <DependentUpon>BookmarkPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\BookmarkPageDataGridViewModel.cs" />
+    <Compile Include="Utility\BookmarkPageThumbnail.xaml.cs">
+      <DependentUpon>BookmarkPageThumbnail.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\DCTools.xaml.cs">
       <DependentUpon>DCTools.xaml</DependentUpon>
@@ -587,6 +597,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\Bookmark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\BookmarkEditClass.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\BookmarkPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\BookmarkPageThumbnail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
