@@ -237,6 +237,7 @@
     <Compile Include="Utility\BookmarkPageThumbnail.xaml.cs">
       <DependentUpon>BookmarkPageThumbnail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\BookmarkSetting.cs" />
     <Compile Include="Utility\BookmarkSetting.xaml.cs">
       <DependentUpon>BookmarkSetting.xaml</DependentUpon>
     </Compile>

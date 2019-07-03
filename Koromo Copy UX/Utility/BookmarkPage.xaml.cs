@@ -48,6 +48,9 @@ namespace Koromo_Copy_UX.Utility
             Loaded += BookmarkPage_Loaded;
         }
 
+        public void refresh() =>
+            load();
+
         private void BookmarkPage_Loaded(object sender, RoutedEventArgs e)
         {
             load();
@@ -121,13 +124,13 @@ namespace Koromo_Copy_UX.Utility
 
             foreach (var artist in BookmarkModelManager.Instance.Model.artists)
                 if (artist.Item1 == classify_name)
-                    ll.Add(new BookmarkPageDataGridItemViewModel { 내용 = artist.Item2.content, 유형 = "작가", 추가된날짜 = artist.Item2.stamp.ToString(), 경로 = artist.Item2.path });
+                    ll.Add(new BookmarkPageDataGridItemViewModel { 내용 = artist.Item2.content, 유형 = "작가", 추가된날짜 = artist.Item2.stamp.ToString(), 경로 = artist.Item2.path, BIM = artist.Item2, 기타 = artist.Item2.etc });
             foreach (var group in BookmarkModelManager.Instance.Model.groups)
                 if (group.Item1 == classify_name)
-                    ll.Add(new BookmarkPageDataGridItemViewModel { 내용 = group.Item2.content, 유형 = "그룹", 추가된날짜 = group.Item2.stamp.ToString(), 경로 = group.Item2.path });
+                    ll.Add(new BookmarkPageDataGridItemViewModel { 내용 = group.Item2.content, 유형 = "그룹", 추가된날짜 = group.Item2.stamp.ToString(), 경로 = group.Item2.path, BIM = group.Item2, 기타 = group.Item2.etc });
             foreach (var article in BookmarkModelManager.Instance.Model.articles)
                 if (article.Item1 == classify_name)
-                    ll.Add(new BookmarkPageDataGridItemViewModel { 내용 = article.Item2.content + " - " + HitomiLegalize.GetMetadataFromMagic(article.Item2.content)?.Name, 유형 = "작품", 추가된날짜 = article.Item2.stamp.ToString(), 경로 = article.Item2.path });
+                    ll.Add(new BookmarkPageDataGridItemViewModel { 내용 = article.Item2.content + " - " + HitomiLegalize.GetMetadataFromMagic(article.Item2.content)?.Name, 유형 = "작품", 추가된날짜 = article.Item2.stamp.ToString(), 경로 = article.Item2.path, BIM = article.Item2, 기타 = article.Item2.etc });
 
             ll.Sort((x, y) => SortAlgorithm.ComparePath(y.추가된날짜, x.추가된날짜));
 
@@ -138,11 +141,15 @@ namespace Koromo_Copy_UX.Utility
                 vm.Items.Add(item);
         }
 
+        #region 드래그 앤 드롭 - 들여오기
+
         private async void UserControl_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length == 0) return;
+                var parent = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(files[0]));
                 //files.ToList().ForEach(x => LoadFolder(x));
 
                 // 폴더인지 확인
@@ -246,7 +253,7 @@ namespace Koromo_Copy_UX.Utility
                     foreach (var group in groups)
                         BookmarkModelManager.Instance.Model.groups.Add(new Tuple<string, BookmarkItemModel>(classify_name, new BookmarkItemModel { content = group.Item1, path = group.Item2, stamp = DateTime.Now }));
                     foreach (var article in articles)
-                        BookmarkModelManager.Instance.Model.articles.Add(new Tuple<string, BookmarkItemModel>(classify_name, new BookmarkItemModel { content = article.Item1, path = article.Item2, stamp = DateTime.Now }));
+                        BookmarkModelManager.Instance.Model.articles.Add(new Tuple<string, BookmarkItemModel>(classify_name, new BookmarkItemModel { content = article.Item1, path = article.Item2, stamp = DateTime.Now, etc = parent }));
                     BookmarkModelManager.Instance.Save();
 
                     await Application.Current.Dispatcher.BeginInvoke(new Action(
@@ -257,6 +264,10 @@ namespace Koromo_Copy_UX.Utility
                 }
             }
         }
+
+        #endregion
+
+        #region 드래그 앤 드롭 - 내보내기
 
         List<BookmarkPageDataGridItemViewModel> selected = new List<BookmarkPageDataGridItemViewModel>();
         Point start;
@@ -282,24 +293,47 @@ namespace Koromo_Copy_UX.Utility
                 foreach (var tt in selected)
                     if (!TagList.SelectedItems.Contains(tt))
                         TagList.SelectedItems.Add(tt);
-
-                // right about here you get the file urls of the selected items.  
-                // should be quite easy, if not, ask.  
-                //string[] files = new String[FileView.SelectedItems.Count];
-                //int ix = 0;
-                //foreach (object nextSel in FileView.SelectedItems)
-                //{
-                //    files[ix] = "C:\\Users\\MyName\\Music\\My playlist\\" + nextSel.ToString();
-                //    ++ix;
-                //}
-                //string dataFormat = DataFormats.FileDrop;
-                //DataObject dataObject = new DataObject(dataFormat, files);
-                //DragDrop.DoDragDrop(this.FileView, dataObject, DragDropEffects.Copy);
-
+                
                 DataObject data = new DataObject();
-                data.SetData("registries", TagList.SelectedItems.Cast<BookmarkPageDataGridItemViewModel>().ToList());
+                data.SetData("registries", new Tuple<string, List<BookmarkPageDataGridItemViewModel>>(classify_name,TagList.SelectedItems.Cast<BookmarkPageDataGridItemViewModel>().ToList()));
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
             }
         }
+
+        #endregion
+
+        #region 컨텍스트 메뉴
+
+        private void TagList_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == null && !(sender is MenuItem)) return;
+            switch ((sender as MenuItem).Tag)
+            {
+                case "A":
+                    if (TagList.SelectedItems.Count > 0)
+                    {
+                        var fll = TagList.SelectedItems[0] as BookmarkPageDataGridItemViewModel;
+                        if (fll.유형 == "작가")
+                            (new ArtistViewerWindow(fll.내용)).Show();
+                        else if (fll.유형 == "그룹")
+                            (new GroupViewerWindow(fll.내용)).Show();
+                    }
+                    break;
+
+                case "B":
+                    var str1 = "";
+                    foreach (var ll in TagList.Items.Cast<BookmarkPageDataGridItemViewModel>())
+                        str1 += ll.내용 + "\r\n";
+                    MessageBox.Show(str1, "Koromo Copy Bookmark");
+                    break;
+            }
+        }
+
+        #endregion
     }
 }

@@ -97,6 +97,18 @@ namespace Koromo_Copy_UX.Utility
                 OnPropertyChanged();
             }
         }
+
+        BookmarkItemModel bim;
+        public BookmarkItemModel BIM
+        {
+            get { return bim; }
+            set
+            {
+                if (bim == value) return;
+                bim = value;
+                OnPropertyChanged();
+            }
+        }
     }
 
     public class BookmarkPageDataGridViewModel : INotifyPropertyChanged

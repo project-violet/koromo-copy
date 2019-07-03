@@ -17,7 +17,7 @@
         </Grid>
         <Border Grid.Row="1" BorderThickness="0 1 0 0" BorderBrush="Gainsboro">
             <DataGrid x:Name="TagList" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False" PreviewMouseLeftButtonDown="TagList_PreviewMouseLeftButtonDown" MouseMove="TagList_MouseMove"
-                  SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Background="Transparent" PreviewKeyDown="TagList_KeyDown" MouseDoubleClick="TagList_MouseDoubleClick"
+                  SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Background="Transparent" PreviewKeyDown="TagList_KeyDown" MouseDoubleClick="TagList_MouseDoubleClick" PreviewMouseRightButtonDown="TagList_PreviewMouseRightButtonDown"
                   CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
                 <DataGrid.Resources>
                     <ResourceDictionary>
@@ -28,6 +28,21 @@
                         </ResourceDictionary.MergedDictionaries>
                     </ResourceDictionary>
                 </DataGrid.Resources>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <ContextMenu.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </ContextMenu.Resources>
+                        <MenuItem x:Name="M1" Header="이 작가의 모든 작품 보기" Click="MenuItem_Click" Tag="A" VerticalAlignment="Center"></MenuItem>
+                        <MenuItem x:Name="M2" Header="텍스트로 출력" Click="MenuItem_Click" Tag="B" VerticalAlignment="Center"></MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <DataGrid.Columns>
                     <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="70" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" SortDirection="Descending">
                         <materialDesign:MaterialDataGridTextColumn.Header>
@@ -49,7 +64,7 @@
                             <Run Text="추가된 날짜"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 기타}" Width="50" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 기타}" Width="150" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="기타"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
