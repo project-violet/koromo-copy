@@ -149,9 +149,15 @@ namespace Koromo_Copy_UX.Utility
 
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        private void SettingButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
