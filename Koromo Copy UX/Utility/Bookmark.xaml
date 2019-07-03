@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Koromo_Copy_UX.Utility"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="북마크" Height="512.388" Width="938.631" WindowStartupLocation="CenterScreen">
+        Title="북마크" Height="512.388" Width="1050.631" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -163,11 +163,14 @@
                         </TreeView.Resources>
                     </TreeView>
                     <GridSplitter BorderThickness="1" BorderBrush="Gainsboro"></GridSplitter>
-                    <ScrollViewer Grid.Column="1">
+                    <!--<ScrollViewer Grid.Column="1">
                         <Grid x:Name="ppp">
                             <ContentControl x:Name="ContentControl" Content="{Binding ElementName=ClassifyTree, Path=SelectedItem.Content}"/>
                         </Grid>
-                    </ScrollViewer>
+                    </ScrollViewer>-->
+                    <Grid x:Name="ppp" Grid.Column="1">
+                        <ContentControl x:Name="ContentControl" Content="{Binding ElementName=ClassifyTree, Path=SelectedItem.Content}"/>
+                    </Grid>
                 </Grid>
             </Grid>
 

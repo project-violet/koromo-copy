@@ -38,7 +38,7 @@ namespace Koromo_Copy_UX.Utility
             InitializeComponent();
 
             Instance = this;
-            refresh();
+            init();
         }
 
         public static Bookmark Instance;
@@ -98,14 +98,16 @@ namespace Koromo_Copy_UX.Utility
                 BookmarkModelManager.Instance.Model.sub_classes = sub_classes;
                 BookmarkModelManager.Instance.Save();
 
-                refresh();
+                init();
             }
         }
 
-        private void refresh()
+        TreeViewItem[] obj;
+        private void init()
         {
             ClassifyTree.Items.Clear();
 
+            var obj = new List<TreeViewItem>();
             var name_dict = new Dictionary<string, TreeViewItem>();
 
             foreach (var root in BookmarkModelManager.Instance.Model.root_classes)
@@ -114,13 +116,15 @@ namespace Koromo_Copy_UX.Utility
                 {
                     Header = root,
                     DataContext = new BookmarkPage("/" + root),
-                    AllowDrop = true
+                    AllowDrop = true,
+                    Tag = "/" + root
                 };
-                tvi.Drop += Tvi_Drop;
+                tvi.Drop += Tvi_DropAsync;
                 tvi.DragEnter += Tvi_DragEnter;
                 tvi.DragLeave += Tvi_DragLeave;
                 name_dict.Add(root, tvi);
                 ClassifyTree.Items.Add(tvi);
+                obj.Add(tvi);
             }
 
             // Child, Parent
@@ -144,16 +148,28 @@ namespace Koromo_Copy_UX.Utility
                 {
                     Header = sub.Item2,
                     DataContext = new BookmarkPage(fullname),
-                    AllowDrop = true
+                    AllowDrop = true,
+                    Tag = fullname
                 };
-                tvi.Drop += Tvi_Drop;
+                tvi.Drop += Tvi_DropAsync;
                 tvi.DragEnter += Tvi_DragEnter;
                 tvi.DragLeave += Tvi_DragLeave;
                 name_dict.Add(sub.Item2, tvi);
                 name_dict[sub.Item1].Items.Add(tvi);
+                obj.Add(tvi);
             }
 
+            this.obj = obj.ToArray();
+
             ContentControl.Content = (ClassifyTree.Items[0] as TreeViewItem).DataContext;
+        }
+
+        private void refresh()
+        {
+            foreach (var o in obj)
+            {
+                (o.DataContext as BookmarkPage).refresh();
+            }
         }
 
         private void Tvi_DragLeave(object sender, DragEventArgs e)
@@ -168,14 +184,74 @@ namespace Koromo_Copy_UX.Utility
             tvi.Foreground = Brushes.Red;
         }
 
-        private void Tvi_Drop(object sender, DragEventArgs e)
+        object drop_lock = new object();
+        bool drop_checker = false;
+        private async void Tvi_DropAsync(object sender, DragEventArgs e)
         {
-            throw new NotImplementedException();
+            if (e.Data.GetDataPresent("registries"))
+            {
+                var tt = e.Data.GetData("registries") as Tuple<string, List<BookmarkPageDataGridItemViewModel>>;
+
+                lock (drop_lock)
+                    if (drop_checker == true)
+                    {
+                        var tvi = sender as TreeViewItem;
+                        tvi.Foreground = Brushes.Black;
+                        return;
+                    }
+                lock (drop_lock)
+                    drop_checker = true;
+                var dialog = new BookmarkMessage($"{tt.Item2.Count}개 항목을 {tt.Item1}에서 {(sender as TreeViewItem).Tag}로 옮길까요?");
+                if ((bool)(await DialogHost.Show(dialog, "BookmarkDialog")))
+                {
+                    // 기존항목들 삭제
+                    foreach (var ll in tt.Item2)
+                    {
+                        List<Tuple<string, BookmarkItemModel>> rl;
+                        if (ll.유형 == "작가")
+                            rl = BookmarkModelManager.Instance.Model.artists;
+                        else if (ll.유형 == "그룹")
+                            rl = BookmarkModelManager.Instance.Model.groups;
+                        else
+                            rl = BookmarkModelManager.Instance.Model.articles;
+
+                        for (int i = 0; i < rl.Count; i++)
+                        {
+                            if (rl[i].Item1 == tt.Item1 && rl[i].Item2.Equals(ll.BIM))
+                            {
+                                rl.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    BookmarkModelManager.Instance.Save();
+
+                    // 추가
+                    foreach (var ll in tt.Item2)
+                    {
+                        List<Tuple<string, BookmarkItemModel>> rl;
+                        if (ll.유형 == "작가")
+                            rl = BookmarkModelManager.Instance.Model.artists;
+                        else if (ll.유형 == "그룹")
+                            rl = BookmarkModelManager.Instance.Model.groups;
+                        else
+                            rl = BookmarkModelManager.Instance.Model.articles;
+
+                        rl.Add(new Tuple<string, BookmarkItemModel>((sender as TreeViewItem).Tag.ToString(), ll.BIM));
+                    }
+
+                    refresh();
+                }
+                lock (drop_lock)
+                    drop_checker = false;
+                var tvi2 = sender as TreeViewItem;
+                tvi2.Foreground = Brushes.Black;
+            }
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            refresh();
+            init();
         }
 
         private void ToolButton_Click(object sender, RoutedEventArgs e)
@@ -241,6 +317,7 @@ namespace Koromo_Copy_UX.Utility
                 Width = before_width;
                 C1.Width = new GridLength(1, GridUnitType.Star);
                 C2.Width = GridLength.Auto;
+                latest_loaded = "";
             }
         }
 
