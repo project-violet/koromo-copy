@@ -85,6 +85,18 @@ namespace Koromo_Copy_UX.Utility
                 OnPropertyChanged();
             }
         }
+
+        private string _path;
+        public string 경로
+        {
+            get { return _path; }
+            set
+            {
+                if (_path == value) return;
+                _path = value;
+                OnPropertyChanged();
+            }
+        }
     }
 
     public class BookmarkPageDataGridViewModel : INotifyPropertyChanged
