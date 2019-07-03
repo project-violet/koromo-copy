@@ -75,7 +75,7 @@
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <ToggleButton>
+                        <ToggleButton IsEnabled="False">
                             <ToggleButton.Resources>
                                 <ResourceDictionary>
                                     <ResourceDictionary.MergedDictionaries>
@@ -96,7 +96,7 @@
                             </TextBlock.Resources>
                         </TextBlock>
                     </StackPanel>
-                    <Button x:Name="AddButton" HorizontalAlignment="Right" Margin="0 4 10 4" Click="AddButton_Click">
+                    <Button x:Name="SettingButton" HorizontalAlignment="Right" Margin="0 4 10 4" Click="SettingButton_Click">
                         <Button.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>
@@ -106,11 +106,11 @@
                             </ResourceDictionary>
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Add"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="추가"/>
+                            <materialDesign:PackIcon Kind="Settings"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="설정"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="HelpButton" HorizontalAlignment="Right" Margin="0 4 10 4" Click="AddButton_Click">
+                    <Button x:Name="HelpButton" HorizontalAlignment="Right" Margin="0 4 10 4" Click="HelpButton_Click">
                         <Button.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>

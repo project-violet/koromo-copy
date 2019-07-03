@@ -220,6 +220,9 @@
     <Compile Include="Utility\Bookmark.xaml.cs">
       <DependentUpon>Bookmark.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\BookmarkAdd.xaml.cs">
+      <DependentUpon>BookmarkAdd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\BookmarkEditClass.xaml.cs">
       <DependentUpon>BookmarkEditClass.xaml</DependentUpon>
     </Compile>
@@ -597,6 +600,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\Bookmark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\BookmarkAdd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
