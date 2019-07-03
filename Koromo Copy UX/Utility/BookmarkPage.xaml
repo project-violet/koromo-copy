@@ -16,8 +16,8 @@
             <TextBlock x:Name="Path" FontSize="20" FontWeight="Thin"/>
         </Grid>
         <Border Grid.Row="1" BorderThickness="0 1 0 0" BorderBrush="Gainsboro">
-            <DataGrid x:Name="TagList" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False"
-                  SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Background="Transparent"
+            <DataGrid x:Name="TagList" ItemsSource="{Binding Items}" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False" PreviewMouseLeftButtonDown="TagList_PreviewMouseLeftButtonDown" MouseMove="TagList_MouseMove"
+                  SelectionMode="Extended" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" Background="Transparent" PreviewKeyDown="TagList_KeyDown" MouseDoubleClick="TagList_MouseDoubleClick"
                   CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="4 2 2 2" materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
                 <DataGrid.Resources>
                     <ResourceDictionary>
@@ -39,17 +39,17 @@
                             <Run Text="유형"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 내용}" Width="250" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 내용}" Width="320" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="내용"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 추가된날짜}" Width="100" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 추가된날짜}" Width="160" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="추가된 날짜"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 기타}" Width="100" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 기타}" Width="50" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="기타"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
@@ -69,7 +69,7 @@
                 </DataGrid.CellStyle>
                 <DataGrid.ItemContainerStyle>
                     <Style TargetType="DataGridRow">
-                        <EventSetter Event="MouseLeftButtonUp" Handler="DataGridRow_MouseLeftButtonUp"/>
+                        <EventSetter Event="MouseLeftButtonUp" Handler="DataGridRow_MouseLeftButtonDown"/>
                     </Style>
                 </DataGrid.ItemContainerStyle>
             </DataGrid>

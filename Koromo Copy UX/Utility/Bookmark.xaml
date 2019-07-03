@@ -22,42 +22,61 @@
 
     <materialDesign:DialogHost Identifier="BookmarkDialog" Language="ko-KR">
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Height="44">
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="ClassButton" HorizontalAlignment="Left" Margin="10 4 0 4" Click="ClassButton_Click">
-                        <Button.Resources>
-                            <ResourceDictionary>
-                                <ResourceDictionary.MergedDictionaries>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                                </ResourceDictionary.MergedDictionaries>
-                            </ResourceDictionary>
-                        </Button.Resources>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Class"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="분류 편집"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="RefreshButton" HorizontalAlignment="Left" Margin="10 4 0 4" Click="RefreshButton_Click">
-                        <Button.Resources>
-                            <ResourceDictionary>
-                                <ResourceDictionary.MergedDictionaries>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                                </ResourceDictionary.MergedDictionaries>
-                            </ResourceDictionary>
-                        </Button.Resources>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Sync"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="새로고침"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="ExtractButton" HorizontalAlignment="Left" Margin="10 4 0 4" Click="ExtractButton_Click">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="C1" Width="*"/>
+                <ColumnDefinition x:Name="C2" Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="MajorGrid" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Height="44">
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="ClassButton" HorizontalAlignment="Left" Margin="10 4 0 4" Click="ClassButton_Click">
+                            <Button.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </Button.Resources>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Class"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="분류 편집"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="RefreshButton" HorizontalAlignment="Left" Margin="10 4 0 4" Click="RefreshButton_Click">
+                            <Button.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </Button.Resources>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Sync"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="새로고침"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="ToolButton" HorizontalAlignment="Left" Margin="10 4 0 4" Click="ToolButton_Click">
+                            <Button.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </Button.Resources>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Wrench"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="도구"/>
+                            </StackPanel>
+                        </Button>
+                        <!--<Button x:Name="ExtractButton" HorizontalAlignment="Left" Margin="10 4 0 4" Click="ExtractButton_Click">
                         <Button.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>
@@ -70,85 +89,128 @@
                             <materialDesign:PackIcon Kind="Export"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
                             <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="내보내기"/>
                         </StackPanel>
-                    </Button>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <ToggleButton IsEnabled="False">
-                            <ToggleButton.Resources>
-                                <ResourceDictionary>
-                                    <ResourceDictionary.MergedDictionaries>
-                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                                    </ResourceDictionary.MergedDictionaries>
-                                </ResourceDictionary>
-                            </ToggleButton.Resources>
-                        </ToggleButton>
-                        <TextBlock Text="  썸네일로 보기" Margin="0 0 20 0">
-                            <TextBlock.Resources>
-                                <ResourceDictionary>
-                                    <ResourceDictionary.MergedDictionaries>
-                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                                    </ResourceDictionary.MergedDictionaries>
-                                </ResourceDictionary>
-                            </TextBlock.Resources>
-                        </TextBlock>
+                    </Button>-->
                     </StackPanel>
-                    <Button x:Name="SettingButton" HorizontalAlignment="Right" Margin="0 4 10 4" Click="SettingButton_Click">
-                        <Button.Resources>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ToggleButton IsEnabled="False">
+                                <ToggleButton.Resources>
+                                    <ResourceDictionary>
+                                        <ResourceDictionary.MergedDictionaries>
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                        </ResourceDictionary.MergedDictionaries>
+                                    </ResourceDictionary>
+                                </ToggleButton.Resources>
+                            </ToggleButton>
+                            <TextBlock Text="  썸네일로 보기" Margin="0 0 20 0">
+                                <TextBlock.Resources>
+                                    <ResourceDictionary>
+                                        <ResourceDictionary.MergedDictionaries>
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                        </ResourceDictionary.MergedDictionaries>
+                                    </ResourceDictionary>
+                                </TextBlock.Resources>
+                            </TextBlock>
+                        </StackPanel>
+                        <Button x:Name="SettingButton" HorizontalAlignment="Right" Margin="0 4 10 4" Click="SettingButton_Click">
+                            <Button.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </Button.Resources>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Settings"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="설정"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="HelpButton" HorizontalAlignment="Right" Margin="0 4 10 4" Click="HelpButton_Click">
+                            <Button.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </Button.Resources>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Help"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="사용방법"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <GridSplitter Grid.Row="1" BorderThickness="1" BorderBrush="Gainsboro" HorizontalAlignment="Stretch"></GridSplitter>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TreeView x:Name="ClassifyTree" MinWidth="220" Grid.Column="0" SelectedItemChanged="ClassifyTree_SelectedItemChanged">
+                        <TreeView.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TreeView.xaml"/>
                                     <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
                                     <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
                                 </ResourceDictionary.MergedDictionaries>
                             </ResourceDictionary>
-                        </Button.Resources>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Settings"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="설정"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="HelpButton" HorizontalAlignment="Right" Margin="0 4 10 4" Click="HelpButton_Click">
-                        <Button.Resources>
-                            <ResourceDictionary>
-                                <ResourceDictionary.MergedDictionaries>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                                </ResourceDictionary.MergedDictionaries>
-                            </ResourceDictionary>
-                        </Button.Resources>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Help"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="사용방법"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
+                        </TreeView.Resources>
+                    </TreeView>
+                    <GridSplitter BorderThickness="1" BorderBrush="Gainsboro"></GridSplitter>
+                    <ScrollViewer Grid.Column="1">
+                        <Grid x:Name="ppp">
+                            <ContentControl x:Name="ContentControl" Content="{Binding ElementName=ClassifyTree, Path=SelectedItem.Content}"/>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
             </Grid>
-            <GridSplitter Grid.Row="1" BorderThickness="1" BorderBrush="Gainsboro" HorizontalAlignment="Stretch"></GridSplitter>
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TreeView x:Name="ClassifyTree" MinWidth="220" Grid.Column="0" SelectedItemChanged="ClassifyTree_SelectedItemChanged">
-                    <TreeView.Resources>
-                        <ResourceDictionary>
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TreeView.xaml"/>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                            </ResourceDictionary.MergedDictionaries>
-                        </ResourceDictionary>
-                    </TreeView.Resources>
-                </TreeView>
-                <GridSplitter BorderThickness="1" BorderBrush="Gainsboro"></GridSplitter>
-                <ScrollViewer Grid.Column="1">
-                    <Grid x:Name="ppp">
-                        <ContentControl x:Name="ContentControl" Content="{Binding ElementName=ClassifyTree, Path=SelectedItem.Content}"/>
-                    </Grid>
-                </ScrollViewer>
+
+            <GridSplitter x:Name="Splitter" Grid.ZIndex="2" BorderThickness="1" BorderBrush="Gainsboro"></GridSplitter>
+            
+            <Grid x:Name="PictureGrid" Grid.Column="1" Width="0">
+                <Grid.Resources>
+                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml"/>
+                </Grid.Resources>
+                
+                <ProgressBar x:Name="LeftProgress" Visibility="Visible" Grid.Column="0" Grid.Row="0" Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
+                <Image x:Name="LeftImage" Grid.Column="0" Grid.Row="0" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" Margin="4">
+                    <Image.Resources>
+                        <Storyboard x:Key="GlowOn">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Effect).Opacity">
+                                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="GlowOff">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Effect).Opacity">
+                                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0.2"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </Image.Resources>
+                    <Image.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="0.2" Color="Black"/>
+                    </Image.Effect>
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource GlowOn}"/>
+                                    </Trigger.EnterActions>
+
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard Storyboard="{StaticResource GlowOff}"/>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
             </Grid>
         </Grid>
     </materialDesign:DialogHost>

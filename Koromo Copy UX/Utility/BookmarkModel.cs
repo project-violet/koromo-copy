@@ -22,6 +22,7 @@ namespace Koromo_Copy_UX.Utility
         public string content;
         public DateTime stamp;
         public string etc;
+        public string path;
     }
 
     public class BookmarkModel

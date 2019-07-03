@@ -226,6 +226,9 @@
     <Compile Include="Utility\BookmarkEditClass.xaml.cs">
       <DependentUpon>BookmarkEditClass.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\BookmarkMessage.xaml.cs">
+      <DependentUpon>BookmarkMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\BookmarkModel.cs" />
     <Compile Include="Utility\BookmarkPage.xaml.cs">
       <DependentUpon>BookmarkPage.xaml</DependentUpon>
@@ -233,6 +236,9 @@
     <Compile Include="Utility\BookmarkPageDataGridViewModel.cs" />
     <Compile Include="Utility\BookmarkPageThumbnail.xaml.cs">
       <DependentUpon>BookmarkPageThumbnail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\BookmarkSetting.xaml.cs">
+      <DependentUpon>BookmarkSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\DCTools.xaml.cs">
       <DependentUpon>DCTools.xaml</DependentUpon>
@@ -611,11 +617,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Utility\BookmarkMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Utility\BookmarkPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\BookmarkPageThumbnail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\BookmarkSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
