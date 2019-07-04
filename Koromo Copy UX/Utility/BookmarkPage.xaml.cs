@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Fs;
 using Koromo_Copy_UX.Domain;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -330,6 +331,27 @@ namespace Koromo_Copy_UX.Utility
                     foreach (var ll in TagList.Items.Cast<BookmarkPageDataGridItemViewModel>())
                         str1 += ll.내용 + "\r\n";
                     MessageBox.Show(str1, "Koromo Copy Bookmark");
+                    break;
+
+                case "C":
+                    if (TagList.SelectedItems.Count > 0)
+                    {
+                        var rtov = System.IO.Path.GetDirectoryName((TagList.SelectedItems[0] as BookmarkPageDataGridItemViewModel).경로);
+                        var files = new List<string>();
+
+                        foreach (var ff in TagList.SelectedItems.Cast<BookmarkPageDataGridItemViewModel>())
+                        {
+                            var rtrt = System.IO.Path.GetDirectoryName(ff.경로);
+                            if (rtov != rtrt)
+                            {
+                                MessageBox.Show("디렉토리가 다른 항목이 있어 진행할 수 없습니다!\r\n" + $"경로1: {rtov}\r\n경로2: {rtrt}\r\n이레귤러 인덱스: {ff.인덱스}", "Koromo Copy Bookmark", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+                            files.Add(ff.경로);
+                        }
+
+                        Explorer.OpenFolderAndSelectFiles(rtov, files.ToArray());
+                    }
                     break;
             }
         }
