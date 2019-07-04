@@ -203,6 +203,7 @@
     <Compile Include="LP\CALtoCS.cs" />
     <Compile Include="LP\ESRCAL.cs" />
     <Compile Include="LP\Lang\HTMLParser.cs" />
+    <Compile Include="LP\LLParserGenerator.cs" />
     <Compile Include="LP\LPKor.cs" />
     <Compile Include="LP\ParserGenerator.cs" />
     <Compile Include="LP\ScannerGenerator.cs" />
