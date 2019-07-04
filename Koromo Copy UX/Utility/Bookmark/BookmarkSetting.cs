@@ -19,9 +19,18 @@ namespace Koromo_Copy_UX.Utility.Bookmark
 {
     public class BookmarkSettingsModel
     {
-        //[JsonProperty]
-        //public bool ShowArtistViewerWhenArtistClick;
+        [JsonProperty]
+        public bool ShowFileSize;
 
+        [JsonProperty]
+        public string ParsingPattern;
+
+        [JsonProperty]
+        public string ArticleExecution;
+        [JsonProperty]
+        public string ArtistExecution;
+        [JsonProperty]
+        public string GroupExecution;
     }
 
     public class BookmarkSettings : ILazy<BookmarkSettings>
@@ -36,7 +45,11 @@ namespace Koromo_Copy_UX.Utility.Bookmark
             {
                 model = new BookmarkSettingsModel
                 {
-                    //ShowArtistViewerWhenArtistClick = false
+                    ShowFileSize = false,
+                    ParsingPattern = @"",
+                    ArticleExecution = "",
+                    ArtistExecution = "",
+                    GroupExecution = "",
                 };
                 Save();
             }

@@ -98,6 +98,18 @@ namespace Koromo_Copy_UX.Utility.Bookmark
             }
         }
 
+        private string _size;
+        public string 파일크기
+        {
+            get { return _size; }
+            set
+            {
+                if (_size == value) return;
+                _size = value;
+                OnPropertyChanged();
+            }
+        }
+
         BookmarkItemModel bim;
         public BookmarkItemModel BIM
         {
