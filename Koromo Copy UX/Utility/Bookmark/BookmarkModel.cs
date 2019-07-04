@@ -65,7 +65,7 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                     groups = new List<Tuple<string, BookmarkItemModel>>(),
                     articles = new List<Tuple<string, BookmarkItemModel>>(),
                     etcs = new List<Tuple<string, BookmarkEtcItemModel>>(),
-                    root_classes = new List<string> { "미분류" },
+                    root_classes = new List<string> { "/미분류" },
                     sub_classes = new List<Tuple<string, string>>()
                 };
                 Save();
