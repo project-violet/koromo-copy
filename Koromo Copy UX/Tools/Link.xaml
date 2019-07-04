@@ -21,6 +21,62 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="{DynamicResource bookmark}" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="{DynamicResource desc_bookmark}" TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="Bookmark" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Star" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="{DynamicResource record}" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="{DynamicResource desc_record}" TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="Record" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Historic" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+            
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="{DynamicResource zip_viewer}" FontWeight="SemiBold" FontSize="14"/>
@@ -178,62 +234,6 @@
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Crown" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
-            </Border>
-
-            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
-                <Grid Margin="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="북마크 (Bookmark)" FontWeight="SemiBold" FontSize="14"/>
-                        <TextBlock Text="작가 또는 그룹, 작품을 북마크하고 관리할 수 있는 도구입니다." TextWrapping="Wrap" FontSize="13"/>
-                    </StackPanel>
-                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="Bookmark" Click="Button_Click">
-                        <Button.Resources>
-                            <ResourceDictionary>
-                                <ResourceDictionary.MergedDictionaries>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                                </ResourceDictionary.MergedDictionaries>
-                            </ResourceDictionary>
-                        </Button.Resources>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Star" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
-            </Border>
-
-            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
-                <Grid Margin="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="기록관 (Record)" FontWeight="SemiBold" FontSize="14"/>
-                        <TextBlock Text="모든 다운로드 기록을 보여줍니다." TextWrapping="Wrap" FontSize="13"/>
-                    </StackPanel>
-                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="Record" Click="Button_Click">
-                        <Button.Resources>
-                            <ResourceDictionary>
-                                <ResourceDictionary.MergedDictionaries>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                                </ResourceDictionary.MergedDictionaries>
-                            </ResourceDictionary>
-                        </Button.Resources>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Historic" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
                             <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
                         </StackPanel>
                     </Button>

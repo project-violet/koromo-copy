@@ -61,6 +61,10 @@
     <system:String x:Key="manages">Managed Tools</system:String>
     <system:String x:Key="unmanages">Unmanaged Tools</system:String>
     <system:String x:Key="run">Run</system:String>
+    <system:String x:Key="bookmark">Bookmark Tool (Bookmark, Ctrl + B)</system:String>
+    <system:String x:Key="desc_bookmark">It is a tool to bookmark and manage artists, groups, and works.</system:String>
+    <system:String x:Key="record">Record (Recorder)</system:String>
+    <system:String x:Key="desc_record">Shows all download history.</system:String>
     <system:String x:Key="zip_viewer">Zipped-File Folder Viewer (Zip Viewer, Ctrl + E)</system:String>
     <system:String x:Key="desc_zip_viewer">You can view the thumbnails of the files by dragging and dropping the folder containing the compressed files. It is similar to the preview function in Explorer. If the compressed file was downloaded via hitomi.la, it analyzes the Info.json file included in the compressed file and displays brief information.</system:String>
     <system:String x:Key="zip_listing">Zipped-File Analyzer (Zip Listing, Ctrl + L)</system:String>
