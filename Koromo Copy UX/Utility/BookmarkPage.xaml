@@ -41,6 +41,7 @@
                         </ContextMenu.Resources>
                         <MenuItem x:Name="M1" Header="이 작가의 모든 작품 보기" Click="MenuItem_Click" Tag="A" VerticalAlignment="Center"></MenuItem>
                         <MenuItem x:Name="M2" Header="텍스트로 출력" Click="MenuItem_Click" Tag="B" VerticalAlignment="Center"></MenuItem>
+                        <MenuItem x:Name="M3" Header="파일 선택한 채로 탐색기 열기" Click="MenuItem_Click" Tag="C" VerticalAlignment="Center"></MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>
