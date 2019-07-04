@@ -235,9 +235,9 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                 }
                 lock (drop_lock)
                     drop_checker = false;
-                var tvi2 = sender as TreeViewItem;
-                tvi2.Foreground = Brushes.Black;
             }
+            var tvi2 = sender as TreeViewItem;
+            tvi2.Foreground = Brushes.Black;
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
