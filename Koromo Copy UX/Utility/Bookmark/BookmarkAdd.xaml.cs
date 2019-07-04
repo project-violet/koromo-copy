@@ -21,18 +21,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Koromo_Copy_UX.Utility
+namespace Koromo_Copy_UX.Utility.Bookmark
 {
     /// <summary>
-    /// BookmarkMessage.xaml에 대한 상호 작용 논리
+    /// BookmarkAdd.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class BookmarkMessage : UserControl
+    public partial class BookmarkAdd : UserControl
     {
-        public BookmarkMessage(string msg)
+        public BookmarkAdd(string content)
         {
             InitializeComponent();
 
-            Message.Text = msg;
+            ((Paragraph)(TextEdit.Document.Blocks.FirstBlock)).Margin = new Thickness(0, 0, 0, 0);
+            ((Paragraph)(TextEdit.Document.Blocks.FirstBlock)).Inlines.Add(new Run(content));
         }
     }
 }

@@ -26,7 +26,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Koromo_Copy_UX.Utility
+namespace Koromo_Copy_UX.Utility.Bookmark
 {
     /// <summary>
     /// Bookmark.xaml에 대한 상호 작용 논리
@@ -66,6 +66,10 @@ namespace Koromo_Copy_UX.Utility
                     new[] { "\r\n", "\r", "\n" },
                     StringSplitOptions.None
                 );
+
+                //
+                //  TODO: 이름이 중복이 안됨 따라서 /로리/소장/단행본 일때 단행본을 저장하려면, parent를 /로리/소장으로 해야함
+                //
 
                 var used = new HashSet<string>();
                 var root_classes = new List<string>();

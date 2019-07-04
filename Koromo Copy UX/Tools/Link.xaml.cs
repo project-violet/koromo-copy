@@ -8,6 +8,7 @@
 
 using Koromo_Copy.Utility;
 using Koromo_Copy_UX.Utility;
+using Koromo_Copy_UX.Utility.Bookmark;
 using Koromo_Copy_UX.Utility.ZipArtists;
 using System;
 using System.Collections.Generic;
