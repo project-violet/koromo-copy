@@ -66,11 +66,7 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                     new[] { "\r\n", "\r", "\n" },
                     StringSplitOptions.None
                 );
-
-                //
-                //  TODO: 이름이 중복이 안됨 따라서 /로리/소장/단행본 일때 단행본을 저장하려면, parent를 /로리/소장으로 해야함
-                //
-
+                
                 var used = new HashSet<string>();
                 var root_classes = new List<string>();
                 // parent class, class name
@@ -79,21 +75,24 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                 foreach (var r0 in lines)
                 {
                     var r1 = r0.Trim();
-                    if (r1 != "")
+                    if (r1 != "" && r1.Contains('/'))
                     {
                         var ss = r1.Split('/');
-                        if (!used.Contains(ss[1]))
+                        var root = "/" + ss[1];
+                        if (!used.Contains(root))
                         {
-                            used.Add(ss[1]);
-                            root_classes.Add(ss[1]);
+                            used.Add(root);
+                            root_classes.Add(root);
                         }
+                        var parent = root;
                         for (int i = 2; i < ss.Length; i++)
                         {
-                            if (!used.Contains(ss[i]))
+                            if (!used.Contains(parent + "/" + ss[i]))
                             {
-                                used.Add(ss[i]);
-                                sub_classes.Add(new Tuple<string, string>(ss[i - 1], ss[i]));
+                                used.Add(parent + "/" + ss[i]);
+                                sub_classes.Add(new Tuple<string, string>(parent, ss[i]));
                             }
+                            parent += "/" + ss[i];
                         }
                     }
                 }
@@ -118,10 +117,10 @@ namespace Koromo_Copy_UX.Utility.Bookmark
             {
                 var tvi = new TreeViewItem
                 {
-                    Header = root,
-                    DataContext = new BookmarkPage("/" + root),
+                    Header = root.Substring(1),
+                    DataContext = new BookmarkPage(root),
                     AllowDrop = true,
-                    Tag = "/" + root
+                    Tag = root
                 };
                 tvi.Drop += Tvi_DropAsync;
                 tvi.DragEnter += Tvi_DragEnter;
@@ -132,22 +131,10 @@ namespace Koromo_Copy_UX.Utility.Bookmark
             }
 
             // Child, Parent
-            var indegree = new Dictionary<string, string>();
-
-            foreach (var sub in BookmarkModelManager.Instance.Model.sub_classes)
-                indegree.Add(sub.Item2, sub.Item1);
-
             foreach (var sub in BookmarkModelManager.Instance.Model.sub_classes)
             {
-                var fullname = "/" + sub.Item2;
-                var nname = sub.Item2;
-
-                while (indegree.ContainsKey(nname))
-                {
-                    nname = indegree[nname];
-                    fullname = "/" + nname + fullname;
-                }
-
+                var fullname = sub.Item1 + "/" + sub.Item2;
+                
                 var tvi = new TreeViewItem
                 {
                     Header = sub.Item2,
@@ -158,7 +145,7 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                 tvi.Drop += Tvi_DropAsync;
                 tvi.DragEnter += Tvi_DragEnter;
                 tvi.DragLeave += Tvi_DragLeave;
-                name_dict.Add(sub.Item2, tvi);
+                name_dict.Add(fullname, tvi);
                 name_dict[sub.Item1].Items.Add(tvi);
                 obj.Add(tvi);
             }
