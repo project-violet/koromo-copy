@@ -27,7 +27,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
-namespace Koromo_Copy_UX.Utility
+namespace Koromo_Copy_UX.Utility.Bookmark
 {
     /// <summary>
     /// BookmarkPage.xaml에 대한 상호 작용 논리

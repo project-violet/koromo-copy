@@ -217,28 +217,28 @@
     <Compile Include="ScriptInfoElements.xaml.cs">
       <DependentUpon>ScriptInfoElements.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\Bookmark.xaml.cs">
+    <Compile Include="Utility\Bookmark\Bookmark.xaml.cs">
       <DependentUpon>Bookmark.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\BookmarkAdd.xaml.cs">
+    <Compile Include="Utility\Bookmark\BookmarkAdd.xaml.cs">
       <DependentUpon>BookmarkAdd.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\BookmarkEditClass.xaml.cs">
+    <Compile Include="Utility\Bookmark\BookmarkEditClass.xaml.cs">
       <DependentUpon>BookmarkEditClass.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\BookmarkMessage.xaml.cs">
+    <Compile Include="Utility\Bookmark\BookmarkMessage.xaml.cs">
       <DependentUpon>BookmarkMessage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\BookmarkModel.cs" />
-    <Compile Include="Utility\BookmarkPage.xaml.cs">
+    <Compile Include="Utility\Bookmark\BookmarkModel.cs" />
+    <Compile Include="Utility\Bookmark\BookmarkPage.xaml.cs">
       <DependentUpon>BookmarkPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\BookmarkPageDataGridViewModel.cs" />
-    <Compile Include="Utility\BookmarkPageThumbnail.xaml.cs">
+    <Compile Include="Utility\Bookmark\BookmarkPageDataGridViewModel.cs" />
+    <Compile Include="Utility\Bookmark\BookmarkPageThumbnail.xaml.cs">
       <DependentUpon>BookmarkPageThumbnail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\BookmarkSetting.cs" />
-    <Compile Include="Utility\BookmarkSetting.xaml.cs">
+    <Compile Include="Utility\Bookmark\BookmarkSetting.cs" />
+    <Compile Include="Utility\Bookmark\BookmarkSetting.xaml.cs">
       <DependentUpon>BookmarkSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\DCTools.xaml.cs">
@@ -606,31 +606,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\Bookmark.xaml">
+    <Page Include="Utility\Bookmark\Bookmark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\BookmarkAdd.xaml">
+    <Page Include="Utility\Bookmark\BookmarkAdd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\BookmarkEditClass.xaml">
+    <Page Include="Utility\Bookmark\BookmarkEditClass.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\BookmarkMessage.xaml">
+    <Page Include="Utility\Bookmark\BookmarkMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\BookmarkPage.xaml">
+    <Page Include="Utility\Bookmark\BookmarkPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\BookmarkPageThumbnail.xaml">
+    <Page Include="Utility\Bookmark\BookmarkPageThumbnail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\BookmarkSetting.xaml">
+    <Page Include="Utility\Bookmark\BookmarkSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

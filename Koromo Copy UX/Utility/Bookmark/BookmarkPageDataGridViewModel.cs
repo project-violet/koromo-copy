@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Koromo_Copy_UX.Utility
+namespace Koromo_Copy_UX.Utility.Bookmark
 {
     public class BookmarkPageDataGridItemViewModel : INotifyPropertyChanged
     {
