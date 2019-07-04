@@ -61,6 +61,10 @@
     <system:String x:Key="manages">관리되는 항목</system:String>
     <system:String x:Key="unmanages">관리되지 않는 항목</system:String>
     <system:String x:Key="run">실행</system:String>
+    <system:String x:Key="bookmark">북마크 (Bookmark, Ctrl + B)</system:String>
+    <system:String x:Key="desc_bookmark">작가 또는 그룹, 작품을 북마크하고 관리할 수 있는 도구입니다.</system:String>
+    <system:String x:Key="record">기록관 (Record)</system:String>
+    <system:String x:Key="desc_record">모든 다운로드 기록을 보여줍니다.</system:String>
     <system:String x:Key="zip_viewer">압축파일 폴더 뷰어 (Zip Viewer, Ctrl + E)</system:String>
     <system:String x:Key="desc_zip_viewer">압축파일들이 포함된 폴더를 Drag &amp; Drop하여 해당파일들의 썸네일을 볼 수 있습니다. 탐색기의 미리보기 기능과 유사합니다. 만약, 압축된 파일이 hitomi.la를 통해 다운로드되었다면, 압축파일에 포함된 Info.json파일을 분석하여 간략한 정보를 보여줍니다.</system:String>
     <system:String x:Key="zip_listing">압축파일 분석기 (Zip Listing, Ctrl + L)</system:String>
