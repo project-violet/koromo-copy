@@ -25,12 +25,24 @@ namespace Koromo_Copy_UX.Utility.Bookmark
         public string path;
     }
 
+    public class BookmarkEtcItemModel
+    {
+        public string classify;
+        public string content;
+        public DateTime stamp;
+        public string etc;
+        public string path;
+    }
+
     public class BookmarkModel
     {
         // name, class
         public List<Tuple<string, BookmarkItemModel>> artists;
         public List<Tuple<string, BookmarkItemModel>> groups;
         public List<Tuple<string, BookmarkItemModel>> articles;
+
+        // etc elements
+        public List<Tuple<string, BookmarkEtcItemModel>> etcs;
 
         public List<string> root_classes;
         // parent class, class name
@@ -52,11 +64,13 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                     artists = new List<Tuple<string, BookmarkItemModel>>(),
                     groups = new List<Tuple<string, BookmarkItemModel>>(),
                     articles = new List<Tuple<string, BookmarkItemModel>>(),
+                    etcs = new List<Tuple<string, BookmarkEtcItemModel>>(),
                     root_classes = new List<string> { "미분류" },
                     sub_classes = new List<Tuple<string, string>>()
                 };
                 Save();
             }
+            if (model.etcs == null) { model.etcs = new List<Tuple<string, BookmarkEtcItemModel>>(); Save(); }
         }
 
         public void Save()
