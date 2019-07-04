@@ -41,21 +41,20 @@ namespace Koromo_Copy_UX.Utility.Bookmark
             
             ((Paragraph)(TextEdit.Document.Blocks.FirstBlock)).Margin = new Thickness(0, 0, 0, 0);
             ((Paragraph)(TextEdit.Document.Blocks.FirstBlock)).Inlines.Add(new Run(builder.ToString()));
-            
         }
         
         private void recursion(StringBuilder builder, string sub, string parent)
         {
-            if (BookmarkModelManager.Instance.Model.sub_classes.All(x => x.Item1 != sub))
+            if (BookmarkModelManager.Instance.Model.sub_classes.All(x => x.Item1 != parent + sub))
             {
-                builder.Append(parent + "/" + sub + "\r\n");
+                builder.Append(parent + sub + "\r\n");
                 return;
             }
 
             var bb = new StringBuilder();
-            foreach (var subb in BookmarkModelManager.Instance.Model.sub_classes.Where(x => x.Item1 == sub))
+            foreach (var subb in BookmarkModelManager.Instance.Model.sub_classes.Where(x => x.Item1 == parent + sub))
             {
-                recursion(builder, subb.Item2, parent + "/" + sub);
+                recursion(builder, "/" + subb.Item2, parent + sub);
             }
         }
 
