@@ -72,7 +72,16 @@ namespace Koromo_Copy_UX.Utility.Bookmark
             var tags = TagList.SelectedItems.OfType<BookmarkPageDataGridItemViewModel>();
             if (tags.Count() > 0)
             {
-                Process.Start(tags.ElementAt(0).경로);
+                if (tags.ElementAt(0).유형 == "작품")
+                    Process.Start(tags.ElementAt(0).경로);
+                else
+                {
+                    var fll = tags.ElementAt(0);
+                    if (fll.유형 == "작가")
+                        (new ArtistViewerWindow(fll.내용)).Show();
+                    else if (fll.유형 == "그룹")
+                        (new GroupViewerWindow(fll.내용)).Show();
+                }
             }
         }
         
@@ -319,10 +328,8 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                     if (TagList.SelectedItems.Count > 0)
                     {
                         var fll = TagList.SelectedItems[0] as BookmarkPageDataGridItemViewModel;
-                        if (fll.유형 == "작가")
-                            (new ArtistViewerWindow(fll.내용)).Show();
-                        else if (fll.유형 == "그룹")
-                            (new GroupViewerWindow(fll.내용)).Show();
+                        if ((fll.유형 == "작가" || fll.유형 == "그룹") && !string.IsNullOrEmpty(fll.경로))
+                            Process.Start(fll.경로);
                     }
                     break;
 

@@ -39,35 +39,40 @@
                                 </ResourceDictionary.MergedDictionaries>
                             </ResourceDictionary>
                         </ContextMenu.Resources>
-                        <MenuItem x:Name="M1" Header="이 작가의 모든 작품 보기" Click="MenuItem_Click" Tag="A" VerticalAlignment="Center"></MenuItem>
+                        <MenuItem x:Name="M1" Header="탐색기에서 보기" Click="MenuItem_Click" Tag="A" VerticalAlignment="Center"></MenuItem>
                         <MenuItem x:Name="M2" Header="텍스트로 출력" Click="MenuItem_Click" Tag="B" VerticalAlignment="Center"></MenuItem>
                         <MenuItem x:Name="M3" Header="파일 선택한 채로 탐색기 열기" Click="MenuItem_Click" Tag="C" VerticalAlignment="Center"></MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 인덱스}" Width="70" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" SortDirection="Descending">
+                    <materialDesign:MaterialDataGridTextColumn x:Name="I1" Binding="{Binding 인덱스}" Width="70" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" SortDirection="Descending">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="인덱스"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 유형}" Width="70" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <materialDesign:MaterialDataGridTextColumn x:Name="I2" Binding="{Binding 유형}" Width="70" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="유형"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 내용}" Width="320" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <materialDesign:MaterialDataGridTextColumn x:Name="I3" Binding="{Binding 내용}" Width="320" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="내용"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 추가된날짜}" Width="160" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <materialDesign:MaterialDataGridTextColumn x:Name="I4" Binding="{Binding 추가된날짜}" Width="160" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="추가된 날짜"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding 기타}" Width="150" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <materialDesign:MaterialDataGridTextColumn x:Name="I5" Binding="{Binding 기타}" Width="150" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                         <materialDesign:MaterialDataGridTextColumn.Header>
                             <Run Text="기타"/>
+                        </materialDesign:MaterialDataGridTextColumn.Header>
+                    </materialDesign:MaterialDataGridTextColumn>
+                    <materialDesign:MaterialDataGridTextColumn x:Name="I6" Visibility="Collapsed" Binding="{Binding 파일크기}" Width="150" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                        <materialDesign:MaterialDataGridTextColumn.Header>
+                            <Run Text="파일크기"/>
                         </materialDesign:MaterialDataGridTextColumn.Header>
                     </materialDesign:MaterialDataGridTextColumn>
                 </DataGrid.Columns>
