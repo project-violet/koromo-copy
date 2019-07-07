@@ -130,7 +130,99 @@ namespace Koromo_Copy.LP
                 shift_reduce_conflict_solve_with_production_rule[ppi.Item1.index].Add(ppi.Item2, new Tuple<int, bool>(priority, left));
             }
         }
-        
+
+        /// <summary>
+        /// 문자열로부터 ParserGenerator를 가져옵니다.
+        /// </summary>
+        /// <param name="nt_syms">논터미널 심볼</param>
+        /// <param name="t_syms">터미널 심볼</param>
+        /// <param name="production_rules">프로덕션 룰</param>
+        /// <param name="sr_rules">Shift Reduce 규칙</param>
+        /// <returns></returns>
+        public static ParserGenerator GetGenerator(string[] nt_syms, Tuple<string, string>[] t_syms, string[] production_rules, string[] sr_rules )
+        {
+            var gen = new ParserGenerator();
+            var non_terminals = new Dictionary<string, ParserProduction>();
+            var terminals = new Dictionary<string, ParserProduction>();
+
+            terminals.Add("''", EmptyString);
+
+            foreach (var nt in nt_syms)
+                non_terminals.Add(nt.Trim(), gen.CreateNewProduction(nt.Trim(), false));
+            
+            foreach (var t in t_syms)
+            {
+                var name = t.Item1;
+                var pp = t.Item2;
+
+                terminals.Add(pp, gen.CreateNewProduction(name.Trim()));
+            }
+
+            var prec = new Dictionary<string, List<Tuple<ParserProduction, int>>>();
+            foreach (var pp in production_rules)
+            {
+                if (pp.Trim() == "") continue;
+
+                var split = pp.Split(new[] { "->" }, StringSplitOptions.None);
+                var left = split[0].Trim();
+                var right = split[1].Split(' ');
+
+                var prlist = new List<ParserProduction>();
+                bool stay_prec = false;
+                foreach (var ntt in right)
+                {
+                    if (string.IsNullOrEmpty(ntt)) continue;
+                    if (ntt == "%prec") { stay_prec = true; continue; }
+                    if (stay_prec)
+                    {
+                        if (!prec.ContainsKey(ntt))
+                            prec.Add(ntt, new List<Tuple<ParserProduction, int>>());
+                        prec[ntt].Add(new Tuple<ParserProduction, int>(non_terminals[left], non_terminals[left].sub_productions.Count));
+                        continue;
+                    }
+                    if (non_terminals.ContainsKey(ntt))
+                        prlist.Add(non_terminals[ntt]);
+                    else if (terminals.ContainsKey(ntt))
+                        prlist.Add(terminals[ntt]);
+                    else
+                        throw new Exception($"Production rule build error!\r\n{ntt} is neither non-terminal nor terminal!\r\nDeclare the token-name!");
+                }
+                non_terminals[left].sub_productions.Add(prlist);
+            }
+            
+            for (int i = sr_rules.Length - 1; i >= 0; i--)
+            {
+                var line = sr_rules[i].Trim();
+                if (line == "") continue;
+                var tt = line.Split(' ')[0];
+                var rr = line.Substring(tt.Length).Trim().Split(',');
+
+                var left = true;
+                var items1 = new List<Tuple<ParserProduction, int>>();
+                var items2 = new List<ParserProduction>();
+
+                if (tt == "%right") left = false;
+
+                foreach (var ii in rr.Select(x => x.Trim()))
+                {
+                    if (string.IsNullOrEmpty(ii)) continue;
+                    if (terminals.ContainsKey(ii))
+                        items2.Add(terminals[ii]);
+                    else if (prec.ContainsKey(ii))
+                        items1.AddRange(prec[ii]);
+                    else
+                        throw new Exception($"Production rule build error!\r\n{ii} is neither non-terminal nor terminal!\r\nDeclare the token-name!");
+                }
+
+                if (items1.Count > 0)
+                    gen.PushConflictSolver(left, items1.ToArray());
+                else
+                    gen.PushConflictSolver(left, items2.ToArray());
+            }
+
+            return gen;
+        }
+
         #region String Hash Function
         // 원래 해시가 아니라 set로 구현해야하는게 일반적임
         // 집합끼리의 비교연산, 일치여부 교집합을 구해 좀 더 최적화가능하지만 귀찮으니 string-hash를 쓰도록한다.
