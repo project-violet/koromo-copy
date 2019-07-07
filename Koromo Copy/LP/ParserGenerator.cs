@@ -6,6 +6,7 @@
 
 ***/
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1551,7 +1552,9 @@ namespace Koromo_Copy.LP
     /// </summary>
     public class ShiftReduceParser
     {
+        [JsonProperty]
         Dictionary<string, int> symbol_name_index = new Dictionary<string, int>();
+        [JsonProperty]
         List<string> symbol_index_name = new List<string>();
         Stack<int> state_stack = new Stack<int>();
         Stack<ParsingTree.ParsingTreeNode> treenode_stack = new Stack<ParsingTree.ParsingTreeNode>();
@@ -1559,9 +1562,13 @@ namespace Koromo_Copy.LP
 
         // 3       1      2       0
         // Accept? Shift? Reduce? Error?
+        [JsonProperty]
         int[][] jump_table;
+        [JsonProperty]
         int[][] goto_table;
+        [JsonProperty]
         int[][] production;
+        [JsonProperty]
         int[] group_table;
 
         public ShiftReduceParser(Dictionary<string, int> symbol_table, int[][] jump_table, int[][] goto_table, int[] group_table, int[][] production, List<ParserAction> actions)
@@ -1576,7 +1583,7 @@ namespace Koromo_Copy.LP
             l.Sort();
             l.ForEach(x => symbol_index_name.Add(x.Item2));
         }
-
+        
         bool latest_error;
         bool latest_reduce;
         public bool Accept() => state_stack.Count == 0;
@@ -1590,6 +1597,7 @@ namespace Koromo_Copy.LP
             treenode_stack.Clear();
         }
 
+        [JsonIgnore]
         public ParsingTree Tree => new ParsingTree(treenode_stack.Peek());
 
         public string Stack() => string.Join(" ", new Stack<int>(state_stack));
@@ -1654,5 +1662,10 @@ namespace Koromo_Copy.LP
             treenode_stack.Push(reduction_parent);
             actions[reduction_parent.ProductionRuleIndex].SemanticAction(reduction_parent);
         }
+
+        public override string ToString()
+            => JsonConvert.SerializeObject(this, Formatting.None);
+        public static ShiftReduceParser FromString(string json)
+            => JsonConvert.DeserializeObject<ShiftReduceParser>(json);
     }
 }

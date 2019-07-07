@@ -201,6 +201,7 @@ namespace Koromo_Copy.Console
             gen.PrintTable();
 
             Console.Instance.WriteLine(gen.GlobalPrinter.ToString());
+            Console.Instance.WriteLine(gen.CreateShiftReduceParserInstance().ToString());
         }
 
         /// <summary>
