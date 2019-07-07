@@ -267,6 +267,21 @@ namespace Koromo_Copy.LP
                         first_valid_stack.Push(cur);
                         break;
 
+                    case '.':
+                        var ends_point3 = new transition_node { index = index_count++, transition = new List<Tuple<char, transition_node>>() };
+                        for( int i2 = 0; i2 < 128; i2++)
+                        {
+                            cur.transition.Add(new Tuple<char, transition_node>((char)i2, ends_point3));
+                        }
+                        cur = ends_point3;
+                        nodes.Add(cur);
+                        if (first_valid_stack.Count != 0)
+                        {
+                            second_valid_stack.Push(first_valid_stack.Peek());
+                        }
+                        first_valid_stack.Push(cur);
+                        break;
+
                     case '\\':
                     default:
                         char ch = pattern[i];

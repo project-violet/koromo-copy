@@ -33,6 +33,10 @@ namespace Koromo_Copy.Console
             Info = "Replace English-Typing with alphabetic characters in the form of a korean.")]
         public string[] Eng2Kor;
 
+        [CommandLine("-regex", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use -regex <Pattern> <Target>",
+            Info = "Verify that the target string can be derived from the pattern.")]
+        public string[] Regex;
+
         [CommandLine("--pargen-sample", CommandType.OPTION, DefaultArgument = true, Help = "use --pargen-sample",
             Info = "Print parser generator sample result table.")]
         public bool PSGample;
@@ -70,6 +74,10 @@ namespace Koromo_Copy.Console
             else if (option.Eng2Kor != null)
             {
                 ProcessEng2Kor(option.Eng2Kor);
+            }
+            else if (option.Regex != null)
+            {
+                ProcessRegex(option.Regex);
             }
             else if (option.PSGample)
             {
@@ -121,6 +129,33 @@ namespace Koromo_Copy.Console
         static void ProcessEng2Kor(string[] args)
         {
             Console.Instance.WriteLine(LPKor.Assembly(args[0]));
+        }
+
+        static void ProcessRegex(string[] args)
+        {
+            var sr = new SimpleRegex(args[0]);
+            var cur = sr.Diagram.start_node;
+
+            Console.Instance.WriteLine(sr.PrintDiagram());
+
+            for (int i = 0; i < args[1].Length; i++)
+            {
+                var ch = args[1][i];
+                if (cur.transition.Any(x => x.Item1 == ch))
+                {
+                    cur = cur.transition.Where(x => x.Item1 == ch).ElementAt(0).Item2;
+                }
+                else
+                {
+                    Console.Instance.WriteLine("Error! A token that can not be derived. Char='" + ch + "', POS=" + i);
+                    return;
+                }
+            }
+
+            if (cur.is_acceptable)
+                Console.Instance.WriteLine("Matching pattern!");
+            else
+                Console.Instance.WriteLine("Partial matching pattern! End=" + cur.index);
         }
 
         static void ProcessPGSample()
