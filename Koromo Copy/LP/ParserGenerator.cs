@@ -1554,7 +1554,6 @@ namespace Koromo_Copy.LP
     {
         [JsonProperty]
         Dictionary<string, int> symbol_name_index = new Dictionary<string, int>();
-        [JsonProperty]
         List<string> symbol_index_name = new List<string>();
         Stack<int> state_stack = new Stack<int>();
         Stack<ParsingTree.ParsingTreeNode> treenode_stack = new Stack<ParsingTree.ParsingTreeNode>();
@@ -1663,9 +1662,74 @@ namespace Koromo_Copy.LP
             actions[reduction_parent.ProductionRuleIndex].SemanticAction(reduction_parent);
         }
 
-        public override string ToString()
-            => JsonConvert.SerializeObject(this, Formatting.None);
         public static ShiftReduceParser FromString(string json)
             => JsonConvert.DeserializeObject<ShiftReduceParser>(json);
+        public override string ToString()
+            => JsonConvert.SerializeObject(this, Formatting.None);
+        public string ToCSCode(string class_name)
+        {
+            var builder = new StringBuilder();
+            var indent = "";
+            Action up_indent = () => { indent += "    "; };
+            Action down_indent = () => { if (indent.Length > 0) indent = indent.Substring(4); };
+            Action<string> append = (string s) => { builder.Append($"{indent}{s}\r\n"); };
+            append("public class " + class_name);
+            append("{");
+            up_indent();
+
+            ///////////////////
+            append("Dictionary<string, int> symbol_table = new Dictionary<string, int>()");
+            append("{");
+            up_indent();
+            foreach (var st in symbol_name_index)
+                append("{" + ('"' + st.Key + '"').PadLeft(symbol_name_index.Select(x => x.Key.Length).Max() + 3) + "," + st.Value.ToString().PadLeft(4) + " },");
+            down_indent();
+            append("};");
+            append("");
+
+            ///////////////////
+            append("int[][] jump_table = new int[][] {");
+            up_indent();
+            foreach (var gt in jump_table)
+                append("new int[] {" + string.Join(",", gt.Select(x => x.ToString().PadLeft(4))) + " },");
+            down_indent();
+            append("};");
+            append("");
+
+            ///////////////////
+            append("int[][] goto_table = new int[][] {");
+            up_indent();
+            foreach (var gt in goto_table)
+                append("new int[] {" + string.Join(",", gt.Select(x => x.ToString().PadLeft(4))) + " },");
+            down_indent();
+            append("};");
+            append("");
+
+            ///////////////////
+            append("int[][] production = new int[][] {");
+            up_indent();
+            foreach (var gt in production)
+                append("new int[] {" + string.Join(",", gt.Select(x => x.ToString().PadLeft(4))) + " },");
+            down_indent();
+            append("};");
+            append("");
+
+            ///////////////////
+            append("int[] group_table = new int[] {");
+            up_indent();
+            append(string.Join(",", group_table.Select(x => x.ToString().PadLeft(4))));
+            down_indent();
+            append("};");
+            append("");
+
+            ///////////////////
+            append("public ShiftReduceParser Parser => new ShiftReduceParser(");
+            append("    symbol_table, jump_table, goto_table, group_table, production, ");
+            append("    Enumerable.Repeat(new ParserAction { SemanticAction = (ParsingTree.ParsingTreeNode node) => { } }, production.Length).ToList());");
+
+            down_indent();
+            append("}");
+            return builder.ToString();
+        }
     }
 }

@@ -74,6 +74,8 @@ namespace Koromo_Copy.LP
                 Console.Console.Instance.WriteLine(e.Message);
             }
 
+            Console.Console.Instance.WriteLine(pp.ToCSCode("CALCS"));
+
             return "";
         }
 
