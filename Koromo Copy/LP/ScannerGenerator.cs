@@ -228,6 +228,7 @@ namespace Koromo_Copy.LP
 
                                         default:
                                             build_errors.Add($"{pattern[i]} escape character not found!");
+                                            ch_list.Add(pattern[i]);
                                             break;
                                     }
                                 }
