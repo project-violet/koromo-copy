@@ -163,45 +163,115 @@ namespace Koromo_Copy.Console
             var gen = new ParserGenerator();
 
             // Non-Terminals
-            var exp = gen.CreateNewProduction("exp", false);
-            var term = gen.CreateNewProduction("term", false);
-            var factor = gen.CreateNewProduction("factor", false);
-            var func = gen.CreateNewProduction("func", false);
-            var arguments = gen.CreateNewProduction("args", false);
+            var E = gen.CreateNewProduction("E", false);
+            //var T = gen.CreateNewProduction("T", false);
+            //var F = gen.CreateNewProduction("F", false);
+            //var func = gen.CreateNewProduction("func", false);
+            //var arguments = gen.CreateNewProduction("args", false);
 
             // Terminals
-            var plus = gen.CreateNewProduction("plus");         // +
-            var minus = gen.CreateNewProduction("minus");       // -
-            var multiple = gen.CreateNewProduction("multiple"); // *
-            var divide = gen.CreateNewProduction("divide");     // /
-            var id = gen.CreateNewProduction("id");             // [_$a-zA-Z][_$a-zA-Z0-9]*
-            var op_open = gen.CreateNewProduction("op_open");   // (
-            var op_close = gen.CreateNewProduction("op_close"); // )
+            var plus = gen.CreateNewProduction("+");         // +
+            var minus = gen.CreateNewProduction("-");       // -
+            var multiple = gen.CreateNewProduction("*"); // *
+            var divide = gen.CreateNewProduction("/");     // /
+            //var id = gen.CreateNewProduction("id");             // [_$a-zA-Z][_$a-zA-Z0-9]*
+            var op_open = gen.CreateNewProduction("(");   // (
+            var op_close = gen.CreateNewProduction(")"); // )
             var num = gen.CreateNewProduction("num");           // [0-9]+
-            var split = gen.CreateNewProduction("split");       // ,
+            //var split = gen.CreateNewProduction("split");       // ,
 
-            exp |= exp + plus + term;
-            exp |= exp + minus + term;
-            exp |= term;
-            term |= term + multiple + factor;
-            term |= term + divide + factor;
-            term |= factor;
-            factor |= op_open + exp + op_close;
-            factor |= num;
-            factor |= id;
-            factor |= func;
-            func |= id + op_open + arguments + op_close;
-            arguments |= id;
-            arguments |= arguments + split + id;
-            arguments |= ParserGenerator.EmptyString;
+            //exp |= exp + plus + term;
+            //exp |= exp + minus + term;
+            //exp |= term;
+            //term |= term + multiple + factor;
+            //term |= term + divide + factor;
+            //term |= factor;
+            //factor |= op_open + exp + op_close;
+            //factor |= num;
+            //factor |= id;
+            //factor |= func;
+            //func |= id + op_open + arguments + op_close;
+            //arguments |= id;
+            //arguments |= arguments + split + id;
+            //arguments |= ParserGenerator.EmptyString;
 
-            gen.PushStarts(exp);
+            E |= E + plus + E + ParserAction.Create(x => { }); ;
+            E |= E + minus + E + ParserAction.Create(x => { }); ;
+            E |= E + multiple + E + ParserAction.Create(x => { }); ;
+            E |= E + divide + E + ParserAction.Create(x => { }); ;
+            E |= minus + E + ParserAction.Create(x => { }); ;
+            E |= op_open + E + op_close + ParserAction.Create(x => { }); ;
+            E |= num + ParserAction.Create(x => { }); ;
+
+            gen.PushConflictSolver(false, new Tuple<ParserProduction, int>(E, 4));
+            gen.PushConflictSolver(true, multiple, divide);
+            gen.PushConflictSolver(true, plus, minus);
+
+            gen.PushStarts(E);
+            gen.PrintProductionRules();
             gen.GenerateLALR();
             gen.PrintStates();
             gen.PrintTable();
 
             Console.Instance.WriteLine(gen.GlobalPrinter.ToString());
-            Console.Instance.WriteLine(gen.CreateShiftReduceParserInstance().ToString());
+            Console.Instance.WriteLine(gen.CreateShiftReduceParserInstance().ToCSCode("Calculator"));
+
+            //////////////////////////////////////////////////////
+
+            //var scanner_gen = new ScannerGenerator();
+            //
+            //scanner_gen.PushRule("", @"[\r\n ]");  // Skip characters
+            //scanner_gen.PushRule("+", @"\+");
+            //scanner_gen.PushRule("-", @"\-");
+            //scanner_gen.PushRule("*", @"\*");
+            //scanner_gen.PushRule("/", @"\/");
+            //scanner_gen.PushRule("(", @"\(");
+            //scanner_gen.PushRule(")", @"\)");
+            //scanner_gen.PushRule("num", @"[0-9]+(\.[0-9]+)?([Ee][\+\-]?[0-9]+)?");
+            //scanner_gen.Generate();
+            //var ss = scanner_gen.CreateScannerInstance();
+            //var pp = gen.CreateShiftReduceParserInstance();
+            //
+            //Action<string, string, int, int> insert = (string x, string y, int a, int b) =>
+            //{
+            //    pp.Insert(x, y);
+            //    if (pp.Error()) throw new Exception($"[COMPILER] Parser error! L:{a}, C:{b}");
+            //    while (pp.Reduce())
+            //    {
+            //        var l = pp.LatestReduce();
+            //        Console.Instance.Write(l.Production.PadLeft(8) + " => ");
+            //        Console.Instance.WriteLine(string.Join(" ", l.Childs.Select(z => z.Production)));
+            //        Console.Instance.Write(l.Production.PadLeft(8) + " => ");
+            //        Console.Instance.WriteLine(string.Join(" ", l.Childs.Select(z => z.Contents)));
+            //        pp.Insert(x, y);
+            //        if (pp.Error()) throw new Exception($"[COMPILER] Parser error! L:{a}, C:{b}");
+            //    }
+            //};
+            //
+            //try
+            //{
+            //    int ll = 0;
+            //    var line = "5-(4+2*3-1)/(6+-5)";
+            //        ss.AllocateTarget(line.Trim());
+            //
+            //        while (ss.Valid())
+            //        {
+            //            var tk = ss.Next();
+            //            if (ss.Error())
+            //                throw new Exception("[COMPILER] Tokenize error! '" + tk + "'");
+            //            insert(tk.Item1, tk.Item2, ll, tk.Item4);
+            //        }
+            //
+            //    if (pp.Error()) throw new Exception();
+            //    insert("$", "$", -1, -1);
+            //
+            //    var tree = pp.Tree;
+            //    CALtoCS.PrintTree(tree.root, "", true);
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.Instance.WriteLine(e.Message);
+            //}
         }
 
         /// <summary>

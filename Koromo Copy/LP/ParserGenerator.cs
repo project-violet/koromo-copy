@@ -221,6 +221,8 @@ namespace Koromo_Copy.LP
                     gen.PushConflictSolver(left, items2.ToArray());
             }
 
+            gen.PushStarts(non_terminals[nt_syms[0]]);
+
             return gen;
         }
 
@@ -1545,6 +1547,37 @@ namespace Koromo_Copy.LP
         {
             this.root = root;
         }
+
+        static void inner_print(StringBuilder builder, ParsingTreeNode node, string indent, bool last)
+        {
+            builder.Append(indent);
+            if (last)
+            {
+                builder.Append("+-");
+                indent += "  ";
+            }
+            else
+            {
+                builder.Append("|-");
+                indent += "| ";
+            }
+
+            if (node.Childs.Count == 0)
+            {
+                builder.Append(node.Production + " " + node.Contents + "\r\n");
+            }
+            else
+            {
+                builder.Append(node.Production + "\r\n");
+            }
+            for (int i = 0; i < node.Childs.Count; i++)
+                inner_print(builder, node.Childs[i], indent, i == node.Childs.Count - 1);
+        }
+
+        public void Print(StringBuilder builder)
+        {
+            inner_print(builder, root, "", true);
+        }
     }
 
     /// <summary>
@@ -1659,7 +1692,8 @@ namespace Koromo_Copy.LP
             reduction_parent.Contents = string.Join("", reduce_treenodes.Select(x => x.Contents));
             reduction_parent.Childs = reduce_treenodes;
             treenode_stack.Push(reduction_parent);
-            actions[reduction_parent.ProductionRuleIndex].SemanticAction(reduction_parent);
+            if (actions.Count != 0)
+                actions[reduction_parent.ProductionRuleIndex].SemanticAction(reduction_parent);
         }
 
         public static ShiftReduceParser FromString(string json)
