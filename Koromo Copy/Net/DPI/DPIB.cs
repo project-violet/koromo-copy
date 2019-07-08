@@ -64,6 +64,7 @@ namespace Koromo_Copy.Net.DPI
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.FileName = dpib_path;
+                proc.StartInfo.CreateNoWindow = true;
                 proc.StartInfo.Verb = "runas";
                 proc.OutputDataReceived += (sender, args) => Monitor.Instance.Push($"[GoodbyeDPI] {args.Data}");
                 proc.Start();
