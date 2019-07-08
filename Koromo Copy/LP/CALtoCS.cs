@@ -79,7 +79,7 @@ namespace Koromo_Copy.LP
             return "";
         }
 
-        public void PrintTree(ParsingTree.ParsingTreeNode node, string indent, bool last)
+        public static void PrintTree(ParsingTree.ParsingTreeNode node, string indent, bool last)
         {
             Console.Console.Instance.Write(indent);
             if (last)

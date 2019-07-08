@@ -87,6 +87,7 @@ namespace Koromo_Copy.Console.Utility
             { "tagtest", typeof(RelatedTagsTest) },
             { "record", typeof(Record) },
             { "counter", typeof(FileLineCounter) },
+            { "pgs", typeof(PGS) },
 #if DEBUG
             { "gbt", typeof (GalleryBlockTester) },
 #endif

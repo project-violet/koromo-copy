@@ -275,6 +275,12 @@
     <Compile Include="Utility\MetadataDownloader.Designer.cs">
       <DependentUpon>MetadataDownloader.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\PGS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\PGS.Designer.cs">
+      <DependentUpon>PGS.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\Record.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -340,6 +346,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\MetadataDownloader.resx">
       <DependentUpon>MetadataDownloader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\PGS.resx">
+      <DependentUpon>PGS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\Record.resx">
       <DependentUpon>Record.cs</DependentUpon>
