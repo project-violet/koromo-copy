@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Heap.cs" />
     <Compile Include="Component\DC\DCArticle.cs" />
     <Compile Include="Component\DC\DCCommon.cs" />
     <Compile Include="Component\DC\DCParser.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Component\Pixiv\Pixeez\Pixeez.cs" />
     <Compile Include="Component\Pixiv\PixivTool.cs" />
     <Compile Include="Net\NetSetting.cs" />
+    <Compile Include="Net\TaskScheduler.cs" />
     <Compile Include="Profiler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
