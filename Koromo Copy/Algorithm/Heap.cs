@@ -106,9 +106,13 @@ namespace Koromo_Copy.Algorithm
             => x.CompareTo(y);
     }
 
-    public class Heap<T> 
-        : Heap<T, DefaultHeapComparer<T>> 
-        where T : IComparable
+    public class MinHeapComparer<T> : Comparer<T> where T : IComparable
     {
+        public override int Compare(T x, T y)
+            => y.CompareTo(x);
     }
+
+    public class Heap<T> : Heap<T, DefaultHeapComparer<T>> where T : IComparable { }
+    public class MinHeap<T> : Heap<T, MinHeapComparer<T>> where T : IComparable { }
+    public class MaxHeap<T> : Heap<T, DefaultHeapComparer<T>> where T : IComparable { }
 }
