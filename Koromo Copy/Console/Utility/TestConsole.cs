@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy.Algorithm;
 using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hiyobi;
@@ -16,6 +17,7 @@ using Koromo_Copy.LP;
 using Koromo_Copy.Script;
 using Koromo_Copy.Utility.Develop;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -156,6 +158,28 @@ namespace Koromo_Copy.Console.Utility
                     Console.Instance.WriteLine(xl);
                     xr = LPKor.Assembly3(xl);
                     Console.Instance.WriteLine(xr);
+                    break;
+
+                case "heap":
+                    var rl = new List<int>();
+
+                    var r = new Random();
+                    for (int i = 0; i < 20; i++)
+                        rl.Add(r.Next() % 100);
+
+                    var h = new Heap<int>();
+                    foreach (var xx in rl)
+                        h.Push(xx);
+
+                    rl.Sort();
+                    rl.Reverse();
+
+                    for (int i = 0; i < 20; i++)
+                    {
+                        Console.Instance.WriteLine($"{rl[i]}, {h.Front}");
+                        h.Pop();
+                    }
+
                     break;
             }
         }
