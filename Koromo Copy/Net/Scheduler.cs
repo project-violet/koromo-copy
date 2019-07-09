@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Koromo_Copy.Net
 {
-    public class TaskScheduler
+    public class Scheduler
     {
     }
 }
