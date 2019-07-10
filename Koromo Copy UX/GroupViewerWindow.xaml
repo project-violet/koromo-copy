@@ -97,6 +97,7 @@
                             <MenuItem Header="제목 비슷한 작품 선택 취소" InputGestureText="Ctrl+S" Tag="S" Click="MenuItem_Click"/>
                             <MenuItem Header="이미 다운로드된 작품 선택 취소" InputGestureText="Ctrl+G" Tag="G" Click="MenuItem_Click"/>
                             <Separator/>
+                            <MenuItem Header="북마크에 추가하기" InputGestureText="Ctrl+B" Tag="B" Click="MenuItem_Click"/>
                             <MenuItem Header="자세한 정보 보기" InputGestureText="Ctrl+D" Tag="D" Click="MenuItem_Click"/>
                         </ContextMenu>
                     </WrapPanel.ContextMenu>

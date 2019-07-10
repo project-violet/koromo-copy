@@ -9,6 +9,7 @@
 using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy_UX.Domain;
+using Koromo_Copy_UX.Utility.Bookmark;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +35,7 @@ namespace Koromo_Copy_UX
         public GroupViewerWindow()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             DataContext = new Domain.ArtistDataGridViewModel();
 
@@ -51,13 +53,16 @@ namespace Koromo_Copy_UX
                 Close();
         }
 
+        string Group;
         public GroupViewerWindow(string group)
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             DataContext = new Domain.ArtistDataGridViewModel();
             TagList.Sorting += new DataGridSortingEventHandler(new DataGridSorter<ArtistDataGridItemViewModel>(TagList).SortHandler);
             Title += group;
+            Group = group;
 
             var dictionary = new Dictionary<string, int>();
             Task.Run(() =>
@@ -260,8 +265,17 @@ namespace Koromo_Copy_UX
                         }
                     });
                     break;
-
+                    
                 case 'B':
+                    BookmarkModelManager.Instance.Model.groups.Add(new Tuple<string, BookmarkItemModel>("/미분류", new BookmarkItemModel
+                    {
+                        stamp = DateTime.Now,
+                        content = Group.Replace('_', ' '),
+                        path = ""
+                    }));
+                    MessageBox.Show("북마크에 추가되었습니다!", "Koromo Copy", MessageBoxButton.OK, MessageBoxImage.Information);
+                    break;
+
                 case 'D':
                     break;
             }

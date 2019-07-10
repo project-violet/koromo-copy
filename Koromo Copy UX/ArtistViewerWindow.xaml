@@ -135,6 +135,7 @@
                             <MenuItem Header="{DynamicResource deselect_title_similar}" InputGestureText="Ctrl+S" Tag="S" Click="MenuItem_Click"/>
                             <MenuItem Header="{DynamicResource deselect_downloaded}" InputGestureText="Ctrl+G" Tag="G" Click="MenuItem_Click"/>
                             <Separator/>
+                            <MenuItem Header="{DynamicResource add_to_bookmark}" InputGestureText="Ctrl+B" Tag="B" Click="MenuItem_Click"/>
                             <MenuItem Header="{DynamicResource view_detail_information}" InputGestureText="Ctrl+D" Tag="D" Click="MenuItem_Click"/>
                         </ContextMenu>
                     </WrapPanel.ContextMenu>

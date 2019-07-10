@@ -10,6 +10,7 @@ using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hitomi.Analysis;
 using Koromo_Copy_UX.Domain;
+using Koromo_Copy_UX.Utility.Bookmark;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -294,6 +295,15 @@ namespace Koromo_Copy_UX
                     break;
 
                 case 'B':
+                    BookmarkModelManager.Instance.Model.artists.Add(new Tuple<string, BookmarkItemModel>("/미분류", new BookmarkItemModel
+                    {
+                        stamp = DateTime.Now,
+                        content = Artist.Replace('_', ' '),
+                        path = ""
+                    }));
+                    MessageBox.Show("북마크에 추가되었습니다!", "Koromo Copy", MessageBoxButton.OK, MessageBoxImage.Information);
+                    break;
+
                 case 'D':
                     break;
             }
