@@ -99,6 +99,7 @@
     <system:String x:Key="select_inverse">선택 반전</system:String>
     <system:String x:Key="deselect_title_similar">제목 비슷한 작품 선택 취소</system:String>
     <system:String x:Key="deselect_downloaded">이미 다운로드된 작품 선택 취소</system:String>
+    <system:String x:Key="add_to_bookmark">북마크에 추가하기</system:String>
     <system:String x:Key="view_detail_information">자세한 정보 보기</system:String>
     <system:String x:Key="msg_ddclick_car">더블클릭하면 작가추천 목록으로 업데이트 됩니다!</system:String>
     <system:String x:Key="similar_artists">비슷한 작가</system:String>

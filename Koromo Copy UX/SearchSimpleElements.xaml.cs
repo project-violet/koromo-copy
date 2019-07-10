@@ -100,6 +100,7 @@ namespace Koromo_Copy_UX
         public SearchSimpleElements(IArticle article)
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             article.Title = HttpUtility.HtmlDecode(article.Title);
             Article = article;
