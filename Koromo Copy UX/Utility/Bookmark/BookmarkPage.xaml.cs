@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Component.Hitomi.Analysis;
 using Koromo_Copy.Fs;
 using Koromo_Copy_UX.Domain;
 using MaterialDesignThemes.Wpf;
@@ -359,6 +360,26 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                         }
 
                         Explorer.OpenFolderAndSelectFiles(rtov, files.ToArray());
+                    }
+                    break;
+
+                case "D":
+
+                    var llx = new List<Tuple<string, double, string>>() { };
+
+                    foreach (var ff in TagList.Items.Cast<BookmarkPageDataGridItemViewModel>())
+                    {
+                        if (ff.유형 == "작가" || ff.유형 == "그룹")
+                            llx.Add(new Tuple<string, double, string>(ff.내용, 100, ""));
+                    }
+
+                    if (llx.Count > 0)
+                    {
+                        HitomiAnalysis.Instance.UserDefined = true;
+                        HitomiAnalysis.Instance.Rank = llx;
+                        RecommendSpace.Instance.UpdateOnlyArtists();
+                        MainWindow.Instance.Activate();
+                        MainWindow.Instance.FocusRecommend();
                     }
                     break;
             }

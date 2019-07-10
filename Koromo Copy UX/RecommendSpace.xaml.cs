@@ -70,6 +70,13 @@ namespace Koromo_Copy_UX
             await Task.Run(() => MoreLoad());
         }
 
+        public async Task UpdateOnlyArtists(int llc = 0)
+        {
+            latest_load_count = llc;
+            RecommendList.Children.Clear();
+            await Task.Run(() => MoreLoad());
+        }
+
         private void MoreLoad()
         {
             stay = true;
