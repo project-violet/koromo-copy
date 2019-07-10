@@ -348,6 +348,7 @@ namespace Koromo_Copy_UX.Utility.Bookmark
 
                         foreach (var ff in TagList.SelectedItems.Cast<BookmarkPageDataGridItemViewModel>())
                         {
+                            if (string.IsNullOrEmpty(ff.경로)) continue;
                             var rtrt = System.IO.Path.GetDirectoryName(ff.경로);
                             if (rtov != rtrt)
                             {
