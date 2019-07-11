@@ -180,6 +180,9 @@ namespace Koromo_Copy.Console.Utility
                         h.Pop();
                     }
 
+                    var hh = new UpdatableHeap<int>();
+
+
                     break;
             }
         }
