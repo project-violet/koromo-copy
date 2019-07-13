@@ -229,6 +229,9 @@
     <Compile Include="Utility\Bookmark\BookmarkMessage.xaml.cs">
       <DependentUpon>BookmarkMessage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\Bookmark\BookmarkMessageOk.xaml.cs">
+      <DependentUpon>BookmarkMessageOk.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\Bookmark\BookmarkModel.cs" />
     <Compile Include="Utility\Bookmark\BookmarkPage.xaml.cs">
       <DependentUpon>BookmarkPage.xaml</DependentUpon>
@@ -240,6 +243,12 @@
     <Compile Include="Utility\Bookmark\BookmarkSetting.cs" />
     <Compile Include="Utility\Bookmark\BookmarkSetting.xaml.cs">
       <DependentUpon>BookmarkSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\Bookmark\BookmarkTool.xaml.cs">
+      <DependentUpon>BookmarkTool.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\Bookmark\BookmarkToolDangling.xaml.cs">
+      <DependentUpon>BookmarkToolDangling.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\DCTools.xaml.cs">
       <DependentUpon>DCTools.xaml</DependentUpon>
@@ -622,6 +631,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Utility\Bookmark\BookmarkMessageOk.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Utility\Bookmark\BookmarkPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -631,6 +644,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\Bookmark\BookmarkSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\Bookmark\BookmarkTool.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\Bookmark\BookmarkToolDangling.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
