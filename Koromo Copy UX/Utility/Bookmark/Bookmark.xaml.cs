@@ -245,8 +245,13 @@ namespace Koromo_Copy_UX.Utility.Bookmark
             init();
         }
 
-        private void ToolButton_Click(object sender, RoutedEventArgs e)
+        private async void ToolButton_Click(object sender, RoutedEventArgs e)
         {
+            var dialog = new BookmarkTool();
+            if ((bool)(await DialogHost.Show(dialog, "BookmarkDialog")))
+            {
+
+            }
         }
 
         private async void SettingButton_Click(object sender, RoutedEventArgs e)
@@ -379,5 +384,10 @@ namespace Koromo_Copy_UX.Utility.Bookmark
         }
 
         #endregion
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

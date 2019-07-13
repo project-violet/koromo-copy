@@ -161,6 +161,20 @@
                                 </ResourceDictionary.MergedDictionaries>
                             </ResourceDictionary>
                         </TreeView.Resources>
+                        <TreeView.ContextMenu>
+                            <ContextMenu x:Name="CtxMenu" Visibility="Hidden">
+                                <ContextMenu.Resources>
+                                    <ResourceDictionary>
+                                        <ResourceDictionary.MergedDictionaries>
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Menu.xaml" />
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                                        </ResourceDictionary.MergedDictionaries>
+                                    </ResourceDictionary>
+                                </ContextMenu.Resources>
+                                <MenuItem x:Name="M1" Header="이름 바꾸기" Click="MenuItem_Click" Tag="A" VerticalAlignment="Center"></MenuItem>
+                            </ContextMenu>
+                        </TreeView.ContextMenu>
                     </TreeView>
                     <GridSplitter BorderThickness="1" BorderBrush="Gainsboro"></GridSplitter>
                     <!--<ScrollViewer Grid.Column="1">

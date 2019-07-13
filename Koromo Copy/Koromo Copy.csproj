@@ -201,6 +201,7 @@
     <Compile Include="KSS\KSSCore.cs" />
     <Compile Include="KSS\KSSSetting.cs" />
     <Compile Include="KSS\KSSTerms.cs" />
+    <Compile Include="LP\BNFParser.cs" />
     <Compile Include="LP\CALtoCS.cs" />
     <Compile Include="LP\ESRCAL.cs" />
     <Compile Include="LP\Lang\HTMLParser.cs" />
