@@ -151,7 +151,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TreeView x:Name="ClassifyTree" MinWidth="220" Grid.Column="0" SelectedItemChanged="ClassifyTree_SelectedItemChanged">
+                    <TreeView x:Name="ClassifyTree" MinWidth="220" Grid.Column="0" SelectedItemChanged="ClassifyTree_SelectedItemChanged" Drop="ClassifyTree_Drop">
                         <TreeView.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>

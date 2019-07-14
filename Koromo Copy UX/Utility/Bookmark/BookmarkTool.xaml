@@ -62,36 +62,6 @@
                         <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">내보내기</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Rename">
-                    <Button.Resources>
-                        <ResourceDictionary>
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                            </ResourceDictionary.MergedDictionaries>
-                        </ResourceDictionary>
-                    </Button.Resources>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="RenameBox"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">이름바꾸기</TextBlock>
-                    </StackPanel>
-                </Button>
-            </WrapPanel>
-            <WrapPanel Grid.Row="1">
-                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Merge">
-                    <Button.Resources>
-                        <ResourceDictionary>
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                            </ResourceDictionary.MergedDictionaries>
-                        </ResourceDictionary>
-                    </Button.Resources>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Tournament"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">병합</TextBlock>
-                    </StackPanel>
-                </Button>
                 <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Dangling">
                     <Button.Resources>
                         <ResourceDictionary>
@@ -117,7 +87,7 @@
                     </Button.Resources>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Wand"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">자동</TextBlock>
+                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">자동분류</TextBlock>
                     </StackPanel>
                 </Button>
             </WrapPanel>

@@ -81,7 +81,7 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                 fs.Write(json);
             }
         }
-
+        
         public BookmarkModel Model { get { return model; } }
     }
 }

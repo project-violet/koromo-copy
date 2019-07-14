@@ -41,9 +41,6 @@ namespace Koromo_Copy_UX.Utility.Bookmark
             {
                 case "Import":
                 case "Export":
-                case "Copy":
-                case "Rename":
-                case "Merge":
                     break;
 
                 case "Dangling":
