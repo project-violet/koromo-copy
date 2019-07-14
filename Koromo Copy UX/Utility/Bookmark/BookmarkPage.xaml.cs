@@ -344,6 +344,12 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                 case "C":
                     if (TagList.SelectedItems.Count > 0)
                     {
+                        if (string.IsNullOrEmpty((TagList.SelectedItems[0] as BookmarkPageDataGridItemViewModel).경로))
+                        {
+                            MessageBox.Show("첫 번째 선택항목은 경로가 있는 항목이여야 합니다.", "Koromo Copy Bookmark", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
                         var rtov = System.IO.Path.GetDirectoryName((TagList.SelectedItems[0] as BookmarkPageDataGridItemViewModel).경로);
                         var files = new List<string>();
 
