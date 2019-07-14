@@ -273,6 +273,7 @@ namespace Koromo_Copy_UX
                         content = Group.Replace('_', ' '),
                         path = ""
                     }));
+                    BookmarkModelManager.Instance.Save();
                     MessageBox.Show("북마크에 추가되었습니다!", "Koromo Copy", MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
 
