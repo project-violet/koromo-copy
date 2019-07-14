@@ -16,6 +16,7 @@ using Koromo_Copy.Interface;
 using Koromo_Copy.LP;
 using Koromo_Copy.Script;
 using Koromo_Copy.Utility.Develop;
+using Koromo_Copy.Wrapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -181,8 +182,12 @@ namespace Koromo_Copy.Console.Utility
                     }
 
                     var hh = new UpdatableHeap<int>();
+                    
+                    break;
 
-
+                case "ydl":
+                    ydlWrapper.download();
+                    ydlWrapper.test();
                     break;
             }
         }
