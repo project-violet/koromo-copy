@@ -88,6 +88,7 @@ namespace Koromo_Copy.Console.Utility
             { "record", typeof(Record) },
             { "counter", typeof(FileLineCounter) },
             { "pgs", typeof(PGS) },
+            { "stat", typeof(Hitomi_Copy_3.Statistics) },
 #if DEBUG
             { "gbt", typeof (GalleryBlockTester) },
 #endif

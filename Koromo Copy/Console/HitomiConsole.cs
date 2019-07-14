@@ -656,6 +656,14 @@ namespace Koromo_Copy.Console
                     }
 
                     break;
+
+                case 11:
+                    {
+                        HitomiData.Instance.LoadMetadataJson();
+                        HitomiData.Instance.LoadHiddendataJson();
+                        HitomiData.Instance.RebuildTagData();
+                    }
+                    break;
             }
         }
 
