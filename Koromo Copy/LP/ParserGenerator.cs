@@ -768,12 +768,19 @@ namespace Koromo_Copy.LP
                         print_states(ms.Key, states[ms.Key]);
                         print_states(small_shift_info[shift_tokens[tuple.Item1]].Item2, states[small_shift_info[shift_tokens[tuple.Item1]].Item2]);
 #endif
-                        var pp = get_first_on_right_terminal(production_rules[tuple.Item2], tuple.Item3);
-
                         Tuple<int, bool> p1 = null, p2 = null;
 
-                        if (shift_reduce_conflict_solve.ContainsKey(pp.index))
-                            p1 = shift_reduce_conflict_solve[pp.index];
+                        try
+                        {
+                            var pp = get_first_on_right_terminal(production_rules[tuple.Item2], tuple.Item3);
+                            if (shift_reduce_conflict_solve.ContainsKey(pp.index))
+                                p1 = shift_reduce_conflict_solve[pp.index];
+                        }
+                        catch (Exception e)
+                        {
+                            GlobalPrinter.Append(e.Message + "\r\n");
+                        }
+                        
                         if (shift_reduce_conflict_solve.ContainsKey(tuple.Item1))
                             p2 = shift_reduce_conflict_solve[tuple.Item1];
 
@@ -1101,19 +1108,33 @@ namespace Koromo_Copy.LP
 
                     if (shift_tokens.ContainsKey(tuple.Item1))
                     {
-#if true
+#if !DEBUG
                         print_header("SHIFT-REDUCE CONFLICTS");
                         GlobalPrinter.Append($"Shift-Reduce Conflict! {(tuple.Item1 == -1 ? "$" : production_rules[tuple.Item1].production_name)}\r\n");
                         GlobalPrinter.Append($"States: {ms.Key} {small_shift_info[shift_tokens[tuple.Item1]].Item2}\r\n");
                         print_states(ms.Key, states[ms.Key]);
                         print_states(small_shift_info[shift_tokens[tuple.Item1]].Item2, states[small_shift_info[shift_tokens[tuple.Item1]].Item2]);
 #endif
-                        var pp = get_first_on_right_terminal(production_rules[tuple.Item2], tuple.Item3);
-
                         Tuple<int, bool> p1 = null, p2 = null;
-                        
-                        if (shift_reduce_conflict_solve.ContainsKey(pp.index))
-                            p1 = shift_reduce_conflict_solve[pp.index];
+
+#if DEBUG
+                        string mm = "";
+#endif
+                        try
+                        {
+                            var pp = get_first_on_right_terminal(production_rules[tuple.Item2], tuple.Item3);
+                            if (shift_reduce_conflict_solve.ContainsKey(pp.index))
+                                p1 = shift_reduce_conflict_solve[pp.index];
+                        }
+                        catch (Exception e)
+                        {
+#if !DEBUG
+                            GlobalPrinter.Append(e.Message + "\r\n");
+#else
+                            mm = e.Message + "\r\n";
+#endif
+                        }
+
                         if (shift_reduce_conflict_solve.ContainsKey(tuple.Item1))
                             p2 = shift_reduce_conflict_solve[tuple.Item1];
                         
@@ -1127,6 +1148,15 @@ namespace Koromo_Copy.LP
 
                         if (p1 == null || p2 == null)
                         {
+#if DEBUG
+                            print_header("SHIFT-REDUCE CONFLICTS");
+                            GlobalPrinter.Append($"Shift-Reduce Conflict! {(tuple.Item1 == -1 ? "$" : production_rules[tuple.Item1].production_name)}\r\n");
+                            GlobalPrinter.Append($"States: {ms.Key} {small_shift_info[shift_tokens[tuple.Item1]].Item2}\r\n");
+                            print_states(ms.Key, states[ms.Key]);
+                            print_states(small_shift_info[shift_tokens[tuple.Item1]].Item2, states[small_shift_info[shift_tokens[tuple.Item1]].Item2]);
+                            if (mm != "")
+                                GlobalPrinter.Append(mm);
+#endif
                             occurred_conflict = true;
                             continue;
                         }
@@ -1175,7 +1205,7 @@ namespace Koromo_Copy.LP
             
             number_of_states = merged_states.Count;
         }
-        #endregion
+#endregion
 
         public void PrintProductionRules()
         {

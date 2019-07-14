@@ -198,6 +198,9 @@
     <Compile Include="Component\Hitomi\HitomiSetting.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanSeries.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanTag.cs" />
+    <Compile Include="JS\JSInterpreter.cs" />
+    <Compile Include="JS\JSParserGenerator.cs" />
+    <Compile Include="JS\JSParser.cs" />
     <Compile Include="KSS\KSSCommon.cs" />
     <Compile Include="KSS\KSSCore.cs" />
     <Compile Include="KSS\KSSSetting.cs" />
