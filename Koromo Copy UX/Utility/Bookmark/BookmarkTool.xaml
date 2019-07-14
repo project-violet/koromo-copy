@@ -28,8 +28,12 @@
         </Grid.RowDefinitions>
 
         <Grid Margin="0 6 0 0" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <materialDesign:DialogHost Identifier="ToolDialog"/>
-            <WrapPanel>
+            <WrapPanel Grid.Row="0">
                 <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Import">
                     <Button.Resources>
                         <ResourceDictionary>
@@ -58,20 +62,6 @@
                         <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">내보내기</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Copy">
-                    <Button.Resources>
-                        <ResourceDictionary>
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
-                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
-                            </ResourceDictionary.MergedDictionaries>
-                        </ResourceDictionary>
-                    </Button.Resources>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="ContentCopy"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">복사</TextBlock>
-                    </StackPanel>
-                </Button>
                 <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Rename">
                     <Button.Resources>
                         <ResourceDictionary>
@@ -86,6 +76,8 @@
                         <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">이름바꾸기</TextBlock>
                     </StackPanel>
                 </Button>
+            </WrapPanel>
+            <WrapPanel Grid.Row="1">
                 <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Merge">
                     <Button.Resources>
                         <ResourceDictionary>
@@ -112,6 +104,20 @@
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Vanish"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
                         <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">떠돌이 항목</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="0 0 4 4" Click="Button_ClickAsync" Tag="Auto">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Wand"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">자동</TextBlock>
                     </StackPanel>
                 </Button>
             </WrapPanel>

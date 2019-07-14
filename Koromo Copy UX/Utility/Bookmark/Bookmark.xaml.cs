@@ -192,30 +192,40 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                     }
                 lock (drop_lock)
                     drop_checker = true;
-                var dialog = new BookmarkMessage($"{tt.Item2.Count}개 항목을 {tt.Item1}에서 {(sender as TreeViewItem).Tag}로 옮길까요?");
+
+                var message = $"{tt.Item2.Count}개 항목을 {tt.Item1}에서 {(sender as TreeViewItem).Tag}로 옮길까요?";
+                var iscopy = false;
+                if ((e.AllowedEffects & DragDropEffects.Copy) != 0)
+                {
+                    message = $"{tt.Item2.Count}개 항목을 {tt.Item1}에서 {(sender as TreeViewItem).Tag}로 복사할까요?";
+                    iscopy = true;
+                }
+                var dialog = new BookmarkMessage(message);
                 if ((bool)(await DialogHost.Show(dialog, "BookmarkDialog")))
                 {
-                    // 기존항목들 삭제
-                    foreach (var ll in tt.Item2)
+                    if (iscopy == false)
                     {
-                        List<Tuple<string, BookmarkItemModel>> rl;
-                        if (ll.유형 == "작가")
-                            rl = BookmarkModelManager.Instance.Model.artists;
-                        else if (ll.유형 == "그룹")
-                            rl = BookmarkModelManager.Instance.Model.groups;
-                        else
-                            rl = BookmarkModelManager.Instance.Model.articles;
-
-                        for (int i = 0; i < rl.Count; i++)
+                        // 기존항목들 삭제
+                        foreach (var ll in tt.Item2)
                         {
-                            if (rl[i].Item1 == tt.Item1 && rl[i].Item2.Equals(ll.BIM))
+                            List<Tuple<string, BookmarkItemModel>> rl;
+                            if (ll.유형 == "작가")
+                                rl = BookmarkModelManager.Instance.Model.artists;
+                            else if (ll.유형 == "그룹")
+                                rl = BookmarkModelManager.Instance.Model.groups;
+                            else
+                                rl = BookmarkModelManager.Instance.Model.articles;
+
+                            for (int i = 0; i < rl.Count; i++)
                             {
-                                rl.RemoveAt(i);
-                                break;
+                                if (rl[i].Item1 == tt.Item1 && rl[i].Item2.Equals(ll.BIM))
+                                {
+                                    rl.RemoveAt(i);
+                                    break;
+                                }
                             }
                         }
                     }
-                    BookmarkModelManager.Instance.Save();
 
                     // 추가
                     foreach (var ll in tt.Item2)
@@ -231,6 +241,7 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                         rl.Add(new Tuple<string, BookmarkItemModel>((sender as TreeViewItem).Tag.ToString(), ll.BIM));
                     }
 
+                    BookmarkModelManager.Instance.Save();
                     refresh();
                 }
                 lock (drop_lock)
