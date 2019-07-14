@@ -359,7 +359,7 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                 }
                 else
                 {
-                    var dialog_error = new BookmarkMessageOk($"오류! 부모로 바로 연결되는 상위 분류로는 {(copy ? "복사할" : "옮길")} 수 없어요!");
+                    var dialog_error = new BookmarkMessageOk($"부모로 바로 연결되는 상위 분류로는 {(copy ? "복사할" : "옮길")} 수 없어요!");
                     await DialogHost.Show(dialog_error, "BookmarkDialog");
                     return;
                 }
