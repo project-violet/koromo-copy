@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Interface;
+using Koromo_Copy.JS;
 using Koromo_Copy.LP;
 using Koromo_Copy.LP.Lang;
 using System;
@@ -295,6 +296,11 @@ namespace Koromo_Copy.Console
                 case 3:
                     var x = new HTMLParser();
                     
+                    break;
+
+                case 4:
+                    var p = JSParserGenerator.Parser;
+
                     break;
             }
         }
