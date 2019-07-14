@@ -30,7 +30,6 @@ namespace Koromo_Copy.JS
         private static void create_parser()
         {
             parser = new JSParser().Parser;
-            return;
 
             var gen = new ParserGenerator();
 
@@ -156,8 +155,8 @@ namespace Koromo_Copy.JS
 
             expressionStatement |= expressionSequence + eos; // TODO: 90: {this.notOpenBraceAndNotFunction()}? expressionSequence eos
 
-            ifStatement |= "If" + "(" + expressionSequence + ")" + statement;
-            ifStatement |= "If" + "(" + expressionSequence + ")" + statement + "Else" + statement;
+            ifStatement |= gen.TryCreateNewProduction("If") + "(" + expressionSequence + ")" + statement;
+            ifStatement |= gen.TryCreateNewProduction("If") + "(" + expressionSequence + ")" + statement + "Else" + statement;
 
             expressionSequenceE |= expressionSequence;
             expressionSequenceE |= ParserGenerator.EmptyString;
