@@ -30,6 +30,9 @@ namespace Koromo_Copy.LP
         public List<List<ParserProduction>> sub_productions = new List<List<ParserProduction>>();
         public List<ParserAction> temp_actions = new List<ParserAction>();
         public List<ParserAction> actions = new List<ParserAction>();
+        ParserGenerator parent;
+
+        public ParserProduction(ParserGenerator parent) { this.parent = parent; }
 
         public static ParserProduction operator +(ParserProduction p1, ParserProduction p2)
         {
@@ -43,8 +46,32 @@ namespace Koromo_Copy.LP
             return pp;
         }
 
+        public static ParserProduction operator +(ParserProduction pp, string name)
+        {
+            pp.contents.Add(pp.parent.TryCreateNewProduction(name));
+            return pp;
+        }
+
+        public static ParserProduction operator +(string name, ParserProduction pp)
+        {
+            var p = pp.parent.TryCreateNewProduction(name);
+            p.contents.Add(pp);
+            return p;
+        }
+
         public static ParserProduction operator |(ParserProduction p1, ParserProduction p2)
         {
+            p2.contents.Insert(0, p2);
+            p1.sub_productions.Add(new List<ParserProduction>(p2.contents));
+            p1.actions.AddRange(p2.temp_actions);
+            p2.temp_actions.Clear();
+            p2.contents.Clear();
+            return p1;
+        }
+
+        public static ParserProduction operator |(ParserProduction p1, string pt2)
+        {
+            var p2 = p1.parent.TryCreateNewProduction(pt2);
             p2.contents.Insert(0, p2);
             p1.sub_productions.Add(new List<ParserProduction>(p2.contents));
             p1.actions.AddRange(p2.temp_actions);
@@ -74,6 +101,7 @@ namespace Koromo_Copy.LP
     public class ParserGenerator
     {
         List<ParserProduction> production_rules;
+        Dictionary<string, ParserProduction> production_dict;
         // (production_index, (priority, is_left_associativity?))
         Dictionary<int, Tuple<int, bool>> shift_reduce_conflict_solve;
         // (production_index, (sub_production_index, (priority, is_left_associativity?)))
@@ -81,19 +109,34 @@ namespace Koromo_Copy.LP
 
         public StringBuilder GlobalPrinter = new StringBuilder();
 
-        public readonly static ParserProduction EmptyString = new ParserProduction { index = -2 };
+        public readonly static ParserProduction EmptyString = new ParserProduction(null) { index = -2 };
 
         public ParserGenerator()
         {
             production_rules = new List<ParserProduction>();
-            production_rules.Add(new ParserProduction { index = 0, production_name = "S'" });
+            production_rules.Add(new ParserProduction(this) { index = 0, production_name = "S'" });
+            production_dict = new Dictionary<string, ParserProduction>();
+            production_dict.Add("S'", production_rules[0]);
             shift_reduce_conflict_solve = new Dictionary<int, Tuple<int, bool>>();
             shift_reduce_conflict_solve_with_production_rule = new Dictionary<int, Dictionary<int, Tuple<int, bool>>>();
         }
 
         public ParserProduction CreateNewProduction(string name = "", bool is_terminal = true)
         {
-            var pp = new ParserProduction { index = production_rules.Count, production_name = name, isterminal = is_terminal };
+            var pp = new ParserProduction(this) { index = production_rules.Count, production_name = name, isterminal = is_terminal };
+            if (production_dict.ContainsKey(name))
+                throw new Exception(name + " is already exsits production!");
+            production_dict.Add(name, pp);
+            production_rules.Add(pp);
+            return pp;
+        }
+
+        public ParserProduction TryCreateNewProduction(string name = "", bool is_terminal = true)
+        {
+            if (production_dict.ContainsKey(name))
+                return production_dict[name];
+            var pp = new ParserProduction(this) { index = production_rules.Count, production_name = name, isterminal = is_terminal };
+            production_dict.Add(name, pp);
             production_rules.Add(pp);
             return pp;
         }
@@ -679,6 +722,8 @@ namespace Koromo_Copy.LP
                 goto_table.Add(new Tuple<int, List<Tuple<int, int>>>(p, index_list));
             }
 
+            var occurred_conflict = false;
+
             // ------------- Find Shift-Reduce Conflict ------------
             foreach (var ms in states)
             {
@@ -741,7 +786,10 @@ namespace Koromo_Copy.LP
                         //        p2 = shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1][states[tuple.Item1][0].Item2];
 
                         if (p1 == null || p2 == null)
-                            throw new Exception($"Specify the rules to resolve Shift-Reduce Conflict! Target: {production_rules[tuple.Item1].production_name} {pp.production_name}");
+                        {
+                            occurred_conflict = true;
+                            continue;
+                        }
 
                         if (p1.Item1 < p2.Item1 || (p1.Item1 == p2.Item1 && p1.Item2))
                         {
@@ -781,6 +829,9 @@ namespace Koromo_Copy.LP
                 }
             }
             // -----------------------------------------------------
+
+            if (occurred_conflict)
+                throw new Exception("Specify the rules to resolve Shift-Reduce Conflict!");
 
             number_of_states = states.Count;
 #if true
@@ -1009,6 +1060,8 @@ namespace Koromo_Copy.LP
 #endif
             // -----------------------------------------------------
 
+            var occurred_conflict = false;
+
             // ------------- Find Shift-Reduce Conflict ------------
             foreach (var ms in merged_states)
             {
@@ -1073,7 +1126,10 @@ namespace Koromo_Copy.LP
                         //        p2 = shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1][states[tuple.Item1][0].Item2];
 
                         if (p1 == null || p2 == null)
-                            throw new Exception($"Specify the rules to resolve Shift-Reduce Conflict! Target: {production_rules[tuple.Item1].production_name} {pp.production_name}");
+                        {
+                            occurred_conflict = true;
+                            continue;
+                        }
 
                         if (p1.Item1 < p2.Item1 || (p1.Item1 == p2.Item1 && p1.Item2))
                         {
@@ -1114,6 +1170,9 @@ namespace Koromo_Copy.LP
             }
             // -----------------------------------------------------
 
+            if (occurred_conflict)
+                throw new Exception("Specify the rules to resolve Shift-Reduce Conflict!");
+            
             number_of_states = merged_states.Count;
         }
         #endregion
