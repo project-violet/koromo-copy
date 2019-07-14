@@ -329,6 +329,7 @@
     <Compile Include="Utility\UtilityDelegator.cs" />
     <Compile Include="UX\UXSetting.cs" />
     <Compile Include="Version.cs" />
+    <Compile Include="Wrapper\ydlWrapper.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
