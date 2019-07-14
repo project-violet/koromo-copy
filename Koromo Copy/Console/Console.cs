@@ -424,7 +424,7 @@ namespace Koromo_Copy.Console
                         System.Console.Out.WriteLine($"StackTrace: {e.StackTrace}");
                     }
                 }, ConsoleToken.Token);
-                ConsoleTask.Wait();
+                try { ConsoleTask.Wait(); } catch { }
 
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             }

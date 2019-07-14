@@ -23,7 +23,8 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
     {
         private static readonly Lazy<HitomiAnalysisTrend> instance = new Lazy<HitomiAnalysisTrend>(() => new HitomiAnalysisTrend());
         public static HitomiAnalysisTrend Instance => instance.Value;
-        
+
+        public static readonly int max_cnt = 10;
         public const int interval = 10000;
         
         public List<HitomiAnalysisTrendElement> samples = new List<HitomiAnalysisTrendElement>();
@@ -123,7 +124,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            samples.RemoveRange(10, samples.Count - 10);
+            samples.RemoveRange(max_cnt, samples.Count - max_cnt);
         }
 
         public void UpdateTagKoreanIncrements()
@@ -173,7 +174,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            samples.RemoveRange(10, samples.Count - 10);
+            samples.RemoveRange(max_cnt, samples.Count - max_cnt);
         }
 
         public void UpdateTagKoreanVariation()
@@ -236,7 +237,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
                 //return b.points.Last().Y.CompareTo(a.points.Last().Y);
                 return bb.CompareTo(aa);
                 });
-            samples.RemoveRange(20, samples.Count - 20);
+            samples.RemoveRange(max_cnt * 2, samples.Count - max_cnt * 2);
         }
         #endregion
 
@@ -279,7 +280,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
+            if (samples.Count > max_cnt) samples.RemoveRange(max_cnt, samples.Count - max_cnt);
         }
 
         public void UpdateArtistsKoreanIncremetns(bool specifictag = false, int tag = -1)
@@ -328,7 +329,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
+            if (samples.Count > max_cnt) samples.RemoveRange(max_cnt, samples.Count - max_cnt);
         }
 
         public void UpdateArtistsKoreanVariation()
@@ -389,7 +390,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
                 
                 return bb.CompareTo(aa);
             });
-            samples.RemoveRange(10, samples.Count - 10);
+            samples.RemoveRange(max_cnt, samples.Count - max_cnt);
         }
         #endregion
 
@@ -441,7 +442,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
+            if (samples.Count > max_cnt) samples.RemoveRange(max_cnt, samples.Count - max_cnt);
         }
 
         public void UpdateGroupsKoreanVariation()
@@ -503,7 +504,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
 
                 return bb.CompareTo(aa);
             });
-            samples.RemoveRange(20, samples.Count - 20);
+            samples.RemoveRange(max_cnt * 2, samples.Count - max_cnt * 2);
         }
         #endregion
 
@@ -554,7 +555,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
+            if (samples.Count > max_cnt) samples.RemoveRange(max_cnt, samples.Count - max_cnt);
         }
 
         public void UpdateSeriesKoreanVariation()
@@ -615,7 +616,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
 
                 return bb.CompareTo(aa);
             });
-            samples.RemoveRange(20, samples.Count - 20);
+            samples.RemoveRange(max_cnt * 2, samples.Count - max_cnt * 2);
         }
         #endregion
 
@@ -666,7 +667,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
             }
 
             samples.Sort((a, b) => b.points.Last().Y.CompareTo(a.points.Last().Y));
-            if (samples.Count > 10) samples.RemoveRange(10, samples.Count - 10);
+            if (samples.Count > max_cnt) samples.RemoveRange(max_cnt, samples.Count - max_cnt);
         }
 
         public void UpdateCharactersKoreanVariation()
@@ -727,7 +728,7 @@ namespace Koromo_Copy.Component.Hitomi.Analysis
 
                 return bb.CompareTo(aa);
             });
-            samples.RemoveRange(20, samples.Count - 20);
+            samples.RemoveRange(max_cnt * 2, samples.Count - max_cnt * 2);
         }
         #endregion
     }
