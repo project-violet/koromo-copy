@@ -307,7 +307,7 @@ namespace Koromo_Copy_UX.Utility.Bookmark
                 
                 DataObject data = new DataObject();
                 data.SetData("registries", new Tuple<string, List<BookmarkPageDataGridItemViewModel>>(classify_name,TagList.SelectedItems.Cast<BookmarkPageDataGridItemViewModel>().ToList()));
-                DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+                DragDrop.DoDragDrop(this, data, DragDropEffects.Move | DragDropEffects.Copy);
             }
         }
 
