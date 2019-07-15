@@ -238,58 +238,7 @@ namespace Koromo_Copy_UX
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
         }
-
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            DropShadow.BlurRadius = 8;
-            DropShadow.Color = Colors.Gray;
-        }
-
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            DropShadow.BlurRadius = 10;
-            DropShadow.Color = SettingWrap.Instance.ThemeColor;
-        }
         
-        private void ThreeButton_Click(object sender, RoutedEventArgs e)
-        {
-            var tag = (sender as Button).Tag.ToString();
-            if (tag == "Minimize")
-            {
-                WindowState = WindowState.Minimized;
-            }
-            else if (tag == "Maximize")
-            {
-                if (WindowState != WindowState.Maximized)
-                {
-                    TopBorder.Margin = new Thickness(0,5,0,0);
-                    TopBorder.BorderThickness = new Thickness(0);
-                    WindowState = WindowState.Maximized;
-                    Maximize.Visibility = Visibility.Collapsed;
-                    Restore.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    TopBorder.Margin = new Thickness(10);
-                    TopBorder.BorderThickness = new Thickness(1);
-                    WindowState = WindowState.Normal;
-                    Restore.Visibility = Visibility.Collapsed;
-                    Maximize.Visibility = Visibility.Visible;
-                }
-            }
-            else if (tag == "Close")
-            {
-                Close();
-            }
-            else if (tag == "Console")
-            {
-                Koromo_Copy.Monitor.Instance.ControlEnable = true;
-                Koromo_Copy.Console.Console.Instance.RedirectionAfterLoopInit = () => Domain.UXConsole.Register();
-                Koromo_Copy.Monitor.Instance.Push("Hello!");
-                Koromo_Copy.Monitor.Instance.Start();
-            }
-        }
-
         public void FocusDownload()
         {
             DownloadTab.Focus();
