@@ -583,7 +583,12 @@ namespace Koromo_Copy.JS
             {
                 gen.PushStarts(program);
                 gen.PrintProductionRules();
-                gen.GenerateLALR();
+
+                System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+                gen.GenerateLALR2();
+                var end = sw.ElapsedMilliseconds;
+                sw.Stop();
+                Console.Console.Instance.WriteLine($"{end.ToString("#,#")}");
                 gen.PrintStates();
                 gen.PrintTable();
             }

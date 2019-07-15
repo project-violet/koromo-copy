@@ -305,6 +305,16 @@ namespace Koromo_Copy.LP
             return string.Join(",", list.Select(x => $"({x.Item1},{x.Item2},{x.Item3},({(string.Join("/", x.Item4))}))"));
         }
 
+        private static string l2sl(List<Tuple<int, int, int, HashSet<int>>> h, int kernel_cnt)
+        {
+            var list = new List<Tuple<int, int, int>>();
+            var builder = new StringBuilder();
+            for (int i = 0; i < kernel_cnt; i++)
+                list.Add(new Tuple<int, int, int>(h[i].Item1, h[i].Item2, h[i].Item3));
+            list.Sort();
+            return string.Join(",", list.Select(x => $"({x.Item1},{x.Item2},{x.Item3})"));
+        }
+
         private string i2s(int a, int b, int c)
         {
             return $"{a},{b},{c}";
@@ -848,7 +858,7 @@ namespace Koromo_Copy.LP
 #endif
         }
         #endregion
-
+        
         #region LALR Generator
         /// <summary>
         /// Generate LALR Table
@@ -1205,7 +1215,220 @@ namespace Koromo_Copy.LP
             
             number_of_states = merged_states.Count;
         }
-#endregion
+        #endregion
+
+        #region LALR Generator From LR(0) Items
+        
+        /// <summary>
+        /// http://3e8.org/pub/scheme/doc/parsing/Efficient%20Computation%20of%20LALR(1)%20Look-Ahead%20Sets.pdf
+        /// 
+        /// DEREMER, Frank; PENNELLO, Thomas. Efficient computation of LALR (1) look-ahead sets.
+        /// ACM Transactions on Programming Languages and Systems (TOPLAS), 1982, 4.4: 615-649.
+        /// 
+        /// Dragon Book 4.7.5 - Efficient Construction of LALR Parsing Table
+        /// </summary>
+        public void GenerateLALR2()
+        {
+            // --------------- Delete EmptyString ---------------
+            for (int i = 0; i < production_rules.Count; i++)
+                if (!production_rules[i].isterminal)
+                    for (int j = 0; j < production_rules[i].sub_productions.Count; j++)
+                        if (production_rules[i].sub_productions[j][0].index == EmptyString.index)
+                            production_rules[i].sub_productions[j].Clear();
+            // --------------------------------------------------
+
+            // --------------- Collect FIRST,FOLLOW Set ---------------
+            var FIRST = new List<HashSet<int>>();
+            foreach (var rule in production_rules)
+                FIRST.Add(first_terminals(rule.index));
+
+            var FOLLOW = new List<HashSet<int>>();
+            for (int i = 0; i < production_rules.Count; i++)
+                FOLLOW.Add(new HashSet<int>());
+            FOLLOW[0].Add(-1); // -1: Sentinel
+
+            // 1. B -> a A b, Add FIRST(b) to FOLLOW(A)
+            for (int i = 0; i < production_rules.Count; i++)
+                if (!production_rules[i].isterminal)
+                    foreach (var rule in production_rules[i].sub_productions)
+                        for (int j = 0; j < rule.Count - 1; j++)
+                            if (rule[j].isterminal == false || rule[j + 1].isterminal)
+                                foreach (var r in FIRST[rule[j + 1].index])
+                                    FOLLOW[rule[j].index].Add(r);
+
+            // 2. B -> a A b and empty -> FIRST(b), Add FOLLOW(B) to FOLLOW(A)
+            for (int i = 0; i < production_rules.Count; i++)
+                if (!production_rules[i].isterminal)
+                    foreach (var rule in production_rules[i].sub_productions)
+                        if (rule.Count > 2 && rule[rule.Count - 2].isterminal == false && FIRST[rule.Last().index].Contains(EmptyString.index))
+                            foreach (var r in FOLLOW[i])
+                                FOLLOW[rule[rule.Count - 2].index].Add(r);
+
+            // 3. B -> a A, Add FOLLOW(B) to FOLLOW(A)
+            for (int i = 0; i < production_rules.Count; i++)
+                if (!production_rules[i].isterminal)
+                    foreach (var rule in production_rules[i].sub_productions)
+                        if (rule.Count > 0 && rule.Last().isterminal == false)
+                            foreach (var r in FOLLOW[i])
+                                if (rule.Last().index > 0)
+                                    FOLLOW[rule.Last().index].Add(r);
+
+#if true
+            print_header("FISRT, FOLLOW SETS");
+            print_hs(FIRST, "FIRST");
+            print_hs(FOLLOW, "FOLLOW");
+#endif
+            // --------------------------------------------------------
+
+            // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
+            var states = new Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>>();
+            // (state_specify, state_index)
+            var state_index = new Dictionary<string, int>();
+            // (state_index, (state_item_index, parent_state_index, parent_state_item_index))
+            var pred = new Dictionary<int, List<Tuple<int, int, int>>>();
+            var goto_table = new List<Tuple<int, List<Tuple<int, int>>>>();
+            // (state_index, (shift_what, state_index))
+            shift_info = new Dictionary<int, List<Tuple<int, int>>>();
+            // (state_index, (reduce_what, production_rule_index, sub_productions_pos))
+            reduce_info = new Dictionary<int, List<Tuple<int, int, int>>>();
+            var index_count = 0;
+
+            // -------------------- Put first eater -------------------
+            var first_l = closure(0, 0, 0).Select(x => new Tuple<int,int,int,HashSet<int>>(x.Item1, x.Item2, x.Item3, new HashSet<int>())).ToList();
+            state_index.Add(l2sl(first_l, 1), 0);
+            states.Add(0, first_l);
+            // --------------------------------------------------------
+
+            // Create all LR states
+            // (states)
+            var q = new Queue<int>();
+            q.Enqueue(index_count++);
+            while (q.Count != 0)
+            {
+                var p = q.Dequeue();
+
+                // Collect goto
+                // (state_index, (production_rule_index, sub_productions_pos, dot_position, lookahead))
+                var gotos = new Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>>();
+                // (state_index, kernel_count)
+                var kernel_cnt = new Dictionary<int, int>();
+                // (state_index, (parent_state_item_index))
+                var ppred = new Dictionary<int, List<int>>();
+                //foreach (var transition in states[p])
+                for (int i = 0; i < states[p].Count; i++)
+                {
+                    var transition = states[p][i];
+                    if (production_rules[transition.Item1].sub_productions[transition.Item2].Count > transition.Item3)
+                    {
+                        var pi = production_rules[transition.Item1].sub_productions[transition.Item2][transition.Item3].index;
+                        if (!gotos.ContainsKey(pi))
+                        {
+                            gotos.Add(pi, new List<Tuple<int, int, int, HashSet<int>>>());
+                            kernel_cnt.Add(pi, 0);
+                            ppred.Add(pi, new List<int>());
+                        }
+                        gotos[pi].Add(new Tuple<int, int, int, HashSet<int>>(transition.Item1, transition.Item2, transition.Item3 + 1, new HashSet<int>()));
+                        kernel_cnt[pi] = kernel_cnt[pi] + 1;
+                        ppred[pi].Add(i);
+                    }
+                }
+
+                // Populate closures
+                foreach (var goto_unit in gotos)
+                {
+                    var set = new HashSet<string>();
+                    // Push exists transitions
+                    foreach (var psd in goto_unit.Value)
+                        set.Add(i2s(psd.Item1, psd.Item2, psd.Item3));
+                    // Find all transitions
+                    var new_trans = new List<Tuple<int, int, int, HashSet<int>>>();
+                    foreach (var psd in goto_unit.Value)
+                    {
+                        if (production_rules[psd.Item1].sub_productions[psd.Item2].Count == psd.Item3) continue;
+                        if (production_rules[psd.Item1].sub_productions[psd.Item2][psd.Item3].isterminal) continue;
+                        var first_nt = closure(psd.Item1, psd.Item2, psd.Item3);
+                        foreach (var nts in first_nt)
+                            if (!set.Contains(t2s(nts)))
+                            {
+                                new_trans.Add(new Tuple<int, int, int, HashSet<int>>(nts.Item1, nts.Item2, nts.Item3, new HashSet<int>()));
+                                set.Add(t2s(nts));
+                            }
+                    }
+                    goto_unit.Value.AddRange(new_trans);
+                }
+
+                // Build goto transitions ignore terminal, non-terminal anywhere
+                var index_list = new List<Tuple<int, int>>();
+                foreach (var pp in gotos)
+                {
+                    var kernels = kernel_cnt[pp.Key];
+                    var hash = l2sl(pp.Value, kernels);
+                    if (!state_index.ContainsKey(hash))
+                    {
+                        states.Add(index_count, pp.Value);
+                        state_index.Add(hash, index_count);
+
+                        if (!pred.ContainsKey(index_count))
+                            pred.Add(index_count, new List<Tuple<int, int, int>>());
+                        for (int i = 0; i < kernels; i++)
+                            pred[index_count].Add(new Tuple<int, int, int>(i, p, ppred[pp.Key][i]));
+
+                        q.Enqueue(index_count++);
+                    }
+                    index_list.Add(new Tuple<int, int>(pp.Key, state_index[hash]));
+                }
+
+                goto_table.Add(new Tuple<int, List<Tuple<int, int>>>(p, index_list));
+            }
+
+#if true
+            print_header("LR0 Items");
+            foreach (var s in states)
+                print_states(s.Key, s.Value);
+#endif
+
+            // -------------------- Fill Lookahead -------------------
+
+            // Insert EOP (End of Parsing marker)
+            states[0][0].Item4.Add(-1);
+
+            // Find all reduceable LR(0) states item and fill lookahead
+            foreach (var state in states)
+            {
+                for (int i = 0; i < state.Value.Count; i++)
+                {
+                    var lrs = state.Value[i];
+                    if (production_rules[lrs.Item1].sub_productions[lrs.Item2].Count == lrs.Item3)
+                    {
+                        fill_lookahead(states, pred, state.Key, i);
+                    }
+                }
+            }
+
+            // -------------------------------------------------------
+
+#if true
+            print_header("LALR STATES");
+            foreach (var s in states)
+                print_states(s.Key, s.Value);
+#endif
+
+            var occurred_conflict = false;
+
+            // ------------- Find Shift-Reduce Conflict ------------
+            foreach (var ms in states)
+            {
+                
+            }
+            // -----------------------------------------------------
+
+            if (occurred_conflict)
+                throw new Exception("Specify the rules to resolve Shift-Reduce Conflict!");
+            
+            number_of_states = states.Count;
+        }
+
+        #endregion
 
         public void PrintProductionRules()
         {
@@ -1410,13 +1633,15 @@ namespace Koromo_Copy.LP
                 for (int i = 0; i < production_rules[t.Item1].sub_productions.Count; i++)
                 {
                     var sub_pr = production_rules[t.Item1].sub_productions[i];
-                    if (sub_pr[0].isterminal == false)
+                    if (sub_pr.Count > 0 && sub_pr[0].isterminal == false)
                         for (int j = 0; j < production_rules[sub_pr[0].index].sub_productions.Count; j++)
                             first_q.Enqueue(new Tuple<int, int>(sub_pr[0].index, j));
                 }
             }
             return first_l;
         }
+
+        #region Closure with Lookahead
 
         /// <summary>
         /// Get lookahead states item with first item's closure
@@ -1534,6 +1759,149 @@ namespace Koromo_Copy.LP
 
             return states;
         }
+
+        #endregion
+
+        #region Closure
+
+        /// <summary>
+        /// Get states item with first item's closure
+        /// This function is used in closure function. 
+        /// -1: Sentinel lookahead
+        /// </summary>
+        /// <param name="production_rule_index"></param>
+        /// <returns></returns>
+        private List<Tuple<int, int, int>> closure_first(int production_rule_index, int sub_production, int sub_production_index)
+        {
+            // (production_rule_index, sub_productions_pos, dot_position, (lookahead))
+            var states = new List<Tuple<int, int, int>>();
+            states.Add(new Tuple<int, int, int>(production_rule_index, sub_production, sub_production_index));
+            if (production_rules[production_rule_index].sub_productions[sub_production].Count > sub_production_index)
+            {
+                if (!production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].isterminal)
+                {
+                    var index_populate = production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].index;
+                    for (int i = 0; i < production_rules[index_populate].sub_productions.Count; i++)
+                        states.Add(new Tuple<int, int, int>(index_populate, i, 0));
+                }
+            }
+            return states;
+        }
+
+        /// <summary>
+        /// Get CLOSURE items (Build specific states completely)
+        /// </summary>
+        /// <param name="production_rule_index"></param>
+        /// <param name="sub_production"></param>
+        /// <param name="sub_production_index"></param>
+        /// <param name="pred"></param>
+        /// <returns></returns>
+        private List<Tuple<int, int, int>> closure(int production_rule_index, int sub_production, int sub_production_index)
+        {
+            // (production_rule_index, sub_productions_pos, dot_position, (lookahead))
+            var states = new List<Tuple<int, int, int>>();
+            // (production_rule_index + sub_productions_pos + dot_position), (states_index)
+            var states_prefix = new Dictionary<string, int>();
+
+            var q = new Queue<List<Tuple<int, int, int>>>();
+            q.Enqueue(closure_first(production_rule_index, sub_production, sub_production_index));
+            while (q.Count != 0)
+            {
+                var ll = q.Dequeue();
+                foreach (var e in ll)
+                {
+                    var ii = i2s(e.Item1, e.Item2, e.Item3);
+                    if (!states_prefix.ContainsKey(ii))
+                    {
+                        states_prefix.Add(ii, states.Count);
+                        states.Add(e);
+                        q.Enqueue(closure_first(e.Item1, e.Item2, e.Item3));
+                    }
+                }
+            }
+
+            // (production_rule_index + sub_productions_pos + dot_position), (states_index)
+            var states_prefix2 = new Dictionary<string, int>();
+            var states_count = 0;
+            bool change = false;
+
+            do
+            {
+                change = false;
+                q.Enqueue(closure_first(production_rule_index, sub_production, sub_production_index));
+                while (q.Count != 0)
+                {
+                    var ll = q.Dequeue();
+                    foreach (var e in ll)
+                    {
+                        var ii = i2s(e.Item1, e.Item2, e.Item3);
+                        if (!states_prefix2.ContainsKey(ii))
+                        {
+                            states_prefix2.Add(ii, states_count);
+                            q.Enqueue(closure_first(e.Item1, e.Item2, e.Item3));
+                            states_count++;
+                        }
+                    }
+                }
+            } while (change);
+
+            return states;
+        }
+
+        #endregion
+
+        #region Lookahead
+
+        /// <summary>
+        /// Get FIRST items of production rule item
+        /// </summary>
+        /// <param name="production_rule_index"></param>
+        /// <param name="sub_production"></param>
+        /// <param name="sub_production_index"></param>
+        /// <returns></returns>
+        private HashSet<int> first_terminals(int production_rule_index, int sub_production, int sub_production_index, HashSet<int> lookahead)
+        {
+            // If the handle points last of production rule item,
+            // A -> abc. [~]
+            // then return only lookaheads.
+            if (production_rules[production_rule_index].sub_productions[sub_production].Count == sub_production_index)
+                return lookahead;
+
+            var result = new HashSet<int>();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Fill lookahead recursive.
+        /// </summary>
+        /// <param name="states"></param>
+        /// <param name="pred"></param>
+        /// <param name="state"></param>
+        /// <param name="state_index"></param>
+        /// <returns></returns>
+        private HashSet<int> fill_lookahead(
+            // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
+            Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>> states,
+            // (state_index, (state_item_index, parent_state_index, parent_state_item_index))
+            Dictionary<int, List<Tuple<int, int, int>>> pred,
+            int state, int state_index)
+        {
+            var result = new HashSet<int>();
+
+            // Find the state that the handle is declared.
+            // A -> abc.
+            // A -> .abc
+            var trace = new List<Tuple<int, int>>();
+
+
+            var tar = states[state][state_index];
+
+
+            return null;
+        }
+
+        #endregion
 
         private ParserProduction get_first_on_right_terminal(ParserProduction pp, int sub_production)
         {
