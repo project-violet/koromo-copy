@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.props" Condition="Exists('packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.props')" />
   <Import Project="packages\Costura.Fody.3.1.6\build\Costura.Fody.props" Condition="Exists('packages\Costura.Fody.3.1.6\build\Costura.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -38,6 +39,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849, processorArchitecture=MSIL">
+      <HintPath>packages\Antlr4.Runtime.4.6.6\lib\net45\Antlr4.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Costura, Version=3.1.6.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>packages\Costura.Fody.3.1.6\lib\net46\Costura.dll</HintPath>
     </Reference>
@@ -198,6 +202,9 @@
     <Compile Include="Component\Hitomi\HitomiSetting.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanSeries.cs" />
     <Compile Include="Component\Hitomi\Translate\KoreanTag.cs" />
+    <Compile Include="JS\ANTLR\JavaScriptBaseLexer.cs" />
+    <Compile Include="JS\ANTLR\JavaScriptBaseParser.cs" />
+    <Compile Include="JS\ANTLR\JSParser.cs" />
     <Compile Include="JS\JSInterpreter.cs" />
     <Compile Include="JS\JSParserGenerator.cs" />
     <Compile Include="JS\JSParser.cs" />
@@ -379,6 +386,14 @@
     <EmbeddedResource Include="Utility\StringTools.resx">
       <DependentUpon>StringTools.cs</DependentUpon>
     </EmbeddedResource>
+    <Antlr4 Include="JS\ANTLR\JavaScriptLexer.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>Koromo_Copy.JS.ANTLR</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="JS\ANTLR\JavaScriptParser.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>Koromo_Copy.JS.ANTLR</CustomToolNamespace>
+    </Antlr4>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -403,6 +418,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\Costura.Fody.3.1.6\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Costura.Fody.3.1.6\build\Costura.Fody.props'))" />
     <Error Condition="!Exists('packages\Fody.3.3.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.3.3.1\build\Fody.targets'))" />
+    <Error Condition="!Exists('packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.props'))" />
+    <Error Condition="!Exists('packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.targets'))" />
   </Target>
   <Import Project="packages\Fody.3.3.1\build\Fody.targets" Condition="Exists('packages\Fody.3.3.1\build\Fody.targets')" />
+  <Import Project="packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.targets" Condition="Exists('packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.targets')" />
 </Project>
