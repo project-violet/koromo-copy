@@ -1285,7 +1285,9 @@ namespace Koromo_Copy.LP
             // (state_specify, state_index)
             var state_index = new Dictionary<string, int>();
             // (state_index, (state_item_index, parent_state_index, parent_state_item_index))
-            var pred = new Dictionary<int, List<Tuple<int, int, int>>>();
+            //var pred = new Dictionary<int, List<Tuple<int, int, int>>>();
+            // (state_index, (state_item_index, (handle_position, parent_state_index, parent_state_item_index)))
+            var pred = new Dictionary<int, Dictionary<int, List<Tuple<int, int, int>>>>();
             var goto_table = new List<Tuple<int, List<Tuple<int, int>>>>();
             // (state_index, (shift_what, state_index))
             shift_info = new Dictionary<int, List<Tuple<int, int>>>();
@@ -1312,8 +1314,8 @@ namespace Koromo_Copy.LP
                 var gotos = new Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>>();
                 // (state_index, kernel_count)
                 var kernel_cnt = new Dictionary<int, int>();
-                // (state_index, (parent_state_item_index))
-                var ppred = new Dictionary<int, List<int>>();
+                // (state_index, (handle_position, parent_state_item_index))
+                var ppred = new Dictionary<int, List<Tuple<int, int>>>();
                 //foreach (var transition in states[p])
                 for (int i = 0; i < states[p].Count; i++)
                 {
@@ -1325,11 +1327,11 @@ namespace Koromo_Copy.LP
                         {
                             gotos.Add(pi, new List<Tuple<int, int, int, HashSet<int>>>());
                             kernel_cnt.Add(pi, 0);
-                            ppred.Add(pi, new List<int>());
+                            ppred.Add(pi, new List<Tuple<int, int>>());
                         }
                         gotos[pi].Add(new Tuple<int, int, int, HashSet<int>>(transition.Item1, transition.Item2, transition.Item3 + 1, new HashSet<int>()));
                         kernel_cnt[pi] = kernel_cnt[pi] + 1;
-                        ppred[pi].Add(i);
+                        ppred[pi].Add(new Tuple<int, int>(transition.Item3, i));
                     }
                 }
 
@@ -1357,6 +1359,40 @@ namespace Koromo_Copy.LP
                     goto_unit.Value.AddRange(new_trans);
                 }
 
+                // Populate empty-string closure
+                //foreach (var goto_unit in gotos)
+                //{
+                //    var set = new HashSet<string>();
+                //    // Push exists transitions
+                //    foreach (var psd in goto_unit.Value)
+                //        set.Add(t2s(psd));
+                //    // Find all transitions
+                //    var new_trans = new List<Tuple<int, int, int, HashSet<int>>>();
+                //    var trans_dic = new Dictionary<string, int>();
+                //    foreach (var psd in goto_unit.Value)
+                //    {
+                //        if (production_rules[psd.Item1].sub_productions[psd.Item2].Count == psd.Item3) continue;
+                //        if (production_rules[psd.Item1].sub_productions[psd.Item2][psd.Item3].isterminal) continue;
+                //        var first_nt = first_with_lookahead(psd.Item1, psd.Item2, psd.Item3, psd.Item4);
+                //        foreach (var nts in first_nt)
+                //            if (!set.Contains(t2s(nts)))
+                //            {
+                //                var ts = t2s(new Tuple<int, int, int>(nts.Item1, nts.Item2, nts.Item3));
+                //                if (trans_dic.ContainsKey(ts))
+                //                {
+                //                    nts.Item4.ToList().ForEach(x => new_trans[trans_dic[ts]].Item4.Add(x));
+                //                }
+                //                else
+                //                {
+                //                    trans_dic.Add(ts, new_trans.Count);
+                //                    new_trans.Add(nts);
+                //                    set.Add(t2s(nts));
+                //                }
+                //            }
+                //    }
+                //    goto_unit.Value.AddRange(new_trans);
+                //}
+
                 // Build goto transitions ignore terminal, non-terminal anywhere
                 var index_list = new List<Tuple<int, int>>();
                 foreach (var pp in gotos)
@@ -1369,11 +1405,27 @@ namespace Koromo_Copy.LP
                         state_index.Add(hash, index_count);
 
                         if (!pred.ContainsKey(index_count))
-                            pred.Add(index_count, new List<Tuple<int, int, int>>());
+                            pred.Add(index_count, new Dictionary<int, List<Tuple<int, int, int>>>());
                         for (int i = 0; i < kernels; i++)
-                            pred[index_count].Add(new Tuple<int, int, int>(i, p, ppred[pp.Key][i]));
+                        {
+                            if (!pred[index_count].ContainsKey(i))
+                                pred[index_count].Add(i, new List<Tuple<int, int, int>>());
+                            pred[index_count][i].Add(new Tuple<int, int, int>(ppred[pp.Key][i].Item1, p, ppred[pp.Key][i].Item2));
+                        }
 
                         q.Enqueue(index_count++);
+                    }
+                    else
+                    {
+                        var index = state_index[hash];
+                        if (!pred.ContainsKey(index))
+                            pred.Add(index, new Dictionary<int, List<Tuple<int, int, int>>>());
+                        for (int i = 0; i < kernels; i++)
+                        {
+                            if (!pred[index].ContainsKey(i))
+                                pred[index].Add(i, new List<Tuple<int, int, int>>());
+                            pred[index][i].Add(new Tuple<int, int, int>(ppred[pp.Key][i].Item1, p, ppred[pp.Key][i].Item2));
+                        }
                     }
                     index_list.Add(new Tuple<int, int>(pp.Key, state_index[hash]));
                 }
@@ -1381,7 +1433,7 @@ namespace Koromo_Copy.LP
                 goto_table.Add(new Tuple<int, List<Tuple<int, int>>>(p, index_list));
             }
 
-#if true
+#if false
             print_header("LR0 Items");
             foreach (var s in states)
                 print_states(s.Key, s.Value);
@@ -1400,7 +1452,7 @@ namespace Koromo_Copy.LP
                     var lrs = state.Value[i];
                     if (production_rules[lrs.Item1].sub_productions[lrs.Item2].Count == lrs.Item3)
                     {
-                        fill_lookahead(states, pred, state.Key, i);
+                        fill_lookahead(FIRST, states, pred, state.Key, i);
                     }
                 }
             }
@@ -1590,7 +1642,7 @@ namespace Koromo_Copy.LP
             var visit = new List<bool>();
             visit.AddRange(Enumerable.Repeat(false, production_rules.Count));
             q.Enqueue(index);
-
+            
             while (q.Count != 0)
             {
                 var p = q.Dequeue();
@@ -1600,7 +1652,18 @@ namespace Koromo_Copy.LP
                 if (p < 0 || production_rules[p].isterminal)
                     result.Add(p);
                 else
-                    production_rules[p].sub_productions.Where(x => x.Count > 0).ToList().ForEach(y => q.Enqueue(y[0].index));
+                {
+                    //production_rules[p].sub_productions.Where(x => x.Count > 0).ToList().ForEach(y => q.Enqueue(y[0].index));
+                    foreach (var pp in production_rules[p].sub_productions.Where(x => x.Count > 0))
+                    {
+                        foreach (var ppp in pp)
+                        {
+                            q.Enqueue(ppp.index);
+                            if (ppp.sub_productions.All(x => x.Count != 0))
+                                break;
+                        }
+                    }
+                }
             }
 
             return result;
@@ -1859,7 +1922,7 @@ namespace Koromo_Copy.LP
         /// <param name="sub_production"></param>
         /// <param name="sub_production_index"></param>
         /// <returns></returns>
-        private HashSet<int> first_terminals(int production_rule_index, int sub_production, int sub_production_index, HashSet<int> lookahead)
+        private HashSet<int> first_terminals(List<HashSet<int>> first, int production_rule_index, int sub_production, int sub_production_index, HashSet<int> lookahead)
         {
             // If the handle points last of production rule item,
             // A -> abc. [~]
@@ -1867,7 +1930,73 @@ namespace Koromo_Copy.LP
             if (production_rules[production_rule_index].sub_productions[sub_production].Count == sub_production_index)
                 return lookahead;
 
+            // Check is terminal
+            // A -> aB.c [~]  (a,c=terminal, B=non-terminal)
+            // If 'c' is terminal, then just return 'c'.
+            if (production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].isterminal)
+                return new HashSet<int> { production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].index };
+
+            // Get FIRST of Non-terminal
+            // A -> a.Bc [~]  (a,c=terminal, B=non-terminal)
+            // If 'B' is non-terminal, then get FIRST set of non-terminal 'B'.
+            var result = first[production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].index];
+
+            // Check empty-string
+            // A -> a.BC [~]  (a=terminal, B,C=non-terminal)
+            // If epsillon contains in FIRST(BC) then add lookahead to result.
+            var fully_empty_string = true;
+            for (int i = sub_production_index; i < production_rules[production_rule_index].sub_productions[sub_production].Count; i++)
+            {
+                var index = production_rules[production_rule_index].sub_productions[sub_production][i];
+                if (index.isterminal || index.sub_productions.All(x => x.Count != 0))
+                {
+                    fully_empty_string = false;
+                    break;
+                }
+                
+                if (i != sub_production_index)
+                    foreach (var lk in first[index.index])
+                        result.Add(lk);
+            }
+
+            if (fully_empty_string)
+                foreach (var lk in lookahead)
+                    result.Add(lk);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Calculate lookahead from specific non-terminal symbol on LR(0) states
+        /// </summary>
+        /// <param name="states"></param>
+        /// <param name="state"></param>
+        /// <param name="production_rule_index"></param>
+        /// <param name="lookahead"></param>
+        /// <returns></returns>
+        private HashSet<int> first_from_nonterminal(
+            List<HashSet<int>> first,
+            // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
+            Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>> states, 
+            int state_index, int /* non-terminal */ production_rule_index)
+        {
             var result = new HashSet<int>();
+
+            if (production_rule_index == 0)
+                result.Add(-1);
+
+            foreach (var state in states[state_index])
+            {
+                // If another item handle points input non-terminal symbol,
+                if (production_rules[state.Item1].sub_productions[state.Item2].Count != 0 &&
+                    production_rules[state.Item1].sub_productions[state.Item2].Count > state.Item3 &&
+                    production_rules[state.Item1].sub_productions[state.Item2][state.Item3].index == production_rule_index)
+                {
+                    var ft = first_terminals(first, state.Item1, state.Item2, state.Item3 + 1, state.Item4);
+                    foreach (var lookahead in ft)
+                        result.Add(lookahead);
+                }
+            }
 
             return result;
         }
@@ -1881,24 +2010,94 @@ namespace Koromo_Copy.LP
         /// <param name="state_index"></param>
         /// <returns></returns>
         private HashSet<int> fill_lookahead(
+            List<HashSet<int>> first,
             // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
             Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>> states,
-            // (state_index, (state_item_index, parent_state_index, parent_state_item_index))
-            Dictionary<int, List<Tuple<int, int, int>>> pred,
-            int state, int state_index)
+            // (state_index, (state_item_index, (handle_position, parent_state_index, parent_state_item_index)))
+            Dictionary<int, Dictionary<int, List<Tuple<int, int, int>>>> pred,
+            int state, int state_index, int depth = int.MaxValue)
         {
+            if (state == 6)
+                ;
             var result = new HashSet<int>();
 
             // Find the state that the handle is declared.
+            // If blew is declared,
             // A -> abc.
+            // then trace location of handle definition.
+            // A -> ab.c
+            // A -> a.bc
             // A -> .abc
-            var trace = new List<Tuple<int, int>>();
+            var trace = new Dictionary<int, List<Tuple<int, int>>>();
+            var visit = new HashSet<string>();
 
+            //int t_state = state;
+            //int t_state_index = state_index;
 
-            var tar = states[state][state_index];
+            //var queue = new Queue<Tuple<int, int, int>>();
+            //queue.Enqueue(new Tuple<int, int, int>(int.MaxValue, state, state_index));
+            //while (queue.Count != 0)
+            //{
+            //    var fr = queue.Dequeue();
+            //    if (!trace.ContainsKey(fr.Item1))
+            //        trace.Add(fr.Item1, new List<Tuple<int, int>>());
+            //    trace[fr.Item1].Add(new Tuple<int, int>(fr.Item2, fr.Item3));
+            //
+            //    if (fr.Item1 == 0 || !pred[fr.Item2].ContainsKey(fr.Item3))
+            //        continue;
+            //
+            //    //int tt_state = pred[t_state][t_state_index][0].Item1;
+            //    //t_state_index = pred[t_state][t_state_index][0].Item2;
+            //    //t_state = tt_state;
+            //
+            //    foreach (var pp in pred[fr.Item2][fr.Item3])
+            //        queue.Enqueue(new Tuple<int, int, int>(pp.Item1, pp.Item2, pp.Item3));
+            //}
 
+            var lookaheads = new HashSet<int>();
 
-            return null;
+            if (state == 0 || depth == 0 || !pred[state].ContainsKey(state_index))
+            {
+                var my_lookahead = first_from_nonterminal(first, states, state, states[state][state_index].Item1);
+                foreach (var lk in my_lookahead)
+                    lookaheads.Add(lk);
+
+                foreach (var item in states[state])
+                    if (item.Item1 == states[state][state_index].Item1)
+                        foreach (var lk in lookaheads)
+                            item.Item4.Add(lk);
+            }
+            else
+            {
+                foreach (var tracing in pred[state][state_index])
+                {
+                    var lookahead = fill_lookahead(first, states, pred, tracing.Item2, tracing.Item3, tracing.Item1);
+
+                    foreach (var lk in lookahead)
+                        lookaheads.Add(lk);
+                }
+            }
+
+            foreach (var lk in lookaheads)
+                states[state][state_index].Item4.Add(lk);
+
+            //foreach (var tracing in trace)
+            //{
+            //    var lookahead = first_from_nonterminal(first, states, tracing.Item1, states[tracing.Item1][tracing.Item2].Item1);
+            //    
+            //    foreach (var lk in lookahead)
+            //        lookaheads.Add(lk);
+            //
+            //    foreach (var item in states[tracing.Item1])
+            //        if (item.Item1 == states[tracing.Item1][tracing.Item2].Item1)
+            //            foreach (var lk in lookaheads)
+            //                item.Item4.Add(lk);
+            //}
+
+            //var ptrace = trace.ToList();
+            //ptrace.Sort((x, y) => x.Key)
+
+            return lookaheads;
         }
 
         #endregion
