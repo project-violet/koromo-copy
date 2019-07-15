@@ -95,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\DisjointSet.cs" />
     <Compile Include="Algorithm\Heap.cs" />
     <Compile Include="Component\DC\DCArticle.cs" />
     <Compile Include="Component\DC\DCCommon.cs" />
