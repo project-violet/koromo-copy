@@ -1180,7 +1180,7 @@ namespace Koromo_Copy.LP
                 FIRST.Add(first_terminals(rule.index));
 
             var FOLLOW = follow_terminals(FIRST);
-
+            
 #if true
             print_header("FISRT, FOLLOW SETS");
             print_hs(FIRST, "FIRST");
@@ -1188,6 +1188,35 @@ namespace Koromo_Copy.LP
 #endif
             // --------------------------------------------------------
 
+            // --------------- Determine exists epsillon ---------------
+            var include_epsillon = Enumerable.Repeat(false, production_rules.Count).ToList();
+
+            for (int i = 0; i < production_rules.Count; i++)
+                if (!production_rules[i].isterminal)
+                    if (production_rules[i].sub_productions.Any(x => x.Count == 0))
+                        include_epsillon[i] = true;
+
+            // Find productions contained epsillon.
+            while (true)
+            {
+                var change = false;
+
+                for(int i = 0; i < production_rules.Count; i++)
+                    for (int j = 0; j < production_rules[i].sub_productions.Count; j++)
+                        if (production_rules[i].sub_productions[j].All(x => include_epsillon[x.index]))
+                        {
+                            if (include_epsillon[i] == false)
+                            {
+                                include_epsillon[i] = true;
+                                change = true;
+                            }
+                            break;
+                        }
+
+                if (!change) break;
+            }
+            // ---------------------------------------------------------
+            
             // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
             var states = new Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>>();
             // (state_specify, state_index)
@@ -1331,7 +1360,7 @@ namespace Koromo_Copy.LP
                     var lrs = state.Value[i];
                     if (production_rules[lrs.Item1].sub_productions[lrs.Item2].Count == lrs.Item3)
                     {
-                        fill_lookahead(FIRST, states, pred, state.Key, i);
+                        fill_lookahead(FIRST, include_epsillon, states, pred, state.Key, i);
                     }
                 }
             }
@@ -1660,7 +1689,6 @@ namespace Koromo_Copy.LP
                     result.Add(p);
                 else
                 {
-                    //production_rules[p].sub_productions.Where(x => x.Count > 0).ToList().ForEach(y => q.Enqueue(y[0].index));
                     foreach (var pp in production_rules[p].sub_productions.Where(x => x.Count > 0))
                     {
                         foreach (var ppp in pp)
@@ -1675,7 +1703,7 @@ namespace Koromo_Copy.LP
 
             return result;
         }
-
+        
         /// <summary>
         /// Calculate FIRST only Non-Terminals
         /// </summary>
@@ -1978,7 +2006,9 @@ namespace Koromo_Copy.LP
         /// <param name="sub_production"></param>
         /// <param name="sub_production_index"></param>
         /// <returns></returns>
-        private HashSet<int> first_terminals(List<HashSet<int>> first, int production_rule_index, int sub_production, int sub_production_index, HashSet<int> lookahead)
+        private HashSet<int> first_terminals(
+            List<HashSet<int>> first, List<bool> include_epsillon,
+            int production_rule_index, int sub_production, int sub_production_index, HashSet<int> lookahead)
         {
             // 1. If the handle points last of production rule item,
             // A -> abc. [~]
@@ -2004,7 +2034,7 @@ namespace Koromo_Copy.LP
             for (int i = sub_production_index; i < production_rules[production_rule_index].sub_productions[sub_production].Count; i++)
             {
                 var index = production_rules[production_rule_index].sub_productions[sub_production][i];
-                if (index.isterminal || index.sub_productions.All(x => x.Count != 0))
+                if (index.isterminal || !include_epsillon[index.index])
                 {
                     fully_empty_string = false;
                     break;
@@ -2014,7 +2044,10 @@ namespace Koromo_Copy.LP
                     foreach (var lk in first[index.index])
                         result.Add(lk);
             }
-            
+
+            // 5. If all of after symbol contains epsillon
+            // A -> a.BCD [~]  (a=terminal, B,C,D=non-terminal, B,C,D contains epsillon)
+            // Then insert FOLLOW(A) or lookahead to FIRST(BCD)
             if (fully_empty_string)
                 foreach (var lk in lookahead)
                     result.Add(lk);
@@ -2031,7 +2064,7 @@ namespace Koromo_Copy.LP
         /// <param name="lookahead"></param>
         /// <returns></returns>
         private HashSet<int> first_from_nonterminal(
-            List<HashSet<int>> first,
+            List<HashSet<int>> first, List<bool> include_epsillon,
             // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
             Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>> states, 
             int state_index, int /* non-terminal */ production_rule_index)
@@ -2048,7 +2081,7 @@ namespace Koromo_Copy.LP
                     production_rules[state.Item1].sub_productions[state.Item2].Count > state.Item3 &&
                     production_rules[state.Item1].sub_productions[state.Item2][state.Item3].index == production_rule_index)
                 {
-                    var ft = first_terminals(first, state.Item1, state.Item2, state.Item3 + 1, state.Item4);
+                    var ft = first_terminals(first, include_epsillon, state.Item1, state.Item2, state.Item3 + 1, state.Item4);
                     foreach (var lookahead in ft)
                         result.Add(lookahead);
                 }
@@ -2066,7 +2099,7 @@ namespace Koromo_Copy.LP
         /// <param name="state_index"></param>
         /// <returns></returns>
         private HashSet<int> fill_lookahead(
-            List<HashSet<int>> first,
+            List<HashSet<int>> first, List<bool> include_epsillon,
             // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
             Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>> states,
             // (state_index, (state_item_index, (handle_position, parent_state_index, parent_state_item_index)))
@@ -2077,7 +2110,7 @@ namespace Koromo_Copy.LP
 
             if (state == 0 || depth == 0 || !pred[state].ContainsKey(state_index))
             {
-                var my_lookahead = first_from_nonterminal(first, states, state, states[state][state_index].Item1);
+                var my_lookahead = first_from_nonterminal(first, include_epsillon, states, state, states[state][state_index].Item1);
                 foreach (var lk in my_lookahead)
                     lookaheads.Add(lk);
 
@@ -2091,7 +2124,7 @@ namespace Koromo_Copy.LP
             {
                 foreach (var tracing in pred[state][state_index])
                 {
-                    var lookahead = fill_lookahead(first, states, pred, tracing.Item2, tracing.Item3, tracing.Item1);
+                    var lookahead = fill_lookahead(first, include_epsillon, states, pred, tracing.Item2, tracing.Item3, tracing.Item1);
 
                     foreach (var lk in lookahead)
                         lookaheads.Add(lk);
@@ -2100,9 +2133,8 @@ namespace Koromo_Copy.LP
 
             foreach (var lk in lookaheads)
                 states[state][state_index].Item4.Add(lk);
-
-            //propagate_lookahead(states, state, state_index, states[state][state_index].Item4);
-            propagate_lookahead(states, state, state_index, first_terminals(first, 
+            
+            propagate_lookahead(states, state, state_index, first_terminals(first, include_epsillon,
                 states[state][state_index].Item1, states[state][state_index].Item2, states[state][state_index].Item3+1, states[state][state_index].Item4));
 
             return lookaheads;
