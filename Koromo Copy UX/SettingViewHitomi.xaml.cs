@@ -79,7 +79,8 @@ namespace Koromo_Copy_UX
                 "{type}",
                 "{date}",
                 "{series}",
-                "{search}"
+                "{search}",
+                "{upload}",
             };
             var regex = Regex.Matches(value.ToString(), @"(\{.*?\})");
             if (!regex.OfType<Match>().All(x => valid_tokens.Contains(x.Value.ToLower())))
