@@ -14,6 +14,8 @@ using System.Text;
 
 namespace Koromo_Copy.LP
 {
+    #region Parser Production
+
     public class ParserAction
     {
         public Action<ParsingTree.ParsingTreeNode> SemanticAction;
@@ -95,6 +97,8 @@ namespace Koromo_Copy.LP
 #endif
     }
 
+    #endregion
+
     /// <summary>
     /// LR Parser Generator
     /// </summary>
@@ -120,6 +124,8 @@ namespace Koromo_Copy.LP
             shift_reduce_conflict_solve = new Dictionary<int, Tuple<int, bool>>();
             shift_reduce_conflict_solve_with_production_rule = new Dictionary<int, Dictionary<int, Tuple<int, bool>>>();
         }
+
+        #region Parser Generating Helper
 
         public ParserProduction CreateNewProduction(string name = "", bool is_terminal = true)
         {
@@ -174,6 +180,10 @@ namespace Koromo_Copy.LP
                 shift_reduce_conflict_solve_with_production_rule[ppi.Item1.index].Add(ppi.Item2, new Tuple<int, bool>(priority, left));
             }
         }
+
+        #endregion
+
+        #region Simple ParserDescription Parser
 
         /// <summary>
         /// 문자열로부터 ParserGenerator를 가져옵니다.
@@ -269,9 +279,16 @@ namespace Koromo_Copy.LP
             return gen;
         }
 
+        #endregion
+
         #region String Hash Function
         // 원래 해시가 아니라 set로 구현해야하는게 일반적임
         // 집합끼리의 비교연산, 일치여부 교집합을 구해 좀 더 최적화가능하지만 귀찮으니 string-hash를 쓰도록한다.
+        //
+        // # 2019-07-15
+        // 확인결과 별도의 클래스를 만들어 set를 관리하는 것보다 string-hash가 더 빠르다
+        // JSParserGenetor의 경우 set의 경우 13초, string-hash의 경우 11초로 string-hash가 더 빠른 속도를 내었다.
+        // set은 dictionary에서사용하는 GetHashCode 및 Equals 함수와, state의 kernel을 고려하여 만든 클래스였다.
 
         private string t2s(Tuple<int, int, int> t)
         {
@@ -320,6 +337,8 @@ namespace Koromo_Copy.LP
             return $"{a},{b},{c}";
         }
         #endregion
+
+        #region Debug Printer
 
         private void print_hs(List<HashSet<int>> lhs, string prefix)
         {
@@ -395,6 +414,8 @@ namespace Koromo_Copy.LP
             GlobalPrinter.Append(builder.ToString());
         }
 
+        #endregion
+
         int number_of_states = -1;
         Dictionary<int, List<Tuple<int, int>>> shift_info;
         Dictionary<int, List<Tuple<int, int, int>>> reduce_info;
@@ -430,36 +451,7 @@ namespace Koromo_Copy.LP
             foreach (var rule in production_rules)
                 FIRST.Add(first_terminals(rule.index));
 
-            var FOLLOW = new List<HashSet<int>>();
-            for (int i = 0; i < production_rules.Count; i++)
-                FOLLOW.Add(new HashSet<int>());
-            FOLLOW[0].Add(-1); // -1: Sentinel
-
-            // 1. B -> a A b, Add FIRST(b) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        for (int j = 0; j < rule.Count - 1; j++)
-                            if (rule[j].isterminal == false || rule[j + 1].isterminal)
-                                foreach (var r in FIRST[rule[j + 1].index])
-                                    FOLLOW[rule[j].index].Add(r);
-
-            // 2. B -> a A b and empty -> FIRST(b), Add FOLLOW(B) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        if (rule.Count > 2 && rule[rule.Count - 2].isterminal == false && FIRST[rule.Last().index].Contains(EmptyString.index))
-                            foreach (var r in FOLLOW[i])
-                                FOLLOW[rule[rule.Count - 2].index].Add(r);
-
-            // 3. B -> a A, Add FOLLOW(B) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        if (rule.Last().isterminal == false)
-                            foreach (var r in FOLLOW[i])
-                                if (rule.Last().index > 0)
-                                    FOLLOW[rule.Last().index].Add(r);
+            var FOLLOW = follow_terminals(FIRST);
 
 #if true
             print_header("FISRT, FOLLOW SETS");
@@ -563,6 +555,9 @@ namespace Koromo_Copy.LP
         #region LR(1) Generator
         /// <summary>
         /// Generate LR(1) Table
+        /// 
+        /// There is a lookahead propagation error while trying to get the LR(1) item, and it is under review.
+        /// Don't use this function
         /// </summary>
         public void GenerateLR1()
         {
@@ -579,36 +574,7 @@ namespace Koromo_Copy.LP
             foreach (var rule in production_rules)
                 FIRST.Add(first_terminals(rule.index));
 
-            var FOLLOW = new List<HashSet<int>>();
-            for (int i = 0; i < production_rules.Count; i++)
-                FOLLOW.Add(new HashSet<int>());
-            FOLLOW[0].Add(-1); // -1: Sentinel
-
-            // 1. B -> a A b, Add FIRST(b) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        for (int j = 0; j < rule.Count - 1; j++)
-                            if (rule[j].isterminal == false || rule[j + 1].isterminal)
-                                foreach (var r in FIRST[rule[j + 1].index])
-                                    FOLLOW[rule[j].index].Add(r);
-
-            // 2. B -> a A b and empty -> FIRST(b), Add FOLLOW(B) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        if (rule.Count > 2 && rule[rule.Count - 2].isterminal == false && FIRST[rule.Last().index].Contains(EmptyString.index))
-                            foreach (var r in FOLLOW[i])
-                                FOLLOW[rule[rule.Count - 2].index].Add(r);
-
-            // 3. B -> a A, Add FOLLOW(B) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        if (rule.Count > 0 && rule.Last().isterminal == false)
-                            foreach (var r in FOLLOW[i])
-                                if (rule.Last().index > 0)
-                                    FOLLOW[rule.Last().index].Add(r);
+            var FOLLOW = follow_terminals(FIRST);
 
 #if true
             print_header("FISRT, FOLLOW SETS");
@@ -878,36 +844,7 @@ namespace Koromo_Copy.LP
             foreach (var rule in production_rules)
                 FIRST.Add(first_terminals(rule.index));
 
-            var FOLLOW = new List<HashSet<int>>();
-            for (int i = 0; i < production_rules.Count; i++)
-                FOLLOW.Add(new HashSet<int>());
-            FOLLOW[0].Add(-1); // -1: Sentinel
-
-            // 1. B -> a A b, Add FIRST(b) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        for (int j = 0; j < rule.Count - 1; j++)
-                            if (rule[j].isterminal == false || rule[j + 1].isterminal)
-                                foreach (var r in FIRST[rule[j + 1].index])
-                                    FOLLOW[rule[j].index].Add(r);
-
-            // 2. B -> a A b and empty -> FIRST(b), Add FOLLOW(B) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        if (rule.Count > 2 && rule[rule.Count - 2].isterminal == false && FIRST[rule.Last().index].Contains(EmptyString.index))
-                            foreach (var r in FOLLOW[i])
-                                FOLLOW[rule[rule.Count - 2].index].Add(r);
-
-            // 3. B -> a A, Add FOLLOW(B) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        if (rule.Count > 0 && rule.Last().isterminal == false)
-                            foreach (var r in FOLLOW[i])
-                                if (rule.Last().index > 0)
-                                    FOLLOW[rule.Last().index].Add(r);
+            var FOLLOW = follow_terminals(FIRST);
 
 #if true
             print_header("FISRT, FOLLOW SETS");
@@ -1242,36 +1179,7 @@ namespace Koromo_Copy.LP
             foreach (var rule in production_rules)
                 FIRST.Add(first_terminals(rule.index));
 
-            var FOLLOW = new List<HashSet<int>>();
-            for (int i = 0; i < production_rules.Count; i++)
-                FOLLOW.Add(new HashSet<int>());
-            FOLLOW[0].Add(-1); // -1: Sentinel
-
-            // 1. B -> a A b, Add FIRST(b) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        for (int j = 0; j < rule.Count - 1; j++)
-                            if (rule[j].isterminal == false || rule[j + 1].isterminal)
-                                foreach (var r in FIRST[rule[j + 1].index])
-                                    FOLLOW[rule[j].index].Add(r);
-
-            // 2. B -> a A b and empty -> FIRST(b), Add FOLLOW(B) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        if (rule.Count > 2 && rule[rule.Count - 2].isterminal == false && FIRST[rule.Last().index].Contains(EmptyString.index))
-                            foreach (var r in FOLLOW[i])
-                                FOLLOW[rule[rule.Count - 2].index].Add(r);
-
-            // 3. B -> a A, Add FOLLOW(B) to FOLLOW(A)
-            for (int i = 0; i < production_rules.Count; i++)
-                if (!production_rules[i].isterminal)
-                    foreach (var rule in production_rules[i].sub_productions)
-                        if (rule.Count > 0 && rule.Last().isterminal == false)
-                            foreach (var r in FOLLOW[i])
-                                if (rule.Last().index > 0)
-                                    FOLLOW[rule.Last().index].Add(r);
+            var FOLLOW = follow_terminals(FIRST);
 
 #if true
             print_header("FISRT, FOLLOW SETS");
@@ -1449,6 +1357,13 @@ namespace Koromo_Copy.LP
             {
                 for (int i = 0; i < state.Value.Count; i++)
                 {
+                    // Find the state that the handle is declared.
+                    // If blew is declared,
+                    // A -> abc.
+                    // then trace location of handle definition recursive.
+                    // A -> ab.c
+                    // A -> a.bc
+                    // A -> .abc
                     var lrs = state.Value[i];
                     if (production_rules[lrs.Item1].sub_productions[lrs.Item2].Count == lrs.Item3)
                     {
@@ -1481,6 +1396,8 @@ namespace Koromo_Copy.LP
         }
 
         #endregion
+
+        #region Printer
 
         public void PrintProductionRules()
         {
@@ -1630,6 +1547,10 @@ namespace Koromo_Copy.LP
             GlobalPrinter.Append(builder.ToString() + "\r\n");
         }
 
+        #endregion
+
+        #region FIRST
+
         /// <summary>
         /// Calculate FIRST only Terminals
         /// </summary>
@@ -1704,6 +1625,53 @@ namespace Koromo_Copy.LP
             return first_l;
         }
 
+        #endregion
+
+        #region FOLLOW
+
+        /// <summary>
+        /// Get FOLLOW set for all production-rules
+        /// </summary>
+        /// <param name="FIRST"></param>
+        /// <returns></returns>
+        private List<HashSet<int>> follow_terminals(List<HashSet<int>> FIRST)
+        {
+            var FOLLOW = new List<HashSet<int>>();
+            for (int i = 0; i < production_rules.Count; i++)
+                FOLLOW.Add(new HashSet<int>());
+            FOLLOW[0].Add(-1); // -1: Sentinel
+
+            // 1. B -> a A b, Add FIRST(b) to FOLLOW(A)
+            for (int i = 0; i < production_rules.Count; i++)
+                if (!production_rules[i].isterminal)
+                    foreach (var rule in production_rules[i].sub_productions)
+                        for (int j = 0; j < rule.Count - 1; j++)
+                            if (rule[j].isterminal == false || rule[j + 1].isterminal)
+                                foreach (var r in FIRST[rule[j + 1].index])
+                                    FOLLOW[rule[j].index].Add(r);
+
+            // 2. B -> a A b and empty -> FIRST(b), Add FOLLOW(B) to FOLLOW(A)
+            for (int i = 0; i < production_rules.Count; i++)
+                if (!production_rules[i].isterminal)
+                    foreach (var rule in production_rules[i].sub_productions)
+                        if (rule.Count > 2 && rule[rule.Count - 2].isterminal == false && FIRST[rule.Last().index].Contains(EmptyString.index))
+                            foreach (var r in FOLLOW[i])
+                                FOLLOW[rule[rule.Count - 2].index].Add(r);
+
+            // 3. B -> a A, Add FOLLOW(B) to FOLLOW(A)
+            for (int i = 0; i < production_rules.Count; i++)
+                if (!production_rules[i].isterminal)
+                    foreach (var rule in production_rules[i].sub_productions)
+                        if (rule.Count > 0 && rule.Last().isterminal == false)
+                            foreach (var r in FOLLOW[i])
+                                if (rule.Last().index > 0)
+                                    FOLLOW[rule.Last().index].Add(r);
+
+            return FOLLOW;
+        }
+
+        #endregion
+
         #region Closure with Lookahead
 
         /// <summary>
@@ -1745,6 +1713,8 @@ namespace Koromo_Copy.LP
 
         /// <summary>
         /// Get FIRST items with lookahead (Build specific states completely)
+        /// 
+        /// TODO: Fix issues #4:first_terminals
         /// </summary>
         /// <param name="production_rule_index"></param>
         /// <param name="sub_production"></param>
@@ -1924,24 +1894,24 @@ namespace Koromo_Copy.LP
         /// <returns></returns>
         private HashSet<int> first_terminals(List<HashSet<int>> first, int production_rule_index, int sub_production, int sub_production_index, HashSet<int> lookahead)
         {
-            // If the handle points last of production rule item,
+            // 1. If the handle points last of production rule item,
             // A -> abc. [~]
             // then return only lookaheads.
-            if (production_rules[production_rule_index].sub_productions[sub_production].Count == sub_production_index)
+            if (production_rules[production_rule_index].sub_productions[sub_production].Count <= sub_production_index)
                 return lookahead;
 
-            // Check is terminal
+            // 2. Check is terminal
             // A -> aB.c [~]  (a,c=terminal, B=non-terminal)
             // If 'c' is terminal, then just return 'c'.
             if (production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].isterminal)
                 return new HashSet<int> { production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].index };
 
-            // Get FIRST of Non-terminal
+            // 3. Get FIRST of Non-terminal
             // A -> a.Bc [~]  (a,c=terminal, B=non-terminal)
             // If 'B' is non-terminal, then get FIRST set of non-terminal 'B'.
-            var result = first[production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].index];
+            var result = new HashSet<int> (first[production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].index]);
 
-            // Check empty-string
+            // 4. Check empty-string
             // A -> a.BC [~]  (a=terminal, B,C=non-terminal)
             // If epsillon contains in FIRST(BC) then add lookahead to result.
             var fully_empty_string = true;
@@ -1958,7 +1928,7 @@ namespace Koromo_Copy.LP
                     foreach (var lk in first[index.index])
                         result.Add(lk);
             }
-
+            
             if (fully_empty_string)
                 foreach (var lk in lookahead)
                     result.Add(lk);
@@ -2017,43 +1987,8 @@ namespace Koromo_Copy.LP
             Dictionary<int, Dictionary<int, List<Tuple<int, int, int>>>> pred,
             int state, int state_index, int depth = int.MaxValue)
         {
-            if (state == 6)
+            if (state == 538 && state_index == 0)
                 ;
-            var result = new HashSet<int>();
-
-            // Find the state that the handle is declared.
-            // If blew is declared,
-            // A -> abc.
-            // then trace location of handle definition.
-            // A -> ab.c
-            // A -> a.bc
-            // A -> .abc
-            var trace = new Dictionary<int, List<Tuple<int, int>>>();
-            var visit = new HashSet<string>();
-
-            //int t_state = state;
-            //int t_state_index = state_index;
-
-            //var queue = new Queue<Tuple<int, int, int>>();
-            //queue.Enqueue(new Tuple<int, int, int>(int.MaxValue, state, state_index));
-            //while (queue.Count != 0)
-            //{
-            //    var fr = queue.Dequeue();
-            //    if (!trace.ContainsKey(fr.Item1))
-            //        trace.Add(fr.Item1, new List<Tuple<int, int>>());
-            //    trace[fr.Item1].Add(new Tuple<int, int>(fr.Item2, fr.Item3));
-            //
-            //    if (fr.Item1 == 0 || !pred[fr.Item2].ContainsKey(fr.Item3))
-            //        continue;
-            //
-            //    //int tt_state = pred[t_state][t_state_index][0].Item1;
-            //    //t_state_index = pred[t_state][t_state_index][0].Item2;
-            //    //t_state = tt_state;
-            //
-            //    foreach (var pp in pred[fr.Item2][fr.Item3])
-            //        queue.Enqueue(new Tuple<int, int, int>(pp.Item1, pp.Item2, pp.Item3));
-            //}
-
             var lookaheads = new HashSet<int>();
 
             if (state == 0 || depth == 0 || !pred[state].ContainsKey(state_index))
@@ -2062,6 +1997,7 @@ namespace Koromo_Copy.LP
                 foreach (var lk in my_lookahead)
                     lookaheads.Add(lk);
 
+                // 같은 production rule에 전파
                 foreach (var item in states[state])
                     if (item.Item1 == states[state][state_index].Item1)
                         foreach (var lk in lookaheads)
@@ -2081,26 +2017,87 @@ namespace Koromo_Copy.LP
             foreach (var lk in lookaheads)
                 states[state][state_index].Item4.Add(lk);
 
-            //foreach (var tracing in trace)
-            //{
-            //    var lookahead = first_from_nonterminal(first, states, tracing.Item1, states[tracing.Item1][tracing.Item2].Item1);
-            //    
-            //    foreach (var lk in lookahead)
-            //        lookaheads.Add(lk);
-            //
-            //    foreach (var item in states[tracing.Item1])
-            //        if (item.Item1 == states[tracing.Item1][tracing.Item2].Item1)
-            //            foreach (var lk in lookaheads)
-            //                item.Item4.Add(lk);
-            //}
-
-            //var ptrace = trace.ToList();
-            //ptrace.Sort((x, y) => x.Key)
+            //propagate_lookahead(states, state, state_index, states[state][state_index].Item4);
+            propagate_lookahead(states, state, state_index, first_terminals(first, 
+                states[state][state_index].Item1, states[state][state_index].Item2, states[state][state_index].Item3+1, states[state][state_index].Item4));
 
             return lookaheads;
         }
 
+        /// <summary>
+        /// Propagate lookahead for same level item of states.
+        /// </summary>
+        /// <param name="states"></param>
+        /// <param name="state"></param>
+        /// <param name="state_index"></param>
+        /// <param name="lookahead"></param>
+        /// <returns></returns>
+        private void propagate_lookahead(
+            // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
+            Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>> states,
+            int state, int state_index, HashSet<int> lookahead)
+        {
+            var item = states[state][state_index];
+            var nts = first_nonterminals(item.Item1, item.Item2, item.Item3);
+
+            var index = 0;
+            foreach (var state_item in states[state])
+            {
+                if (nts.Contains(state_item.Item1))
+                {
+                    var change = false;
+                    var spont = new HashSet<int>(state_item.Item4);
+
+                    foreach (var lk in lookahead)
+                    {
+                        if (!state_item.Item4.Contains(lk))
+                        {
+                            change = true;
+                            state_item.Item4.Add(lk);
+                        }
+                    }
+
+                    if (change)
+                        propagate_lookahead(states, state, index, state_item.Item4);
+                }
+                index++;
+            }
+        }
+
+        /// <summary>
+        /// Get FIRST nonterminals of specific LALR(1) item
+        /// </summary>
+        /// <param name="states"></param>
+        /// <param name="state"></param>
+        /// <param name="state_index"></param>
+        /// <returns></returns>
+        private HashSet<int> first_nonterminals(
+            int production_rule_index, int sub_production_index, int dot_position)
+        {
+            var result = new HashSet<int>();
+
+            for (int i = dot_position; i < production_rules[production_rule_index].sub_productions[sub_production_index].Count; i++)
+            {
+                var item = production_rules[production_rule_index].sub_productions[sub_production_index][i];
+
+                // We interested in only non-terminals.
+                if (item.isterminal)
+                    break;
+
+                result.Add(item.index);
+
+                // Check this non-terminal contains epsillon.
+                // If not contains, then break
+                if (item.sub_productions.All(x => x.Count > 0))
+                    break;
+            }
+
+            return result;
+        }
+
         #endregion
+
+        #region Shift Reduce Conflict Solver Helper
 
         private ParserProduction get_first_on_right_terminal(ParserProduction pp, int sub_production)
         {
@@ -2109,6 +2106,10 @@ namespace Koromo_Copy.LP
                     return pp.sub_productions[sub_production][i];
             throw new Exception($"Cannot solve shift-reduce conflict!\r\nProduction Name: {pp.production_name}\r\nProduction Index: {sub_production}");
         }
+
+        #endregion
+
+        #region Create Parser Instance
 
         /// <summary>
         /// Create ShiftReduce Parser
@@ -2176,6 +2177,8 @@ namespace Koromo_Copy.LP
 
             return new ShiftReduceParser(symbol_table, jump_table, goto_table, grammar_group.ToArray(), grammar.Select(x => x.ToArray()).ToArray(), semantic_rules);
         }
+
+        #endregion
     }
 
     public class ParsingTree
