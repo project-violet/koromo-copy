@@ -1266,41 +1266,7 @@ namespace Koromo_Copy.LP
                     }
                     goto_unit.Value.AddRange(new_trans);
                 }
-
-                // Populate empty-string closure
-                //foreach (var goto_unit in gotos)
-                //{
-                //    var set = new HashSet<string>();
-                //    // Push exists transitions
-                //    foreach (var psd in goto_unit.Value)
-                //        set.Add(t2s(psd));
-                //    // Find all transitions
-                //    var new_trans = new List<Tuple<int, int, int, HashSet<int>>>();
-                //    var trans_dic = new Dictionary<string, int>();
-                //    foreach (var psd in goto_unit.Value)
-                //    {
-                //        if (production_rules[psd.Item1].sub_productions[psd.Item2].Count == psd.Item3) continue;
-                //        if (production_rules[psd.Item1].sub_productions[psd.Item2][psd.Item3].isterminal) continue;
-                //        var first_nt = first_with_lookahead(psd.Item1, psd.Item2, psd.Item3, psd.Item4);
-                //        foreach (var nts in first_nt)
-                //            if (!set.Contains(t2s(nts)))
-                //            {
-                //                var ts = t2s(new Tuple<int, int, int>(nts.Item1, nts.Item2, nts.Item3));
-                //                if (trans_dic.ContainsKey(ts))
-                //                {
-                //                    nts.Item4.ToList().ForEach(x => new_trans[trans_dic[ts]].Item4.Add(x));
-                //                }
-                //                else
-                //                {
-                //                    trans_dic.Add(ts, new_trans.Count);
-                //                    new_trans.Add(nts);
-                //                    set.Add(t2s(nts));
-                //                }
-                //            }
-                //    }
-                //    goto_unit.Value.AddRange(new_trans);
-                //}
-
+                
                 // Build goto transitions ignore terminal, non-terminal anywhere
                 var index_list = new List<Tuple<int, int>>();
                 foreach (var pp in gotos)
