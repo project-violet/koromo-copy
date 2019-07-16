@@ -307,7 +307,7 @@ namespace Koromo_Copy.JS
 
             expressionSequence |= singleExpression + singleExpressionS;
 
-            singleExpression |= "Function" + gen.TryCreateNewProduction("(") + ")" + gen.TryCreateNewProduction("}") + functionBody + "}";
+            singleExpression |= "Function" + gen.TryCreateNewProduction("(") + ")" + gen.TryCreateNewProduction("{") + functionBody + "}";
             singleExpression |= "Function" + gen.TryCreateNewProduction("Identifier") + "(" + gen.TryCreateNewProduction(")") + "{" + functionBody + "}";
             singleExpression |= "Function" + gen.TryCreateNewProduction("(") + formalParameterList + gen.TryCreateNewProduction(")") + "{" + functionBody + "}";
             singleExpression |= "Function" + gen.TryCreateNewProduction("Identifier") + "(" + formalParameterList + gen.TryCreateNewProduction(")") + "{" + functionBody + "}";
@@ -454,7 +454,7 @@ namespace Koromo_Copy.JS
 
             eos |= "SemiColon"; // TODO
             //eos |= "$";
-            eos |= ParserGenerator.EmptyString;
+            //eos |= ParserGenerator.EmptyString;
 
 
             gen.PushConflictSolver(true, gen.TryCreateNewProduction("Break"),
@@ -515,7 +515,7 @@ namespace Koromo_Copy.JS
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(keyword, 0));
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(block, 0));
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(statementListE, 1));
-            gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(eos, 1));
+            //gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(eos, 1));
             //gen.PushConflictSolver(false, gen.TryCreateNewProduction("Class"));
 
             gen.PushConflictSolver(false, gen.TryCreateNewProduction("["));
