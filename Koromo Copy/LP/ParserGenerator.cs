@@ -1987,8 +1987,6 @@ namespace Koromo_Copy.LP
             Dictionary<int, Dictionary<int, List<Tuple<int, int, int>>>> pred,
             int state, int state_index, int depth = int.MaxValue)
         {
-            if (state == 538 && state_index == 0)
-                ;
             var lookaheads = new HashSet<int>();
 
             if (state == 0 || depth == 0 || !pred[state].ContainsKey(state_index))
