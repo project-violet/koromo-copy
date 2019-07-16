@@ -117,6 +117,7 @@ namespace Koromo_Copy.Component.Hitomi
             path = Regex.Replace(path, "{Date}", DateTime.Now.ToString("yyyy-MM-dd"), RegexOptions.IgnoreCase);
             path = Regex.Replace(path, "{Series}", series, RegexOptions.IgnoreCase);
             path = Regex.Replace(path, "{Search}", search, RegexOptions.IgnoreCase);
+            path = Regex.Replace(path, "{Upload}", HitomiDate.estimate_datetime(article.Magic.ToInt32()).ToString("yyyy-MM-dd"), RegexOptions.IgnoreCase);
             return path;
         }
 
