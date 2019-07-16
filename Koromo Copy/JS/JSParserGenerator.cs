@@ -515,6 +515,7 @@ namespace Koromo_Copy.JS
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(keyword, 0));
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(block, 0));
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(statementListE, 1));
+            gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(caseClausesE, 1));
             //gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(eos, 1));
             //gen.PushConflictSolver(false, gen.TryCreateNewProduction("Class"));
 
@@ -573,11 +574,12 @@ namespace Koromo_Copy.JS
             gen.PushConflictSolver(false, gen.TryCreateNewProduction("SemiColon"));
 
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(sourceElements, 1));
+            gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(caseBlock, 0));
 
             gen.PushConflictSolver(false, gen.TryCreateNewProduction("}"));
 
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(functionBody, 1));
-
+            
 
             try
             {

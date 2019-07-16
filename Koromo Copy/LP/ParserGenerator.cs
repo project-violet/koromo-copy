@@ -1192,8 +1192,6 @@ namespace Koromo_Copy.LP
             var states = new Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>>();
             // (state_specify, state_index)
             var state_index = new Dictionary<string, int>();
-            // (state_index, (state_item_index, parent_state_index, parent_state_item_index))
-            //var pred = new Dictionary<int, List<Tuple<int, int, int>>>();
             // (state_index, (state_item_index, (handle_position, parent_state_index, parent_state_item_index)))
             var pred = new Dictionary<int, Dictionary<int, List<Tuple<int, int, int>>>>();
             var goto_table = new List<Tuple<int, List<Tuple<int, int>>>>();
@@ -1349,15 +1347,137 @@ namespace Koromo_Copy.LP
             var occurred_conflict = false;
 
             // ------------- Find Shift-Reduce Conflict ------------
-            foreach (var ms in states)
+            foreach (var state in states)
             {
+                // (shift_what, state_index)
+                var small_shift_info = new List<Tuple<int, int>>();
+                // (reduce_what, production_rule_index, sub_productions_pos)
+                var small_reduce_info = new List<Tuple<int, int, int>>();
+
+                // Fill Shift Info
+                foreach (var pp in goto_table[state.Key].Item2)
+                    small_shift_info.Add(new Tuple<int, int>(pp.Item1, pp.Item2));
                 
+                // Fill Reduce Info
+                foreach (var transition in state.Value)
+                    if (production_rules[transition.Item1].sub_productions[transition.Item2].Count == transition.Item3)
+                    {
+                        foreach (var term in transition.Item4)
+                            small_reduce_info.Add(new Tuple<int, int, int>(term, transition.Item1, transition.Item2));
+                    }
+
+                // Conflict Check
+                // (shift_what, small_shift_info_index)
+                var shift_tokens = new Dictionary<int, int>();
+                for (int i = 0; i < small_shift_info.Count; i++)
+                    shift_tokens.Add(small_shift_info[i].Item1, i);
+                var completes = new HashSet<int>();
+
+                foreach (var tuple in small_reduce_info)
+                {
+                    if (completes.Contains(tuple.Item1))
+                    {
+                        // It's already added so do not have to work anymore.
+                        continue;
+                    }
+
+                    if (shift_tokens.ContainsKey(tuple.Item1))
+                    {
+#if !DEBUG
+                        print_header("SHIFT-REDUCE CONFLICTS");
+                        GlobalPrinter.Append($"Shift-Reduce Conflict! {(tuple.Item1 == -1 ? "$" : production_rules[tuple.Item1].production_name)}\r\n");
+                        GlobalPrinter.Append($"States: {ms.Key} {small_shift_info[shift_tokens[tuple.Item1]].Item2}\r\n");
+                        print_states(ms.Key, states[ms.Key]);
+                        print_states(small_shift_info[shift_tokens[tuple.Item1]].Item2, states[small_shift_info[shift_tokens[tuple.Item1]].Item2]);
+#endif
+                        Tuple<int, bool> p1 = null, p2 = null;
+
+#if DEBUG
+                        string mm = "";
+#endif
+                        try
+                        {
+                            var pp = get_first_on_right_terminal(production_rules[tuple.Item2], tuple.Item3);
+                            if (shift_reduce_conflict_solve.ContainsKey(pp.index))
+                                p1 = shift_reduce_conflict_solve[pp.index];
+                        }
+                        catch (Exception e)
+                        {
+#if !DEBUG
+                            GlobalPrinter.Append(e.Message + "\r\n");
+#else
+                            mm = e.Message + "\r\n";
+#endif
+                        }
+
+                        if (shift_reduce_conflict_solve.ContainsKey(tuple.Item1))
+                            p2 = shift_reduce_conflict_solve[tuple.Item1];
+
+                        if (shift_reduce_conflict_solve_with_production_rule.ContainsKey(tuple.Item2))
+                            if (shift_reduce_conflict_solve_with_production_rule[tuple.Item2].ContainsKey(tuple.Item3))
+                                p1 = shift_reduce_conflict_solve_with_production_rule[tuple.Item2][tuple.Item3];
+
+                        //if (shift_reduce_conflict_solve_with_production_rule.ContainsKey(states[tuple.Item1][0].Item1))
+                        //    if (shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1].ContainsKey(states[tuple.Item1][0].Item2))
+                        //        p2 = shift_reduce_conflict_solve_with_production_rule[states[tuple.Item1][0].Item1][states[tuple.Item1][0].Item2];
+
+                        if (p1 == null || p2 == null)
+                        {
+#if DEBUG
+                            print_header("SHIFT-REDUCE CONFLICTS");
+                            GlobalPrinter.Append($"Shift-Reduce Conflict! {(tuple.Item1 == -1 ? "$" : production_rules[tuple.Item1].production_name)}\r\n");
+                            GlobalPrinter.Append($"States: {state.Key} {small_shift_info[shift_tokens[tuple.Item1]].Item2}\r\n");
+                            print_states(state.Key, state.Value);
+                            print_states(small_shift_info[shift_tokens[tuple.Item1]].Item2, states[small_shift_info[shift_tokens[tuple.Item1]].Item2]);
+                            if (mm != "")
+                                GlobalPrinter.Append(mm);
+#endif
+                            occurred_conflict = true;
+                            continue;
+                        }
+
+                        if (p1.Item1 < p2.Item1 || (p1.Item1 == p2.Item1 && p1.Item2))
+                        {
+                            // Reduce
+                            if (!reduce_info.ContainsKey(state.Key))
+                                reduce_info.Add(state.Key, new List<Tuple<int, int, int>>());
+                            reduce_info[state.Key].Add(new Tuple<int, int, int>(tuple.Item1, tuple.Item2, tuple.Item3));
+                        }
+                        else
+                        {
+                            // Shift
+                            if (!shift_info.ContainsKey(state.Key))
+                                shift_info.Add(state.Key, new List<Tuple<int, int>>());
+                            shift_info[state.Key].Add(new Tuple<int, int>(tuple.Item1, small_shift_info[shift_tokens[tuple.Item1]].Item2));
+                        }
+
+                        completes.Add(tuple.Item1);
+                    }
+                    else
+                    {
+                        // Just add reduce item
+                        if (!reduce_info.ContainsKey(state.Key))
+                            reduce_info.Add(state.Key, new List<Tuple<int, int, int>>());
+                        reduce_info[state.Key].Add(new Tuple<int, int, int>(tuple.Item1, tuple.Item2, tuple.Item3));
+
+                        completes.Add(tuple.Item1);
+                    }
+                }
+
+                foreach (var pair in shift_tokens)
+                {
+                    if (completes.Contains(pair.Key)) continue;
+                    var shift = small_shift_info[pair.Value];
+                    if (!shift_info.ContainsKey(state.Key))
+                        shift_info.Add(state.Key, new List<Tuple<int, int>>());
+                    shift_info[state.Key].Add(new Tuple<int, int>(shift.Item1, shift.Item2));
+                }
             }
             // -----------------------------------------------------
 
             if (occurred_conflict)
                 throw new Exception("Specify the rules to resolve Shift-Reduce Conflict!");
-            
+
             number_of_states = states.Count;
         }
 
