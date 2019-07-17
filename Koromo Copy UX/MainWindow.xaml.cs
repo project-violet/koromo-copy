@@ -241,13 +241,13 @@ namespace Koromo_Copy_UX
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
-            DropShadow.BlurRadius = 8;
+            DropShadow.BlurRadius = 10;
             DropShadow.Color = Colors.Gray;
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            DropShadow.BlurRadius = 10;
+            DropShadow.BlurRadius = 13;
             DropShadow.Color = SettingWrap.Instance.ThemeColor;
         }
         
@@ -262,16 +262,12 @@ namespace Koromo_Copy_UX
             {
                 if (WindowState != WindowState.Maximized)
                 {
-                    TopBorder.Margin = new Thickness(0,5,0,0);
-                    TopBorder.BorderThickness = new Thickness(0);
                     WindowState = WindowState.Maximized;
                     Maximize.Visibility = Visibility.Collapsed;
                     Restore.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    TopBorder.Margin = new Thickness(10);
-                    TopBorder.BorderThickness = new Thickness(1);
                     WindowState = WindowState.Normal;
                     Restore.Visibility = Visibility.Collapsed;
                     Maximize.Visibility = Visibility.Visible;
