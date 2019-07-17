@@ -281,6 +281,7 @@ namespace Koromo_Copy.Console
                 {"selenium", new Utility.SeleniumConsole()},
                 {"down", new Utility.DownloadConsole()},
                 {"test", new Utility.TestConsole()},
+                {"auto", new Utility.AutoConsole()},
 
                 // pipeline command
                 {"grep", new GrepConsole()},
