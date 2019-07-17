@@ -11,7 +11,8 @@
         Title="Koromo Copy " Height="616" Width="1156"
         WindowStyle="None"
         AllowsTransparency="True" Background="Transparent"
-        WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated">
+        WindowStartupLocation="CenterScreen"
+        MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="5" GlassFrameThickness="0,0,0,1" ResizeBorderThickness="10"/>
@@ -72,7 +73,7 @@
 
     <Border x:Name="TopBorder" Margin="10" BorderThickness="1">
         <Border.BorderBrush>
-            <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}" Opacity="1"/>
+            <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"/>
         </Border.BorderBrush>
         <Border.Effect>
             <DropShadowEffect x:Name="DropShadow" Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"
