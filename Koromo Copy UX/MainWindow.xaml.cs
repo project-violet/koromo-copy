@@ -241,14 +241,14 @@ namespace Koromo_Copy_UX
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
-            //DropShadow.BlurRadius = 8;
-            //DropShadow.Color = Colors.Gray;
+            DropShadow.BlurRadius = 8;
+            DropShadow.Color = Colors.Gray;
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            //DropShadow.BlurRadius = 10;
-            //DropShadow.Color = SettingWrap.Instance.ThemeColor;
+            DropShadow.BlurRadius = 10;
+            DropShadow.Color = SettingWrap.Instance.ThemeColor;
         }
         
         private void ThreeButton_Click(object sender, RoutedEventArgs e)
