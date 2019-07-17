@@ -9,7 +9,7 @@
         xmlns:domain="clr-namespace:Koromo_Copy_UX.Domain"
         mc:Ignorable="d"
         Title="Koromo Copy " Height="616" Width="1156" WindowStartupLocation="CenterScreen"
-        WindowStyle="None" AllowsTransparency="True" Background="{x:Null}"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         MouseDown="Window_MouseDown" Deactivated="Window_Deactivated" Activated="Window_Activated">
     <Window.Effect>
         <DropShadowEffect x:Name="DropShadow" Color="Pink" BlurRadius="13" ShadowDepth="1" Direction="270"/>
@@ -244,7 +244,7 @@
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Pink"/>
+                                    <Setter Property="Background" Value="OrangeRed"/>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="Background" Value="HotPink"/>
