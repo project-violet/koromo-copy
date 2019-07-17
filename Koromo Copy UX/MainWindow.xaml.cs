@@ -262,12 +262,14 @@ namespace Koromo_Copy_UX
             {
                 if (WindowState != WindowState.Maximized)
                 {
+                    MainGrid.Margin = new Thickness(0,5,0,0);
                     WindowState = WindowState.Maximized;
                     Maximize.Visibility = Visibility.Collapsed;
                     Restore.Visibility = Visibility.Visible;
                 }
                 else
                 {
+                    MainGrid.Margin = new Thickness(10);
                     WindowState = WindowState.Normal;
                     Restore.Visibility = Visibility.Collapsed;
                     Maximize.Visibility = Visibility.Visible;
