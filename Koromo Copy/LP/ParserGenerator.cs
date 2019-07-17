@@ -1223,6 +1223,7 @@ namespace Koromo_Copy.LP
             var state_index = new Dictionary<string, int>();
             // (state_index, (state_item_index, (handle_position, parent_state_index, parent_state_item_index)))
             var pred = new Dictionary<int, Dictionary<int, List<Tuple<int, int, int>>>>();
+            // (from_state_index, (when_state_index, to_state_index))
             var goto_table = new List<Tuple<int, List<Tuple<int, int>>>>();
             // (state_index, (shift_what, state_index))
             shift_info = new Dictionary<int, List<Tuple<int, int>>>();
@@ -1251,7 +1252,6 @@ namespace Koromo_Copy.LP
                 var kernel_cnt = new Dictionary<int, int>();
                 // (state_index, (handle_position, parent_state_item_index))
                 var ppred = new Dictionary<int, List<Tuple<int, int>>>();
-                //foreach (var transition in states[p])
                 for (int i = 0; i < states[p].Count; i++)
                 {
                     var transition = states[p][i];
@@ -1346,24 +1346,42 @@ namespace Koromo_Copy.LP
             states[0][0].Item4.Add(-1);
 
             // Find all reduceable LR(0) states item and fill lookahead
-            foreach (var state in states)
+            while (true)
             {
-                for (int i = 0; i < state.Value.Count; i++)
+                lookahead_change = false;
+                foreach (var state in states)
                 {
-                    // Find the state that the handle is declared.
-                    // If blew is declared,
-                    // A -> abc.
-                    // then trace location of handle definition recursive.
-                    // A -> ab.c
-                    // A -> a.bc
-                    // A -> .abc
-                    var lrs = state.Value[i];
-                    if (production_rules[lrs.Item1].sub_productions[lrs.Item2].Count == lrs.Item3)
+                    for (int i = 0; i < state.Value.Count; i++)
                     {
-                        fill_lookahead(FIRST, include_epsillon, states, pred, state.Key, i);
+                        // Find the state that the handle is declared.
+                        // If blew is declared,
+                        // A -> abc.
+                        // then trace location of handle definition recursive.
+                        // A -> ab.c
+                        // A -> a.bc
+                        // A -> .abc
+                        var lrs = state.Value[i];
+                        if (production_rules[lrs.Item1].sub_productions[lrs.Item2].Count == lrs.Item3)
+                        {
+                            fill_lookahead(FIRST, include_epsillon, states, pred, state.Key, i);
+                        }
                     }
                 }
+
+                if (!lookahead_change)
+                    break;
             }
+
+            //var visit = Enumerable.Repeat<bool>(false, goto_table.Count);
+            //var indegree_count = new Dictionary<int, int>();
+            //for (int i = 0; i < goto_table.Count; i++)
+            //    for (int j = 0; j < goto_table[i].Item2.Count; j++)
+            //    {
+            //        var from = goto_table[i].Item2[j].Item2;
+            //        if (!indegree_count.ContainsKey(from))
+            //            indegree_count.Add(from, 0);
+            //        indegree_count[from] = from + 1;
+            //    }
 
             // -------------------------------------------------------
 
@@ -1997,6 +2015,41 @@ namespace Koromo_Copy.LP
 
         #endregion
 
+        #region SCC
+        
+        /// <summary>
+        /// Determine group using tarjan's strongly connected components algorithm.
+        /// </summary>
+        /// <param name="goto_table"></param>
+        /// <returns></returns>
+        private Dictionary<int, int> determine_group(Dictionary<int, List<int>> degree)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the graph traversal rule and SCC information
+        /// </summary>
+        /// <param name="goto_table"></param>
+        /// <returns></returns>
+        private Tuple<List<int>, Dictionary<int, int>> how_to_visit(
+            // (from_state_index, (when_state_index, to_state_index))
+            List<Tuple<int, List<Tuple<int, int>>>> goto_table)
+        {
+            // to edge
+            var degree = new Dictionary<int, List<int>>();
+            for (int i = 0; i < goto_table.Count; i++)
+            {
+                degree.Add(i, new List<int>());
+                for (int j = 0; j < goto_table[i].Item2.Count; i++)
+                    degree[i].Add(goto_table[i].Item2[j].Item2);
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Lookahead
 
         /// <summary>
@@ -2090,6 +2143,8 @@ namespace Koromo_Copy.LP
             return result;
         }
 
+        bool lookahead_change = false;
+
         /// <summary>
         /// Fill lookahead recursive.
         /// </summary>
@@ -2118,7 +2173,11 @@ namespace Koromo_Copy.LP
                 foreach (var item in states[state])
                     if (item.Item1 == states[state][state_index].Item1)
                         foreach (var lk in lookaheads)
-                            item.Item4.Add(lk);
+                            if (!item.Item4.Contains(lk))
+                            {
+                                item.Item4.Add(lk);
+                                lookahead_change = true;
+                            }
             }
             else
             {
@@ -2132,7 +2191,11 @@ namespace Koromo_Copy.LP
             }
 
             foreach (var lk in lookaheads)
-                states[state][state_index].Item4.Add(lk);
+                if (!states[state][state_index].Item4.Contains(lk))
+                {
+                    states[state][state_index].Item4.Add(lk);
+                    lookahead_change = true;
+                }
             
             propagate_lookahead(states, state, state_index, first_terminals(first, include_epsillon,
                 states[state][state_index].Item1, states[state][state_index].Item2, states[state][state_index].Item3+1, states[state][state_index].Item4));
@@ -2169,6 +2232,7 @@ namespace Koromo_Copy.LP
                         if (!state_item.Item4.Contains(lk))
                         {
                             change = true;
+                            lookahead_change = true;
                             state_item.Item4.Add(lk);
                         }
                     }
