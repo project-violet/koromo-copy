@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +26,10 @@ namespace Koromo_Copy.Console
     {
         [CommandLine("--help", CommandType.OPTION, Default = true)]
         public bool Help;
+
+        [CommandLine("-login", CommandType.ARGUMENTS, ArgumentsCount = 2, Help = "use -login <Id> <Password>",
+            Info = "Search gallery by name.")]
+        public string[] Login;
 
         [CommandLine("-find-gallery", CommandType.ARGUMENTS, Help = "use -find-gallery <Gallery Name>",
             Info = "Search gallery by name.")]
@@ -90,6 +96,10 @@ namespace Koromo_Copy.Console
             {
                 PrintHelp();
             }
+            else if (option.Login != null)
+            {
+                ProcessLogin(option.Login);
+            }
             else if (option.FindGallery != null)
             {
                 ProcessFindGallery(option.FindGallery);
@@ -148,6 +158,27 @@ namespace Koromo_Copy.Console
             Console.Instance.WriteLine(builder.ToString());
         }
 
+        static string PHPSESSID = "";
+        static void ProcessLogin(string[] args)
+        {
+            byte[] sendData = Encoding.UTF8.GetBytes($"s_url=%2F%2Fwww.dcinside.com%2F&ssl=Y&j7U8qIpn314G2g58=3VvPd2fZ8yUt28Q3&user_id={args[0]}&pw={args[1]}");
+
+            var request = (HttpWebRequest)WebRequest.Create("https://dcid.dcinside.com/join/member_check.php");
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = sendData.Length;
+
+            var rs = request.GetRequestStream();
+            rs.Write(sendData, 0, sendData.Length);
+            rs.Close();
+
+            var res = (HttpWebResponse)request.GetResponse();
+            var ss = res.Headers[HttpResponseHeader.SetCookie];
+            PHPSESSID = ss.Split(new string[] { "PHPSESSID=" }, StringSplitOptions.None)[1].Split(';')[0];
+
+            Console.Instance.WriteLine("PHPSESSID=" + PHPSESSID);
+        }
+
 
         static SortedDictionary<string, string> galleries;
         static SortedDictionary<string, string> minor_galleries;
@@ -194,7 +225,10 @@ namespace Koromo_Copy.Console
                 if (rem)
                     url += "&exception_mode=recommend";
 
-                var html = NetCommon.DownloadString(url);
+                var client = NetCommon.GetDefaultClient();
+                if (PHPSESSID != "")
+                    client.Headers.Add(System.Net.HttpRequestHeader.Cookie, "PHPSESSID=" + PHPSESSID);
+                var html = client.DownloadString(url);
                 DCGallery gall = null;
 
                 if (is_minorg)
@@ -253,7 +287,10 @@ namespace Koromo_Copy.Console
                     if (rem)
                         url += "&exception_mode=recommend";
 
-                    var html = NetCommon.DownloadString(url);
+                    var client = NetCommon.GetDefaultClient();
+                    if (PHPSESSID != "")
+                        client.Headers.Add(System.Net.HttpRequestHeader.Cookie, "PHPSESSID=" + PHPSESSID);
+                    var html = client.DownloadString(url);
                     DCGallery gall = null;
 
                     if (is_minorg)
@@ -302,7 +339,10 @@ namespace Koromo_Copy.Console
                     else
                         url = $"https://gall.dcinside.com/board/view/?id={args[0]}&no={article.no}";
 
-                    var html = NetCommon.DownloadString(url);
+                    var client = NetCommon.GetDefaultClient();
+                    if (PHPSESSID != "")
+                        client.Headers.Add(System.Net.HttpRequestHeader.Cookie, "PHPSESSID=" + PHPSESSID);
+                    var html = client.DownloadString(url);
                     var _article = DCParser.ParseBoardView(html, is_minorg);
 
                     _articles.Add(_article);
@@ -387,7 +427,10 @@ namespace Koromo_Copy.Console
 
                         Console.Instance.WriteLine($"Download URL: {url}");
 
-                        var html = NetCommon.DownloadString(url);
+                        var client = NetCommon.GetDefaultClient();
+                        if (PHPSESSID != "")
+                            client.Headers.Add(System.Net.HttpRequestHeader.Cookie, "PHPSESSID=" + PHPSESSID);
+                        var html = client.DownloadString(url);
                         DCGallery gall = null;
 
                         if (is_minorg)
@@ -421,7 +464,10 @@ namespace Koromo_Copy.Console
             else
                 url = $"https://gall.dcinside.com/board/view/?id={args[0]}&no={args[1]}";
 
-            var html = NetCommon.DownloadString(url);
+            var client = NetCommon.GetDefaultClient();
+            if (PHPSESSID != "")
+                client.Headers.Add(System.Net.HttpRequestHeader.Cookie, "PHPSESSID=" + PHPSESSID);
+            var html = client.DownloadString(url);
             var article = DCParser.ParseBoardView(html, is_minorg);
 
             Console.Instance.WriteLine(article);
@@ -443,7 +489,10 @@ namespace Koromo_Copy.Console
                 else
                     url = $"https://gall.dcinside.com/board/view/?id={args[0]}&no={args[1]}";
 
-                var html = NetCommon.DownloadString(url);
+                var client = NetCommon.GetDefaultClient();
+                if (PHPSESSID != "")
+                    client.Headers.Add(System.Net.HttpRequestHeader.Cookie, "PHPSESSID=" + PHPSESSID);
+                var html = client.DownloadString(url);
                 var article = DCParser.ParseBoardView(html, is_minorg);
 
                 ESNO = article.ESNO;
