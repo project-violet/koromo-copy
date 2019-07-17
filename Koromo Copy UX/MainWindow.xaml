@@ -17,7 +17,7 @@
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="5" GlassFrameThickness="0" ResizeBorderThickness="10" />
-        <!-- Recommend: ResizeBorderThickness = Grid.Margin -->
+        <!-- Recommend: ResizeBorderThickness = MainGrid.Margin -->
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
