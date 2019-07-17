@@ -73,7 +73,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Background="White" Margin="10">
+    <Grid x:Name="MainGrid" Background="White" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
