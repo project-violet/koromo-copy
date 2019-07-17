@@ -74,7 +74,11 @@
         <Border.BorderBrush>
             <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}" Opacity="1"/>
         </Border.BorderBrush>
-
+        <Border.Effect>
+            <DropShadowEffect x:Name="DropShadow" Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"
+                                  BlurRadius="10" ShadowDepth="0"/>
+        </Border.Effect>
+        
         <Grid Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
