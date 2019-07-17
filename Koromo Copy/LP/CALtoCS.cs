@@ -74,7 +74,7 @@ namespace Koromo_Copy.LP
                 Console.Console.Instance.WriteLine(e.Message);
             }
 
-            Console.Console.Instance.WriteLine(pp.ToCSCode("CALCS"));
+            //Console.Console.Instance.WriteLine(pp.ToCSCode("CALCS"));
 
             return "";
         }
@@ -200,11 +200,15 @@ namespace Koromo_Copy.LP
             gen.PushConflictSolver(false, multiple, divide);
             gen.PushConflictSolver(false, plus, minus);
 
+            //gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(index, 1));
+            gen.PushConflictSolver(false, pp_open);
+            gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(index, 0));
+
             try
             {
                 gen.PushStarts(script);
                 gen.PrintProductionRules();
-                gen.GenerateLALR();
+                gen.GenerateLALR2();
                 gen.PrintStates();
                 gen.PrintTable();
             }
