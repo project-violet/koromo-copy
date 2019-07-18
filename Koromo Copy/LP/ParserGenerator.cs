@@ -2096,27 +2096,22 @@ namespace Koromo_Copy.LP
             // (production_rule_index + sub_productions_pos + dot_position), (states_index)
             var states_prefix2 = new Dictionary<string, int>();
             var states_count = 0;
-            bool change = false;
 
-            do
+            q.Enqueue(closure_first(production_rule_index, sub_production, sub_production_index));
+            while (q.Count != 0)
             {
-                change = false;
-                q.Enqueue(closure_first(production_rule_index, sub_production, sub_production_index));
-                while (q.Count != 0)
+                var ll = q.Dequeue();
+                foreach (var e in ll)
                 {
-                    var ll = q.Dequeue();
-                    foreach (var e in ll)
+                    var ii = i2s(e.Item1, e.Item2, e.Item3);
+                    if (!states_prefix2.ContainsKey(ii))
                     {
-                        var ii = i2s(e.Item1, e.Item2, e.Item3);
-                        if (!states_prefix2.ContainsKey(ii))
-                        {
-                            states_prefix2.Add(ii, states_count);
-                            q.Enqueue(closure_first(e.Item1, e.Item2, e.Item3));
-                            states_count++;
-                        }
+                        states_prefix2.Add(ii, states_count);
+                        q.Enqueue(closure_first(e.Item1, e.Item2, e.Item3));
+                        states_count++;
                     }
                 }
-            } while (change);
+            }
 
             return states;
         }
