@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy.Crypto;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -98,7 +99,7 @@ namespace Koromo_Copy.LP
     }
 
     #endregion
-
+    
     /// <summary>
     /// LR Parser Generator
     /// </summary>
@@ -145,6 +146,113 @@ namespace Koromo_Copy.LP
             production_dict.Add(name, pp);
             production_rules.Add(pp);
             return pp;
+        }
+
+        /// <summary>
+        /// A -> B (C D)*
+        /// =>
+        /// A -> B CD'
+        /// CD' -> C D CD'1  { S.add(CD'1) }
+        /// CD' -> e
+        /// </summary>
+        /// <param name="pp"></param>
+        /// <returns></returns>
+        public ParserProduction TryCreateZeroOrMoreProduction(ParserProduction pp)
+        {
+            pp.contents.Insert(0, pp);
+            var pp_name = ("zeroormore" + string.Join(",", pp.contents.Select(x => $"{x.index}:{x.production_name}"))).GetHashSHA1();
+            if (production_dict.ContainsKey(pp_name))
+            {
+                pp.contents.Clear();
+                return production_dict[pp_name];
+            }
+            var nt = CreateNewProduction(pp_name);
+            var nn = new List<ParserProduction>(pp.contents);
+            nn.Add(nt);
+            nt.sub_productions.Add(nn);
+            nt.sub_productions.Add(new List<ParserProduction> { EmptyString });
+            nt.actions.Add(ParserAction.Create((x) => {
+                var lx = new List<List<ParsingTree.ParsingTreeNode>>();
+                var ll = new List<ParsingTree.ParsingTreeNode>();
+                if (x.Childs.Count > 0)
+                {
+                    for (int i = 0; i < x.Childs.Count - 1; i++)
+                        ll.Add(x.Childs[i]);
+                    lx.Add(ll);
+                }
+                if (x.Childs.Last().UserContents != null)
+                    lx.AddRange(x.Childs.Last().UserContents as List<List<ParsingTree.ParsingTreeNode>>);
+                x.UserContents = lx;
+            }));
+            pp.contents.Clear();
+            return nt;
+        }
+
+        /// <summary>
+        /// A -> B (C D)*
+        /// =>
+        /// A -> B CD'
+        /// CD' -> C D CD'1  { S.add(CD'1) }
+        /// CD' -> C D { S.add({C D}) }
+        /// </summary>
+        /// <param name="pp"></param>
+        /// <returns></returns>
+        public ParserProduction TryCreateOneOrMoreProduction(ParserProduction pp)
+        {
+            pp.contents.Insert(0, pp);
+            var pp_name = ("oneormore" + string.Join(",", pp.contents.Select(x => $"{x.index}:{x.production_name}"))).GetHashSHA1();
+            if (production_dict.ContainsKey(pp_name))
+            {
+                pp.contents.Clear();
+                return production_dict[pp_name];
+            }
+            var nt = CreateNewProduction(pp_name);
+            var nn = new List<ParserProduction>(pp.contents);
+            nn.Add(nt);
+            nt.sub_productions.Add(nn);
+            nt.sub_productions.Add(new List<ParserProduction> (pp.contents));
+            nt.actions.Add(ParserAction.Create((x) => {
+                var lx = new List<List<ParsingTree.ParsingTreeNode>>();
+                var ll = new List<ParsingTree.ParsingTreeNode>();
+                for (int i = 0; i < x.Childs.Count - 1; i++)
+                    ll.Add(x.Childs[i]);
+                lx.Add(ll);
+                if (x.Childs.Last().UserContents != null)
+                    lx.AddRange(x.Childs.Last().UserContents as List<List<ParsingTree.ParsingTreeNode>>);
+                x.UserContents = lx;
+            }));
+            nt.actions.Add(ParserAction.Create((x) => {
+                var lx = new List<List<ParsingTree.ParsingTreeNode>>();
+                lx.Add(x.Childs);
+                x.UserContents = lx;
+            }));
+            pp.contents.Clear();
+            return nt;
+        }
+
+        /// <summary>
+        /// A -> B (C D)*
+        /// =>
+        /// A -> B CD'
+        /// CD' -> C D
+        /// CD' -> e
+        /// </summary>
+        /// <param name="pp"></param>
+        /// <returns></returns>
+        public ParserProduction TryCreateZeroOrOneProduction(ParserProduction pp)
+        {
+            pp.contents.Insert(0, pp);
+            var pp_name = ("zeroorone" + string.Join(",", pp.contents.Select(x => $"{x.index}:{x.production_name}"))).GetHashSHA1();
+            if (production_dict.ContainsKey(pp_name))
+            {
+                pp.contents.Clear();
+                return production_dict[pp_name];
+            }
+            var nt = CreateNewProduction(pp_name);
+            nt.sub_productions.Add(new List<ParserProduction> (pp.contents));
+            nt.sub_productions.Add(new List<ParserProduction> { EmptyString });
+            pp.contents.Clear();
+            return nt;
         }
 
         public void PushStarts(ParserProduction pp)
