@@ -74,220 +74,227 @@
     </Window.Resources>
 
     <Grid x:Name="MainGrid" Background="White" Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Popup x:Name="MiddlePopup" PlacementTarget="{Binding ElementName=TopBorder}" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" IsOpen="True" AllowsTransparency="True">
-            <Border x:Name="PopupBorder" CornerRadius="8" Background="Black">
-                <!--Style="{StaticResource BorderFadeStyle}"-->
-                <Border.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml"/>
-                        </ResourceDictionary.MergedDictionaries>
-                        <Storyboard x:Key="FadeOnEvent">
-                            <DoubleAnimation Storyboard.TargetName="PopupBorder" 
+        <Border BorderThickness="1">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}" Opacity="1"/>
+            </Border.BorderBrush>
+            <Grid x:Name="X">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Popup x:Name="MiddlePopup" PlacementTarget="{Binding ElementName=TopBorder}" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" IsOpen="True" AllowsTransparency="True">
+                    <Border x:Name="PopupBorder" CornerRadius="8" Background="Black">
+                        <!--Style="{StaticResource BorderFadeStyle}"-->
+                        <Border.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                                <Storyboard x:Key="FadeOnEvent">
+                                    <DoubleAnimation Storyboard.TargetName="PopupBorder" 
                                         Storyboard.TargetProperty="(Border.Opacity)"
                                         From="0" To="0.7" Duration="0:0:1" />
-                        </Storyboard>
-                        <Storyboard x:Key="FadeOffEvent">
-                            <DoubleAnimation Storyboard.TargetName="PopupBorder"
+                                </Storyboard>
+                                <Storyboard x:Key="FadeOffEvent">
+                                    <DoubleAnimation Storyboard.TargetName="PopupBorder"
                                         Storyboard.TargetProperty="(Border.Opacity)"
                                         From="0.7" To="0" Duration="0:0:1" />
-                        </Storyboard>
-                        <Storyboard x:Key="FadeOutEvent">
-                            <DoubleAnimation Storyboard.TargetName="PopupBorder"
+                                </Storyboard>
+                                <Storyboard x:Key="FadeOutEvent">
+                                    <DoubleAnimation Storyboard.TargetName="PopupBorder"
                                         Storyboard.TargetProperty="(Border.Opacity)"
                                         From="0" To="0.7" Duration="0:0:1" />
-                            <DoubleAnimation BeginTime="0:0:1" Storyboard.TargetName="PopupBorder"
+                                    <DoubleAnimation BeginTime="0:0:1" Storyboard.TargetName="PopupBorder"
                                         Storyboard.TargetProperty="(Border.Opacity)"
                                         From="0.7" To="0.7" Duration="0:0:1" />
-                            <DoubleAnimation BeginTime="0:0:3"  Storyboard.TargetName="PopupBorder"
+                                    <DoubleAnimation BeginTime="0:0:3"  Storyboard.TargetName="PopupBorder"
                                         Storyboard.TargetProperty="(Border.Opacity)"
                                         From="0.7" To="0" Duration="0:0:1" />
-                        </Storyboard>
-                    </ResourceDictionary>
-                </Border.Resources>
+                                </Storyboard>
+                            </ResourceDictionary>
+                        </Border.Resources>
 
-                <Grid>
-                    <Grid x:Name="PopupGridLoading">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <ProgressBar x:Name="PopupProgress" Grid.Column="0" Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
-                        <TextBlock x:Name="PopupText" Grid.Column="1" Text="{DynamicResource msg_loading_data}" VerticalAlignment="Center" Margin="5" Foreground="White"/>
-                    </Grid>
-                    <Grid x:Name="PopupGridComplete" Visibility="Collapsed">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.Resources>
-                            <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#FFFFFF"/>
-                            <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="#FFFFFF"/>
-                        </Grid.Resources>
-                        <materialDesign:PackIcon Kind="CheckOutline" Height="30" Width="30" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                    </Grid>
-                </Grid>
-            </Border>
-        </Popup>
+                        <Grid>
+                            <Grid x:Name="PopupGridLoading">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar x:Name="PopupProgress" Grid.Column="0" Margin="10 0 0 0" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="20" Height="20"/>
+                                <TextBlock x:Name="PopupText" Grid.Column="1" Text="{DynamicResource msg_loading_data}" VerticalAlignment="Center" Margin="5" Foreground="White"/>
+                            </Grid>
+                            <Grid x:Name="PopupGridComplete" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.Resources>
+                                    <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#FFFFFF"/>
+                                    <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="#FFFFFF"/>
+                                </Grid.Resources>
+                                <materialDesign:PackIcon Kind="CheckOutline" Height="30" Width="30" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Popup>
 
-        <Rectangle HorizontalAlignment="Stretch" Height="5" VerticalAlignment="Top">
-            <Rectangle.Fill>
-                <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"/>
-            </Rectangle.Fill>
-        </Rectangle>
-        
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Button x:Name="BtnConsole" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" Tag="Console" Click="CaptionButton_Click">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Pink"/>
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="HotPink"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Console" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                </Button>
-                <Button x:Name="BtnMinimize" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" Tag="Minimize" Click="CaptionButton_Click">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Pink"/>
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="HotPink"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="WindowMinimize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                </Button>
-                <Button x:Name="BtnMaximize" BorderThickness="0" Margin="0 0 5 0" Width="20" Height="20" Tag="Maximize" Click="CaptionButton_Click">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Pink"/>
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="HotPink"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon x:Name="Maximize" Kind="WindowMaximize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible"/>
-                        <materialDesign:PackIcon x:Name="Restore"  Kind="WindowRestore" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"/>
-                    </StackPanel>
-                </Button>
-                <Button x:Name="BtnClose" BorderThickness="0" Width="20" Height="20" Tag="Close" Click="CaptionButton_Click">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Pink"/>
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="HotPink"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Close" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
+                <Rectangle HorizontalAlignment="Stretch" Height="5" VerticalAlignment="Top">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{Binding Source={x:Static Member=domain:SettingWrap.Instance}, Path=ThemeColor}"/>
+                    </Rectangle.Fill>
+                </Rectangle>
 
-            <TextBlock x:Name="VersionText" Grid.RowSpan="2" HorizontalAlignment="Left" FontSize="25" 
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Button x:Name="BtnConsole" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" Tag="Console" Click="CaptionButton_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Pink"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="HotPink"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Console" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnMinimize" BorderThickness="1" Margin="0 0 5 0" Width="20" Height="20" Tag="Minimize" Click="CaptionButton_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Pink"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="HotPink"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="WindowMinimize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnMaximize" BorderThickness="0" Margin="0 0 5 0" Width="20" Height="20" Tag="Maximize" Click="CaptionButton_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Pink"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="HotPink"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon x:Name="Maximize" Kind="WindowMaximize" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible"/>
+                                <materialDesign:PackIcon x:Name="Restore"  Kind="WindowRestore" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnClose" BorderThickness="0" Width="20" Height="20" Tag="Close" Click="CaptionButton_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Pink"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="HotPink"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Close" Height="15" Width="15" Opacity=".56" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <TextBlock x:Name="VersionText" Grid.RowSpan="2" HorizontalAlignment="Left" FontSize="25" 
                                 Text="Koromo Copy " Margin="25 15 0 10" FontFamily="Open Sans Light" FontWeight="Thin" Opacity=".8"/>
-            <TextBlock x:Name="MemoryStatus" HorizontalAlignment="Center" Margin="0 15 0 0" FontSize="12" VerticalAlignment="Top" Opacity=".8"
+                    <TextBlock x:Name="MemoryStatus" HorizontalAlignment="Center" Margin="0 15 0 0" FontSize="12" VerticalAlignment="Top" Opacity=".8"
                                 Text="Memory Usage :  0 KB" PreviewMouseDown="MemoryStatus_PreviewMouseDown"/>
-            <TextBlock Grid.Row="1" Text="Copyright (C) 2018-2019. DCInside Programming Gallery Union. All Rights Reserved." FontSize="14" FontWeight="Thin" Opacity=".8"
+                    <TextBlock Grid.Row="1" Text="Copyright (C) 2018-2019. DCInside Programming Gallery Union. All Rights Reserved." FontSize="14" FontWeight="Thin" Opacity=".8"
                                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 10 0"/>
-        </Grid>
+                </Grid>
 
-        <TabControl x:Name="MainTab" Grid.Row="2" Margin="10" BorderThickness="0" FontSize="13" Style="{DynamicResource TabControlStyle1}">
-            <TabItem Header="{DynamicResource search}" BorderThickness="0">
-                <local:SearchSpace/>
-            </TabItem>
-            <TabItem Header="{DynamicResource download}" x:Name="DownloadTab">
-                <local:DownloadSpace/>
-            </TabItem>
-            <TabItem Header="{DynamicResource artists_recommend}" x:Name="RecommendTab">
-                <local:RecommendSpace/>
-            </TabItem>
-            <TabItem Header="{DynamicResource tools}">
-                <local:ToolSpace/>
-            </TabItem>
-            <TabItem Header="{DynamicResource setting}">
-                <!--<TabItem.Header>
+                <TabControl x:Name="MainTab" Grid.Row="2" Margin="10" BorderThickness="0" FontSize="13" Style="{DynamicResource TabControlStyle1}">
+                    <TabItem Header="{DynamicResource search}" BorderThickness="0">
+                        <local:SearchSpace/>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource download}" x:Name="DownloadTab">
+                        <local:DownloadSpace/>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource artists_recommend}" x:Name="RecommendTab">
+                        <local:RecommendSpace/>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource tools}">
+                        <local:ToolSpace/>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource setting}">
+                        <!--<TabItem.Header>
                         <materialDesign:Badged Badge="3">
                            설정
                         </materialDesign:Badged>
                     </TabItem.Header>-->
-                <local:SettingSpace/>
-            </TabItem>
-            <TabItem IsEnabled="False" HorizontalAlignment="Stretch"/>
-        </TabControl>
+                        <local:SettingSpace/>
+                    </TabItem>
+                    <TabItem IsEnabled="False" HorizontalAlignment="Stretch"/>
+                </TabControl>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
