@@ -254,6 +254,16 @@ namespace Koromo_Copy_UX.Domain
                     }));
                     break;
 
+                case "valid":
+
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(
+                    delegate
+                    {
+                        ZipIntegrity zi = new ZipIntegrity();
+                        zi.Show();
+                    }));
+                    break;
+
                 default:
                     Console.Instance.WriteLine($"'{args[0]}' window is not found.");
                     break;

@@ -401,6 +401,9 @@
     <Compile Include="Utility\ZipArtists\ZipArtistsToolTransform.xaml.cs">
       <DependentUpon>ZipArtistsToolTransform.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ZipIntegrity.xaml.cs">
+      <DependentUpon>ZipIntegrity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ZipListing.xaml.cs">
       <DependentUpon>ZipListing.xaml</DependentUpon>
     </Compile>
@@ -760,6 +763,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utility\ZipArtists\ZipArtistsToolTransform.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utility\ZipIntegrity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
