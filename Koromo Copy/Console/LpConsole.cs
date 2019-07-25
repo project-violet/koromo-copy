@@ -210,7 +210,7 @@ namespace Koromo_Copy.Console
 
             gen.PushStarts(E);
             gen.PrintProductionRules();
-            gen.GenerateLALR();
+            gen.GenerateLALR2();
             gen.PrintStates();
             gen.PrintTable();
 
