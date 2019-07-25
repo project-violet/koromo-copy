@@ -14,7 +14,36 @@ using System.Threading.Tasks;
 
 namespace Koromo_Copy.Algorithm
 {
-    public class DisjointSet<T>
+    public class DisjointSet
     {
+        int[] array;
+
+        public DisjointSet(int N)
+        {
+            array = Enumerable.Range(0, N).ToArray();
+        }
+
+        public int Find(int x)
+        {
+            if (array[x] == x) return x;
+            return array[x] = Find(x);
+        }
+        
+        public void Union(int a, int b)
+        {
+            int aa = Find(a);
+            int bb = Find(b);
+
+            if (aa == bb) return;
+
+            if (aa > bb)
+            {
+                array[aa] = bb;
+            }
+            else
+            {
+                array[bb] = aa;
+            }
+        }
     }
 }
