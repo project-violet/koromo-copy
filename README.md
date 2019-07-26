@@ -8,9 +8,13 @@
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
-## 개발 계획
+## E-Hentai 사태에 따른 개발 방향
 
-https://github.com/dc-koromo/koromo-copy/blob/master/Document/Plan.md
+앞으로 다운로드된 작품들을 관리하는 방향으로 프로그램을 다듬는데 주력할 계획입니다.
+
+새로운 보금자리가 마련될때까지 한동안 히토미 관련 다운로더 업데이트는 없습니다.
+
+코로모 카피 히토미 다운로더를 이용해주신 모든분께 감사의 말씀드립니다.
 
 ## 최신 릴리즈 Latest Release (2019/06/21)
 
