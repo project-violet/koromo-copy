@@ -16,6 +16,13 @@ https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
 코로모 카피 히토미 다운로더를 이용해주신 모든분께 감사의 말씀드립니다.
 
+## Are you having problems?
+
+Create Github Issues or Send E-Mail to us.
+
+`koromo.software@gmail.com`
+
+
 ## 최신 릴리즈 Latest Release (2019/06/21)
 
 Koromo Copy 1.11.7111.34827 Beta
