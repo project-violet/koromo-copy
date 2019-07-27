@@ -19,6 +19,7 @@ using Koromo_Copy.Utility.Develop;
 using Koromo_Copy.Wrapper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -188,6 +189,12 @@ namespace Koromo_Copy.Console.Utility
                 case "ydl":
                     ydlWrapper.download();
                     ydlWrapper.test();
+                    break;
+
+                case "stack":
+                    StackTrace st = new StackTrace();
+
+                    Console.Instance.WriteLine(st.ToString());
                     break;
             }
         }

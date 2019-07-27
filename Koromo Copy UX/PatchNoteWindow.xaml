@@ -70,23 +70,22 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.11 Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.12 Patch Note 요약</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 검색창에서 그룹명과 캐릭터가 표시되지 않던 버그 수정"/>
+                        <Run Text=" - EX-Hentai 모듈 삭제"/>
+                        <LineBreak/>
+                        <Run Text="   https://github.com/dc-koromo/e-archive 여기서 익헨 백업본을 확인할 수 있습니다."/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 히토미 데이터 저장방식 변경"/>
+                        <Run Text=" - 북마크 기능 추가"/>
                         <LineBreak/>
-                        <Run Text="   데이터 로딩시간이 빨라지고, 메모리 사용량이 줄어듭니다."/>
-                        <LineBreak/>
-                        <Run Text="   이제 데이터 최적화 옵션을 꺼도 많은 메모리를 사용하지 않습니다."/>
+                        <Run Text="   도구 및 유틸리티에서 확인할 수 있습니다."/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 여름 개발 계획"/>
+                        <Run Text=" - TimeoutInfinite 설정이 강제로 활성화됩니다."/>
                         <LineBreak/>
-                        <Run Text="  "/>
-                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/blob/master/Document/Plan.md">https://github.com/dc-koromo/koromo-copy/blob/master/Document/Plan.md</Hyperlink>
+                        <Run Text="   이 조치는 히토미 다운로더 중지현상을 완화할 수 있습니다."/>
                         <LineBreak/>
                         <LineBreak/>
                         <Run Text=" 자세한 업데이트 내역은 커밋이나 설정->업데이트를 참고하세요."/>
