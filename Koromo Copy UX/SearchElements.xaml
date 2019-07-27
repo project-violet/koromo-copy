@@ -126,7 +126,12 @@
             </Image.Resources>
             <Image.ToolTip>
                 <ToolTip x:Name="ImageToolTip" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-                    <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
+                    <Border BorderThickness="5">
+                        <Border.Effect>
+                            <DropShadowEffect x:Name="DropShadow" Color="Black" BlurRadius="5" ShadowDepth="0" Direction="270" Opacity="0.2"/>
+                        </Border.Effect>
+                        <Image x:Name="ToolTipImage" Source="{Binding Source}" Stretch="Uniform"  MaxHeight="500" MaxWidth="500" />
+                    </Border> 
                 </ToolTip>
             </Image.ToolTip>
         </Image>

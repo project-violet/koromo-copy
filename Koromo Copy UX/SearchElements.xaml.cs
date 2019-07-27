@@ -12,6 +12,7 @@ using Koromo_Copy.Component.EH;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
+using Koromo_Copy_UX.Domain;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
