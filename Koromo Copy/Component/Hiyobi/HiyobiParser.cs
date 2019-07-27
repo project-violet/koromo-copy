@@ -30,8 +30,8 @@ namespace Koromo_Copy.Component.Hiyobi
             document.LoadHtml(html);
             HtmlNode node = document.DocumentNode.SelectNodes("//main/div")[0];
 
-            article.Magic = node.SelectSingleNode("./a").GetAttributeValue("href", "").Split('/')[2];
-            article.Thumbnail = node.SelectSingleNode("./a/img").GetAttributeValue("src", "");
+            //article.Magic = node.SelectSingleNode("./a").GetAttributeValue("href", "").Split('/')[2];
+            article.Thumbnail = "https://hiyobi.me" + node.SelectSingleNode(".//img").GetAttributeValue("src", "");
 
             var span = node.SelectSingleNode("./span");
             article.Title = span.SelectSingleNode("./h5/a/b").InnerText;

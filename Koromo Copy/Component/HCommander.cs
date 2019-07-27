@@ -67,6 +67,11 @@ namespace Koromo_Copy.Component
         public string[] misc;
     }
 
+    public class HServerRoute
+    {
+
+    }
+
     /// <summary>
     /// E Hentai 미러 웹 사이트들에 대한 지원을 제공합니다.
     /// </summary>
@@ -89,26 +94,26 @@ namespace Koromo_Copy.Component
             // 1. 히토미 데이터로 찾기
             //
             var search_hitomi = HitomiLegalize.GetMetadataFromMagic(magic);
-            if (search_hitomi.HasValue)
-            {
-                // 히토미 데이터가 존재한다면 데이터의 유효 여부를 판단한다.
-                try
-                {
-                    var url = $"https://hitomi.la/galleries/{magic}.html";
-                    var request = WebRequest.Create(url);
-                    using (var response = request.GetResponse())
-                    {
-                        using (var responseStream = response.GetResponseStream())
-                        {
-                            // 최종 승인
-                            return ConvertTo(search_hitomi.Value, url, magic);
-                        }
-                    }
-                }
-                catch
-                {
-                }
-            }
+            //if (search_hitomi.HasValue)
+            //{
+            //    // 히토미 데이터가 존재한다면 데이터의 유효 여부를 판단한다.
+            //    try
+            //    {
+            //        var url = $"https://hitomi.la/galleries/{magic}.html";
+            //        var request = WebRequest.Create(url);
+            //        using (var response = request.GetResponse())
+            //        {
+            //            using (var responseStream = response.GetResponseStream())
+            //            {
+            //                // 최종 승인
+            //                return ConvertTo(search_hitomi.Value, url, magic);
+            //            }
+            //        }
+            //    }
+            //    catch
+            //    {
+            //    }
+            //}
 
             Monitor.Instance.Push($"[HCommander] [2] {magic}");
 
@@ -121,7 +126,9 @@ namespace Koromo_Copy.Component
                 {
                     var html = NetCommon.DownloadString(HiyobiCommon.GetInfoAddress(magic));
                     var article = HiyobiParser.ParseGalleryConents(html);
-                    return ConvertTo(article, HiyobiCommon.GetInfoAddress(magic), magic);
+                    var result = ConvertTo(article, HiyobiCommon.GetInfoAddress(magic), magic);
+                    result.ArticleType = HArticleType.Hiyobi;
+                    return result;
                 }
                 catch
                 {
