@@ -221,6 +221,7 @@
     <Compile Include="LP\LLParserGenerator.cs" />
     <Compile Include="LP\LPKor.cs" />
     <Compile Include="LP\ParserGenerator.cs" />
+    <Compile Include="LP\PartialParser.cs" />
     <Compile Include="LP\ScannerGenerator.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="Net\DownloadGroup.cs" />
