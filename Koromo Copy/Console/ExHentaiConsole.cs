@@ -294,6 +294,8 @@ namespace Koromo_Copy.Console
 
         static void ProcessExtract()
         {
+            var xxx = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive.json"));
+
             const string archive = @"E:\2019\e-archive";
             var ix = new FileIndexor();
             Task.Run(async () => await ix.ListingDirectoryAsync(archive)).Wait();
