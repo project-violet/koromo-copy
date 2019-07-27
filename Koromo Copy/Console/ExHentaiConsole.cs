@@ -8,9 +8,11 @@
 
 using Koromo_Copy.Component.EH;
 using Koromo_Copy.Component.Hitomi;
+using Koromo_Copy.Fs;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +20,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Koromo_Copy.Console
 {
@@ -45,6 +49,8 @@ namespace Koromo_Copy.Console
         public bool Hashing;
         [CommandLine("-xxx", CommandType.OPTION, Help = "?")]
         public bool XXX;
+        [CommandLine("-extract", CommandType.OPTION, Help = "?")]
+        public bool Extract;
     }
 
     /// <summary>
@@ -93,6 +99,10 @@ namespace Koromo_Copy.Console
             else if (option.XXX)
             {
                 ProcessXXX();
+            }
+            else if (option.Extract)
+            {
+                ProcessExtract();
             }
             
             return true;
@@ -280,6 +290,58 @@ namespace Koromo_Copy.Console
                     builder.Append("\r\n        ");
             }
             Console.Instance.WriteLine(builder.ToString());
+        }
+
+        static void ProcessExtract()
+        {
+            const string archive = @"E:\2019\e-archive";
+            var ix = new FileIndexor();
+            Task.Run(async () => await ix.ListingDirectoryAsync(archive)).Wait();
+
+            var htmls = new List<string>();
+            ix.Enumerate((string path, List<FileInfo> files) =>
+            {
+                files.ForEach(x => htmls.Add(x.FullName));
+            });
+
+            var result = new List<EHentaiResultArticle>();
+
+            using (var progressBar = new Console.ConsoleProgressBar())
+            {
+                int x = 0;
+                foreach (var html in htmls)
+                {
+                    var content = File.ReadAllText(html);
+                    try
+                    {
+                        var exh = ExHentaiParser.ParseResultPageExtendedListView(content);
+                        //Console.Instance.WriteLine("[GET] " + exh.Count + " Articles! - " + html);
+                        result.AddRange(exh);
+                        if (exh.Count != 25)
+                        {
+                            Console.Instance.WriteLine("[Miss] " + html);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Instance.WriteLine("[Fail] " + html);
+                    }
+                    x++;
+                    progressBar.SetProgress(x / (float)htmls.Count * 100);
+                }
+            }
+
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+            Monitor.Instance.Push("Write file: ex-hentai-archive.json");
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "ex-hentai-archive.json")))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, result);
+            }
         }
     }
 }
