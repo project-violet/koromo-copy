@@ -14,6 +14,7 @@ using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,11 +55,15 @@ namespace Koromo_Copy_UX.Utility
             try
             {
                 original_url = URLText.Text;
-                root_url = string.Join("/",URLText.Text.Split(new char[] { '/' },4),0,3);
-                
+                try { root_url = string.Join("/", URLText.Text.Split(new char[] { '/' }, 4), 0, 3); } catch { }
+
                 if (driverCheck.IsChecked == false)
                 {
-                    var html = NetCommon.DownloadString(URLText.Text);
+                    string html;
+                    if (!File.Exists(URLText.Text))
+                        html = NetCommon.DownloadString(URLText.Text);
+                    else
+                        html = File.ReadAllText(URLText.Text);
                     tree = new HtmlTree(html);
                     tree.BuildTree();
                     HTMLList.DataContext = new CustomCrawlerDataGridViewModel(GetLoadResults());
