@@ -834,10 +834,13 @@ namespace Koromo_Copy.Script.SRCAL
                     error_message.Add(Tuple.Create(v1.Line, v1.Column, msg));
                     throw new Exception(msg);
                 }
+                var referer = v.ContentString;
                 v.ContentString = v1.ContentString;
                 variable_update(v);
                 info_message.Add(Tuple.Create(func.Line, func.Column, $"download request html {v.ContentString}"));
-                current_html = Net.NetCommon.DownloadString(v.ContentString);
+                var client = Net.NetCommon.GetDefaultClient();
+                client.Headers.Add(System.Net.HttpRequestHeader.Referer, referer);
+                current_html = client.DownloadString(v.ContentString);
                 variable_update(new SRCALParser.CDLVar { Name = "$RequestHtml", Type = SRCALParser.CDLVar.CDLVarType.String, ContentString = current_html });
             }
             else if (func.ContentFunctionName == "$AppendImage")
