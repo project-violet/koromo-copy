@@ -1538,7 +1538,7 @@ namespace Koromo_Copy.LP
 
                     if (shift_tokens.ContainsKey(tuple.Item1))
                     {
-#if !DEBUG
+#if false
                         print_header("SHIFT-REDUCE CONFLICTS");
                         GlobalPrinter.Append($"Shift-Reduce Conflict! {(tuple.Item1 == -1 ? "$" : production_rules[tuple.Item1].production_name)}\r\n");
                         GlobalPrinter.Append($"States: {ms.Key} {small_shift_info[shift_tokens[tuple.Item1]].Item2}\r\n");
