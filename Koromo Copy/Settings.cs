@@ -168,7 +168,11 @@ namespace Koromo_Copy
                 FixSettings();
             }
             model.LatestAccessTime = DateTime.Now;
+#if true
+            model.Net.TimeoutInfinite = true;
+#endif
             Save();
+
         }
 
         public void FixSettings()

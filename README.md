@@ -23,11 +23,11 @@ Create Github Issues or Send E-Mail to us.
 `koromo.software@gmail.com`
 
 
-## 최신 릴리즈 Latest Release (2019/06/21)
+## 최신 릴리즈 Latest Release (2019/07/28)
 
-Koromo Copy 1.11.7111.34827 Beta
+Koromo Copy 1.12.7148.1227 Beta
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/1.11.7111.34827
+https://github.com/dc-koromo/koromo-copy/releases/tag/1.12.7148.1227
 
 ![hitomi history](Document/Images/1.png)
 
