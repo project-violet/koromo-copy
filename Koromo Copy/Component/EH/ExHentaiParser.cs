@@ -270,10 +270,14 @@ namespace Koromo_Copy.Component.EH
 
             var document = new HtmlDocument();
             document.LoadHtml(html);
-            var nodes = document.DocumentNode.SelectNodes("//table[@class='itg glte']/tbody");
 
-            foreach (var node in nodes)
+            Queue<HtmlNode> nodes = new Queue<HtmlNode>();
+            var fn = document.DocumentNode.SelectNodes("//table[@class='itg glte']/tr");
+            fn.ToList().ForEach(x => nodes.Enqueue(x));
+
+            while (nodes.Count != 0)
             {
+                var node = nodes.Dequeue();
                 try
                 {
                     var article = new EHentaiResultArticle();
@@ -281,7 +285,7 @@ namespace Koromo_Copy.Component.EH
                     article.URL = node.SelectSingleNode(".//a").GetAttributeValue("href", "");
                     try { article.Thumbnail = node.SelectSingleNode(".//img").GetAttributeValue("src", ""); } catch { }
 
-                    var g13 = node.SelectSingleNode(".//div[@class='g13e']");
+                    var g13 = node.SelectSingleNode("./td[2]/div/div");
 
                     article.Type = g13.SelectSingleNode("./div").InnerText.ToLower();
                     article.Published = g13.SelectSingleNode("./div[2]").InnerText;
@@ -292,27 +296,37 @@ namespace Koromo_Copy.Component.EH
 
                     article.Title = gref.SelectSingleNode("./div").InnerText;
 
-                    var desc = gref.SelectNodes("./div/table/tbody");
-                    var desc_dic = new Dictionary<string, List<string>>();
+                    if (article.Title.Contains("느와카나"))
+                        ;
 
-                    foreach (var nn in desc)
+                    try
                     {
-                        var cont = nn.SelectSingleNode("./td").InnerText.Trim();
-                        cont = cont.Remove(cont.Length - 1);
+                        var desc = gref.SelectNodes("./div//tr");
+                        var desc_dic = new Dictionary<string, List<string>>();
 
-                        var cc = new List<string>();
-
-                        foreach (var ccc in nn.SelectNodes("./td[2]"))
+                        foreach (var nn in desc)
                         {
-                            cc.Add(ccc.InnerText);
+                            var cont = nn.SelectSingleNode("./td").InnerText.Trim();
+                            cont = cont.Remove(cont.Length - 1);
+
+                            var cc = new List<string>();
+
+                            foreach (var ccc in nn.SelectNodes("./td[2]//div"))
+                            {
+                                cc.Add(ccc.InnerText);
+                            }
+
+                            desc_dic.Add(cont, cc);
                         }
 
-                        desc_dic.Add(cont, cc);
+                        article.Descripts = desc_dic;
                     }
-
-                    article.Descripts = desc_dic;
-                    
+                    catch { }
                     result.Add(article);
+
+                    var next = node.SelectNodes("./tr");
+                    if (next != null)
+                        next.ToList().ForEach(x => nodes.Enqueue(x));
                 }
                 catch { }
             }
