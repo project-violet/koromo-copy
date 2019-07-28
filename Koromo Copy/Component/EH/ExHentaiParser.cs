@@ -357,6 +357,8 @@ namespace Koromo_Copy.Component.EH
 
                 article.Type = node.SelectSingleNode("./td/div").InnerText.Trim().ToLower();
                 article.Thumbnail = node.SelectSingleNode(".//img").GetAttributeValue("src", "");
+                if (article.Thumbnail.StartsWith("data"))
+                    article.Thumbnail = node.SelectSingleNode(".//img").GetAttributeValue("data-src", "");
                 article.Published = node.SelectSingleNode("./td[2]/div[2]/div[2]/div[1]/div[2]").InnerText.Trim();
                 article.Files = node.SelectSingleNode("./td[2]/div[2]/div[2]/div[2]/div[2]").InnerText.Trim();
 

@@ -53,6 +53,8 @@ namespace Koromo_Copy.Console
         public bool Extract;
         [CommandLine("-extract2", CommandType.OPTION, Help = "?")]
         public bool Extract2;
+        [CommandLine("-extract3", CommandType.OPTION, Help = "?")]
+        public bool Extract3;
     }
 
     /// <summary>
@@ -109,6 +111,10 @@ namespace Koromo_Copy.Console
             else if (option.Extract2)
             {
                 ProcessExtract2();
+            }
+            else if (option.Extract3)
+            {
+                ProcessExtract3();
             }
 
             return true;
@@ -392,6 +398,25 @@ namespace Koromo_Copy.Console
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 serializer.Serialize(writer, result);
+            }
+        }
+
+        static void ProcessExtract3()
+        {
+            var xxx = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive.json"));
+            var yyy = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive2.json"));
+
+            xxx.AddRange(yyy);
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+            Monitor.Instance.Push("Write file: ex-hentai-archive3.json");
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "ex-hentai-archive3.json")))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, xxx);
             }
         }
     }
