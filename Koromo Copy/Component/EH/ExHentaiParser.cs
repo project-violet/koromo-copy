@@ -333,5 +333,41 @@ namespace Koromo_Copy.Component.EH
 
             return result;
         }
+
+        /// <summary>
+        /// 결과 페이지를 분석합니다.
+        /// ex: https://exhentai.org/?inline_set=dm_m
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public static List<EHentaiResultArticle> ParseResultPageMinimalListView(string html)
+        {
+            var result = new List<EHentaiResultArticle>();
+
+            var document = new HtmlDocument();
+            document.LoadHtml(html);
+            
+            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes("//table[@class='itg gltm']/tr");
+            
+            for (int i = 1; i < nodes.Count; i++)
+            {
+                var node = nodes[i];
+
+                var article = new EHentaiResultArticle();
+
+                article.Type = node.SelectSingleNode("./td/div").InnerText.Trim().ToLower();
+                article.Thumbnail = node.SelectSingleNode(".//img").GetAttributeValue("src", "");
+                article.Published = node.SelectSingleNode("./td[2]/div[2]/div[2]/div[1]/div[2]").InnerText.Trim();
+                article.Files = node.SelectSingleNode("./td[2]/div[2]/div[2]/div[2]/div[2]").InnerText.Trim();
+
+                article.URL = node.SelectSingleNode("./td[4]/a").GetAttributeValue("href", "");
+                article.Title = node.SelectSingleNode("./td[4]/a/div").InnerText.Trim();
+                article.Uploader = node.SelectSingleNode("./td[6]/div/a").InnerText.Trim();
+
+                result.Add(article);
+            }
+
+            return result;
+        }
     }
 }

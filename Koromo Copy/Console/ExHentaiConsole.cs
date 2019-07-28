@@ -51,6 +51,8 @@ namespace Koromo_Copy.Console
         public bool XXX;
         [CommandLine("-extract", CommandType.OPTION, Help = "?")]
         public bool Extract;
+        [CommandLine("-extract2", CommandType.OPTION, Help = "?")]
+        public bool Extract2;
     }
 
     /// <summary>
@@ -104,7 +106,11 @@ namespace Koromo_Copy.Console
             {
                 ProcessExtract();
             }
-            
+            else if (option.Extract2)
+            {
+                ProcessExtract2();
+            }
+
             return true;
         }
 
@@ -340,6 +346,49 @@ namespace Koromo_Copy.Console
 
             Monitor.Instance.Push("Write file: ex-hentai-archive.json");
             using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "ex-hentai-archive.json")))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, result);
+            }
+        }
+
+        static void ProcessExtract2()
+        {
+            const string target = @"e-parse-fail.txt";
+            var lines = File.ReadAllLines(target);
+
+            var result = new List<EHentaiResultArticle>();
+
+            using (var progressBar = new Console.ConsoleProgressBar())
+            {
+                int x = 0;
+                foreach (var line in lines)
+                {
+                    var fn = line.Replace("[Fail] ", "");
+                    var content = File.ReadAllText(fn);
+
+                    try
+                    {
+                        var exh = ExHentaiParser.ParseResultPageMinimalListView(content);
+                        Console.Instance.WriteLine("[GET] " + exh.Count + " Articles! - " + fn);
+                        result.AddRange(exh);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Instance.WriteLine("[Fail] " + fn);
+                    }
+
+                    x++;
+                    progressBar.SetProgress(x / (float)lines.Length * 100);
+                }
+            }
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+            Monitor.Instance.Push("Write file: ex-hentai-archive2.json");
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "ex-hentai-archive2.json")))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 serializer.Serialize(writer, result);
