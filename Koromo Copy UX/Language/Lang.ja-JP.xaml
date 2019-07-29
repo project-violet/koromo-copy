@@ -12,6 +12,7 @@
                   Main Window Component Tokens
     -->
     <system:String x:Key="search">検索</system:String>
+    <system:String x:Key="stop">停止</system:String>
     <system:String x:Key="download">ダウンロード</system:String>
     <system:String x:Key="artists_recommend">作家推薦</system:String>
     <system:String x:Key="tools">ツール</system:String>
