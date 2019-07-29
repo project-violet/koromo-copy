@@ -194,14 +194,14 @@ namespace Koromo_Copy_UX
                 int start_element = 0;
                 int count_element = 0;
 
-                if (content.Contains('/'))
+                if (content.Split(' ').Any(x => x.StartsWith("/")))
                 {
                     var elem = content.Split(' ').Where(x => x.StartsWith("/")).ElementAt(0);
                     start_element = Convert.ToInt32(elem.Substring(1));
                     content = content.Replace(elem, " ");
                 }
 
-                if (content.Contains('?'))
+                if (content.Split(' ').Any(x => x.StartsWith("?")))
                 {
                     var elem = content.Split(' ').Where(x => x.StartsWith("?")).ElementAt(0);
                     count_element = Convert.ToInt32(elem.Substring(1));
@@ -307,7 +307,7 @@ namespace Koromo_Copy_UX
                 load_cancel = true;
 
             var search = SearchText.Text;
-            if (search.Contains('/'))
+            if (search.Split(' ').Any(x => x.StartsWith("/")))
             {
                 var elem = search.Split(' ').Where(x => x.StartsWith("/")).ElementAt(0);
                 var start_element = Convert.ToInt32(elem.Substring(1));
