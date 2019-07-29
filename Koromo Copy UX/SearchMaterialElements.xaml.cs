@@ -146,7 +146,7 @@ namespace Koromo_Copy_UX
                     ImageCount.Text = ha.ImagesLink.Count + " Pages";
                     Image.Source = BitmapImage;
                     
-                    if (ha.Artists != null)
+                    if (ha.Artists != null && ha.Artists[0].ToUpper() != "N/A")
                     {
                         var stack = new StackPanel { Orientation = Orientation.Horizontal };
                         stack.Children.Add(new PackIcon { Kind = PackIconKind.Artist, Opacity = .56 });
@@ -160,7 +160,7 @@ namespace Koromo_Copy_UX
                         }
                         Menu.Items.Add(menu_item);
                     }
-                    if (ha.Groups != null)
+                    if (ha.Groups != null && ha.Groups[0].ToUpper() != "N/A")
                     {
                         var stack = new StackPanel { Orientation = Orientation.Horizontal };
                         stack.Children.Add(new PackIcon { Kind = PackIconKind.UserGroup, Opacity = .56 });
