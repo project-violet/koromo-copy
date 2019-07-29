@@ -200,7 +200,8 @@ namespace Koromo_Copy_UX
                     var har = HCommander.GetArticleData(Convert.ToInt32(ha.Magic));
                     if (!har.HasValue)
                     {
-                        MessageBox.Show($"{ha.Magic}를 찾을 수 없습니다. 이 항목은 히요비, 이헨, 익헨 어디에도 없었습니다. 프로그램 제작자에게 문의하세요.", "Koromo copy", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Koromo_Copy.Console.Console.Instance.WriteErrorLine($"Cannot find '{ha.Magic}'! This item was not found in Hiyobi, Ex-Hentai, and Hitomi. Contact to the developer.\r\n" +
+                            "Run program as an administrator, or use a DPI program or VPN.");
                         return;
                     }
                     ha.UnstableModel = har.Value;
