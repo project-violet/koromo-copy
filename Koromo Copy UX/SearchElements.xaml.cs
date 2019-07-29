@@ -269,7 +269,7 @@ namespace Koromo_Copy_UX
 
             if (tag == "FindArtist")
             {
-                if (ha.Artists != null && ha.Artists[0] != "N/A")
+                if (ha.Artists != null && ha.Artists[0].ToUpper() != "N/A")
                 {
                     ArtistViewerWindow avw = new ArtistViewerWindow(ha.Artists[0]);
                     avw.Show();
@@ -277,7 +277,7 @@ namespace Koromo_Copy_UX
             }
             else if (tag == "FindGroup")
             {
-                if (ha.Groups != null)
+                if (ha.Groups != null && ha.Groups[0].ToUpper() != "N/A")
                 {
                     GroupViewerWindow avw = new GroupViewerWindow(ha.Groups[0]);
                     avw.Show();
