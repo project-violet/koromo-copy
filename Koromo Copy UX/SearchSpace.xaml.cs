@@ -236,6 +236,7 @@ namespace Koromo_Copy_UX
                 if (count_element != 0 && count_element < result.Count) result.RemoveRange(count_element, result.Count - count_element);
                 
                 SearchCount.Text = $"{FindResource("searched")}: {(result.Count != 0 ? result.Count.ToString("#,#") : "0")}{(FindResource("count_postfix"))}";
+                SearchButton.Content = $"{FindResource("stop")}";
                 _ = Task.Run(() => LoadThumbnail(result));
             }
             catch
@@ -244,14 +245,39 @@ namespace Koromo_Copy_UX
             }
         }
 
+        int load_count = 0;
+        object load_lock = new object();
+        bool load_cancel = false;
+        bool loading = false;
         private void LoadThumbnail(List<HitomiIndexMetadata> md)
         {
             List<Task> task = new List<Task>();
+            load_count = 0;
+            lock (load_lock)
+            {
+                load_cancel = false;
+                loading = true;
+            }
             foreach (var metadata in md)
             {
                 Task.Run(() => LoadThumbnail(metadata));
+                Interlocked.Increment(ref load_count);
+                Application.Current.Dispatcher.Invoke(new Action(
+                delegate
+                {
+                    SearchCount.Text = $"{FindResource("searched")}: {load_count}/{(md.Count != 0 ? md.Count.ToString("#,#") : "0")}{(FindResource("count_postfix"))}";
+                }));
+                lock (load_lock) if (load_cancel) break;
                 Thread.Sleep(100);
+                lock (load_lock) if (load_cancel) break;
             }
+            lock (load_lock)
+                loading = false;
+            Application.Current.Dispatcher.Invoke(new Action(
+            delegate
+            {
+                SearchButton.Content = $"{FindResource("search")}";
+            }));
         }
 
         private void LoadThumbnail(HitomiIndexMetadata md)
@@ -275,13 +301,37 @@ namespace Koromo_Copy_UX
             }));
         }
 
+        private void StopLoad()
+        {
+            lock (load_lock)
+                load_cancel = true;
+
+            var search = SearchText.Text;
+            if (search.Contains('/'))
+            {
+                var elem = search.Split(' ').Where(x => x.StartsWith("/")).ElementAt(0);
+                var start_element = Convert.ToInt32(elem.Substring(1));
+                SearchText.Text = string.Join(" ", search.Split(' ').Where(x => !x.StartsWith("/"))) + $" /{start_element + load_count}";
+            }
+            else
+            {
+                SearchText.Text += $" /{load_count}";
+            }
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var tag = (sender as Button).Tag.ToString();
 
             if (tag == "Search" && IsMetadataLoaded)
             {
-                AppendAsync(SearchText.Text);
+                lock (load_lock)
+                {
+                    if (!loading)
+                        AppendAsync(SearchText.Text);
+                    else
+                        StopLoad();
+                }
             }
             else if (tag == "Tidy")
             {
