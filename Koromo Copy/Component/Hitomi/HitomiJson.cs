@@ -7,6 +7,7 @@
 ***/
 
 using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace Koromo_Copy.Component.Hitomi
@@ -47,10 +48,17 @@ namespace Koromo_Copy.Component.Hitomi
 
         public void Save()
         {
-            string json = JsonConvert.SerializeObject(model, Formatting.Indented);
-            using (var fs = new StreamWriter(new FileStream(path, FileMode.Create, FileAccess.Write)))
+            try
             {
-                fs.Write(json);
+                string json = JsonConvert.SerializeObject(model, Formatting.Indented);
+                using (var fs = new StreamWriter(new FileStream(path, FileMode.Create, FileAccess.Write)))
+                {
+                    fs.Write(json);
+                }
+            }
+            catch (Exception e)
+            {
+                Monitor.Instance.Push("[Hitomi Json] Skip save json. Fail " + e.Message);
             }
         }
 
