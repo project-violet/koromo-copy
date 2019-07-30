@@ -70,6 +70,9 @@ namespace Koromo_Copy_UX.Tools
                 case "Bookmark":
                     (new Bookmark()).Show();
                     break;
+                case "Integrity":
+                    (new ZipIntegrity()).Show();
+                    break;
 
                 case "HitomiExplorer":
                 case "FsEnumerator":

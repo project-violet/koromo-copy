@@ -240,6 +240,34 @@
                 </Grid>
             </Border>
 
+            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="압축 무결성 분석 도구 (Zip Integrity)" FontWeight="SemiBold" FontSize="14"/>
+                        <TextBlock Text="Zip파일의 압축 무결성을 확인하고, 비정상적인 작품을 재다운로드할 수 있는 도구입니다." TextWrapping="Wrap" FontSize="13"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="Integrity" Click="Button_Click">
+                        <Button.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </Button.Resources>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Wand" Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
+                            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource run}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
             <TextBlock Margin="0 16 0 0" FontSize="20" Text="{DynamicResource unmanages}" FontWeight="Thin"/>
 
             <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 4 0 0">
