@@ -122,5 +122,7 @@
     <system:String x:Key="msg_download_complete">Download complete!</system:String>
     <system:String x:Key="msg_download_pause">Downloading Pause</system:String>
     <system:String x:Key="msg_download_resume">Downloading Resume</system:String>
+    <system:String x:Key="msg_wait_fucking_loading">Please try after all the thumbnails are loaded!</system:String>
+    <system:String x:Key="msg_wait_fucking_all_loading">Please try after the thumbnails of selected works have been loaded!</system:String>
 
 </ResourceDictionary>
