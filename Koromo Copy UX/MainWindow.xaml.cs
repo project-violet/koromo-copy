@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -59,6 +60,7 @@ namespace Koromo_Copy_UX
             GCLatencyMode oldMode = GCSettings.LatencyMode;
             RuntimeHelpers.PrepareConstrainedRegions();
             GCSettings.LatencyMode = GCLatencyMode.Batch;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback ( delegate { return true; } );
 
             Closing += MainWindow_Closing;
             KeyDown += SearchSpace_KeyDown;
