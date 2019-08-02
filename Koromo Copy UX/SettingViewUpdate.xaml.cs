@@ -139,6 +139,39 @@ namespace Koromo_Copy_UX
 
         private void UpdatePatchNotes()
         {
+            // 1.13
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.13 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 익헨 모듈 복구\r\n\r\n" +
+                    " - 검색 중지 기능 구현\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
+            // 1.12
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.12 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 북마크 기능 추가\r\n\r\n" +
+                    "[삭제된 기능]\r\n" +
+                    " - 익헨 모듈 삭제\r\n\r\n" +
+                    "[기능 조치]\r\n" +
+                    " - TimeoutInfinite 강제 활성화\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.11
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements
