@@ -181,56 +181,72 @@ namespace Koromo_Copy_UX
 
             if (btn.Tag.ToString() == "DownloadAll")
             {
-                int count = 0;
-                ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x =>
+                try
                 {
-                    var ha = x.Article as HitomiArticle;
-                    ha.Artists = new string[] { Artist };
-                    var prefix = HitomiCommon.MakeDownloadDirectory(ha);
-                    Directory.CreateDirectory(prefix);
-                    if (!ha.IsUnstable)
+                    int count = 0;
+                    ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().ForEach(x =>
                     {
-                        DownloadSpace.Instance.RequestDownload(x.Article.Title,
-                            x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
-                            x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
-                            Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
-                    }
-                    else
-                    {
-                        DownloaderHelper.ProcessUnstable(ha.UnstableModel);
-                    }
-                    count++;
-                });
-                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}{FindResource("msg_download_start")}");
-                MainWindow.Instance.Activate();
-                MainWindow.Instance.FocusDownload();
-                Close();
+                        var ha = x.Article as HitomiArticle;
+                        ha.Artists = new string[] { Artist };
+                        var prefix = HitomiCommon.MakeDownloadDirectory(ha);
+                        Directory.CreateDirectory(prefix);
+                        if (!ha.IsUnstable)
+                        {
+                            DownloadSpace.Instance.RequestDownload(x.Article.Title,
+                                x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
+                                x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                                Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
+                        }
+                        else
+                        {
+                            DownloaderHelper.ProcessUnstable(ha.UnstableModel);
+                        }
+                        count++;
+                    });
+                    if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}{FindResource("msg_download_start")}");
+                    MainWindow.Instance.Activate();
+                    MainWindow.Instance.FocusDownload();
+                    Close();
+                }
+                catch (Exception ex)
+                {
+                    Koromo_Copy.Monitor.Instance.Push("[Artist Viewer] " + ex.Message);
+                    MessageBox.Show($"{FindResource("msg_wait_fucking_loading")}", "Koromo Copy", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else if (btn.Tag.ToString() == "Download")
             {
-                int count = 0;
-                ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
+                try
                 {
-                    var ha = x.Article as HitomiArticle;
-                    ha.Artists = new string[] { Artist };
-                    var prefix = HitomiCommon.MakeDownloadDirectory(ha);
-                    Directory.CreateDirectory(prefix);
-                    if (!ha.IsUnstable)
+                    int count = 0;
+                    ArticlePanel.Children.OfType<SearchSimpleElements>().ToList().Where(x => x.Select).ToList().ForEach(x =>
                     {
-                        DownloadSpace.Instance.RequestDownload(x.Article.Title,
-                            x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
-                            x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
-                            Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
-                    }
-                    else
-                    {
-                        DownloaderHelper.ProcessUnstable(ha.UnstableModel);
-                    }
-                    count++;
-                });
-                if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}{FindResource("msg_download_start")}");
-                MainWindow.Instance.Activate();
-                MainWindow.Instance.FocusDownload();
+                        var ha = x.Article as HitomiArticle;
+                        ha.Artists = new string[] { Artist };
+                        var prefix = HitomiCommon.MakeDownloadDirectory(ha);
+                        Directory.CreateDirectory(prefix);
+                        if (!ha.IsUnstable)
+                        {
+                            DownloadSpace.Instance.RequestDownload(x.Article.Title,
+                                x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
+                                x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                                Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
+                        }
+                        else
+                        {
+                            DownloaderHelper.ProcessUnstable(ha.UnstableModel);
+                        }
+                        count++;
+                    });
+                    if (count > 0) MainWindow.Instance.FadeOut_MiddlePopup($"{count}{FindResource("msg_download_start")}");
+                    MainWindow.Instance.Activate();
+                    MainWindow.Instance.FocusDownload();
+                }
+                catch (Exception ex)
+                {
+                    Koromo_Copy.Monitor.Instance.Push("[Artist Viewer] " + ex.Message);
+                    MessageBox.Show($"{FindResource("msg_wait_fucking_all_loading")}", "Koromo Copy", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
         }
