@@ -124,6 +124,7 @@
     <Compile Include="Console\LPConsole.cs" />
     <Compile Include="Console\ScriptConsole.cs" />
     <Compile Include="Crypto\Hash.cs" />
+    <Compile Include="Devices\DeviceManager.cs" />
     <Compile Include="Elo\EloSystem.cs" />
     <Compile Include="Fs\Explorer.cs" />
     <Compile Include="Global.cs" />
