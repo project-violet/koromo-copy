@@ -60,7 +60,7 @@ namespace Koromo_Copy_UX
             GCLatencyMode oldMode = GCSettings.LatencyMode;
             RuntimeHelpers.PrepareConstrainedRegions();
             GCSettings.LatencyMode = GCLatencyMode.Batch;
-            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback ( delegate { return true; } );
+            //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback ( delegate { return true; } );
 
             Closing += MainWindow_Closing;
             KeyDown += SearchSpace_KeyDown;
