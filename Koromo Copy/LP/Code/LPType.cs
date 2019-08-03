@@ -20,17 +20,18 @@ namespace Koromo_Copy.LP.Code
         {
             t_notdetermine,
             t_void,
-            t_i8,
-            t_i16,
-            t_i32,
-            t_i64,
+            t_integer,
             t_bool,
             t_float,
             t_double,
-            t_ldouble,
             t_string,
+            t_array,
+            t_function,
         }
-
+        
         public TypeOption Type { get; set; }
+        public bool IsArray { get; set; }
+        public LPType ArrayType { get; set; }
+        public List<LPType> FunctionArgumentType { get; set; }
     }
 }

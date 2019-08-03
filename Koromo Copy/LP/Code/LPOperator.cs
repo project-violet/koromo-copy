@@ -23,7 +23,6 @@ namespace Koromo_Copy.LP.Code
         public LPBasicBlock Parent { get; set; }
         public LPFunction Function { get; set; }
         public LPModule Module { get; set; }
-        public LPDebugInfo DebugInfo { get; set; }
 
         public void RemoveFromParent()
         {
@@ -58,14 +57,56 @@ namespace Koromo_Copy.LP.Code
         }
     }
 
-    public abstract class LPUnaryOperator
+    public class LPUnaryOperator
         : LPOperator
     {
+        public enum UnaryOption
+        {
+            inc,   // ++
+            dec,   // --
+            index, // [~]
+            not,   // ~
+        }
+
+        public UnaryOption Option { get; set; }
+        public static LPUnaryOperator Create(UnaryOption option, LPUser operand1)
+        {
+            var lpuo = new LPUnaryOperator
+            {
+                Option = option
+            };
+            lpuo.operand.Add(operand1);
+            return lpuo;
+        }
     }
 
-    public abstract class LPBinaryOperator
+    public class LPBinaryOperator
         : LPOperator
     {
+        public enum BinaryOption
+        {
+            plus,
+            minus,
+            multiple,
+            divide,
+            modular,
+            and,
+            or,
+            xor,
+        }
+
+        public BinaryOption Option { get; set; }
+        public LPUser Operand { get { return operand[0]; } set { operand[0] = value; } }
+        public static LPBinaryOperator Create(BinaryOption option, LPUser operand1, LPUser operand2)
+        {
+            var lpbo = new LPBinaryOperator
+            {
+                Option = option
+            };
+            lpbo.operand.Add(operand1);
+            lpbo.operand.Add(operand2);
+            return lpbo;
+        }
     }
 
     public abstract class LPCompareOperator
@@ -92,11 +133,31 @@ namespace Koromo_Copy.LP.Code
         : LPCompareOperator
     {
         public LPUser Operand { get { return operand[0]; } set { operand[0] = value; } }
+
+        public static LPUnaryCompareOperator Create(CompareOption option, LPUser operand1)
+        {
+            var lpuco = new LPUnaryCompareOperator
+            {
+                Option = option
+            };
+            lpuco.operand.Add(operand1);
+            return lpuco;
+        }
     }
 
     public class LPBinaryCompareOperator
         : LPCompareOperator
     {
+        public static LPBinaryCompareOperator Create(CompareOption option, LPUser operand1, LPUser operand2)
+        {
+            var lpbco = new LPBinaryCompareOperator
+            {
+                Option = option
+            };
+            lpbco.operand.Add(operand1);
+            lpbco.operand.Add(operand2);
+            return lpbco;
+        }
     }
 
     public class LPBranchOperator
@@ -106,11 +167,41 @@ namespace Koromo_Copy.LP.Code
 
         public LPBasicBlock TrueBlock { get; set; }
         public LPBasicBlock FalseBlock { get; set; }
+
+        public bool IsJump { get; set; }
+
+        public static LPBranchOperator Create(LPCompareOperator comp, LPBasicBlock true_block, LPBasicBlock false_block)
+            => new LPBranchOperator { Comparator = comp, TrueBlock = true_block, FalseBlock = false_block };
+        public static LPBranchOperator Create(LPBasicBlock jump_block)
+            => new LPBranchOperator { TrueBlock = jump_block, IsJump = true };
     }
 
     public class LPCallOperator
         : LPOperator
     {
         public LPFunction Caller { get; set; }
+        public List<LPUser> Arguments { get; set; }
+
+        public static LPCallOperator Create(LPFunction function, List<LPUser> args)
+            => new LPCallOperator { Caller = function, Arguments = args };
+    }
+
+    public class LPStoreOperator
+        : LPOperator
+    {
+        public LPUser Value { get; set; }
+        public LPUser Pointer { get; set; }
+
+        public static LPStoreOperator Create(LPUser value, LPUser pointer)
+            => new LPStoreOperator { Value = value, Pointer = pointer };
+    }
+
+    public class LPLoadOperator
+        : LPOperator
+    {
+        public LPUser Value { get; set; }
+
+        public static LPStoreOperator Create(LPUser value)
+            => new LPStoreOperator { Value = value };
     }
 }

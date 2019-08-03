@@ -6,6 +6,7 @@
 
 ***/
 
+using Koromo_Copy.LP.Code;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -151,48 +152,79 @@ namespace Koromo_Copy.LP
             var _if = gen.CreateNewProduction("if");
             var _else = gen.CreateNewProduction("else");
 
-            script |= lines + ParserAction.Create(x => { });
-            script |= ParserGenerator.EmptyString + ParserAction.Create(x => { });
+            script |= lines + ParserAction.Create((m, f, b, x) => {
+                var module = new LPModule();
+                var sfunc = module.CreateFunction("start");
+                var bb = sfunc.CreateBasicBlock();
+                x.Childs[0].Action(module, sfunc, bb, x.Childs[0]);
+                x.UserContents = module;
+            });
+            script |= ParserGenerator.EmptyString + ParserAction.Create((m, f, b, x) => {
+                x.UserContents = new LPModule();
+            });
 
-            block |= pp_open + iblock + pp_close + ParserAction.Create(x => { });
-            block |= line + ParserAction.Create(x => { });
+            block |= pp_open + iblock + pp_close + ParserAction.Create((m, f, b, x) => { });
+            block |= line + ParserAction.Create((m, f, b, x) => { });
 
-            iblock |= block + ParserAction.Create(x => { });
-            iblock |= lines + ParserAction.Create(x => { });
-            iblock |= ParserGenerator.EmptyString + ParserAction.Create(x => { });
+            iblock |= block + ParserAction.Create((m, f, b, x) => { });
+            iblock |= lines + ParserAction.Create((m, f, b, x) => { });
+            iblock |= ParserGenerator.EmptyString + ParserAction.Create((m, f, b, x) => { });
 
-            line |= expr + ParserAction.Create(x => { });
+            line |= expr + ParserAction.Create((m, f, b, x) => { });
 
-            lines |= expr + ParserAction.Create(x => { });
-            lines |= expr + lines + ParserAction.Create(x => { });
+            lines |= expr + ParserAction.Create((m, f, b, x) => {
+                x.Childs[0].Action(m, f, b, x.Childs[0]);
+            });
+            lines |= expr + lines + ParserAction.Create((m, f, b, x) => {
+                x.Childs[0].Action(m, f, b, x.Childs[0]);
+                x.Childs[1].Action(m, f, b, x.Childs[1]);
+            });
 
-            expr |= function + ParserAction.Create(x => { });
-            expr |= name + equal + index + ParserAction.Create(x => { });
-            expr |= runnable + ParserAction.Create(x => { });
+            expr |= function + ParserAction.Create((m, f, b, x) => {
+                x.Childs[0].Action(m, f, b, x.Childs[0]);
+            });
+            expr |= name + equal + index + ParserAction.Create((m, f, b, x) => { });
+            expr |= runnable + ParserAction.Create((m, f, b, x) => { });
 
-            function |= name + op_open + op_close + ParserAction.Create(x => { });
-            function |= name + op_open + argument + op_close + ParserAction.Create(x => { });
+            function |= name + op_open + op_close + ParserAction.Create((m, f, b, x) => {
+                var caller = m.CreateFunction(x.Childs[0].Contents);
+                caller.IsExtern = true;
+                var ci = LPCallOperator.Create(caller, new List<LPUser>());
+                b.Insert(ci);
+                x.UserContents = ci;
+            });
+            function |= name + op_open + argument + op_close + ParserAction.Create((m, f, b, x) => {
+                var caller = m.CreateFunction(x.Childs[0].Contents);
+                caller.IsExtern = true;
+                x.Childs[2].Action(m, f, b, x);
+                var ci = LPCallOperator.Create(caller, x.Childs[2].UserContents as List<LPUser>);
+                b.Insert(ci);
+                x.UserContents = ci;
+            });
 
-            argument |= index + ParserAction.Create(x => { });
-            argument |= index + comma + argument + ParserAction.Create(x => { });
+            argument |= index + ParserAction.Create((m, f, b, x) => {
+                x.Childs[0].Action(m, f, b, x);
+                x.UserContents = new List<LPUser> { x.Childs[0].UserContents as LPUser };
+            });
+            argument |= index + comma + argument + ParserAction.Create((m, f, b, x) => { });
 
-            index |= variable + ParserAction.Create(x => { });
-            index |= variable + pp_open + variable + pp_close + ParserAction.Create(x => { });
-            index |= index + plus + index + ParserAction.Create(x => { });
-            index |= index + minus + index + ParserAction.Create(x => { });
-            index |= index + multiple + index + ParserAction.Create(x => { });
-            index |= index + divide + index + ParserAction.Create(x => { });
-            index |= minus + index + ParserAction.Create(x => { });
-            index |= op_open + index + op_close + ParserAction.Create(x => { });
+            index |= variable + ParserAction.Create((m, f, b, x) => { });
+            index |= variable + pp_open + variable + pp_close + ParserAction.Create((m, f, b, x) => { });
+            index |= index + plus + index + ParserAction.Create((m, f, b, x) => { });
+            index |= index + minus + index + ParserAction.Create((m, f, b, x) => { });
+            index |= index + multiple + index + ParserAction.Create((m, f, b, x) => { });
+            index |= index + divide + index + ParserAction.Create((m, f, b, x) => { });
+            index |= minus + index + ParserAction.Create((m, f, b, x) => { });
+            index |= op_open + index + op_close + ParserAction.Create((m, f, b, x) => { });
 
-            variable |= name + ParserAction.Create(x => { });
-            variable |= function + ParserAction.Create(x => { });
-            variable |= _const + ParserAction.Create(x => { });
+            variable |= name + ParserAction.Create((m, f, b, x) => { });
+            variable |= function + ParserAction.Create((m, f, b, x) => { });
+            variable |= _const + ParserAction.Create((m, f, b, x) => { x.UserContents = LPConstant.Create(x.Childs[0].Contents); });
 
-            runnable |= loop + op_open + name + equal + index + to + index + op_close + block + ParserAction.Create(x => { });
-            runnable |= _foreach + op_open + name + scolon + index + op_close + block + ParserAction.Create(x => { });
-            runnable |= _if + op_open + index + op_close + block + ParserAction.Create(x => { });
-            runnable |= _if + op_open + index + op_close + block + _else + block + ParserAction.Create(x => { });
+            runnable |= loop + op_open + name + equal + index + to + index + op_close + block + ParserAction.Create((m, f, b, x) => { });
+            runnable |= _foreach + op_open + name + scolon + index + op_close + block + ParserAction.Create((m, f, b, x) => { });
+            runnable |= _if + op_open + index + op_close + block + ParserAction.Create((m, f, b, x) => { });
+            runnable |= _if + op_open + index + op_close + block + _else + block + ParserAction.Create((m, f, b, x) => { });
 
             gen.PushConflictSolver(true, _else);
             gen.PushConflictSolver(true, new Tuple<ParserProduction, int>(runnable, 2));

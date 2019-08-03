@@ -20,5 +20,10 @@ namespace Koromo_Copy.LP.Code
         List<LPOperator> insts;
 
         public List<LPOperator> Childs { get { return insts; } }
+
+        public void Insert(LPOperator op)
+        {
+            insts.Add(op);
+        }
     }
 }

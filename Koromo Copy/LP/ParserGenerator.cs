@@ -7,6 +7,7 @@
 ***/
 
 using Koromo_Copy.Crypto;
+using Koromo_Copy.LP.Code;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,9 @@ namespace Koromo_Copy.LP
         public Action<ParsingTree.ParsingTreeNode> SemanticAction;
         public static ParserAction Create(Action<ParsingTree.ParsingTreeNode> action)
             => new ParserAction { SemanticAction = action };
+        public Action<LPModule, LPFunction, LPBasicBlock, ParsingTree.ParsingTreeNode> TravelAction;
+        public static ParserAction Create(Action<LPModule, LPFunction, LPBasicBlock, ParsingTree.ParsingTreeNode> action)
+            => new ParserAction { TravelAction = action };
     }
 
     public class ParserProduction
@@ -2543,6 +2547,7 @@ namespace Koromo_Copy.LP
             public int ProductionRuleIndex;
             public ParsingTreeNode Parent;
             public List<ParsingTreeNode> Childs;
+            public Action<LPModule, LPFunction, LPBasicBlock, ParsingTreeNode> Action;
 
             public static ParsingTreeNode NewNode()
                 => new ParsingTreeNode { Parent = null, Childs = new List<ParsingTreeNode>() };
@@ -2891,7 +2896,7 @@ namespace Koromo_Copy.LP
             reduction_parent.Childs = reduce_treenodes;
             treenode_stack.Push(reduction_parent);
             if (actions.Count != 0)
-                actions[reduction_parent.ProductionRuleIndex].SemanticAction(reduction_parent);
+                reduction_parent.Action = actions[reduction_parent.ProductionRuleIndex].TravelAction;
         }
         
         public static ShiftReduceParser FromString(string json)

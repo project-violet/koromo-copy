@@ -28,14 +28,28 @@ namespace Koromo_Copy.LP.Code
         string name;
         LPModule module;
 
+        public LPFunction(LPModule module, string name, LPType return_type, List<LPArgument> args)
+        {
+            blocks = new List<LPBasicBlock>();
+            arguments = args;
+            this.name = name;
+            this.return_type = return_type;
+            this.module = module;
+        }
+
         public List<LPBasicBlock> Childs { get { return blocks; } }
         public bool IsExtern { get; set; }
         public string Name { get; set; }
         public LPModule Module { get { return module; } }
+        public LPBasicBlock Entry { get { return blocks[0]; } }
+        public LPType ReturnType { get { return return_type; } }
+        public List<LPArgument> Arguments { get { return arguments; } }
 
-        public LPFunction(LPModule module)
+        public LPBasicBlock CreateBasicBlock()
         {
-            this.module = module;
+            var block = new LPBasicBlock();
+            blocks.Add(block);
+            return block;
         }
     }
 }
