@@ -218,8 +218,11 @@
     <Compile Include="LP\BNFParser.cs" />
     <Compile Include="LP\CALtoCS.cs" />
     <Compile Include="LP\Code\LPBasicBlock.cs" />
+    <Compile Include="LP\Code\LPBuilder.cs" />
     <Compile Include="LP\Code\LPConstant.cs" />
     <Compile Include="LP\Code\LPDebugInfo.cs" />
+    <Compile Include="LP\Code\LPExportC.cs" />
+    <Compile Include="LP\Code\LPExportCS.cs" />
     <Compile Include="LP\Code\LPFunction.cs" />
     <Compile Include="LP\Code\LPModule.cs" />
     <Compile Include="LP\Code\LPOperator.cs" />
