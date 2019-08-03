@@ -99,7 +99,7 @@ namespace Koromo_Copy.LP
     }
 
     #endregion
-    
+
     /// <summary>
     /// LR Parser Generator
     /// </summary>
@@ -171,7 +171,8 @@ namespace Koromo_Copy.LP
             nn.Add(nt);
             nt.sub_productions.Add(nn);
             nt.sub_productions.Add(new List<ParserProduction> { EmptyString });
-            nt.actions.Add(ParserAction.Create((x) => {
+            nt.actions.Add(ParserAction.Create((x) =>
+            {
                 var lx = new List<List<ParsingTree.ParsingTreeNode>>();
                 var ll = new List<ParsingTree.ParsingTreeNode>();
                 if (x.Childs.Count > 0)
@@ -210,8 +211,9 @@ namespace Koromo_Copy.LP
             var nn = new List<ParserProduction>(pp.contents);
             nn.Add(nt);
             nt.sub_productions.Add(nn);
-            nt.sub_productions.Add(new List<ParserProduction> (pp.contents));
-            nt.actions.Add(ParserAction.Create((x) => {
+            nt.sub_productions.Add(new List<ParserProduction>(pp.contents));
+            nt.actions.Add(ParserAction.Create((x) =>
+            {
                 var lx = new List<List<ParsingTree.ParsingTreeNode>>();
                 var ll = new List<ParsingTree.ParsingTreeNode>();
                 for (int i = 0; i < x.Childs.Count - 1; i++)
@@ -221,7 +223,8 @@ namespace Koromo_Copy.LP
                     lx.AddRange(x.Childs.Last().UserContents as List<List<ParsingTree.ParsingTreeNode>>);
                 x.UserContents = lx;
             }));
-            nt.actions.Add(ParserAction.Create((x) => {
+            nt.actions.Add(ParserAction.Create((x) =>
+            {
                 var lx = new List<List<ParsingTree.ParsingTreeNode>>();
                 lx.Add(x.Childs);
                 x.UserContents = lx;
@@ -249,7 +252,7 @@ namespace Koromo_Copy.LP
                 return production_dict[pp_name];
             }
             var nt = CreateNewProduction(pp_name);
-            nt.sub_productions.Add(new List<ParserProduction> (pp.contents));
+            nt.sub_productions.Add(new List<ParserProduction>(pp.contents));
             nt.sub_productions.Add(new List<ParserProduction> { EmptyString });
             pp.contents.Clear();
             return nt;
@@ -301,7 +304,7 @@ namespace Koromo_Copy.LP
         /// <param name="production_rules">프로덕션 룰</param>
         /// <param name="sr_rules">Shift Reduce 규칙</param>
         /// <returns></returns>
-        public static ParserGenerator GetGenerator(string[] nt_syms, Tuple<string, string>[] t_syms, string[] production_rules, string[] sr_rules )
+        public static ParserGenerator GetGenerator(string[] nt_syms, Tuple<string, string>[] t_syms, string[] production_rules, string[] sr_rules)
         {
             var gen = new ParserGenerator();
             var non_terminals = new Dictionary<string, ParserProduction>();
@@ -311,7 +314,7 @@ namespace Koromo_Copy.LP
 
             foreach (var nt in nt_syms)
                 non_terminals.Add(nt.Trim(), gen.CreateNewProduction(nt.Trim(), false));
-            
+
             foreach (var t in t_syms)
             {
                 var name = t.Item1;
@@ -351,7 +354,7 @@ namespace Koromo_Copy.LP
                 }
                 non_terminals[left].sub_productions.Add(prlist);
             }
-            
+
             for (int i = sr_rules.Length - 1; i >= 0; i--)
             {
                 var line = sr_rules[i].Trim();
@@ -864,7 +867,7 @@ namespace Koromo_Copy.LP
                         {
                             GlobalPrinter.Append(e.Message + "\r\n");
                         }
-                        
+
                         if (shift_reduce_conflict_solve.ContainsKey(tuple.Item1))
                             p2 = shift_reduce_conflict_solve[tuple.Item1];
 
@@ -932,7 +935,7 @@ namespace Koromo_Copy.LP
 #endif
         }
         #endregion
-        
+
         #region LALR Generator
         /// <summary>
         /// Generate LALR Table
@@ -1192,7 +1195,7 @@ namespace Koromo_Copy.LP
 
                         if (shift_reduce_conflict_solve.ContainsKey(tuple.Item1))
                             p2 = shift_reduce_conflict_solve[tuple.Item1];
-                        
+
                         if (shift_reduce_conflict_solve_with_production_rule.ContainsKey(tuple.Item2))
                             if (shift_reduce_conflict_solve_with_production_rule[tuple.Item2].ContainsKey(tuple.Item3))
                                 p1 = shift_reduce_conflict_solve_with_production_rule[tuple.Item2][tuple.Item3];
@@ -1257,13 +1260,13 @@ namespace Koromo_Copy.LP
 
             if (occurred_conflict)
                 throw new Exception("Specify the rules to resolve Shift-Reduce Conflict!");
-            
+
             number_of_states = merged_states.Count;
         }
         #endregion
 
         #region LALR Generator From LR(0) Items
-        
+
         /// <summary>
         /// http://3e8.org/pub/scheme/doc/parsing/Efficient%20Computation%20of%20LALR(1)%20Look-Ahead%20Sets.pdf
         /// 
@@ -1288,7 +1291,7 @@ namespace Koromo_Copy.LP
                 FIRST.Add(first_terminals(rule.index));
 
             var FOLLOW = follow_terminals(FIRST);
-            
+
 #if true
             print_header("FISRT, FOLLOW SETS");
             print_hs(FIRST, "FIRST");
@@ -1309,7 +1312,7 @@ namespace Koromo_Copy.LP
             {
                 var change = false;
 
-                for(int i = 0; i < production_rules.Count; i++)
+                for (int i = 0; i < production_rules.Count; i++)
                     for (int j = 0; j < production_rules[i].sub_productions.Count; j++)
                         if (production_rules[i].sub_productions[j].All(x => include_epsillon[x.index]))
                         {
@@ -1324,7 +1327,7 @@ namespace Koromo_Copy.LP
                 if (!change) break;
             }
             // ---------------------------------------------------------
-            
+
             // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
             var states = new Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>>();
             // (state_specify, state_index)
@@ -1340,7 +1343,7 @@ namespace Koromo_Copy.LP
             var index_count = 0;
 
             // -------------------- Put first eater -------------------
-            var first_l = closure(0, 0, 0).Select(x => new Tuple<int,int,int,HashSet<int>>(x.Item1, x.Item2, x.Item3, new HashSet<int>())).ToList();
+            var first_l = closure(0, 0, 0).Select(x => new Tuple<int, int, int, HashSet<int>>(x.Item1, x.Item2, x.Item3, new HashSet<int>())).ToList();
             state_index.Add(l2sl(first_l, 1), 0);
             states.Add(0, first_l);
             // --------------------------------------------------------
@@ -1401,7 +1404,7 @@ namespace Koromo_Copy.LP
                     }
                     goto_unit.Value.AddRange(new_trans);
                 }
-                
+
                 // Build goto transitions ignore terminal, non-terminal anywhere
                 var index_list = new List<Tuple<int, int>>();
                 foreach (var pp in gotos)
@@ -1512,7 +1515,7 @@ namespace Koromo_Copy.LP
                 // Fill Shift Info
                 foreach (var pp in goto_table[state.Key].Item2)
                     small_shift_info.Add(new Tuple<int, int>(pp.Item1, pp.Item2));
-                
+
                 // Fill Reduce Info
                 foreach (var transition in state.Value)
                     if (production_rules[transition.Item1].sub_productions[transition.Item2].Count == transition.Item3)
@@ -1776,14 +1779,14 @@ namespace Koromo_Copy.LP
                     }
                     else
                     {
-                        builder.Append("".PadLeft(max_len+2) + "|");
+                        builder.Append("".PadLeft(max_len + 2) + "|");
                     }
                 }
 
                 builder.Append("\r\n");
             }
             builder.Append(split_line);
-            
+
             print_header("PARSING TABLE");
             GlobalPrinter.Append(builder.ToString() + "\r\n");
         }
@@ -1804,7 +1807,7 @@ namespace Koromo_Copy.LP
             var visit = new List<bool>();
             visit.AddRange(Enumerable.Repeat(false, production_rules.Count));
             q.Enqueue(index);
-            
+
             while (q.Count != 0)
             {
                 var p = q.Dequeue();
@@ -1829,7 +1832,7 @@ namespace Koromo_Copy.LP
 
             return result;
         }
-        
+
         /// <summary>
         /// Calculate FIRST only Non-Terminals
         /// </summary>
@@ -2119,7 +2122,7 @@ namespace Koromo_Copy.LP
         #endregion
 
         #region SCC
-        
+
         /// <summary>
         /// Determine group using tarjan's strongly connected components algorithm.
         /// </summary>
@@ -2181,7 +2184,7 @@ namespace Koromo_Copy.LP
             // 3. Get FIRST of Non-terminal
             // A -> a.Bc [~]  (a,c=terminal, B=non-terminal)
             // If 'B' is non-terminal, then get FIRST set of non-terminal 'B'.
-            var result = new HashSet<int> (first[production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].index]);
+            var result = new HashSet<int>(first[production_rules[production_rule_index].sub_productions[sub_production][sub_production_index].index]);
 
             // 4. Check empty-string
             // A -> a.BC [~]  (a=terminal, B,C=non-terminal)
@@ -2195,7 +2198,7 @@ namespace Koromo_Copy.LP
                     fully_empty_string = false;
                     break;
                 }
-                
+
                 if (i != sub_production_index)
                     foreach (var lk in first[index.index])
                         result.Add(lk);
@@ -2222,7 +2225,7 @@ namespace Koromo_Copy.LP
         private HashSet<int> first_from_nonterminal(
             List<HashSet<int>> first, List<bool> include_epsillon,
             // (state_index, (production_rule_index, sub_productions_pos, dot_position, (lookahead))
-            Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>> states, 
+            Dictionary<int, List<Tuple<int, int, int, HashSet<int>>>> states,
             int state_index, int /* non-terminal */ production_rule_index)
         {
             var result = new HashSet<int>();
@@ -2299,9 +2302,9 @@ namespace Koromo_Copy.LP
                     states[state][state_index].Item4.Add(lk);
                     lookahead_change = true;
                 }
-            
+
             propagate_lookahead(states, state, state_index, first_terminals(first, include_epsillon,
-                states[state][state_index].Item1, states[state][state_index].Item2, states[state][state_index].Item3+1, states[state][state_index].Item4));
+                states[state][state_index].Item1, states[state][state_index].Item2, states[state][state_index].Item3 + 1, states[state][state_index].Item4));
 
             return lookaheads;
         }
@@ -2461,6 +2464,72 @@ namespace Koromo_Copy.LP
             return new ShiftReduceParser(symbol_table, jump_table, goto_table, grammar_group.ToArray(), grammar.Select(x => x.ToArray()).ToArray(), semantic_rules);
         }
 
+        /// <summary>
+        /// Create ShiftReduce Parser
+        /// </summary>
+        /// <returns></returns>
+        public ExtendedShiftReduceParser CreateExtendedShiftReduceParserInstance()
+        {
+            var symbol_table = new Dictionary<string, int>();
+            var table = new int[number_of_states][];
+            var grammar = new List<List<int>>();
+            var grammar_group = new List<int>();
+            var production_mapping = new List<List<int>>();
+            var semantic_rules = new List<ParserAction>();
+            var pm_count = 0;
+
+            foreach (var pr in production_rules)
+            {
+                var ll = new List<List<int>>();
+                var pm = new List<int>();
+                foreach (var sub_pr in pr.sub_productions)
+                {
+                    ll.Add(sub_pr.Select(x => x.index).ToList());
+                    pm.Add(pm_count++);
+                    grammar_group.Add(production_mapping.Count);
+                }
+                grammar.AddRange(ll);
+                production_mapping.Add(pm);
+                semantic_rules.AddRange(pr.actions);
+            }
+
+            for (int i = 0; i < number_of_states; i++)
+            {
+                // Last elements is sentinel
+                table[i] = new int[production_rules.Count + 1];
+            }
+
+            var acc_max = 0;
+            foreach (var pr in production_rules)
+                symbol_table.Add(pr.production_name ?? "^", pr.index);
+            symbol_table.Add("$", production_rules.Count);
+
+            foreach (var shift in shift_info)
+                foreach (var elem in shift.Value)
+                {
+                    table[shift.Key][elem.Item1] = elem.Item2;
+                    if (elem.Item2 > acc_max)
+                        acc_max = elem.Item2;
+                }
+            
+            foreach (var reduce in reduce_info)
+                foreach (var elem in reduce.Value)
+                {
+                    var index = elem.Item1;
+                    if (index == -1) index = production_rules.Count;
+                    if (table[reduce.Key][index] != 0)
+                        throw new Exception($"Error! Shift-Reduce Conflict is not solved! Please use LALR or LR(1) parser!\r\nJump-Table: {reduce.Key} {index}");
+                    if (elem.Item2 == 0)
+                        table[reduce.Key][index] = acc_max + 1;
+                    else
+                    {
+                        table[reduce.Key][index] = -production_mapping[elem.Item2][elem.Item3];
+                    }
+                }
+
+            return new ExtendedShiftReduceParser(symbol_table, acc_max + 1, table, grammar_group.ToArray(), grammar.Select(x => x.Count).ToArray(), semantic_rules);
+        }
+
         #endregion
     }
 
@@ -2482,7 +2551,7 @@ namespace Koromo_Copy.LP
             public static ParsingTreeNode NewNode(string production, string contents)
                 => new ParsingTreeNode { Parent = null, Childs = new List<ParsingTreeNode>(), Production = production, Contents = contents };
         }
-        
+
         public ParsingTreeNode root;
 
         public ParsingTree(ParsingTreeNode root)
@@ -2557,7 +2626,7 @@ namespace Koromo_Copy.LP
             l.Sort();
             l.ForEach(x => symbol_index_name.Add(x.Item2));
         }
-        
+
         bool latest_error;
         bool latest_reduce;
         public bool Accept() => state_stack.Count == 0;
@@ -2701,6 +2770,187 @@ namespace Koromo_Copy.LP
             ///////////////////
             append("public ShiftReduceParser Parser => new ShiftReduceParser(");
             append("    symbol_table, jump_table, goto_table, group_table, production, ");
+            append("    Enumerable.Repeat(new ParserAction { SemanticAction = (ParsingTree.ParsingTreeNode node) => { } }, production.Length).ToList());");
+
+            down_indent();
+            append("}");
+            return builder.ToString();
+        }
+    }
+    
+    /// <summary>
+    /// Shift-Reduce Parser for LR(1)
+    /// </summary>
+    public class ExtendedShiftReduceParser
+    {
+        [JsonProperty]
+        Dictionary<string, int> symbol_name_index = new Dictionary<string, int>();
+        List<string> symbol_index_name = new List<string>();
+        Stack<int> state_stack = new Stack<int>();
+        Stack<ParsingTree.ParsingTreeNode> treenode_stack = new Stack<ParsingTree.ParsingTreeNode>();
+        List<ParserAction> actions;
+
+        // accept  +      -       0
+        // Accept? Shift? Reduce? Error?
+        [JsonProperty]
+        int[][] table;
+        [JsonProperty]
+        int[] production;
+        [JsonProperty]
+        int[] group_table;
+        [JsonProperty]
+        int accept;
+
+        public ExtendedShiftReduceParser(Dictionary<string, int> symbol_table, int accept_code, int[][] table, int[] group_table, int[] production, List<ParserAction> actions)
+        {
+            symbol_name_index = symbol_table;
+            this.table = table;
+            this.production = production;
+            this.group_table = group_table;
+            this.actions = actions;
+            this.accept = accept_code;
+            var l = symbol_table.ToList().Select(x => new Tuple<int, string>(x.Value, x.Key)).ToList();
+            l.Sort();
+            l.ForEach(x => symbol_index_name.Add(x.Item2));
+        }
+
+        bool latest_error;
+        bool latest_reduce;
+        public bool Accept() => state_stack.Count == 0;
+        public bool Error() => latest_error;
+        public bool Reduce() => latest_reduce;
+
+        public void Clear()
+        {
+            latest_error = latest_reduce = false;
+            state_stack.Clear();
+            treenode_stack.Clear();
+        }
+
+        [JsonIgnore]
+        public ParsingTree Tree => new ParsingTree(treenode_stack.Peek());
+
+        public string Stack() => string.Join(" ", new Stack<int>(state_stack));
+
+        public void Insert(string token_name, string contents) => Insert(symbol_name_index[token_name], contents);
+        public void Insert(int index, string contents)
+        {
+            if (state_stack.Count == 0)
+            {
+                state_stack.Push(0);
+                latest_error = false;
+            }
+            latest_reduce = false;
+
+            int code = table[state_stack.Peek()][index];
+
+            if (code == accept)
+            {
+                // Nothing
+            }
+            else if (code > 0)
+            {
+                // Shift
+                state_stack.Push(table[state_stack.Peek()][index]);
+                treenode_stack.Push(ParsingTree.ParsingTreeNode.NewNode(symbol_index_name[index], contents));
+            }
+            else if (code < 0)
+            {
+                // Reduce
+                reduce(index);
+                latest_reduce = true;
+            }
+            else
+            {
+                // Panic mode
+                state_stack.Clear();
+                treenode_stack.Clear();
+                latest_error = true;
+            }
+        }
+
+        public ParsingTree.ParsingTreeNode LatestReduce() => treenode_stack.Peek();
+        private void reduce(int index)
+        {
+            var reduce_production = -table[state_stack.Peek()][index];
+            var reduce_treenodes = new List<ParsingTree.ParsingTreeNode>();
+
+            // Reduce Stack
+            for (int i = 0; i < production[reduce_production]; i++)
+            {
+                state_stack.Pop();
+                reduce_treenodes.Insert(0, treenode_stack.Pop());
+            }
+
+            state_stack.Push(table[state_stack.Peek()][group_table[reduce_production]]);
+
+            var reduction_parent = ParsingTree.ParsingTreeNode.NewNode(symbol_index_name[group_table[reduce_production]]);
+            reduction_parent.ProductionRuleIndex = reduce_production - 1;
+            reduce_treenodes.ForEach(x => x.Parent = reduction_parent);
+            reduction_parent.Contents = string.Join("", reduce_treenodes.Select(x => x.Contents));
+            reduction_parent.Childs = reduce_treenodes;
+            treenode_stack.Push(reduction_parent);
+            if (actions.Count != 0)
+                actions[reduction_parent.ProductionRuleIndex].SemanticAction(reduction_parent);
+        }
+        
+        public static ShiftReduceParser FromString(string json)
+            => JsonConvert.DeserializeObject<ShiftReduceParser>(json);
+        public override string ToString()
+            => JsonConvert.SerializeObject(this, Formatting.None);
+        public string ToCSCode(string class_name)
+        {
+            var builder = new StringBuilder();
+            var indent = "";
+            Action up_indent = () => { indent += "    "; };
+            Action down_indent = () => { if (indent.Length > 0) indent = indent.Substring(4); };
+            Action<string> append = (string s) => { builder.Append($"{indent}{s}\r\n"); };
+            append("public class " + class_name);
+            append("{");
+            up_indent();
+
+            ///////////////////
+            append("Dictionary<string, int> symbol_table = new Dictionary<string, int>()");
+            append("{");
+            up_indent();
+            foreach (var st in symbol_name_index)
+                append("{" + ('"' + st.Key + '"').PadLeft(symbol_name_index.Select(x => x.Key.Length).Max() + 3) + "," + st.Value.ToString().PadLeft(4) + " },");
+            down_indent();
+            append("};");
+            append("");
+            
+            ///////////////////
+            append("int[][] goto_table = new int[][] {");
+            up_indent();
+            foreach (var gt in table)
+                append("new int[] {" + string.Join(",", gt.Select(x => x.ToString().PadLeft(4))) + " },");
+            down_indent();
+            append("};");
+            append("");
+
+            ///////////////////
+            append("int[] production = new int[] {");
+            up_indent();
+            append(string.Join(",", production.Select(x => x.ToString().PadLeft(4))));
+            down_indent();
+            append("};");
+            append("");
+
+            ///////////////////
+            append("int[] group_table = new int[] {");
+            up_indent();
+            append(string.Join(",", group_table.Select(x => x.ToString().PadLeft(4))));
+            down_indent();
+            append("};");
+            append("");
+
+            ///////////////////
+            append("int accept = " + accept + ";");
+            append("");
+
+            ///////////////////
+            append("public ExtendedShiftReduceParser Parser => new ExtendedShiftReduceParser(");
+            append("    symbol_table, accept, goto_table, group_table, production, ");
             append("    Enumerable.Repeat(new ParserAction { SemanticAction = (ParsingTree.ParsingTreeNode node) => { } }, production.Length).ToList());");
 
             down_indent();

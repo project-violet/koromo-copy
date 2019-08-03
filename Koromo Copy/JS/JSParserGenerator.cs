@@ -21,15 +21,15 @@ namespace Koromo_Copy.JS
     /// </summary>
     public class JSParserGenerator
     {
-        static ShiftReduceParser parser;
-        public static ShiftReduceParser Parser { get { if (parser == null) create_parser(); return parser; } }
+        static ExtendedShiftReduceParser parser;
+        public static ExtendedShiftReduceParser Parser { get { if (parser == null) create_parser(); return parser; } }
 
         /// <summary>
         /// Create JavaScript Parser
         /// </summary>
         private static void create_parser()
         {
-            parser = new JSParser().Parser;
+            //parser = new JSParser().Parser;
 
             var gen = new ParserGenerator();
 
@@ -601,7 +601,7 @@ namespace Koromo_Copy.JS
 
             File.WriteAllText(DateTime.Now.Ticks + ".txt", gen.GlobalPrinter.ToString());
 
-            parser = gen.CreateShiftReduceParserInstance();
+            parser = gen.CreateExtendedShiftReduceParserInstance();
             File.WriteAllText("jsparser.cs", parser.ToCSCode("JSParser"));
         }
     }

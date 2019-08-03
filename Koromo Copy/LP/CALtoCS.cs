@@ -74,7 +74,7 @@ namespace Koromo_Copy.LP
                 Console.Console.Instance.WriteLine(e.Message);
             }
 
-            //Console.Console.Instance.WriteLine(pp.ToCSCode("CALCS"));
+            Console.Console.Instance.WriteLine(pp.ToCSCode("CALCS"));
 
             return "";
         }
@@ -106,13 +106,13 @@ namespace Koromo_Copy.LP
         }
 
         static Scanner scanner;
-        static ShiftReduceParser pargen;
+        static ExtendedShiftReduceParser pargen;
 
         /// <summary>
         /// SRCAL의 파서제너레이터를 생성합니다.
         /// </summary>
         /// <returns></returns>
-        private ShiftReduceParser get_pargen()
+        private ExtendedShiftReduceParser get_pargen()
         {
             if (pargen != null) return pargen;
 
@@ -219,7 +219,7 @@ namespace Koromo_Copy.LP
 
             Console.Console.Instance.WriteLine(gen.GlobalPrinter.ToString());
 
-            return pargen = gen.CreateShiftReduceParserInstance();
+            return pargen = gen.CreateExtendedShiftReduceParserInstance();
         }
 
         private Scanner get_scanner()
