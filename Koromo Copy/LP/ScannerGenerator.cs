@@ -293,7 +293,7 @@ namespace Koromo_Copy.LP
                                 ch = pattern[i];
                             else
                             {
-                                switch (ch)
+                                switch (pattern[i])
                                 {
                                     case 'n':
                                         ch = '\n';
@@ -307,6 +307,7 @@ namespace Koromo_Copy.LP
 
                                     default:
                                         build_errors.Add($"{pattern[i]} escape character not found!");
+                                        ch = pattern[i];
                                         break;
                                 }
 
