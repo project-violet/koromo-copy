@@ -211,6 +211,7 @@
     <Compile Include="JS\JSInterpreter.cs" />
     <Compile Include="JS\JSParserGenerator.cs" />
     <Compile Include="JS\JSParser.cs" />
+    <Compile Include="JS\JSScannerGenerator.cs" />
     <Compile Include="KSS\KSSCommon.cs" />
     <Compile Include="KSS\KSSCore.cs" />
     <Compile Include="KSS\KSSSetting.cs" />
