@@ -109,7 +109,7 @@ namespace Koromo_Copy.LP
             {
                 gen.PushStarts(expr);
                 gen.PrintProductionRules();
-                gen.GenerateLALR();
+                gen.GenerateLALR2();
                 gen.PrintStates();
                 gen.PrintTable();
             }

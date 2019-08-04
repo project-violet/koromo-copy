@@ -302,6 +302,10 @@ namespace Koromo_Copy.Console
                     var p = JSParserGenerator.Parser;
 
                     break;
+
+                case 5:
+                    var s = JSScannerGenerator.Scanner;
+                    break;
             }
         }
         
