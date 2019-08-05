@@ -7,17 +7,20 @@
 ***/
 
 using Koromo_Copy.Component;
+using Koromo_Copy.Component.EH;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hitomi.Analysis;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -666,7 +669,98 @@ namespace Koromo_Copy.Console
                     break;
 
                 case 12:
-                    HitomiTitle.MakeTitle();
+                    {
+                        for (int i = 0; i < 20; i++)
+                        {
+                            try
+                            {
+                                var url3 = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&&f_cats=0&f_sname=on&f_stags=on&f_sh=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on";
+                                var html = NetCommon.DownloadExHentaiString(url3);
+                                File.WriteAllText($"exhentai-page/exhentai-{i}.html", html);
+                                Monitor.Instance.Push($"[Paging] {i + 1}/1457");
+                            }
+                            catch (Exception e)
+                            {
+                                Console.Instance.WriteErrorLine($"[Error] {i} {e.Message}");
+                            }
+                            Thread.Sleep(100);
+                        }
+                        {
+                            const string archive = @"C:\Tools\koromo-copy\Koromo Copy UX\bin\Debug\exhentai-page";
+                            var htmls = new List<string>();
+
+                            foreach (var file in Directory.GetFiles(archive))
+                                htmls.Add(File.ReadAllText(file));
+
+                            var result = new List<EHentaiResultArticle>();
+
+                            using (var progressBar = new Console.ConsoleProgressBar())
+                            {
+                                int x = 0;
+                                foreach (var html in htmls)
+                                {
+                                    var content = html;
+                                    try
+                                    {
+                                        var exh = ExHentaiParser.ParseResultPageExtendedListView(content);
+                                        //Console.Instance.WriteLine("[GET] " + exh.Count + " Articles! - " + html);
+                                        result.AddRange(exh);
+                                        if (exh.Count != 25)
+                                        {
+                                            Console.Instance.WriteLine("[Miss] " + html);
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.Instance.WriteLine("[Fail] " + html);
+                                    }
+                                    x++;
+                                    progressBar.SetProgress(x / (float)htmls.Count * 100);
+                                }
+                            }
+                            
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+                            Monitor.Instance.Push("Write file: ex-hentai-archive.json");
+                            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "ex-hentai-archive2.json")))
+                            using (JsonWriter writer = new JsonTextWriter(sw))
+                            {
+                                serializer.Serialize(writer, result);
+                            }
+                        }
+                        {
+                            var xxx = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive.json"));
+                            var zzz = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive2.json"));
+                            
+                            var exists = new HashSet<int>();
+                            xxx.ForEach(x => exists.Add(x.URL.Split('/')[4].ToInt32()));
+
+                            foreach (var z in zzz)
+                            {
+                                var nn = z.URL.Split('/')[4].ToInt32();
+
+                                if (exists.Contains(nn))
+                                    Console.Instance.WriteLine("[Duplicate] " + nn);
+                                else
+                                    xxx.Add(z);
+                            }
+
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+                            Monitor.Instance.Push("Write file: ex-hentai-archive3.json");
+                            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "ex-hentai-archive3.json")))
+                            using (JsonWriter writer = new JsonTextWriter(sw))
+                            {
+                                serializer.Serialize(writer, xxx);
+                            }
+                        }
+
+                        HitomiTitle.MakeTitle();
+                    }
                     break;
             }
         }

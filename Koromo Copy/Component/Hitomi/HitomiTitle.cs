@@ -40,7 +40,7 @@ namespace Koromo_Copy.Component.Hitomi
 
         public static void MakeTitle()
         {
-            var xxx = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive.json"));
+            var xxx = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive3.json"));
 
             var result = new HitomiTitleModel();
 
