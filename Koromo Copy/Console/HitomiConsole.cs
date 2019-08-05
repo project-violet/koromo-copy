@@ -664,6 +664,10 @@ namespace Koromo_Copy.Console
                         HitomiData.Instance.RebuildTagData();
                     }
                     break;
+
+                case 12:
+                    HitomiTitle.MakeTitle();
+                    break;
             }
         }
 

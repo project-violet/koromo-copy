@@ -114,6 +114,7 @@
     <system:String x:Key="msg_memory_cleanup">Clean-up memory!</system:String>
     <system:String x:Key="msg_download_metadata">Downloading metadata...</system:String>
     <system:String x:Key="msg_download_hiddendata">Downloading hiddendata...</system:String>
+    <system:String x:Key="msg_download_title">Downloading titles...</system:String>
     <system:String x:Key="msg_download_data_complete">Downloaded all of data.!</system:String>
     <system:String x:Key="msg_new_update">New updates are available! Please check in Settings -> Update!</system:String>
     <system:String x:Key="msg_incorret_search_grammar">Search grammar is invalid.</system:String>

@@ -163,6 +163,29 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                <ToggleButton IsChecked="{Binding UsingOriginalTitle}">
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
+                </ToggleButton>
+                <TextBlock Text="  원래 제목 사용" ToolTip="E-Hentai에서 표시되는 원래 제목을 사용합니다. 프로그램을 재시작해야 적용됩니다.">
+                    <TextBlock.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </TextBlock.Resources>
+                </TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
                 <ToggleButton IsChecked="{Binding SaveJsonFile}">
                     <ToggleButton.Resources>
                         <ResourceDictionary>
