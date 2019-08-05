@@ -258,9 +258,7 @@ namespace Koromo_Copy_UX
                             }
                             else if (url == "https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.json")
                             {
-                                byte[] myByteArray = new byte[outputStream.Length];
-                                outputStream.Write(myByteArray, 0, myByteArray.Length);
-                                File.WriteAllBytes("origin-title.json", myByteArray);
+                                File.WriteAllBytes("origin-title.json", (outputStream as MemoryStream).ToArray());
                             }
                         }
                     }
