@@ -97,13 +97,27 @@ namespace Koromo_Copy_UX
                     try
                     {
                         HitomiIndex.Instance.Load();
-                        MainWindow.Instance.Fade_MiddlePopup(false);
+                        //MainWindow.Instance.Fade_MiddlePopup(false);
                     }
                     catch (Exception ex)
                     {
                         Koromo_Copy.Monitor.Instance.Push($"[Hitomi DataLoad] {ex.Message}\r\n{ex.StackTrace}");
                     }
                 }
+                if (Settings.Instance.Hitomi.UsingOriginalTitle)
+                {
+                    Profiler.Push("Check titles exists");
+                    if (!HitomiTitle.Instance.CheckExist())
+                    {
+                        MainWindow.Instance.Fade_MiddlePopup(true, (string)FindResource("msg_download_title"));
+                        await HitomiTitle.Instance.DownloadTitle();
+                        MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_download_data_complete"), false);
+                    }
+                    HitomiTitle.Instance.Load();
+                    HitomiTitle.Instance.ReplaceToOriginTitle();
+                    Koromo_Copy.Monitor.Instance.Push($"Loaded titles: '{HitomiTitle.Instance.Count.ToString("#,#")}' articles.");
+                }
+                MainWindow.Instance.Fade_MiddlePopup(false);
                 Profiler.Push("Rebuild tag data");
                 HitomiIndex.Instance.RebuildTagData();
                 if (HitomiIndex.Instance.metadata_collection != null)

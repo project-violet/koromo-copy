@@ -114,6 +114,7 @@
     <system:String x:Key="msg_memory_cleanup">メモリの最適化完了！</system:String>
     <system:String x:Key="msg_download_metadata">Dデータをダウンロード中です...</system:String>
     <system:String x:Key="msg_download_hiddendata">隠しデータをダウンロード中です...</system:String>
+    <system:String x:Key="msg_download_title">タイトルをダウンロード中です...</system:String>
     <system:String x:Key="msg_download_data_complete">すべてのデータをダウンロードしました！</system:String>
     <system:String x:Key="msg_new_update">新しい更新があります！設定 -> アップデートで確認してください！</system:String>
     <system:String x:Key="msg_incorret_search_grammar">検索文法が間違っています。</system:String>

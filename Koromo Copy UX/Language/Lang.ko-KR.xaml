@@ -115,6 +115,7 @@
     <system:String x:Key="msg_memory_cleanup">메모리 최적화 완료!</system:String>
     <system:String x:Key="msg_download_metadata">데이터를 다운로드 중입니다...</system:String>
     <system:String x:Key="msg_download_hiddendata">히든 데이터를 다운로드 중입니다...</system:String>
+    <system:String x:Key="msg_download_title">제목을 다운로드 중입니다...</system:String>
     <system:String x:Key="msg_download_data_complete">데이터를 모두 다운로드했습니다!</system:String>
     <system:String x:Key="msg_new_update">새로운 업데이트가 있습니다! 설정->업데이트에서 확인해주세요!</system:String>
     <system:String x:Key="msg_incorret_search_grammar">검색 문법이 잘못되었습니다.</system:String>

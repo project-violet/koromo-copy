@@ -49,7 +49,19 @@ namespace Koromo_Copy_UX.Domain
                 OnPropertyChanged();
             }
         }
-        
+
+        public bool UsingOriginalTitle
+        {
+            get { return Settings.Instance.Hitomi.UsingOriginalTitle; }
+            set
+            {
+                if (Settings.Instance.Hitomi.UsingOriginalTitle == value) return;
+                Settings.Instance.Hitomi.UsingOriginalTitle = value;
+                Settings.Instance.Save();
+                OnPropertyChanged();
+            }
+        }
+
         public bool UsingFuzzy
         {
             get { return Settings.Instance.Hitomi.UsingFuzzy; }

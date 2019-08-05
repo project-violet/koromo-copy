@@ -82,6 +82,12 @@ namespace Koromo_Copy.Component.Hitomi
         [JsonProperty]
         public bool DisableArtistLastestDownloadDate;
 
+        /// <summary>
+        /// 원래 제목을 사용합니다.
+        /// </summary>
+        [JsonProperty]
+        public bool UsingOriginalTitle;
+
         [JsonProperty]
         public string[] CustomAutoComplete;
         [JsonProperty]
