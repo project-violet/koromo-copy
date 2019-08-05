@@ -109,7 +109,7 @@ namespace Koromo_Copy_UX
                     Profiler.Push("Check titles exists");
                     if (!HitomiTitle.Instance.CheckExist())
                     {
-                        MainWindow.Instance.Fade_MiddlePopup(true, (string)FindResource("msg_download_title"));
+                        MainWindow.Instance.ModifyText_MiddlePopup((string)FindResource("msg_download_title"));
                         await HitomiTitle.Instance.DownloadTitle();
                         MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_download_data_complete"), false);
                     }

@@ -103,7 +103,14 @@ namespace Koromo_Copy_UX
             Task t2 = new Task(() => DownloadThread("https://github.com/dc-koromo/e-archive/raw/master/index-metadata.compress"));
             t2.Start();
             await t2;
-            
+
+            if (Settings.Instance.Hitomi.UsingOriginalTitle)
+            {
+                Task t3 = new Task(() => DownloadThread("https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.json"));
+                t3.Start();
+                await t3;
+            }
+
             HitomiIndex.Instance.WriteData();
             
             SyncButton.IsEnabled = true;
@@ -248,6 +255,12 @@ namespace Koromo_Copy_UX
                                     var str = (outputStream as MemoryStream).ToArray().UnzipByte();
                                     HitomiIndex.Instance.LoadFromBytes(str);
                                 }
+                            }
+                            else if (url == "https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.json")
+                            {
+                                byte[] myByteArray = new byte[outputStream.Length];
+                                outputStream.Write(myByteArray, 0, myByteArray.Length);
+                                File.WriteAllBytes("origin-title.json", myByteArray);
                             }
                         }
                     }

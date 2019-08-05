@@ -55,6 +55,8 @@ namespace Koromo_Copy.Console
         public bool Extract2;
         [CommandLine("-extract3", CommandType.OPTION, Help = "?")]
         public bool Extract3;
+        [CommandLine("-extract4", CommandType.OPTION, Help = "?")]
+        public bool Extract4;
     }
 
     /// <summary>
@@ -115,6 +117,10 @@ namespace Koromo_Copy.Console
             else if (option.Extract3)
             {
                 ProcessExtract3();
+            }
+            else if (option.Extract4)
+            {
+                ProcessExtract4();
             }
 
             return true;
@@ -177,24 +183,28 @@ namespace Koromo_Copy.Console
             //string url2 = "https://exhentai.org/?page=1&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&f_search=language%3Akorean&f_apply=Apply+Filter&inline_set=dm_l";
             
             var result = new List<EHentaiResultArticle>();
+            //var urlx = $"https://exhentai.org/?page=0&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&&f_cats=0&f_sname=on&f_stags=on&f_sh=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&inline_set=dm_e";
+            //NetCommon.DownloadExHentaiString(urlx);
 
             for (int i = 0; i < 20; i++)
             {
                 try
                 {
-                    var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&&f_cats=0&f_search=lang:korean&f_sname=on&f_stags=on&f_sh=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&inline_set=dm_e";
+                    //var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&&f_cats=0&f_search=lang:korean&f_sname=on&f_stags=on&f_sh=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&inline_set=dm_e";
                     //var url = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&f_search=language%3Akorean&f_apply=Apply+Filter&inline_set=dm_e";
                     //var url2 = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&advsearch=1&f_search=language%3Akorean&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on&f_apply=Apply+Filter";
                     //           https://exhentai.org/?page=1&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sh=on&f_apply=Apply+Filter
-                    var html = NetCommon.DownloadExHentaiString(url);
-                    result.AddRange(ExHentaiParser.ParseResultPageExtendedListView(html));
+                    var url3 = $"https://exhentai.org/?page={i}&f_doujinshi=on&f_manga=on&f_artistcg=on&f_gamecg=on&&f_cats=0&f_sname=on&f_stags=on&f_sh=on&advsearch=1&f_srdd=2&f_sname=on&f_stags=on&f_sdesc=on&f_sh=on";
+                    var html = NetCommon.DownloadExHentaiString(url3);
+                    //result.AddRange(ExHentaiParser.ParseResultPageExtendedListView(html));
+                    File.WriteAllText($"exhentai-page/exhentai-{i}.html", html);
                     Monitor.Instance.Push($"[Paging] {i+1}/1457");
                 }
                 catch (Exception e)
                 {
                     Console.Instance.WriteErrorLine($"[Error] {i} {e.Message}");
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(100);
             }
             
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -404,9 +414,24 @@ namespace Koromo_Copy.Console
         static void ProcessExtract3()
         {
             var xxx = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive.json"));
-            var yyy = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive2.json"));
+            //var yyy = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive2.json"));
+            var zzz = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive2.json"));
 
-            xxx.AddRange(yyy);
+            //xxx.AddRange(yyy);
+            //xxx.AddRange(zzz);
+
+            var exists = new HashSet<int>();
+            xxx.ForEach(x => exists.Add(x.URL.Split('/')[4].ToInt32()));
+
+            foreach (var z in zzz)
+            {
+                var nn = z.URL.Split('/')[4].ToInt32();
+
+                if (exists.Contains(nn))
+                    Console.Instance.WriteLine("[Duplicate] " + nn);
+                else
+                    xxx.Add(z);
+            }
 
             JsonSerializer serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -419,5 +444,54 @@ namespace Koromo_Copy.Console
                 serializer.Serialize(writer, xxx);
             }
         }
+
+        static void ProcessExtract4()
+        {
+            const string archive = @"C:\Tools\koromo-copy\Koromo Copy UX\bin\Debug\exhentai-page";
+            var htmls = new List<string>();
+
+            foreach (var file in Directory.GetFiles(archive))
+                htmls.Add(File.ReadAllText(file));
+
+            var result = new List<EHentaiResultArticle>();
+
+            using (var progressBar = new Console.ConsoleProgressBar())
+            {
+                int x = 0;
+                foreach (var html in htmls)
+                {
+                    var content = html;
+                    try
+                    {
+                        var exh = ExHentaiParser.ParseResultPageExtendedListView(content);
+                        //Console.Instance.WriteLine("[GET] " + exh.Count + " Articles! - " + html);
+                        result.AddRange(exh);
+                        if (exh.Count != 25)
+                        {
+                            Console.Instance.WriteLine("[Miss] " + html);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Instance.WriteLine("[Fail] " + html);
+                    }
+                    x++;
+                    progressBar.SetProgress(x / (float)htmls.Count * 100);
+                }
+            }
+
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+            Monitor.Instance.Push("Write file: ex-hentai-archive.json");
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "ex-hentai-archive2.json")))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, result);
+            }
+        }
+
     }
 }
