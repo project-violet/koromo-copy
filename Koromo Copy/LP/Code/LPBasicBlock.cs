@@ -19,6 +19,11 @@ namespace Koromo_Copy.LP.Code
     {
         List<LPOperator> insts;
 
+        public LPBasicBlock()
+        {
+            insts = new List<LPOperator>();
+        }
+
         public List<LPOperator> Childs { get { return insts; } }
 
         public void Insert(LPOperator op)
