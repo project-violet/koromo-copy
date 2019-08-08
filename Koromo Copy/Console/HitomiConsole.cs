@@ -594,6 +594,7 @@ namespace Koromo_Copy.Console
 
                 case 8:
                     {
+                        // Update index-metadata.json
                         HitomiData.Instance.LoadMetadataJson();
                         HitomiData.Instance.LoadHiddendataJson();
                         HitomiIndex.MakeIndex();
@@ -670,7 +671,8 @@ namespace Koromo_Copy.Console
 
                 case 12:
                     {
-                        for (int i = 0; i < 20; i++)
+                        // Update HitomiTitle
+                        for (int i = 0; i < 50; i++)
                         {
                             try
                             {
@@ -760,6 +762,75 @@ namespace Koromo_Copy.Console
                         }
 
                         HitomiTitle.MakeTitle();
+                    }
+                    break;
+
+                case 13:
+                    // Fill type
+                    {
+                        var md = JsonConvert.DeserializeObject<List<HitomiArticle>>(File.ReadAllText("hiddendata.json"));
+
+                        var xxx = JsonConvert.DeserializeObject<List<EHentaiResultArticle>>(File.ReadAllText("ex-hentai-archive.json"));
+                        //var md = JsonConvert.DeserializeObject<List<HitomiMetadata>>(File.ReadAllText("metadata.json"));
+
+                        var types = new Dictionary<string, string>();
+
+                        foreach (var xx in xxx)
+                        {
+                            try
+                            {
+                                types.Add(xx.URL.Split('/')[4], xx.Type.ToLower());
+                            }
+                            catch (Exception e)
+                            {
+                                //Console.Instance.WriteLine("[??] " + xx.URL);
+                            }
+                        }
+
+                        //for (int i = 0; i < md.Count; i++)
+                        //{
+                        //    if (md[i].Type  == null || md[i].Type.Trim() == "")
+                        //    {
+                        //        if (types.ContainsKey(md[i].ID.ToString()))
+                        //        {
+                        //            var x = md[i];
+                        //            x.Type = types[md[i].ID.ToString()];
+                        //            md[i] = x;
+                        //        }
+                        //        else
+                        //        {
+                        //            Console.Instance.WriteLine("[Fail] " + md[i].ID.ToString());
+                        //        }
+                        //    }
+                        //}
+
+                        for (int i = 0; i < md.Count; i++)
+                        {
+                            if (md[i].Type == null || md[i].Type.Trim() == "")
+                            {
+                                if (types.ContainsKey(md[i].Magic.ToString()))
+                                {
+                                    var x = md[i];
+                                    x.Type = types[md[i].Magic.ToString()];
+                                    md[i] = x;
+                                }
+                                else
+                                {
+                                    Console.Instance.WriteLine("[Fail] " + md[i].Magic.ToString());
+                                }
+                            }
+                        }
+
+                        JsonSerializer serializer = new JsonSerializer();
+                        serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                        serializer.NullValueHandling = NullValueHandling.Ignore;
+
+                        Monitor.Instance.Push("Write file: metadata.json");
+                        using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "hiddendata2.json")))
+                        using (JsonWriter writer = new JsonTextWriter(sw))
+                        {
+                            serializer.Serialize(writer, md);
+                        }
                     }
                     break;
             }
