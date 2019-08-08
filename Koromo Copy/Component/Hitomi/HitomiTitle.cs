@@ -122,10 +122,11 @@ namespace Koromo_Copy.Component.Hitomi
         {
             for (int i = 0; i < HitomiIndex.Instance.metadata_collection.Count; i++)
             {
-                if (Exists(HitomiIndex.Instance.metadata_collection[i].ID))
+                int index = Array.BinarySearch(model.id, HitomiIndex.Instance.metadata_collection[i].ID);
+                if (index >= 0)
                 {
                     var item = HitomiIndex.Instance.metadata_collection[i];
-                    item.Name = HttpUtility.HtmlDecode(GetOriginalTitle(HitomiIndex.Instance.metadata_collection[i].ID));
+                    item.Name = HttpUtility.HtmlDecode(model.origin_title[index]);
                     HitomiIndex.Instance.metadata_collection[i] = item;
                 }
             }
