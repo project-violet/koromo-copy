@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 
 namespace Koromo_Copy.Component.Hitomi
@@ -124,7 +125,7 @@ namespace Koromo_Copy.Component.Hitomi
                 if (Exists(HitomiIndex.Instance.metadata_collection[i].ID))
                 {
                     var item = HitomiIndex.Instance.metadata_collection[i];
-                    item.Name = GetOriginalTitle(HitomiIndex.Instance.metadata_collection[i].ID);
+                    item.Name = HttpUtility.HtmlDecode(GetOriginalTitle(HitomiIndex.Instance.metadata_collection[i].ID));
                     HitomiIndex.Instance.metadata_collection[i] = item;
                 }
             }
