@@ -58,8 +58,15 @@ namespace Koromo_Copy.Component.Hitomi
 
             Array.Sort(result.id, result.origin_title);
 
-            var bbb = MessagePackSerializer.Serialize(result);
+            var bbc = MessagePackSerializer.Serialize(result);
             using (FileStream fsStream = new FileStream(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "origin-title.json"), FileMode.Create))
+            using (BinaryWriter sw = new BinaryWriter(fsStream))
+            {
+                sw.Write(bbc);
+            }
+
+            var bbb = MessagePackSerializer.Serialize(result).ZipByte();
+            using (FileStream fsStream = new FileStream(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "origin-title.compress"), FileMode.Create))
             using (BinaryWriter sw = new BinaryWriter(fsStream))
             {
                 sw.Write(bbb);
@@ -81,8 +88,8 @@ namespace Koromo_Copy.Component.Hitomi
 
             HttpClient client = new HttpClient();
             client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
-            var data = await client.GetByteArrayAsync("https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.json");
-            var tm = MessagePackSerializer.Deserialize<HitomiTitleModel>(data);
+            var data = await client.GetByteArrayAsync("https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.compress");
+            var tm = MessagePackSerializer.Deserialize<HitomiTitleModel>(data.UnzipByte());
             Monitor.Instance.Push($"Download complete: [1/1] 1");
             if (!Settings.Instance.Hitomi.AutoSync)
             {

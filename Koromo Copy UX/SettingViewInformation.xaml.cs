@@ -106,7 +106,7 @@ namespace Koromo_Copy_UX
 
             if (Settings.Instance.Hitomi.UsingOriginalTitle)
             {
-                Task t3 = new Task(() => DownloadThread("https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.json"));
+                Task t3 = new Task(() => DownloadThread("https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.compress"));
                 t3.Start();
                 await t3;
             }
@@ -256,9 +256,9 @@ namespace Koromo_Copy_UX
                                     HitomiIndex.Instance.LoadFromBytes(str);
                                 }
                             }
-                            else if (url == "https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.json")
+                            else if (url == "https://raw.githubusercontent.com/dc-koromo/e-archive/master/origin-title.compress")
                             {
-                                File.WriteAllBytes("origin-title.json", (outputStream as MemoryStream).ToArray());
+                                File.WriteAllBytes("origin-title.json", (outputStream as MemoryStream).ToArray().UnzipByte());
                             }
                         }
                     }
