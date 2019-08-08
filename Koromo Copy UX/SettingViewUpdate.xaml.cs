@@ -139,6 +139,23 @@ namespace Koromo_Copy_UX
 
         private void UpdatePatchNotes()
         {
+            // 1.14
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.14 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 원래 제목 표시 기능 구현\r\n\r\n" +
+                    "[변경된 기능]\r\n" +
+                    " - 몇몇 작품들에서 타입이 표시되지 않던 오류 해결\r\n\r\n" +
+                    " - 더이상 유효하지 않은 토큰 |를 삭제하지 않고 한글 ㅣ로 치환\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.13
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements
