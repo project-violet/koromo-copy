@@ -101,7 +101,10 @@ namespace Koromo_Copy.Component.Hitomi
             }
             if (article.Series != null) series = article.Series[0];
             if (title != null)
+            {
+                title = title.Replace('|', 'ㅣ');
                 foreach (char c in invalid) title = title.Replace(c.ToString(), "");
+            }
             if (artists != null)
                 foreach (char c in invalid) artists = artists.Replace(c.ToString(), "");
             if (series != null)
