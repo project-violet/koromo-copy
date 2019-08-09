@@ -347,15 +347,19 @@ namespace Koromo_Copy_UX.Domain
                 {
                     if (unstable) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
                     else MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
-                    var imagelink = HitomiParser.GetImageLink(NetCommon.DownloadString(HiyobiCommon.GetDownloadImageAddress(url.Split('/').Last())));
-                    var article = HiyobiParser.ParseGalleryConents(NetCommon.DownloadString(url));
+                    var wc = NetCommon.GetDefaultClient();
+                    wc.Headers.Add(System.Net.HttpRequestHeader.Referer, "https://xn--9w3b15m8vo.asia/reader/" + url.Split('/').Last());
+                    var imagelink = HitomiParser.GetImageLink(wc.DownloadString(HiyobiCommon.GetDownloadImageAddress(url.Split('/').Last())));
+                    var article = HitomiLegalize.MetadataToArticle(HitomiLegalize.GetMetadataFromMagic(url.Split('/').Last()).Value); //HiyobiParser.ParseGalleryConents(NetCommon.DownloadString(url));
                     string dir = HitomiCommon.MakeDownloadDirectory(article);
+                    var se = Koromo_Copy.Interface.SemaphoreExtends.Default;
+                    se.Referer = "https://xn--9w3b15m8vo.asia/reader/" + url.Split('/').Last();
                     article.ImagesLink = imagelink;
                     Directory.CreateDirectory(dir);
                     DownloadSpace.Instance.RequestDownload(article.Title,
-                        imagelink.Select(y => HitomiCommon.GetDownloadImageAddress(article.Magic, y)).ToArray(),
+                        imagelink.Select(y => $"https://xn--9w3b15m8vo.asia/data/{article.Magic}/{y}").ToArray(),
                         imagelink.Select(y => Path.Combine(dir, y)).ToArray(),
-                        Koromo_Copy.Interface.SemaphoreExtends.Default, dir, article);
+                        se, dir, article);
                     Directory.CreateDirectory(dir);
                     if (unstable) Interlocked.Decrement(ref unstable_request);
                     if (unstable && unstable_request != 0) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
