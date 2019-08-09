@@ -186,6 +186,15 @@ namespace Koromo_Copy.LP.Code
             => new LPCallOperator { Caller = function, Arguments = args };
     }
 
+    public class LPAllocOperator
+        : LPOperator
+    {
+        public LPType Type { get; set; }
+
+        public static LPAllocOperator Create(LPType type)
+            => new LPAllocOperator { Type = type };
+    }
+
     public class LPStoreOperator
         : LPOperator
     {

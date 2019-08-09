@@ -228,6 +228,7 @@
     <Compile Include="LP\Code\LPFunction.cs" />
     <Compile Include="LP\Code\LPModule.cs" />
     <Compile Include="LP\Code\LPOperator.cs" />
+    <Compile Include="LP\Code\LPTest.cs" />
     <Compile Include="LP\Code\LPType.cs" />
     <Compile Include="LP\Code\LPValue.cs" />
     <Compile Include="LP\ESRCAL.cs" />
