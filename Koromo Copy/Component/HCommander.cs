@@ -120,20 +120,20 @@ namespace Koromo_Copy.Component
             //
             // 2. Hiyobi를 이용해 탐색한다
             //
-            //if (search_hitomi.HasValue && HitomiIndex.Instance.index.Languages[search_hitomi.Value.Language] == "korean")
-            //{
-            //    try
-            //    {
-            //        var html = NetCommon.DownloadString(HiyobiCommon.GetInfoAddress(magic));
-            //        var article = HiyobiParser.ParseGalleryConents(html);
-            //        var result = ConvertTo(article, HiyobiCommon.GetInfoAddress(magic), magic);
-            //        result.ArticleType = HArticleType.Hiyobi;
-            //        return result;
-            //    }
-            //    catch
-            //    {
-            //    }
-            //}
+            if (search_hitomi.HasValue && HitomiIndex.Instance.index.Languages[search_hitomi.Value.Language] == "korean")
+            {
+                try
+                {
+                    var html = NetCommon.DownloadString(HiyobiCommon.GetInfoAddress(magic));
+                    var article = HiyobiParser.ParseGalleryConents(html);
+                    var result = ConvertTo(article, HiyobiCommon.GetInfoAddress(magic), magic);
+                    result.ArticleType = HArticleType.Hiyobi;
+                    return result;
+                }
+                catch
+                {
+                }
+            }
 
             //
             // 9.3/4 샰쮘뽣?뛤3쇼뵀?gVA덲탭k융뷠킢쪳1SPS?XF퍵8C샜쁬
@@ -244,6 +244,7 @@ namespace Koromo_Copy.Component
             article2.Language = article.Language;
             article2.Title = article.Title;
             article2.Type = article.Type;
+            article2.Thumbnail = article.Thumbnail;
             return article2;
         }
 
