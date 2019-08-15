@@ -213,6 +213,7 @@ namespace Koromo_Copy.Net
                 }
                 
                 int retry_count = 0;
+                bool lock_donwload_size = false;
             RETRY:
                 if (retry_count > Settings.Instance.Net.RetryCount)
                 {
@@ -262,7 +263,10 @@ namespace Koromo_Copy.Net
                             {
                                 byte[] buffer = new byte[buffer_size];
                                 int bytesRead;
-                                lock (download_callback) download_callback(uri, response.ContentLength, obj);
+                                if (lock_donwload_size)
+                                    lock (download_callback)
+                                        download_callback(uri, response.ContentLength, obj);
+                                lock_donwload_size = true;
                                 do
                                 {
                                     bytesRead = inputStream.Read(buffer, 0, buffer.Length);
