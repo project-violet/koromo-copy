@@ -263,7 +263,7 @@ namespace Koromo_Copy.Net
                             {
                                 byte[] buffer = new byte[buffer_size];
                                 int bytesRead;
-                                if (lock_donwload_size)
+                                if (!lock_donwload_size)
                                     lock (download_callback)
                                         download_callback(uri, response.ContentLength, obj);
                                 lock_donwload_size = true;
