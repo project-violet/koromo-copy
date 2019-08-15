@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Koromo_Copy_UX"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="0 5 0 0">
@@ -98,6 +99,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" FontSize="13" HorizontalAlignment="Right">
@@ -121,7 +123,25 @@
                     <TextBlock x:Name="TotalSize" Grid.Row="1" Grid.Column="1" Text="0 MB" Margin="5 10 0 0" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="DownloadSize" Grid.Row="2" Grid.Column="1" Text="0 MB" Margin="5 0 0 0" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="DownloadSpeed" Grid.Row="3" Grid.Column="1" Text="0 KB/S" Margin="5 0 0 0" HorizontalAlignment="Left"/>
-                    <Button Grid.RowSpan="4" Margin="0 0 30 0" Grid.Column="3" x:Name="Pause" Content="{DynamicResource pause}" Height="40" Width="200" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="State" HorizontalAlignment="Right"/>
+
+                    <Grid Grid.RowSpan="4" Grid.Column="3" Margin="32 0 8 0">
+                        <lvc:CartesianChart x:Name="NetworkChart" Margin="0, 0, 0, 0" Width="200" HorizontalAlignment="Left" Hoverable="False" DataTooltip="{x:Null}">
+                            <lvc:CartesianChart.AxisX>
+                                <!--a small visual improvement, lets hide the first points (x = 0, x=1) to get better animations
+                                <lvc:Axis MinValue="2"></lvc:Axis>-->
+                                <lvc:Axis ShowLabels="False">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator IsEnabled="False"></lvc:Separator>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis MinValue="0"/>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </Grid>
+                    
+                    <Button Grid.RowSpan="4" Margin="0 0 30 0" Grid.Column="4" x:Name="Pause" Content="{DynamicResource pause}" Height="40" Width="200" BorderBrush="LightPink" Foreground="White" Click="Button_Click" Tag="State" HorizontalAlignment="Right"/>
 
                 </Grid>
             </StackPanel>
