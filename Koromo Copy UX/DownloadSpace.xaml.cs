@@ -12,6 +12,9 @@ using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Koromo_Copy_UX.Domain;
+using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using System;
 using System.Collections.Generic;
@@ -63,7 +66,80 @@ namespace Koromo_Copy_UX
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Start();
+
+            init();
         }
+
+        #region Live Chart
+        
+        public SeriesCollection LastHourSeries { get; set; }
+
+        private void init()
+        {
+            var ls =
+                new LineSeries
+                {
+                    AreaLimit = -10,
+                    Values = new ChartValues<ObservableValue>
+                    {
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0),
+                        new ObservableValue(0)
+                    }
+                };
+            ls.Foreground = Brushes.Pink;
+            ls.Stroke = Brushes.Pink;
+            ls.LineSmoothness = 1;
+            ls.PointGeometrySize = 0;
+            ls.Fill = Brushes.Transparent;
+            LastHourSeries = new SeriesCollection { ls };
+            NetworkChart.Series = LastHourSeries;
+            NetworkChart.AxisY.Clear();
+            NetworkChart.AxisY.Add(new Axis
+            {
+                LabelFormatter = value => {
+                    var tt = (int)value;
+                    if (tt == 0) return "0 KB";
+                    if (tt < 1024)
+                        return value.ToString("#,#") + " KB";
+                    else
+                        return (value/1024).ToString("#,#") + " MB";
+                    },
+                Separator = new LiveCharts.Wpf.Separator(),
+                MinValue = 0,
+            });
+        }
+        
+        #endregion
 
         private void Instance_Retry(object sender, Tuple<string, object> e)
         {
@@ -174,6 +250,8 @@ namespace Koromo_Copy_UX
                     DownloadSpeed.Text = "0 KB/S";
                 else
                     DownloadSpeed.Text = ((double)(status_size - latest_status_size) / 1000).ToString("#,#.#") + " KB/S";
+                LastHourSeries[0].Values.Add(new ObservableValue(((double)(status_size - latest_status_size) / 1000)));
+                LastHourSeries[0].Values.RemoveAt(0);
                 latest_status_size = status_size;
             }));
         }
