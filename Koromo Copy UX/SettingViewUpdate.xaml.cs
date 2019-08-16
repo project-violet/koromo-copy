@@ -34,6 +34,7 @@ namespace Koromo_Copy_UX
         public SettingViewUpdate()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             NowVersion.Text = Koromo_Copy.Version.Text;
             Loaded += SettingViewUpdate_Loaded;
@@ -72,7 +73,7 @@ namespace Koromo_Copy_UX
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.Instance.Fade_MiddlePopup(true, "업데이트를 확인하는 중...");
+            MainWindow.Instance.Fade_MiddlePopup(true, $"{FindResource("check_update")}");
             Task.Run(() => Download());
         }
         
@@ -108,7 +109,7 @@ namespace Koromo_Copy_UX
                                 bytesRead = inputStream.Read(buffer, 0, buffer.Length);
                                 outputStream.Write(buffer, 0, bytesRead);
                                 read += bytesRead;
-                                MainWindow.Instance.ModifyText_MiddlePopup($"다운로드 중... [{read}/{length}]");
+                                MainWindow.Instance.ModifyText_MiddlePopup($"{FindResource("downloading")} [{read}/{length}]");
                             } while (bytesRead != 0);
                         }
 
@@ -128,7 +129,7 @@ namespace Koromo_Copy_UX
             }
             catch (Exception e)
             {
-                MainWindow.Instance.ModifyText_MiddlePopup($"다운로드 재시도 중입니다...");
+                MainWindow.Instance.ModifyText_MiddlePopup($"{FindResource("retry")}");
                 read = 0;
                 retry = true;
                 goto RETRY_LABEL;

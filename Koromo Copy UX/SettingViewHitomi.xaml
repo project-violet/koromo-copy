@@ -23,7 +23,7 @@
     <Grid Margin="20">
 
         <StackPanel HorizontalAlignment="Stretch">
-            <TextBlock Text="일반 설정" FontSize="20"/>
+            <TextBlock Text="{DynamicResource general_setting}" FontSize="20"/>
 
             <Grid  Margin="0 5 0 0" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Text="다운로드 경로 : "/>
+                <TextBlock Grid.Column="0" Text="{DynamicResource download_path}"/>
                 <TextBox Grid.Column="1" x:Name="Path" HorizontalAlignment="Stretch" SelectionBrush="Pink" LostFocus="TextBox_LostFocus">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
@@ -66,8 +66,8 @@
                 </TextBox>
                 <TextBlock x:Name="Error" Grid.Column="1" Grid.Row="1" Text="Error: " Foreground="Red" Visibility="Collapsed"/>
 
-                <TextBlock Grid.Column="0" Text="제외할 태그 : " Grid.Row="2" Margin="0 5 0 5" HorizontalAlignment="Right"/>
-                <TextBox Grid.Column="1" x:Name="ExclusiveTags" Grid.Row="2" Margin="0 5 0 5" HorizontalAlignment="Stretch" SelectionBrush="Pink" LostFocus="ExclusiveTags_LostFocus" ToolTip="일반검색을 할 때 제외할 태그 목록입니다.">
+                <TextBlock Grid.Column="0" Text="{DynamicResource exclusive_tags}" Grid.Row="2" Margin="0 5 0 5" HorizontalAlignment="Right"/>
+                <TextBox Grid.Column="1" x:Name="ExclusiveTags" Grid.Row="2" Margin="0 5 0 5" HorizontalAlignment="Stretch" SelectionBrush="Pink" LostFocus="ExclusiveTags_LostFocus" ToolTip="{DynamicResource tooltip_exclusive_tags}">
 
                     <TextBox.Resources>
                         <ResourceDictionary>
@@ -103,7 +103,7 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="3" Text="언어 : " HorizontalAlignment="Right"/>
+                <TextBlock Margin="0 5 0 0" Grid.Column="0" Grid.Row="3" Text="{DynamicResource language}" HorizontalAlignment="Right"/>
                 <ComboBox x:Name="Language" Grid.Column="1" Grid.Row="3" DropDownClosed="Language_DropDownClosed">
                     <ComboBox.Resources>
                         <ResourceDictionary>
@@ -127,7 +127,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  프로그램 실행시 자동으로 데이터 동기화">
+                <TextBlock Text="{DynamicResource autosync}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -150,7 +150,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  데이터 최적화 사용" ToolTip="이 기능을 사용하면 선택된 언어이외의 데이터를 모두 삭제해 메모리를 절약합니다.">
+                <TextBlock Text="{DynamicResource optimize_data}" ToolTip="{DynamicResource tooltip_opt_data}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -173,7 +173,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  원래 제목 사용" ToolTip="E-Hentai에서 표시되는 원래 제목을 사용합니다. 프로그램을 재시작해야 적용됩니다.">
+                <TextBlock Text="{DynamicResource original_title}" ToolTip="{DynamicResource tooltip_original_title}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -196,7 +196,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  작품정보 파일을 함께 저장하기" ToolTip="작품정보 파일이 담긴 JSon파일이 작품과 같은 폴더에 저장됩니다.">
+                <TextBlock Text="{DynamicResource download_info}" ToolTip="{DynamicResource tooltip_info_file}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -220,7 +220,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  작가창에서 비슷한 작가란 숨기기">
+                <TextBlock Text="{DynamicResource disable_similar_artists}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -243,7 +243,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  마지막 다운로드 날짜 표시하지 않기" ToolTip="작가창에서 이미지를 확대할때 더이상 마지막 다운로드 날짜를 표시하지 않습니다.">
+                <TextBlock Text="{DynamicResource disable_latest_download}" ToolTip="{DynamicResource tooltip_dsa}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -254,8 +254,8 @@
                     </TextBlock.Resources>
                 </TextBlock>
             </StackPanel>
-            
-            <TextBlock Text="검색 설정" FontSize="20" Margin="0 20 0 0"/>
+
+            <TextBlock Text="{DynamicResource search_setting}" FontSize="20" Margin="0 20 0 0"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
                 <ToggleButton IsChecked="{Binding UsingAdvancedSearch}">
@@ -268,7 +268,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  고급검색 사용" ToolTip="고급검색 기능을 이용해 검색할 수 있습니다.">
+                <TextBlock Text="{DynamicResource adv_search}" ToolTip="{DynamicResource tooltip_dld}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -291,7 +291,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  고급검색시 설정된 언어를 항상 검색어로 추가" ToolTip="고급검색은 설정된 언어에 따르지 않기때문에 한 언어로만 고급검색을 하려는 경우 유용합니다.">
+                <TextBlock Text="{DynamicResource adv_search_default_lang}" ToolTip="{DynamicResource tooltip_adv}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -314,7 +314,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  자동완성에서 퍼지알고리즘 사용" ToolTip="검색시 오타가 발생해도 적절한 자동완성결과가 생성됩니다.">
+                <TextBlock Text="{DynamicResource search_fuzzy}" ToolTip="{DynamicResource tooltip_adv_dl}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -325,8 +325,8 @@
                     </TextBlock.Resources>
                 </TextBlock>
             </StackPanel>
-            
-            <TextBlock Text="작가추천 기능 설정" FontSize="20" Margin="0 20 0 0"/>
+
+            <TextBlock Text="{DynamicResource artists_recomment_setting}" FontSize="20" Margin="0 20 0 0"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
                 <ToggleButton IsChecked="{Binding UsingOnlyFMTagsOnAnalysis}">
@@ -339,7 +339,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  메타데이터 분석시 female, male 태그만 사용합니다.">
+                <TextBlock Text="{DynamicResource ar_only_fm}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -363,7 +363,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  작가추천 목록 생성시 해당 작가의 Article 수를 곱하지 않습니다" ToolTip="작가의 Article 수를 곱하지 않음으로써 많은 작품을 가진 작가가 상위에 노출되지 않게 합니다.">
+                <TextBlock Text="{DynamicResource ar_multiple}" ToolTip="{DynamicResource tooltip_adv_mul}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -386,7 +386,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  모든 언어를 기반으로 목록 생성" ToolTip="언어를 불문하고 모든 작품의 태그를 해당 작가의 총 태그집합으로 넣어 분석합니다.">
+                <TextBlock Text="{DynamicResource ar_all_lang}" ToolTip="{DynamicResource tooltip_adv_al}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -398,9 +398,9 @@
                 </TextBlock>
             </StackPanel>
 
-            <GroupBox Margin="0 8 0 0" Header="분석시 사용할 알고리즘 종류">
+            <GroupBox Margin="0 8 0 0" Header="{DynamicResource ar_algorithm}">
                 <StackPanel>
-                    <RadioButton IsChecked="True" Margin="0 8 0 0"  Content="  Default 알고리즘" ToolTip="기본적으로 사용자로그를 기반으로 분석하되, 작가의 작품수에 따라 큰 영향을 받습니다. 작품수가 많은 작가일 수록 더 높은 점수를 가질 확률이 높아집니다.">
+                    <RadioButton IsChecked="True" Margin="0 8 0 0"  Content="{DynamicResource ar_default}" ToolTip="{DynamicResource tooltip_ar_de}">
                         <RadioButton.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>
@@ -411,7 +411,7 @@
                         </RadioButton.Resources>
                     </RadioButton>
 
-                    <RadioButton IsChecked="{Binding UsingXiAanlysis}" Margin="0 8 0 0"  Content="  Xi 알고리즘" ToolTip="단순 회귀 방법을 이용해 작가 추천 목록을 작성합니다.">
+                    <RadioButton IsChecked="{Binding UsingXiAanlysis}" Margin="0 8 0 0"  Content="{DynamicResource ar_xi}" ToolTip="{DynamicResource tooltip_ar_xi}">
                         <RadioButton.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>
@@ -422,7 +422,7 @@
                         </RadioButton.Resources>
                     </RadioButton>
 
-                    <RadioButton IsChecked="{Binding UsingRMSAanlysis}" Margin="0 8 0 0"  Content="  RMS 알고리즘" ToolTip="Root Mean Square를 변형한 알고리즘을 이용해 작가와 사용자로그의 태그유사도를 비교합니다.">
+                    <RadioButton IsChecked="{Binding UsingRMSAanlysis}" Margin="0 8 0 0"  Content="{DynamicResource ar_rms}" ToolTip="{DynamicResource tooltip_ar_rms}">
                         <RadioButton.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>
@@ -433,7 +433,7 @@
                         </RadioButton.Resources>
                     </RadioButton>
 
-                    <RadioButton IsChecked="{Binding UsingCosineAnalysis}" Margin="0 8 0 0" Content="  Cosine 알고리즘" ToolTip="Cosine Distance를 이용해 작가와 사용자로그의 태그유사도를 비교합니다.">
+                    <RadioButton IsChecked="{Binding UsingCosineAnalysis}" Margin="0 8 0 0" Content="{DynamicResource ar_cos}" ToolTip="{DynamicResource tooltip_ar_cos}">
                         <RadioButton.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.MergedDictionaries>

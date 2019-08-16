@@ -94,7 +94,7 @@
     <Grid Margin="20">
 
         <StackPanel HorizontalAlignment="Stretch">
-            <TextBlock Text="다운로드 설정" FontSize="20"/>
+            <TextBlock Text="{DynamicResource download_setting}" FontSize="20"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
                 <ToggleButton IsChecked="{Binding AutoZip}">
@@ -107,7 +107,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  자동 압축" ToolTip="다운로드한 파일이 있는 폴더를 자동으로 압축합니다. 이후 다운로드된 파일은 삭제됩니다.">
+                <TextBlock Text="{DynamicResource autozip}" ToolTip="{DynamicResource tooltip_autozip}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
@@ -120,9 +120,9 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-                <TextBlock Text="다운로드에 사용할 최대 쓰레드 개수 : "/>
+                <TextBlock Text="{DynamicResource max_thread}"/>
                 <TextBlock Text="{Binding Thread}"/>
-                <TextBlock Text=" 개"/>
+                <TextBlock Text="{DynamicResource count_postfix_pp}"/>
             </StackPanel>
             <Slider Style="{StaticResource Horizontal_Slider}" Minimum="1" Maximum="64" IsSnapToTickEnabled="True" Value="{Binding Thread}"/>
         </StackPanel>

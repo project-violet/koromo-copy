@@ -91,7 +91,71 @@
     <system:String x:Key="downloaded_byte">다운로드된 바이트:</system:String>
     <system:String x:Key="progress_time">진행 시간:</system:String>
     <system:String x:Key="remain_time">남은 시간:</system:String>
-    
+    <!-- Setting Downlaoder Space -->
+    <system:String x:Key="download_setting">다운로드 설정</system:String>
+    <system:String x:Key="autozip" xml:space="preserve">  자동 압축</system:String>
+    <system:String x:Key="max_thread" xml:space="preserve">다운로드에 사용할 최대 쓰레드 개수 : </system:String>
+    <system:String x:Key="count_postfix_pp" xml:space="preserve"> 개</system:String>
+    <system:String x:Key="tooltip_autozip">다운로드한 파일이 있는 폴더를 자동으로 압축합니다. 이후 다운로드된 파일은 삭제됩니다.</system:String>
+    <!-- Setting Hitomi Space -->
+    <system:String x:Key="general_setting">일반 설정</system:String>
+    <system:String x:Key="download_path" xml:space="preserve">다운로드 경로 : </system:String>
+    <system:String x:Key="exclusive_tags" xml:space="preserve">제외할 태그 : </system:String>
+    <system:String x:Key="language" xml:space="preserve">언어 : </system:String>
+    <system:String x:Key="autosync" xml:space="preserve">  프로그램 실행시 자동으로 데이터 동기화</system:String>
+    <system:String x:Key="optimize_data" xml:space="preserve">  데이터 최적화 사용</system:String>
+    <system:String x:Key="original_title" xml:space="preserve">  원래 제목 사용</system:String>
+    <system:String x:Key="download_info" xml:space="preserve">  작품정보 파일을 함께 저장하기</system:String>
+    <system:String x:Key="disable_similar_artists" xml:space="preserve">  작가창에서 비슷한 작가란 숨기기</system:String>
+    <system:String x:Key="disable_latest_download" xml:space="preserve">  마지막 다운로드 날짜 표시하지 않기</system:String>
+    <system:String x:Key="search_setting">검색 설정</system:String>
+    <system:String x:Key="adv_search" xml:space="preserve">  고급검색 사용</system:String>
+    <system:String x:Key="adv_search_default_lang" xml:space="preserve">  고급검색시 설정된 언어를 항상 검색어로 추가</system:String>
+    <system:String x:Key="search_fuzzy" xml:space="preserve">  자동완성에서 퍼지알고리즘 사용</system:String>
+    <system:String x:Key="artists_recomment_setting" xml:space="preserve">작가추천 기능 설정</system:String>
+    <system:String x:Key="ar_only_fm" xml:space="preserve">  메타데이터 분석시 female, male 태그만 사용합니다.</system:String>
+    <system:String x:Key="ar_multiple" xml:space="preserve">  작가추천 목록 생성시 해당 작가의 Article 수를 곱하지 않습니다</system:String>
+    <system:String x:Key="ar_all_lang" xml:space="preserve">  모든 언어를 기반으로 목록 생성</system:String>
+    <system:String x:Key="ar_algorithm" >분석시 사용할 알고리즘 종류</system:String>
+    <system:String x:Key="ar_default" xml:space="preserve">  Default 알고리즘</system:String>
+    <system:String x:Key="ar_xi" xml:space="preserve">  Xi 알고리즘</system:String>
+    <system:String x:Key="ar_rms" xml:space="preserve">  RMS 알고리즘</system:String>
+    <system:String x:Key="ar_cos" xml:space="preserve">  Cosine 알고리즘</system:String>
+    <system:String x:Key="msg_blank_path">경로는 비어있으면 안됩니다.</system:String>
+    <system:String x:Key="msg_invalid_path">유효하지 않은 경로입니다.</system:String>
+    <system:String x:Key="msg_it">{Id} 또는 {Title}를 반드시 하나이상 포함해야합니다.</system:String>
+    <system:String x:Key="msg_invalid_token" xml:space="preserve">유효하지 않은 토큰이 있습니다. </system:String>
+    <system:String x:Key="all_lang">모든 언어</system:String>
+    <system:String x:Key="tooltip_exclusive_tags">일반검색을 할 때 제외할 태그 목록입니다.</system:String>
+    <system:String x:Key="tooltip_opt_data">이 기능을 사용하면 선택된 언어이외의 데이터를 모두 삭제해 메모리를 절약합니다.</system:String>
+    <system:String x:Key="tooltip_original_title">E-Hentai에서 표시되는 원래 제목을 사용합니다. 프로그램을 재시작해야 적용됩니다.</system:String>
+    <system:String x:Key="tooltip_info_file">작품정보 파일이 담긴 JSon파일이 작품과 같은 폴더에 저장됩니다.</system:String>
+    <system:String x:Key="tooltip_dsa">작가창에서 이미지를 확대할때 더이상 마지막 다운로드 날짜를 표시하지 않습니다.</system:String>
+    <system:String x:Key="tooltip_dld">고급검색 기능을 이용해 검색할 수 있습니다.</system:String>
+    <system:String x:Key="tooltip_adv">고급검색은 설정된 언어에 따르지 않기때문에 한 언어로만 고급검색을 하려는 경우 유용합니다.</system:String>
+    <system:String x:Key="tooltip_adv_dl">검색시 오타가 발생해도 적절한 자동완성결과가 생성됩니다.</system:String>
+    <system:String x:Key="tooltip_adv_mul">작가의 Article 수를 곱하지 않음으로써 많은 작품을 가진 작가가 상위에 노출되지 않게 합니다.</system:String>
+    <system:String x:Key="tooltip_adv_al">언어를 불문하고 모든 작품의 태그를 해당 작가의 총 태그집합으로 넣어 분석합니다.</system:String>
+    <system:String x:Key="tooltip_ar_de">기본적으로 사용자로그를 기반으로 분석하되, 작가의 작품수에 따라 큰 영향을 받습니다. 작품수가 많은 작가일 수록 더 높은 점수를 가질 확률이 높아집니다.</system:String>
+    <system:String x:Key="tooltip_ar_xi">단순 회귀 방법을 이용해 작가 추천 목록을 작성합니다.</system:String>
+    <system:String x:Key="tooltip_ar_rms">Root Mean Square를 변형한 알고리즘을 이용해 작가와 사용자로그의 태그유사도를 비교합니다.</system:String>
+    <system:String x:Key="tooltip_ar_cos">Cosine Distance를 이용해 작가와 사용자로그의 태그유사도를 비교합니다.</system:String>
+    <!-- Setting UI Space -->
+    <system:String x:Key="ui_setting">UI 설정</system:String>
+    <system:String x:Key="thumbnail_view" xml:space="preserve">  검색결과를 썸네일뷰로 표시</system:String>
+    <system:String x:Key="tooltip_thumbnail">검색결과를 작품의 썸네일과 간단한 정보만 표시합니다. 프로그램을 재시작해야 적용됩니다.</system:String>
+    <!-- Setting Update Space -->
+    <system:String x:Key="current_version" xml:space="preserve">현재 버전: </system:String>
+    <system:String x:Key="latest_version" xml:space="preserve">최신 버전: </system:String>
+    <system:String x:Key="bringup" xml:space="preserve">가져오는 중...</system:String>
+    <system:String x:Key="require_update" xml:space="preserve"> -- 업데이트가 필요합니다!</system:String>
+    <system:String x:Key="this_latest_versiopn" xml:space="preserve"> -- 최신 버전입니다!</system:String>
+    <system:String x:Key="update_start">업데이트 시작</system:String>
+    <system:String x:Key="patchnote">패치노트</system:String>
+    <system:String x:Key="check_update">업데이트를 확인하는 중...</system:String>
+    <system:String x:Key="downloading">다운로드 중...</system:String>
+    <system:String x:Key="retry">다운로드 재시도 중입니다...</system:String>
+
     <!--
                   Artists Viewer Window Component Tokens
     -->

@@ -11,15 +11,15 @@
         <StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="25" Text="현재 버전: " FontWeight="Thin"/>
+                <TextBlock FontSize="25" Text="{DynamicResource current_version}" FontWeight="Thin"/>
                 <TextBlock x:Name="NowVersion" FontSize="25" Text="" FontWeight="Thin"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="25" Text="최신 버전: " FontWeight="Thin"/>
-                <TextBlock x:Name="LatestVersion" FontSize="25" Text="가져오는 중..." FontWeight="Thin"/>
-                <TextBlock x:Name="RequireUpdate" FontSize="25" Foreground="Red" Text=" -- 업데이트가 필요합니다!" Visibility="Collapsed"/>
-                <TextBlock x:Name="NotRequireUpdate" FontSize="25" Foreground="Green" Text=" -- 최신 버전입니다!" Visibility="Collapsed"/>
+                <TextBlock FontSize="25" Text="{DynamicResource latest_version}" FontWeight="Thin"/>
+                <TextBlock x:Name="LatestVersion" FontSize="25" Text="{DynamicResource bringup}" FontWeight="Thin"/>
+                <TextBlock x:Name="RequireUpdate" FontSize="25" Foreground="Red" Text="{DynamicResource require_update}" Visibility="Collapsed"/>
+                <TextBlock x:Name="NotRequireUpdate" FontSize="25" Foreground="Green" Text="{DynamicResource this_latest_versiopn}" Visibility="Collapsed"/>
             </StackPanel>
 
             <Button x:Name="UpdateButton" HorizontalAlignment="Right" Margin="0 20 100 0" Click="UpdateButton_Click" IsEnabled="False">
@@ -33,11 +33,11 @@
                 </Button.Resources>
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Update"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
-                    <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">업데이트 시작</TextBlock>
+                    <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource update_start}"/>
                 </StackPanel>
             </Button>
 
-            <TextBlock Text="패치노트" FontSize="20" Margin="0 20 0 0"/>
+            <TextBlock Text="{DynamicResource patchnote}" FontSize="20" Margin="0 20 0 0"/>
 
             <StackPanel x:Name="UpdateLogs" Margin="0 10 0 0"/>
         </StackPanel>

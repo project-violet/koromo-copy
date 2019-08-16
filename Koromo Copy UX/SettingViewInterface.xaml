@@ -10,7 +10,7 @@
     <Grid Margin="20">
 
         <StackPanel HorizontalAlignment="Stretch">
-            <TextBlock Text="UI 설정" FontSize="20"/>
+            <TextBlock Text="{DynamicResource ui_setting}" FontSize="20"/>
 
 
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
@@ -24,7 +24,7 @@
                         </ResourceDictionary>
                     </ToggleButton.Resources>
                 </ToggleButton>
-                <TextBlock Text="  검색결과를 썸네일뷰로 표시" ToolTip="검색결과를 작품의 썸네일과 간단한 정보만 표시합니다. 프로그램을 재시작해야 적용됩니다.">
+                <TextBlock Text="{DynamicResource thumbnail_view}" ToolTip="{DynamicResource tooltip_thumbnail}">
                     <TextBlock.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.MergedDictionaries>
