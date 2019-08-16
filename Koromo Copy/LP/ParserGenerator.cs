@@ -194,7 +194,7 @@ namespace Koromo_Copy.LP
         }
 
         /// <summary>
-        /// A -> B (C D)*
+        /// A -> B (C D)+
         /// =>
         /// A -> B CD'
         /// CD' -> C D CD'1  { S.add(CD'1) }
@@ -238,7 +238,7 @@ namespace Koromo_Copy.LP
         }
 
         /// <summary>
-        /// A -> B (C D)*
+        /// A -> B (C D)?
         /// =>
         /// A -> B CD'
         /// CD' -> C D
