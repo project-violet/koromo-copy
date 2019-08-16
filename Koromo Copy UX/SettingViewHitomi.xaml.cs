@@ -35,6 +35,7 @@ namespace Koromo_Copy_UX
         public SettingViewHitomi()
         {
             InitializeComponent();
+            Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             AddLanguages();
             Language.Text = HitomiLegalize.DeLegalizeLanguage(Settings.Instance.Hitomi.Language);
@@ -48,7 +49,7 @@ namespace Koromo_Copy_UX
 
             if (string.IsNullOrWhiteSpace((value ?? "").ToString()))
             {
-                Error.Text = "경로는 비어있으면 안됩니다.";
+                Error.Text = $"{FindResource("msg_blank_path")}";
                 Error.Visibility = Visibility.Visible;
                 return;
             }
@@ -59,14 +60,14 @@ namespace Koromo_Copy_UX
                 else ss += s + "\\";
             if (!Directory.Exists(ss))
             {
-                Error.Text = "유효하지 않은 경로입니다.";
+                Error.Text = $"{FindResource("msg_invalid_path")}";
                 Error.Visibility = Visibility.Visible;
                 return;
             }
 
             if (!(value.ToString().ToLower().Contains("{id}") || value.ToString().ToLower().Contains("{title}")))
             {
-                Error.Text = "{Id} 또는 {Title}를 반드시 하나이상 포함해야합니다.";
+                Error.Text = $"{FindResource("msg_it")}";
                 Error.Visibility = Visibility.Visible;
                 return;
             }
@@ -85,7 +86,7 @@ namespace Koromo_Copy_UX
             var regex = Regex.Matches(value.ToString(), @"(\{.*?\})");
             if (!regex.OfType<Match>().All(x => valid_tokens.Contains(x.Value.ToLower())))
             {
-                Error.Text = "유효하지 않은 토큰이 있습니다. " + string.Join(", ", regex.OfType<Match>().Where(x => !valid_tokens.Contains(x.Value.ToLower())));
+                Error.Text = $"{FindResource("msg_invalid_token")}" + string.Join(", ", regex.OfType<Match>().Where(x => !valid_tokens.Contains(x.Value.ToLower())));
                 Error.Visibility = Visibility.Visible;
                 return;
             }
@@ -98,7 +99,7 @@ namespace Koromo_Copy_UX
         public void AddLanguages()
         {
             var langs = new string[] {
-                "모든 언어",
+                $"{FindResource("all_lang")}",
                 "N/A",
                 "한국어",
                 "日本語",

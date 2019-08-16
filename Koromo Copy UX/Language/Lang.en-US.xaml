@@ -91,6 +91,70 @@
     <system:String x:Key="downloaded_byte">Downloaded Bytes:</system:String>
     <system:String x:Key="progress_time">Progress Time:</system:String>
     <system:String x:Key="remain_time">Remain Time:</system:String>
+    <!-- Setting Downlaoder Space -->
+    <system:String x:Key="download_setting">Downloader Settings</system:String>
+    <system:String x:Key="autozip" xml:space="preserve">  Auto Zip</system:String>
+    <system:String x:Key="max_thread" xml:space="preserve">Maximum number of threads to use for downloading : </system:String>
+    <x:Static x:Key="count_postfix_pp" Member="system:String.Empty"/>
+    <system:String x:Key="tooltip_autozip">Automatically compress the folder containing downloaded files. After compressing, downloaded files will be deleted.</system:String>
+    <!-- Setting Hitomi Space -->
+    <system:String x:Key="general_setting">General Settings</system:String>
+    <system:String x:Key="download_path" xml:space="preserve">Download Path : </system:String>
+    <system:String x:Key="exclusive_tags" xml:space="preserve">Exclusive Tags : </system:String>
+    <system:String x:Key="language" xml:space="preserve">Language : </system:String>
+    <system:String x:Key="autosync" xml:space="preserve">  Automatic data synchronization when running the program</system:String>
+    <system:String x:Key="optimize_data" xml:space="preserve">  Enable data optimization</system:String>
+    <system:String x:Key="original_title" xml:space="preserve">  Use original title</system:String>
+    <system:String x:Key="download_info" xml:space="preserve">  Save the information file together</system:String>
+    <system:String x:Key="disable_similar_artists" xml:space="preserve">  Hide similar artists in the artists window</system:String>
+    <system:String x:Key="disable_latest_download" xml:space="preserve">  Do not show lastest download date</system:String>
+    <system:String x:Key="search_setting">Search Settings</system:String>
+    <system:String x:Key="adv_search" xml:space="preserve">  Use advanced search</system:String>
+    <system:String x:Key="adv_search_default_lang" xml:space="preserve">  Always add the language set as an advanced search query</system:String>
+    <system:String x:Key="search_fuzzy" xml:space="preserve">  Use Fuzzy Algorithm in Autocomplete</system:String>
+    <system:String x:Key="artists_recomment_setting" xml:space="preserve">Artist Recommendation Settings</system:String>
+    <system:String x:Key="ar_only_fm" xml:space="preserve">  When analyzing metadata, only use female and male tags</system:String>
+    <system:String x:Key="ar_multiple" xml:space="preserve">  Do not multiply the number of articles by the author</system:String>
+    <system:String x:Key="ar_all_lang" xml:space="preserve">  Generate based on all languages</system:String>
+    <system:String x:Key="ar_algorithm" >Analysis Algortihm</system:String>
+    <system:String x:Key="ar_default" xml:space="preserve">  Default Algorithm</system:String>
+    <system:String x:Key="ar_xi" xml:space="preserve">  Xi Algorithm</system:String>
+    <system:String x:Key="ar_rms" xml:space="preserve">  RMS Algorithm</system:String>
+    <system:String x:Key="ar_cos" xml:space="preserve">  Cosine Algorithm</system:String>
+    <system:String x:Key="msg_blank_path">The path must not be empty.</system:String>
+    <system:String x:Key="msg_invalid_path">Invalid path!</system:String>
+    <system:String x:Key="msg_it">Must contain at least one {Id} or {Title}</system:String>
+    <system:String x:Key="msg_invalid_token" xml:space="preserve">There is an invalid token. </system:String>
+    <system:String x:Key="all_lang">Any language</system:String>
+    <system:String x:Key="tooltip_exclusive_tags">List of tags to exclude for a deafult search.</system:String>
+    <system:String x:Key="tooltip_opt_data">This setting saves memory by deleting all data other than the selected language.</system:String>
+    <system:String x:Key="tooltip_original_title">Use the original title displayed by E-Hentai. You must restart the program.</system:String>
+    <system:String x:Key="tooltip_info_file">The JSon file containing the work information file is saved in the same folder as the work.</system:String>
+    <system:String x:Key="tooltip_dsa">Zooming in an image in the artist window no longer displays the last download date.</system:String>
+    <system:String x:Key="tooltip_dld">You can search using the advanced search function.</system:String>
+    <system:String x:Key="tooltip_adv">Advanced search doesn't depend on the language you're set up, so it's useful if you want to search in one language only.</system:String>
+    <system:String x:Key="tooltip_adv_dl">Even if a typo occurs during a search, appropriate autocomplete results are generated.</system:String>
+    <system:String x:Key="tooltip_adv_mul">By not multiplying the number of articles by the author, you ensure that the author with many works is not exposed at the top.</system:String>
+    <system:String x:Key="tooltip_adv_al">Regardless of language, tags from all works are included in the author's total tag set for analysis.</system:String>
+    <system:String x:Key="tooltip_ar_de">Basically, the analysis is based on user logs, but it is greatly affected by the number of works of the artist. The more artists you have, the higher your chances of having a higher score.</system:String>
+    <system:String x:Key="tooltip_ar_xi">Create a list of author recommendations using a simple regression method.</system:String>
+    <system:String x:Key="tooltip_ar_rms">The algorithm similar to Root Mean Square is used to compare tag similarity between author and user log.</system:String>
+    <system:String x:Key="tooltip_ar_cos">Cosine Distance is used to compare tag similarity between author and user logs.</system:String>
+    <!-- Setting UI Space -->
+    <system:String x:Key="ui_setting">UI Settings</system:String>
+    <system:String x:Key="thumbnail_view" xml:space="preserve">  Show search results in thumbnail view</system:String>
+    <system:String x:Key="tooltip_thumbnail">Display search results only with thumbnails and brief information about that work. You must restart the program.</system:String>
+    <!-- Setting Update Space -->
+    <system:String x:Key="current_version" xml:space="preserve">Current Version: </system:String>
+    <system:String x:Key="latest_version" xml:space="preserve">Newest Version: </system:String>
+    <system:String x:Key="bringup" xml:space="preserve">Importing...</system:String>
+    <system:String x:Key="require_update" xml:space="preserve"> -- Need Update!</system:String>
+    <system:String x:Key="this_latest_versiopn" xml:space="preserve"> -- The Latest Version!</system:String>
+    <system:String x:Key="update_start">Start Update</system:String>
+    <system:String x:Key="patchnote">Patch Note</system:String>
+    <system:String x:Key="check_update">Checking for updates...</system:String>
+    <system:String x:Key="downloading">Downloading...</system:String>
+    <system:String x:Key="retry">Retrying to download...</system:String>
 
     <!--
                   Artists Viewer Window Component Tokens
