@@ -158,7 +158,7 @@ namespace Koromo_Copy
                     {
                         TimeoutMillisecond = 10000,
                         DownloadBufferSize = 131072,
-                        RetryCount = 10,
+                        RetryCount = 100,
                         ServicePointConnectionLimit = 268435456
                     },
                 };
