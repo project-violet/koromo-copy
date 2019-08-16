@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 
 namespace Koromo_Copy
 {
@@ -105,6 +106,24 @@ namespace Koromo_Copy
             if (File.Exists(log_path)) model = JsonConvert.DeserializeObject<SettingModel>(File.ReadAllText(log_path));
             if (model == null)
             {
+                var lang = Thread.CurrentThread.CurrentCulture.ToString();
+                var language = "all";
+
+                switch (lang)
+                {
+                    case "ko-KR":
+                        language = "korean";
+                        break;
+
+                    case "ja-JP":
+                        language = "japanese";
+                        break;
+
+                    case "en-US":
+                        language = "english";
+                        break;
+                }
+
                 model = new SettingModel
                 {
                     Thread = Environment.ProcessorCount * 3,
@@ -114,7 +133,7 @@ namespace Koromo_Copy
                     Hitomi = new HitomiSetting
                     {
                         Path = @"C:\Hitomi\{Artists}\[{Id}] {Title}\",
-                        Language = "korean",
+                        Language = language,
                         CustomAutoComplete = new string[] { "recent:0-25" },
                         UsingSettingLanguageWhenAdvanceSearch = true,
                         UsingOptimization = true,
