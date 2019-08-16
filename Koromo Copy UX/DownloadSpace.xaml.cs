@@ -232,6 +232,8 @@ namespace Koromo_Copy_UX
                 File.Delete($"{address}.zip");
             try
             {
+                if (!Directory.Exists(address))
+                    throw new Exception($"'{address}' directory has not found!");
                 ZipFile.CreateFromDirectory(address, $"{address}.zip");
                 Directory.Delete(address, true);
                 Monitor.Instance.Push("[Zip End] " + address);

@@ -587,7 +587,7 @@ namespace Koromo_Copy.JS
                 gen.PrintProductionRules();
 
                 System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
-                gen.GenerateLALR2();
+                gen.GenerateLALR();
                 var end = sw.ElapsedMilliseconds;
                 sw.Stop();
                 Console.Console.Instance.WriteLine($"{end.ToString("#,#")}");
