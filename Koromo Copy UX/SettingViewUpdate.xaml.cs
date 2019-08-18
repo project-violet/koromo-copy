@@ -140,6 +140,22 @@ namespace Koromo_Copy_UX
 
         private void UpdatePatchNotes()
         {
+            // 1.15
+            UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
+            UpdateLogs.Children.Add(new PatchNoteElements
+            {
+                DataContext = new PatchNoteViewModel
+                {
+                    Version = "Koromo Copy 1.15 Beta",
+                    Content =
+                    "[추가된 기능]\r\n" +
+                    " - 다운로더 기능을 안정화하고, 시각적 그래프를 추가\r\n\r\n" +
+                    "[변경된 기능]\r\n" +
+                    " - 일본어, 영어 언어 지원 강화\r\n\r\n" +
+                    "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2019. dc-koromo. All Rights Reserved."
+                }
+            });
+
             // 1.14
             UpdateLogs.Children.Add(new Separator { Background = new SolidColorBrush(Colors.Gainsboro), Opacity = 0.8 });
             UpdateLogs.Children.Add(new PatchNoteElements

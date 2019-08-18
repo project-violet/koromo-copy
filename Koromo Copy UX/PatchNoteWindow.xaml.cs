@@ -6,10 +6,12 @@
 
 ***/
 
+using Koromo_Copy.Net;
 using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +35,7 @@ namespace Koromo_Copy_UX
         {
             InitializeComponent();
         }
-        
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             try
