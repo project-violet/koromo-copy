@@ -1,79 +1,79 @@
 
  --------------------------------------------------------------------------
  
-                * Koromo Copy »ç¿ëÀÚ ºÐµé¿¡°Ô µå¸®´Â ¸»¾¸ *
+                * Koromo Copy ì‚¬ìš©ìž ë¶„ë“¤ì—ê²Œ ë“œë¦¬ëŠ” ë§ì”€ *
  
-     2019³â 08¿ù 31ÀÏ ÀÌÈÄ·Î Koromo Copy ÇÁ·ÎÁ§Æ®¸¦ ¿ÏÀüÈ÷ Áß´ÜÇÕ´Ï´Ù.
- À§ ³¯Â¥ ÀÌÈÄ¿£ ´ÙÀ½ µÎ °¡Áö Ç×¸ñ¿¡ ´ëÇÑ Áö¿øÀ» ´õÀÌ»ó ¹ÞÀ» ¼ö ¾ø½À´Ï´Ù.
+     2019ë…„ 08ì›” 31ì¼ ì´í›„ë¡œ Koromo Copy í”„ë¡œì íŠ¸ë¥¼ ì™„ì „ížˆ ì¤‘ë‹¨í•©ë‹ˆë‹¤.
+ ìœ„ ë‚ ì§œ ì´í›„ì—” ë‹¤ìŒ ë‘ ê°€ì§€ í•­ëª©ì— ëŒ€í•œ ì§€ì›ì„ ë”ì´ìƒ ë°›ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.
  
-   1. Koromo Copy ÇÁ·Î±×·¥ ¾÷µ¥ÀÌÆ®
-   2. ÃÖ½Å µ¥ÀÌÅÍ µ¿±âÈ­
+   1. Koromo Copy í”„ë¡œê·¸ëž¨ ì—…ë°ì´íŠ¸
+   2. ìµœì‹  ë°ì´í„° ë™ê¸°í™”
  
- ÃÖ½Å µ¥ÀÌÅÍ µ¿±âÈ­ ±â´ÉÀº hitomi.la À¥»çÀÌÆ®ÀÇ ±¸Á¶°¡ º¯°æµÇÁö ¾Ê´Â ÇÑ 
- ¼öµ¿À¸·Î µ¿±âÈ­ÇÒ ¼ö ÀÖ½À´Ï´Ù. ¾Æ·¡ Àû¾îµÎ¾úÀ¸´Ï Âü°í¹Ù¶ø´Ï´Ù.
+ ìµœì‹  ë°ì´í„° ë™ê¸°í™” ê¸°ëŠ¥ì€ hitomi.la ì›¹ì‚¬ì´íŠ¸ì˜ êµ¬ì¡°ê°€ ë³€ê²½ë˜ì§€ ì•ŠëŠ” í•œ 
+ ìˆ˜ë™ìœ¼ë¡œ ë™ê¸°í™”í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ì•„ëž˜ ì ì–´ë‘ì—ˆìœ¼ë‹ˆ ì°¸ê³ ë°”ëžë‹ˆë‹¤.
  
- ÀÌ´Â Á¦ °³ÀÎÀûÀÎ ÀÌÀ¯ ¶§¹®¿¡ ´õÀÌ»ó °³¹ßÀ» Áö¼ÓÇÒ ¼ö ¾ø¾î ³»¸° °áÁ¤ÀÔ´Ï´Ù.
+ ì´ëŠ” ì œ ê°œì¸ì ì¸ ì´ìœ  ë•Œë¬¸ì— ë”ì´ìƒ ê°œë°œì„ ì§€ì†í•  ìˆ˜ ì—†ì–´ ë‚´ë¦° ê²°ì •ìž…ë‹ˆë‹¤.
  
  --------------------------------------------------------------------------
  
-  * ¼öµ¿À¸·Î µ¥ÀÌÅÍ¸¦ µ¿±âÈ­ÇÏ´Â ¹æ¹ý
+  * ìˆ˜ë™ìœ¼ë¡œ ë°ì´í„°ë¥¼ ë™ê¸°í™”í•˜ëŠ” ë°©ë²•
  
- https://github.com/dc-koromo/e-archive ¿©±â¼­ hiddendata.json°ú 
- metadata.jsonÀ» ´Ù¿î·ÎµåÇÏ°í, Koromo Copy°¡ ÀÖ´Â µð·ºÅä¸®¿¡ ³Ö½À´Ï´Ù.
- Koromo Copy¸¦ ½ÇÇàÇÑµÚ Ctrl + T¸¦ ´­·¯ ÄÜ¼ÖÃ¢À» ¶ç¿ì°í, ´ÙÀ½ ¸í·ÉÀ» 
- ÀÔ·ÂÇÕ´Ï´Ù.
+ https://github.com/dc-koromo/e-archive ì—¬ê¸°ì„œ hiddendata.jsonê³¼ 
+ metadata.jsonì„ ë‹¤ìš´ë¡œë“œí•˜ê³ , Koromo Copyê°€ ìžˆëŠ” ë””ë ‰í† ë¦¬ì— ë„£ìŠµë‹ˆë‹¤.
+ Koromo Copyë¥¼ ì‹¤í–‰í•œë’¤ Ctrl + Të¥¼ ëˆŒëŸ¬ ì½˜ì†”ì°½ì„ ë„ìš°ê³ , ë‹¤ìŒ ëª…ë ¹ì„ 
+ ìž…ë ¥í•©ë‹ˆë‹¤.
  
    run gbt
  
- À§ ¸í·ÉÀ» ÀÔ·ÂÇÏ¸é GalleryBlock Tester for Hidden Galleries°¡ ½ÇÇàµË´Ï´Ù.
- ±× ´ÙÀ½ ½ÃÀÛ ¹öÆ°À» Å¬¸¯ÇÕ´Ï´Ù. Å×½ºÆÃ °úÁ¤ÀÌ ³¡³ª¸é ¿ìÃøÇÏ´Ü ÇÕÄ¡±â ¹öÆ°À»
- Å¬¸¯ÇÕ´Ï´Ù. ÄÜ¼ÖÃ¢À¸·Î ´Ù½Ã µ¹¾Æ°¡¼­ ¾Æ·¡ ¸í·ÉÀ» ÀÔ·ÂÇÕ´Ï´Ù.
+ ìœ„ ëª…ë ¹ì„ ìž…ë ¥í•˜ë©´ GalleryBlock Tester for Hidden Galleriesê°€ ì‹¤í–‰ë©ë‹ˆë‹¤.
+ ê·¸ ë‹¤ìŒ ì‹œìž‘ ë²„íŠ¼ì„ í´ë¦­í•©ë‹ˆë‹¤. í…ŒìŠ¤íŒ… ê³¼ì •ì´ ëë‚˜ë©´ ìš°ì¸¡í•˜ë‹¨ í•©ì¹˜ê¸° ë²„íŠ¼ì„
+ í´ë¦­í•©ë‹ˆë‹¤. ì½˜ì†”ì°½ìœ¼ë¡œ ë‹¤ì‹œ ëŒì•„ê°€ì„œ ì•„ëž˜ ëª…ë ¹ì„ ìž…ë ¥í•©ë‹ˆë‹¤.
  
   hitomi -test 8
  
- Koromo Copy¸¦ Àç½ÃÀÛÇÏ¸é ÃÖ½Å µ¥ÀÌÅÍ¸¦ ·ÎµùÇÒ ¼ö ÀÖ½À´Ï´Ù.
+ Koromo Copyë¥¼ ìž¬ì‹œìž‘í•˜ë©´ ìµœì‹  ë°ì´í„°ë¥¼ ë¡œë”©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
  
  
-  * ¿ø·¡ Á¦¸ñ µ¿±âÈ­ ¹æ¹ý
+  * ì›ëž˜ ì œëª© ë™ê¸°í™” ë°©ë²•
  
- https://github.com/dc-koromo/e-archive ¿©±â¼­ ex-hentai-archive.json¸¦
- ´Ù¿î·ÎµåÇÏ°í, Koromo Copy°¡ ÀÖ´Â µð·ºÅä¸®¿¡ ³Ö½À´Ï´Ù. Koromo Copy¸¦ 
- ½ÇÇàÇÑµÚ Ctrl + T¸¦ ´­·¯ ÄÜ¼ÖÃ¢À» ¶ç¿ì°í ´ÙÀ½ ¸í·ÉÀ» ÀÔ·ÂÇÕ´Ï´Ù.
+ https://github.com/dc-koromo/e-archive ì—¬ê¸°ì„œ ex-hentai-archive.jsonë¥¼
+ ë‹¤ìš´ë¡œë“œí•˜ê³ , Koromo Copyê°€ ìžˆëŠ” ë””ë ‰í† ë¦¬ì— ë„£ìŠµë‹ˆë‹¤. Koromo Copyë¥¼ 
+ ì‹¤í–‰í•œë’¤ Ctrl + Të¥¼ ëˆŒëŸ¬ ì½˜ì†”ì°½ì„ ë„ìš°ê³  ë‹¤ìŒ ëª…ë ¹ì„ ìž…ë ¥í•©ë‹ˆë‹¤.
  
   hitomi -test 10
  
- À§ ¸í·ÉÀº ex-hentaiÀÇ ¸ðµç °Ô½Ã±Û ¸ñ·ÏÀ» ÃÖ½Å±âÁØ 50ÆäÀÌÁö±îÁö ÀÐ¾î¿É´Ï´Ù.
- ¸ðµç °úÁ¤ÀÌ ¿Ï·áµÇ°í ÄÜ¼ÖÃ¢ÀÌ »õ·Î¿î ¸í·ÉÀ» ÀÔ·Â¹ÞÀ» ÁØºñ°¡ µÇ¾úÀ» °æ¿ì
- Koromo Copy¸¦ Àç½ÃÀÛÇÕ´Ï´Ù. ex-hentai-archive3.jsonÀ» ex-hentai-archive
- .json·Î ¹Ù²Ù¸é Áö¼ÓÀûÀ¸·Î »õ·Î¿î ¿ø·¡ Á¦¸ñÀ» µ¿±âÈ­ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+ ìœ„ ëª…ë ¹ì€ ex-hentaiì˜ ëª¨ë“  ê²Œì‹œê¸€ ëª©ë¡ì„ ìµœì‹ ê¸°ì¤€ 50íŽ˜ì´ì§€ê¹Œì§€ ì½ì–´ì˜µë‹ˆë‹¤.
+ ëª¨ë“  ê³¼ì •ì´ ì™„ë£Œë˜ê³  ì½˜ì†”ì°½ì´ ìƒˆë¡œìš´ ëª…ë ¹ì„ ìž…ë ¥ë°›ì„ ì¤€ë¹„ê°€ ë˜ì—ˆì„ ê²½ìš°
+ Koromo Copyë¥¼ ìž¬ì‹œìž‘í•©ë‹ˆë‹¤. ex-hentai-archive3.jsonì„ ex-hentai-archive
+ .jsonë¡œ ë°”ê¾¸ë©´ ì§€ì†ì ìœ¼ë¡œ ìƒˆë¡œìš´ ì›ëž˜ ì œëª©ì„ ë™ê¸°í™”í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
  
  
-  * ÃßÃµ ¼³Á¤
+  * ì¶”ì²œ ì„¤ì •
  
- ÃÖ±Ùµé¾î ´Ù¿î·Îµå »óÅÂ°¡ 0 KB/S ¶³¾îÁö°í ´Ù½Ã ¿Ã¶ó°¡´Â Çö»óÀ» °Þ°í ÀÖ´Â ºÐ
- µéÀÌ ¸¹ÀÌ °è½Å°Í °°½À´Ï´Ù. ÀÌ ¹®Á¦¸¦ ¾î´ÀÁ¤µµ ÇØ°áÇÏ·Á¸é setting.json ÆÄÀÏ
- À» ¿­°í ´ÙÀ½ Ç×¸ñÀ» º¯°æÇØº¸½Ã±æ ¹Ù¶ø´Ï´Ù.
+ ìµœê·¼ë“¤ì–´ ë‹¤ìš´ë¡œë“œ ìƒíƒœê°€ 0 KB/S ë–¨ì–´ì§€ê³  ë‹¤ì‹œ ì˜¬ë¼ê°€ëŠ” í˜„ìƒì„ ê²ªê³  ìžˆëŠ” ë¶„
+ ë“¤ì´ ë§Žì´ ê³„ì‹ ê²ƒ ê°™ìŠµë‹ˆë‹¤. ì´ ë¬¸ì œë¥¼ ì–´ëŠì •ë„ í•´ê²°í•˜ë ¤ë©´ setting.json íŒŒì¼
+ ì„ ì—´ê³  ë‹¤ìŒ í•­ëª©ì„ ë³€ê²½í•´ë³´ì‹œê¸¸ ë°”ëžë‹ˆë‹¤.
  
   TimeoutInfinite: false
   TimeoutMillisecond: 15
   Thread: 12
  
- À§ ¼¼ °¡Áö Ç×¸ñ Á¤µµ¸¸ ¹Ù²ãÁØ´Ù¸é 0 KB/S ¹®Á¦´Â °³¼±µÉ °Ì´Ï´Ù.
+ ìœ„ ì„¸ ê°€ì§€ í•­ëª© ì •ë„ë§Œ ë°”ê¿”ì¤€ë‹¤ë©´ 0 KB/S ë¬¸ì œëŠ” ê°œì„ ë  ê²ë‹ˆë‹¤.
  
  --------------------------------------------------------------------------
  
-  * ÃÖÁ¾¹öÀü±îÁöÀÇ °³¹ß Á¤º¸ ¿ä¾à
+  * ìµœì¢…ë²„ì „ê¹Œì§€ì˜ ê°œë°œ ì •ë³´ ìš”ì•½
  
  https://gall.dcinside.com/board/view/?id=programming&no=1062475
  
  
-  * °³¹ßÀÚ Á¤º¸
+  * ê°œë°œìž ì •ë³´
  
- ÀÌ¸ÞÀÏ: koromo.software@gmail.com
- ±êÇãºê: https://github.com/dc-koromo
+ ì´ë©”ì¼: koromo.software@gmail.com
+ ê¹ƒí—ˆë¸Œ: https://github.com/dc-koromo
  
  --------------------------------------------------------------------------
  
- Hitomi Copy ¹× Koromo Copy¸¦ ÀÌ¿ëÇØ ÁÖ½Å ¸ðµç ºÐµé²² °¨»çÀÇ ¸»¾¸ µå¸³´Ï´Ù.
- ÇâÈÄ ±âÈ¸°¡ µÈ´Ù¸é »õ·Î¿î ÇÁ·ÎÁ§Æ®·Î Ã£¾ÆºË°Ú½À´Ï´Ù.
+ Hitomi Copy ë° Koromo Copyë¥¼ ì´ìš©í•´ ì£¼ì‹  ëª¨ë“  ë¶„ë“¤ê»˜ ê°ì‚¬ì˜ ë§ì”€ ë“œë¦½ë‹ˆë‹¤.
+ í–¥í›„ ê¸°íšŒê°€ ëœë‹¤ë©´ ìƒˆë¡œìš´ í”„ë¡œì íŠ¸ë¡œ ì°¾ì•„ëµ™ê² ìŠµë‹ˆë‹¤.
 
