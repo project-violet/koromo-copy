@@ -10,6 +10,7 @@ using Koromo_Copy;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
+using Koromo_Copy.Net;
 using Koromo_Copy.Net.DPI;
 using Koromo_Copy_UX.Domain;
 using Koromo_Copy_UX.Utility;
@@ -18,6 +19,7 @@ using Koromo_Copy_UX.Utility.ZipArtists;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
@@ -55,6 +57,12 @@ namespace Koromo_Copy_UX
             InitializeComponent();
             Profiler.Push("Load MainWindow");
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
+
+            if (!File.Exists("koromo-copy-readme.txt"))
+            {
+                File.WriteAllText("koromo-copy-readme.txt", NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/koromo-copy-readme.txt"));
+                Process.Start("notepad", "koromo-copy-readme.txt");
+            }
 
             // GC 설정
             GCLatencyMode oldMode = GCSettings.LatencyMode;

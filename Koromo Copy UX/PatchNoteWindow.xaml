@@ -70,26 +70,21 @@
                 </RichTextBox.Resources>
                 <FlowDocument>
                     <Paragraph>
-                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.14 Patch Note 요약</Run>
+                        <Run FontSize="30" FontWeight="Thin">Koromo Copy 1.15 Patch Note</Run>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 원래 제목 표시 기능 구현 ('설정'->'다운로더'->'히토미'->'원래 제목 사용' 활성화 후 재시작)"/>
-                        <LineBreak/>
-                        <Run Text="   익헨에서 제공하는 영어 제목을 이용하여 작품을 검색 및 다운로드할 수 있습니다!"/>
+                        <Run Text=" - 다운로더 기능을 안정화하고, 시각적 그래프를 추가했습니다."/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" - 몇몇 작품에서 타입이 표시되지 않던 오류 해결"/>
-                        <LineBreak/>
-                        <LineBreak/>
-                        <Run Text=" - 작품다운로드시 유효하지 않은 경로 토큰인 |을 한글 ㅣ로 치환"/>
+                        <Run Text=" - 일본어, 영어 언어 지원을 강화했습니다."/>
                         <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
                         <LineBreak/>
-                        <Run Text=" 자세한 업데이트 내역은 커밋이나 설정->업데이트를 참고하세요."/>
                         <LineBreak/>
-                        <Run Text=" 커밋 : "/>
-                        <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/compare/1.13.7153.33963...master">https://github.com/dc-koromo/koromo-copy/compare/1.13.7153.33963...master</Hyperlink>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <LineBreak/>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
