@@ -60,7 +60,7 @@ namespace Koromo_Copy_UX
 
             if (!File.Exists("koromo-copy-readme.txt"))
             {
-                File.WriteAllText("koromo-copy-readme.txt", NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/koromo-copy-readme.txt"));
+                File.WriteAllLines("koromo-copy-readme.txt", NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/koromo-copy-readme.txt").Split('\n'));
                 Process.Start("notepad", "koromo-copy-readme.txt");
             }
 
