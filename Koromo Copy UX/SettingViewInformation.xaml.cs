@@ -43,7 +43,9 @@ namespace Koromo_Copy_UX
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             VersionText.Text += Koromo_Copy.Version.Text + " (x64)";
+#if false
             UpdateSyncDate();
+#endif
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -52,6 +54,7 @@ namespace Koromo_Copy_UX
             e.Handled = true;
         }
 
+#if false
         private void UpdateSyncDate()
         {
             if (HitomiIndex.Instance.CheckMetadataExist())
@@ -275,6 +278,6 @@ namespace Koromo_Copy_UX
 
             Interlocked.Increment(ref complete_count);
         }
-
+#endif
     }
 }

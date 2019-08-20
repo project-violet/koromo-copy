@@ -36,11 +36,14 @@ namespace Koromo_Copy_UX
             InitializeComponent();
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
+#if false
             NowVersion.Text = Koromo_Copy.Version.Text;
             Loaded += SettingViewUpdate_Loaded;
+#endif
             UpdatePatchNotes();
         }
 
+#if false
         private void SettingViewUpdate_Loaded(object sender, RoutedEventArgs e)
         {
             Task.Run(() =>
@@ -135,8 +138,9 @@ namespace Koromo_Copy_UX
                 goto RETRY_LABEL;
             }
         }
+#endif
 
-        #region Update Note
+#region Update Note
 
         private void UpdatePatchNotes()
         {
@@ -536,6 +540,6 @@ namespace Koromo_Copy_UX
             });
         }
 
-        #endregion
+#endregion
     }
 }

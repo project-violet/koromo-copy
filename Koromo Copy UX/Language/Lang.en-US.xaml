@@ -81,7 +81,7 @@
     <system:String x:Key="pixiv">Pixiv</system:String>
     <system:String x:Key="interface">Interface</system:String>
     <system:String x:Key="script">Script</system:String>
-    <system:String x:Key="update">Update</system:String>
+    <system:String x:Key="update">Patch Note</system:String>
     <system:String x:Key="advanced_setting">Advanced</system:String>
     <!-- Setting Information Space -->
     <system:String x:Key="latest_sync" xml:space="preserve">Lastest Synced Date : </system:String>

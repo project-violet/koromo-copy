@@ -81,7 +81,7 @@
     <system:String x:Key="pixiv">Pixiv</system:String>
     <system:String x:Key="interface">インタフェース</system:String>
     <system:String x:Key="script">スクリプト</system:String>
-    <system:String x:Key="update">アップデート</system:String>
+    <system:String x:Key="update">パッチノート</system:String>
     <system:String x:Key="advanced_setting">高級</system:String>
     <!-- Setting Information Space -->
     <system:String x:Key="latest_sync" xml:space="preserve">最後に同期した日付 : </system:String>

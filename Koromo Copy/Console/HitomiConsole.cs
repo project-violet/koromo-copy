@@ -128,6 +128,8 @@ namespace Koromo_Copy.Console
             //
             else if (option.DownloadMetadata)
             {
+                Console.Instance.WriteErrorLine("Disabled. You cannot use this command anymore.");
+                return true;
                 ProcessDownloadMetadata();
             }
             else if (option.LoadMetadata)
@@ -136,6 +138,8 @@ namespace Koromo_Copy.Console
             }
             else if (option.DownloadHidden)
             {
+                Console.Instance.WriteErrorLine("Disabled. You cannot use this command anymore.");
+                return true;
                 ProcessDownloadHidden();
             }
             else if (option.LoadHidden)
@@ -147,6 +151,8 @@ namespace Koromo_Copy.Console
             //
             else if (option.Sync)
             {
+                Console.Instance.WriteErrorLine("Disabled. You cannot use this command anymore.");
+                return true;
                 ProcessSync();
             }
             else if (option.Load)
