@@ -177,8 +177,10 @@ namespace Koromo_Copy_UX
 
         private void CheckUpdate()
         {
+#if false
             if (Koromo_Copy.Version.UpdateRequired())
                 MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_new_update"), false);
+#endif
         }
 
         public bool IsMetadataLoaded = false;
@@ -431,7 +433,7 @@ namespace Koromo_Copy_UX
             }
         }
         
-        #region Search Helper
+#region Search Helper
         AutoCompleteLogic logic;
 
         public object StringAlgorithms { get; private set; }
@@ -469,7 +471,7 @@ namespace Koromo_Copy_UX
         {
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
-        #endregion
+#endregion
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
