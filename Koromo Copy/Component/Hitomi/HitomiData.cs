@@ -133,6 +133,8 @@ namespace Koromo_Copy.Component.Hitomi
                 metadata_collection.ForEach(x => overlap.Add(x.ID.ToString()));
                 foreach (var article in articles)
                 {
+                    if (article.Magic == "1472678")
+                        ;
                     if (overlap.Contains(article.Magic)) continue;
                     metadata_collection.Add(HitomiLegalize.ArticleToMetadata(article));
                     //if (!thumbnail_collection.ContainsKey(article.Magic))

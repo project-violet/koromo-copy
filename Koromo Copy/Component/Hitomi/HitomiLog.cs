@@ -59,7 +59,18 @@ namespace Koromo_Copy.Component.Hitomi
             }
         }
 
+        public void Clear()
+        {
+            model.Clear();
+            DownloadTable.Clear();
+        }
+
         public void AddArticle(HitomiArticle article)
+        {
+            AddArticle(article, DateTime.Now);
+        }
+
+        public void AddArticle(HitomiArticle article, DateTime dt)
         {
             HitomiLogModel mm = new HitomiLogModel();
             mm.Id = article.Magic;
@@ -69,7 +80,7 @@ namespace Koromo_Copy.Component.Hitomi
             mm.Series = article.Series;
             mm.Characters = article.Characters;
             mm.Tags = article.Tags;
-            mm.Time = DateTime.Now;
+            mm.Time = dt;
             model.Add(mm);
             downloaded.Add(Convert.ToInt32(article.Magic));
         }

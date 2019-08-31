@@ -155,7 +155,7 @@ namespace Koromo_Copy.Component.Hitomi
             var result = new HitomiIndexDataModel();
             result.index = index;
             result.metadata = mdl;
-            
+
             var bbb = MessagePackSerializer.Serialize(result);
             using (FileStream fsStream = new FileStream(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "index-metadata.json"), FileMode.Create))
             using (BinaryWriter sw = new BinaryWriter(fsStream))

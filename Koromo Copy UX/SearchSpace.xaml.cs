@@ -7,29 +7,17 @@
 ***/
 
 using Koromo_Copy;
-using Koromo_Copy.Component.DC;
 using Koromo_Copy.Component.Hitomi;
-using Koromo_Copy.Component.Hiyobi;
-using Koromo_Copy.Component.Manazero;
-using Koromo_Copy.Component.Pinterest;
-using Koromo_Copy.Component.Pixiv;
-using Koromo_Copy.Console;
 using Koromo_Copy.Interface;
-using Koromo_Copy.Net;
 using Koromo_Copy.Net.DPI;
-using Koromo_Copy.Net.Driver;
 using Koromo_Copy.Script;
 using Koromo_Copy_UX.Domain;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
@@ -71,17 +59,18 @@ namespace Koromo_Copy_UX
 #if true
             bool loading = false;
             // Metadata 로딩
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 if (IsMetadataLoaded || StartsLoading) return;
                 StartsLoading = true;
                 Profiler.Push("Check metadata exists");
                 if (!HitomiIndex.Instance.CheckMetadataExist() || Settings.Instance.Hitomi.AutoSync)
                 {
-//#if !DEBUG
-//                    Koromo_Copy.Monitor.Instance.ControlEnable = true;
-//                    Koromo_Copy.Monitor.Instance.Push("다운로드가 계속 진행되지 않는다면 이 창에서 Enter키를 눌러주세요");
-//                    Koromo_Copy.Console.Console.Instance.Show();
-//#endif
+                    //#if !DEBUG
+                    //                    Koromo_Copy.Monitor.Instance.ControlEnable = true;
+                    //                    Koromo_Copy.Monitor.Instance.Push("다운로드가 계속 진행되지 않는다면 이 창에서 Enter키를 눌러주세요");
+                    //                    Koromo_Copy.Console.Console.Instance.Show();
+                    //#endif
                     Profiler.Push("Start download metadata");
                     MainWindow.Instance.Fade_MiddlePopup(true, (string)FindResource("msg_download_metadata"));
 #if true
@@ -155,7 +144,7 @@ namespace Koromo_Copy_UX
                 Task.Run(() => DPIB.Instance.Start());
             }, TaskScheduler.FromCurrentSynchronizationContext());
 #endif
-                    Window w = Window.GetWindow(this);
+            Window w = Window.GetWindow(this);
             // 이거 지우면 디자이너 오류남
             if (w != null)
             {
@@ -177,7 +166,7 @@ namespace Koromo_Copy_UX
 
         private void CheckUpdate()
         {
-#if false
+#if true
             if (Koromo_Copy.Version.UpdateRequired())
                 MainWindow.Instance.FadeOut_MiddlePopup((string)FindResource("msg_new_update"), false);
 #endif
@@ -247,10 +236,10 @@ namespace Koromo_Copy_UX
                 {
                     result = await HitomiDataSearchAdvanced.Search(content.Trim());
                 }
-                
+
                 if (start_element != 0 && start_element <= result.Count) result.RemoveRange(0, start_element);
                 if (count_element != 0 && count_element < result.Count) result.RemoveRange(count_element, result.Count - count_element);
-                
+
                 SearchCount.Text = $"{FindResource("searched")}: {(result.Count != 0 ? result.Count.ToString("#,#") : "0")}{(FindResource("count_postfix"))}";
                 SearchButton.Content = $"{FindResource("stop")}";
                 _ = Task.Run(() => LoadThumbnail(result));
@@ -432,8 +421,8 @@ namespace Koromo_Copy_UX
                 }
             }
         }
-        
-#region Search Helper
+
+        #region Search Helper
         AutoCompleteLogic logic;
 
         public object StringAlgorithms { get; private set; }
@@ -449,19 +438,19 @@ namespace Koromo_Copy_UX
             }
             logic.skip_enter = false;
         }
-        
+
         private void SearchText_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (!IsMetadataLoaded) return;
             logic.SearchText_PreviewKeyDown(sender, e);
         }
-        
+
         private void SearchText_KeyUp(object sender, KeyEventArgs e)
         {
             if (!IsMetadataLoaded) return;
             logic.SearchText_KeyUp(sender, e);
         }
-        
+
         private void AutoCompleteList_KeyUp(object sender, KeyEventArgs e)
         {
             logic.AutoCompleteList_KeyUp(sender, e);
@@ -471,7 +460,7 @@ namespace Koromo_Copy_UX
         {
             logic.AutoCompleteList_MouseDoubleClick(sender, e);
         }
-#endregion
+        #endregion
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -482,7 +471,7 @@ namespace Koromo_Copy_UX
                 List<string> titles = new List<string>();
                 if (!Settings.Instance.UXSetting.UsingThumbnailSearchElements)
                 {
-                    for (int i = 0; i < SearchPanel.Children.Count; i+=2)
+                    for (int i = 0; i < SearchPanel.Children.Count; i += 2)
                     {
                         string ttitle = (SearchPanel.Children[i] as SearchElements).Article.Title.Split('|')[0];
                         if (titles.Count > 0 && !titles.TrueForAll((title) => Strings.ComputeLevenshteinDistance(ttitle, title) > Settings.Instance.Hitomi.TextMatchingAccuracy))

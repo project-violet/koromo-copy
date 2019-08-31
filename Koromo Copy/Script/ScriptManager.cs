@@ -33,7 +33,7 @@ namespace Koromo_Copy.Script
         public void Initialization()
         {
             var script_dir = Path.Combine(Directory.GetCurrentDirectory(), "script");
-#if false
+#if true
             if (Version.LatestVersionModel.ScriptVersion + 1 > Settings.Instance.Model.ScriptPackageVersion)
             {
                 Directory.CreateDirectory(script_dir);
