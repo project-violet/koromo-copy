@@ -94,8 +94,8 @@
 
 https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
 
-## 최신 릴리즈 Latest Release (2019/08/18)
+## 마지막 릴리즈 Last Release (2019/08/31)
 
-Koromo Copy 1.15.7169.41344
+Koromo Copy Last Version
 
-https://github.com/dc-koromo/koromo-copy/releases/tag/1.15.7169.41344
+https://github.com/dc-koromo/koromo-copy/releases/tag/1.16.7182.36052
