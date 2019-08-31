@@ -5,12 +5,12 @@
 ## Koromo Copy 개발 종료
 
 ```
+
  --------------------------------------------------------------------------
  
                 * Koromo Copy 사용자 분들에게 드리는 말씀 *
  
-     2019년 08월 31일 이후로 Koromo Copy 프로젝트를 완전히 중단합니다.
- 위 날짜 이후엔 다음 두 가지 항목에 대한 지원을 더이상 받을 수 없습니다.
+ 이번 업데이트 이후엔 다음 두 가지 항목에 대한 지원을 더이상 받을 수 없습니다.
  
    1. Koromo Copy 프로그램 업데이트
    2. 최신 데이터 동기화
@@ -24,22 +24,22 @@
  
   * 수동으로 데이터를 동기화하는 방법
  
- https://github.com/dc-koromo/e-archive 여기서 hiddendata.json과 
- metadata.json을 다운로드하고, Koromo Copy가 있는 디렉토리에 넣습니다.
- Koromo Copy를 실행한뒤 Ctrl + T를 눌러 콘솔창을 띄우고, 다음 명령을 
- 입력합니다.
+ https://github.com/dc-koromo/e-archive/releases/tag/L여기서 
+ hiddendata.json과  metadata.json을 다운로드하고, Koromo Copy가 있는 
+ 디렉토리에 넣습니다. Koromo Copy를 실행한뒤 Ctrl + T를 눌러 콘솔창을 띄우고, 
+ 다음 명령을 입력합니다.
  
    run gbt
  
  위 명령을 입력하면 GalleryBlock Tester for Hidden Galleries가 실행됩니다.
  그 다음 시작 버튼을 클릭합니다. 테스팅 과정이 끝나면 우측하단 합치기 버튼을
- 클릭합니다.  콘솔창으로 다시 돌아가서 아래 명령을 입력합니다.
+ 클릭합니다. 콘솔창으로 다시 돌아가서 아래 명령을 입력합니다.
  
   hitomi -test 8
  
  Koromo Copy를 재시작하면 최신 데이터를 로딩할 수 있습니다.
  
-  
+ 
   * 원래 제목 동기화 방법
  
  https://github.com/dc-koromo/e-archive 여기서 ex-hentai-archive.json를
@@ -80,8 +80,12 @@
  
  --------------------------------------------------------------------------
  
+ 내년 여름방학 때까지 Linux, Windows, Mac OS, Android 에 대한 확장성을 가진
+ 완전히 새로운 프로그램인 Koromo Copy 2(가명)를 개발할 계획입니다.
+ https://github.com/dc-koromo/koromo-copy2
+ 자세한 내용은 향후 제공될 개발자 문서를 확인해주세요.
+ 
  Hitomi Copy 및 Koromo Copy를 이용해 주신 모든 분들께 감사의 말씀 드립니다.
- 향후 기회가 된다면 새로운 프로젝트로 찾아뵙겠습니다.
 ```
 
 ## 도움말

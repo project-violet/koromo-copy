@@ -58,10 +58,10 @@ namespace Koromo_Copy_UX
             Profiler.Push("Load MainWindow");
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
-            if (!File.Exists("koromo-copy-readme.txt"))
+            if (!File.Exists("koromo-copy-readme2.txt"))
             {
-                File.WriteAllLines("koromo-copy-readme.txt", NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/koromo-copy-readme.txt").Split('\n'));
-                Process.Start("notepad", "koromo-copy-readme.txt");
+                File.WriteAllLines("koromo-copy-readme2.txt", NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/koromo-copy-readme2.txt").Split('\n'));
+                Process.Start("notepad", "koromo-copy-readme2.txt");
             }
 
             // GC 설정

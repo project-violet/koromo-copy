@@ -10,6 +10,7 @@ using Koromo_Copy.Component;
 using Koromo_Copy.Component.EH;
 using Koromo_Copy.Component.Hitomi;
 using Koromo_Copy.Component.Hitomi.Analysis;
+using Koromo_Copy.Fs;
 using Koromo_Copy.Interface;
 using Koromo_Copy.Net;
 using Newtonsoft.Json;
@@ -86,6 +87,10 @@ namespace Koromo_Copy.Console
         [CommandLine("-forbidden", CommandType.ARGUMENTS, Info = "use -forbidden <Hitomi Number>.")]
         public string[] Forbidden;
 
+        [CommandLine("-log-recover", CommandType.ARGUMENTS, Help = "use -log-recover <Root Path of Download Articles>.", 
+            Info = "Restore logs with downloaded artwork information.")]
+        public string[] LogRecover;
+
         [CommandLine("-test", CommandType.ARGUMENTS, Info = "Tester for hitomi.", Help = "Check developer manual.")]
         public string[] Test;
     }
@@ -130,7 +135,7 @@ namespace Koromo_Copy.Console
             {
                 Console.Instance.WriteErrorLine("Disabled. You cannot use this command anymore.");
                 return true;
-                ProcessDownloadMetadata();
+                //ProcessDownloadMetadata();
             }
             else if (option.LoadMetadata)
             {
@@ -140,7 +145,7 @@ namespace Koromo_Copy.Console
             {
                 Console.Instance.WriteErrorLine("Disabled. You cannot use this command anymore.");
                 return true;
-                ProcessDownloadHidden();
+                //ProcessDownloadHidden();
             }
             else if (option.LoadHidden)
             {
@@ -153,7 +158,7 @@ namespace Koromo_Copy.Console
             {
                 Console.Instance.WriteErrorLine("Disabled. You cannot use this command anymore.");
                 return true;
-                ProcessSync();
+                //ProcessSync();
             }
             else if (option.Load)
             {
@@ -207,6 +212,13 @@ namespace Koromo_Copy.Console
                 ProcessForbidden(option.Forbidden);
             }
             //
+            //  로그 복구
+            //
+            else if (option.LogRecover != null)
+            {
+                ProcessRecoverLog(option.LogRecover);
+            }
+            //
             //  테스트
             //
             else if (option.Test != null)
@@ -225,7 +237,7 @@ namespace Koromo_Copy.Console
         static void PrintHelp()
         {
             Console.Instance.WriteLine(
-                "Hitomi Console Core\r\n" + 
+                "Hitomi Console Core\r\n" +
                 "\r\n"
                 //" -article <Hitomi Number> : Show article info.\r\n" +
                 //" -image <Hitomi Number> [-type=small | big]: Get Image Link.\r\n" +
@@ -302,7 +314,7 @@ namespace Koromo_Copy.Console
         static void ProcessLoadMetadata()
         {
             HitomiIndex.Instance.Load();
-            
+
             if (HitomiIndex.Instance.metadata_collection != null)
             {
                 Console.Instance.WriteLine($"Loaded metadata: '{HitomiIndex.Instance.metadata_collection.Count.ToString("#,#")}' articles.");
@@ -497,7 +509,61 @@ namespace Koromo_Copy.Console
         {
             Console.Instance.WriteLine(Monitor.SerializeObject(HCommander.GetArticleData(Convert.ToInt32(args[0]))));
         }
-        
+
+        /// <summary>
+        /// 로그를 복구하고, 기존 설정을 덮어씁니다.
+        /// </summary>
+        /// <param name="args"></param>
+        static void ProcessRecoverLog(string[] args)
+        {
+            Console.Instance.WriteLine("This operation deletes existing log contents.");
+            Console.Instance.Write("Are you sure to continue? yes or no) ");
+
+            var res = System.Console.ReadLine();
+            if (res != "yes")
+            {
+                Console.Instance.WriteLine("Process canceled.");
+                return;
+            }
+
+            Console.Instance.WriteLine("Enumerating files...");
+
+            var fi = new FileIndexor();
+            var file_list = new List<FileInfo>();
+            fi.ListingDirectoryAsync(args[0]).Wait();
+            fi.Enumerate((string path, List<FileInfo> files) =>
+            {
+                foreach (var iz in files)
+                {
+                    if (Path.GetExtension(iz.Name) == ".zip")
+                        file_list.Add(iz);
+                }
+            });
+
+            Console.Instance.WriteLine($"{file_list.Count.ToString("0,0")} zip files found!");
+            file_list.Sort((x, y) => x.LastWriteTime.CompareTo(y.LastWriteTime));
+
+            var rx = new Regex(@"^\[(\d+)\]");
+            foreach (var file in file_list)
+            {
+                if (rx.Match(Path.GetFileNameWithoutExtension(file.Name)).Success)
+                {
+                    var id = rx.Match(Path.GetFileNameWithoutExtension(file.Name)).Groups[1].Value;
+                    var md = HitomiLegalize.GetMetadataFromMagic(id);
+
+                    if (!md.HasValue)
+                    {
+                        Console.Instance.WriteLine($"{id} article was not found!");
+                        continue;
+                    }
+
+                    HitomiLog.Instance.AddArticle(HitomiLegalize.MetadataToArticle(md.Value), file.LastWriteTime);
+                }
+            }
+
+            HitomiLog.Instance.Save();
+        }
+
         /// <summary>
         /// 각종 기능을 테스트합니다.
         /// </summary>
@@ -694,7 +760,7 @@ namespace Koromo_Copy.Console
                             Thread.Sleep(100);
                         }
                         {
-                            const string archive = @"C:\Tools\koromo-copy\Koromo Copy UX\bin\Debug\exhentai-page";
+                            const string archive = @"C:\Dev\koromo-copy\Koromo Copy UX\bin\Debug\exhentai-page";
                             var htmls = new List<string>();
 
                             foreach (var file in Directory.GetFiles(archive))
