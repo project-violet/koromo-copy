@@ -115,5 +115,17 @@ namespace Koromo_Copy.Component.Hitomi
                 result.Add(obj.Value<string>("name"));
             return result;
         }
+
+
+        static public Dictionary<string, bool> CheckHasWebp(string json)
+        {
+            JArray arr = JArray.Parse(json.Substring(json.IndexOf('[')));
+            Dictionary<string, bool> result = new Dictionary<string, bool>();
+            //foreach (var obj in arr)
+            //    result.Add(obj.Value<string>("name"));
+            foreach (var obj in arr)
+                result.Add(obj.Value<string>("name"), obj.Value<int>("haswebp") == 1);
+            return result;
+        }
     }
 }

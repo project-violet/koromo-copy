@@ -68,7 +68,7 @@ namespace Koromo_Copy_UX
                     string address = Article.ImagesLink[i];
                     if (Article is HitomiArticle ha)
                     {
-                        address = HitomiCommon.GetDownloadImageAddress(ha.Magic, address);
+                        address = HitomiCommon.GetDownloadImageAddress(ha.Magic, address, ha.HasWebp[address]);
                     }
                     ImageStack.Children.Add(new PreviewImageElements($"{i + 1} Page", address));
                 }));
@@ -78,7 +78,7 @@ namespace Koromo_Copy_UX
 #if DEBUG
             if (Article is HitomiArticle ha2)
             {
-                HtmlLocalServer.Instance.CreateImageServer(ha2.Title, ha2.ImagesLink.Select(x => HitomiCommon.GetDownloadImageAddress(ha2.Magic, x)).ToArray());
+                HtmlLocalServer.Instance.CreateImageServer(ha2.Title, ha2.ImagesLink.Select(x => HitomiCommon.GetDownloadImageAddress(ha2.Magic, x, ha2.HasWebp[x])).ToArray());
             }
 #endif
         }

@@ -143,7 +143,9 @@ namespace Koromo_Copy_UX
                 {
                     ha.Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
                         $"{HitomiCommon.HitomiGalleryBlock}{ha.Magic}.html")).Thumbnail;
-                    ha.ImagesLink = HitomiParser.GetImageLink(Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic)));
+                    var info = Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic));
+                    ha.ImagesLink = HitomiParser.GetImageLink(info);
+                    ha.HasWebp = HitomiParser.CheckHasWebp(info);
                 }
                 catch
                 {
@@ -342,8 +344,8 @@ namespace Koromo_Copy_UX
                             if (!ha.IsUnstable)
                             {
                                 DownloadSpace.Instance.RequestDownload(ha.Title,
-                                    ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y)).ToArray(),
-                                    ha.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                                    ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y, ha.HasWebp[y])).ToArray(),
+                                    ha.ImagesLink.Select(y => Path.Combine(prefix, ha.HasWebp[y] ? y + ".webp" : y)).ToArray(),
                                     Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, ha);
                             }
                             else

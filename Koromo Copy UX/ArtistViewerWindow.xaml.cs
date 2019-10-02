@@ -193,8 +193,8 @@ namespace Koromo_Copy_UX
                         if (!ha.IsUnstable)
                         {
                             DownloadSpace.Instance.RequestDownload(x.Article.Title,
-                                x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
-                                x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                                ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y, ha.HasWebp[y])).ToArray(),
+                                ha.ImagesLink.Select(y => Path.Combine(prefix, ha.HasWebp[y] ? y + ".webp" : y)).ToArray(),
                                 Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
                         }
                         else
@@ -228,8 +228,8 @@ namespace Koromo_Copy_UX
                         if (!ha.IsUnstable)
                         {
                             DownloadSpace.Instance.RequestDownload(x.Article.Title,
-                                x.Article.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y)).ToArray(),
-                                x.Article.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
+                                ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress((x.Article as HitomiArticle).Magic, y, ha.HasWebp[y])).ToArray(),
+                                ha.ImagesLink.Select(y => Path.Combine(prefix, ha.HasWebp[y] ? y + ".webp" : y)).ToArray(),
                                 Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, x.Article);
                         }
                         else

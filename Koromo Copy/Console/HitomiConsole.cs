@@ -282,7 +282,7 @@ namespace Koromo_Copy.Console
 
             if (type == null)
             {
-                Console.Instance.WriteLine(image_link.Select(x => HitomiCommon.GetDownloadImageAddress(args[0], x)));
+                Console.Instance.WriteLine(image_link.Select(x => HitomiCommon.GetDownloadImageAddress(args[0], x, false)));
             }
             else if (type == "small")
             {

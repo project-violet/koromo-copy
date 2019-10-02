@@ -192,7 +192,9 @@ namespace Koromo_Copy_UX
                 {
                     ha.Thumbnail = HitomiCommon.HitomiThumbnail + HitomiParser.ParseGalleryBlock(Koromo_Copy.Net.NetCommon.DownloadString(
                         $"{HitomiCommon.HitomiGalleryBlock}{ha.Magic}.html")).Thumbnail;
-                    ha.ImagesLink = HitomiParser.GetImageLink(Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic)));
+                    var info = Koromo_Copy.Net.NetCommon.DownloadString(HitomiCommon.GetImagesLinkAddress(ha.Magic));
+                    ha.ImagesLink = HitomiParser.GetImageLink(info);
+                    ha.HasWebp = HitomiParser.CheckHasWebp(info);
                 }
                 catch
                 {
