@@ -34,7 +34,10 @@ namespace Koromo_Copy.Component.Hitomi
             HitomiMetadata metadata = new HitomiMetadata();
             if (article.Artists != null) metadata.Artists = article.Artists;
             if (article.Characters != null) metadata.Characters = article.Characters;
-            if (article.Groups != null) metadata.Groups = article.Groups;
+            if (article.Magic.Contains("-"))
+                metadata.ID = Convert.ToInt32(article.Magic.Split('-').Last().Split('.')[0]);
+            else
+                metadata.ID = Convert.ToInt32(article.Magic);
             metadata.ID = Convert.ToInt32(article.Magic);
             metadata.Language = LegalizeLanguage(article.Language);
             metadata.Name = article.Title;
