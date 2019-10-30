@@ -77,7 +77,10 @@ namespace Hitomi_Copy_3._403
                 var aa = HitomiParser.ParseGalleryBlock(x);
                 try
                 {
-                    x = wc.DownloadString("https://hitomi.la/galleries/" + i + ".html");
+                    if (aa.Magic.Contains("-"))
+                        x = wc.DownloadString("https://hitomi.la/" + aa.Magic);
+                    else
+                        x = wc.DownloadString("https://hitomi.la/galleries/" + i + ".html");
                     var a2 = HitomiParser.ParseGallery(x);
                     aa.Groups = a2.Groups;
                     aa.Characters = a2.Characters;
@@ -100,7 +103,7 @@ namespace Hitomi_Copy_3._403
             lock (int_lock) mtx--;
             lock (notify_lock) Notify();
         }
-
+        
         private void Notify()
         {
             lock (int_lock)
