@@ -36,6 +36,8 @@ namespace Koromo_Copy.Component.Hitomi
             if (article.Characters != null) metadata.Characters = article.Characters;
             if (article.Magic.Contains("-"))
                 metadata.ID = Convert.ToInt32(article.Magic.Split('-').Last().Split('.')[0]);
+            else if (article.Magic.Contains("galleries"))
+                metadata.ID = Convert.ToInt32(article.Magic.Split('/').Last().Split('.')[0]);
             else
                 metadata.ID = Convert.ToInt32(article.Magic);
             metadata.ID = Convert.ToInt32(article.Magic);
