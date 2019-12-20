@@ -34,7 +34,7 @@ namespace Koromo_Copy
         public static string Text { get; } = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static string SimpleText { get; } = $"{Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}";
 
-        public const string UpdateCheckUrl = "https://raw.githubusercontent.com/dc-koromo/koromo-copy-old/master/version";
+        public const string UpdateCheckUrl = "https://raw.githubusercontent.com/dc-koromo/koromo-copy-windows/master/version";
         public static VersionModel LatestVersionModel;
 
         private static bool already_check = false;
