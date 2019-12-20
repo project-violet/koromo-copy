@@ -8,6 +8,7 @@
 
 using Koromo_Copy.Component.Pixiv;
 using Koromo_Copy.Interface;
+using System;
 using System.Threading.Tasks;
 
 namespace Koromo_Copy.Console
@@ -108,7 +109,7 @@ namespace Koromo_Copy.Console
                     Console.Instance.WriteLine("Succesful login!");
                     Console.Instance.WriteLine($"Access token: {PixivTool.Instance.GetAccessToken()}");
                 }
-                catch
+                catch (Exception e)
                 {
                     Console.Instance.WriteErrorLine("Login error!");
                 }

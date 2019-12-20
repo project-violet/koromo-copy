@@ -65,9 +65,10 @@ namespace Pixeez
             {
                 { "username", username },
                 { "password", password },
+                { "get_secure_url", "1" },
                 { "grant_type", "password" },
-                { "client_id", "bYGKuGVw91e0NMfPGp44euvGt59s" },
-                { "client_secret", "HP3RmkgAmEGro0gn1x9ioawQE8WMfvLXDz3ZqxpK" },
+                { "client_id", "MOBrBDS8blbauoSck0ZfDbtuzpyT" },
+                { "client_secret", "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj" },
             });
 
             var response = httpClient.PostAsync("https://oauth.secure.pixiv.net/auth/token", param).Result;

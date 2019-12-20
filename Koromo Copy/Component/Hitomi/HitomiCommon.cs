@@ -57,14 +57,26 @@ namespace Koromo_Copy.Component.Hitomi
         /// <returns></returns>
         public static string GetDownloadImageAddress(
             string gallery,
-            string page_with_extension)
+            string page_with_extension,
+            bool haswebp,
+            string hash)
         {
             // download.js
-            var number_of_frontends = 2;
+            var number_of_frontends = 3;
             char subdomain = Convert.ToChar(97 + (Convert.ToInt32(gallery.Last()) % number_of_frontends));
-            if (gallery.Last() == '1')
+            if (gallery.Last() == '0')
                 subdomain = 'a';
-            return $"https://{subdomain}a.hitomi.la/galleries/{gallery}/{page_with_extension}";
+            if (!haswebp)
+                return $"https://{subdomain}a.hitomi.la/galleries/{gallery}/{page_with_extension}";
+            else
+            {
+                if (hash == "")
+                    return $"https://{subdomain}a.hitomi.la/webp/{gallery}/{page_with_extension}.webp";
+                if (hash.Length < 3)
+                    return $"https://{subdomain}a.hitomi.la/webp/{hash}.webp";
+                var postfix = hash.Substring(hash.Length - 3);
+                return $"https://{subdomain}a.hitomi.la/webp/{postfix[2]}/{postfix[0]}{postfix[1]}/{hash}.webp";
+            }
         }
 
         /// <summary>

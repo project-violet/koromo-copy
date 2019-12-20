@@ -105,6 +105,8 @@ namespace Koromo_Copy.Component.Hitomi
         public string Title { get { return title; } set { title = value; } }
         
         public List<string> ImagesLink { get { return images_link; } set { images_link = value; } }
+        public Dictionary<string, bool> HasWebp;
+        public Dictionary<string, string> Hashs;
         
         public string Archive { get; set; }
 

@@ -35,7 +35,19 @@ namespace Koromo_Copy.Component.Hitomi
             if (article.Artists != null) metadata.Artists = article.Artists;
             if (article.Characters != null) metadata.Characters = article.Characters;
             if (article.Groups != null) metadata.Groups = article.Groups;
-            metadata.ID = Convert.ToInt32(article.Magic);
+            try
+            {
+                if (article.Magic.Contains("-"))
+                    metadata.ID = Convert.ToInt32(article.Magic.Split('-').Last().Split('.')[0]);
+                else if (article.Magic.Contains("galleries"))
+                    metadata.ID = Convert.ToInt32(article.Magic.Split('/').Last().Split('.')[0]);
+                else
+                    metadata.ID = Convert.ToInt32(article.Magic);
+            }
+            catch
+            {
+                ;
+            }
             metadata.Language = LegalizeLanguage(article.Language);
             metadata.Name = article.Title;
             if (article.Series != null) metadata.Parodies = article.Series;

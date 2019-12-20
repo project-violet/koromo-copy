@@ -54,7 +54,7 @@ namespace Koromo_Copy_UX
             e.Handled = true;
         }
 
-#if true
+#if false
         private void UpdateSyncDate()
         {
             if (HitomiIndex.Instance.CheckMetadataExist())

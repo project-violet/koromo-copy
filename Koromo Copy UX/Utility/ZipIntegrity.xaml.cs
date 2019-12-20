@@ -145,7 +145,7 @@ namespace Koromo_Copy_UX.Utility
                         var prefix = HitomiCommon.MakeDownloadDirectory(ha);
                         Directory.CreateDirectory(prefix);
                         DownloadSpace.Instance.RequestDownload(ha.Title,
-                            ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y)).ToArray(),
+                            ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y, ha.HasWebp[y], ha.HasWebp[y] ? ha.Hashs[y] : "")).ToArray(),
                             ha.ImagesLink.Select(y => Path.Combine(prefix, y)).ToArray(),
                             Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, ha);
                         count++;
