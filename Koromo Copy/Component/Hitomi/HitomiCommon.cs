@@ -66,7 +66,7 @@ namespace Koromo_Copy.Component.Hitomi
             char subdomain = Convert.ToChar(97 + (Convert.ToInt32(gallery.Last()) % number_of_frontends));
             if (gallery.Last() == '0')
                 subdomain = 'a';
-            if (!haswebp)
+            if (!haswebp || hash == null)
                 return $"https://{subdomain}a.hitomi.la/galleries/{gallery}/{page_with_extension}";
             else
             {
