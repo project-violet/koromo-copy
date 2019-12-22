@@ -58,12 +58,6 @@ namespace Koromo_Copy_UX
             Profiler.Push("Load MainWindow");
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
-            if (!File.Exists("koromo-copy-readme2.txt"))
-            {
-                File.WriteAllLines("koromo-copy-readme2.txt", NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/koromo-copy-readme2.txt").Split('\n'));
-                Process.Start("notepad", "koromo-copy-readme2.txt");
-            }
-
             // GC 설정
             GCLatencyMode oldMode = GCSettings.LatencyMode;
             RuntimeHelpers.PrepareConstrainedRegions();
