@@ -31,6 +31,10 @@ namespace Koromo_Copy.Console
             Info = "Search gallery by name.")]
         public string[] Login;
 
+        [CommandLine("-build-minor-gallery", CommandType.OPTION, Help = "use -build-minor-gallery",
+            Info = "Build minore gallery list.")]
+        public bool BuildMinorGallery;
+
         [CommandLine("-find-gallery", CommandType.ARGUMENTS, Help = "use -find-gallery <Gallery Name>",
             Info = "Search gallery by name.")]
         public string[] FindGallery;
@@ -99,6 +103,10 @@ namespace Koromo_Copy.Console
             else if (option.Login != null)
             {
                 ProcessLogin(option.Login);
+            }
+            else if (option.BuildMinorGallery)
+            {
+                ProcessBuildMinorGallery();
             }
             else if (option.FindGallery != null)
             {
@@ -179,6 +187,10 @@ namespace Koromo_Copy.Console
             Console.Instance.WriteLine("PHPSESSID=" + PHPSESSID);
         }
 
+        static void ProcessBuildMinorGallery()
+        {
+            File.WriteAllText("dcinside-minor-gallery.json",JsonConvert.SerializeObject(DCCommon.GetMinorGalleryListRaw()));
+        }
 
         static SortedDictionary<string, string> galleries;
         static SortedDictionary<string, string> minor_galleries;
