@@ -38,7 +38,7 @@ namespace Koromo_Copy.Script
             {
                 Directory.CreateDirectory(script_dir);
 
-                var scripts = Net.NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy/master/scripts.json");
+                var scripts = Net.NetCommon.DownloadString("https://raw.githubusercontent.com/dc-koromo/koromo-copy-windows/master/scripts.json");
                 var em = JsonConvert.DeserializeObject<extract_model>(scripts);
                 foreach (var pair in em.Scripts)
                     File.WriteAllText(Path.Combine(script_dir, pair.Item1), Encoding.UTF8.GetString(Convert.FromBase64String(pair.Item3)));
