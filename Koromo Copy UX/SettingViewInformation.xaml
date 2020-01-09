@@ -36,7 +36,7 @@
             <TextBlock Text="" TextWrapping="Wrap"/>
             <TextBlock Text="" TextWrapping="Wrap"/>
 
-            <!--<Separator Height="5"  Margin="0 40 0 0"/>
+            <Separator Height="5"  Margin="0 40 0 0"/>
             <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
                 <TextBlock Text="{DynamicResource latest_sync}"/>
                 <TextBlock x:Name="SyncDate" Text="2000년 00월 00일 (0일 지남)"/>
@@ -89,7 +89,7 @@
                         </StackPanel>
                     </Button>
                 </Grid>
-            </StackPanel>-->
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -10,7 +10,7 @@
     <Grid Margin="20">
         <StackPanel>
 
-            <!--<StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
                 <TextBlock FontSize="25" Text="{DynamicResource current_version}" FontWeight="Thin"/>
                 <TextBlock x:Name="NowVersion" FontSize="25" Text="" FontWeight="Thin"/>
             </StackPanel>
@@ -35,7 +35,7 @@
                     <materialDesign:PackIcon Kind="Update"  Height="17" Width="17" Opacity=".56" VerticalAlignment="Center"/>
                     <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{DynamicResource update_start}"/>
                 </StackPanel>
-            </Button>-->
+            </Button>
 
             <TextBlock Text="{DynamicResource patchnote}" FontSize="20"/>
 

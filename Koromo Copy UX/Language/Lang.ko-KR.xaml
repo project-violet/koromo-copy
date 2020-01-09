@@ -81,7 +81,7 @@
     <system:String x:Key="pixiv">픽시브</system:String>
     <system:String x:Key="interface">인터페이스</system:String>
     <system:String x:Key="script">스크립트</system:String>
-    <system:String x:Key="update">패치노트</system:String>
+    <system:String x:Key="update">업데이트</system:String>
     <system:String x:Key="advanced_setting">고급설정</system:String>
     <!-- Setting Information Space -->
     <system:String x:Key="latest_sync" xml:space="preserve">마지막으로 데이터를 동기화한 날짜 : </system:String>
