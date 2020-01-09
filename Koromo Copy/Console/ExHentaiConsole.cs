@@ -1,6 +1,6 @@
 ﻿/***
 
-   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+   Copyright (C) 2018-2020. dc-koromo. All Rights Reserved.
 
    Author: Koromo Copy Developer
 
@@ -263,7 +263,7 @@ namespace Koromo_Copy.Console
             var build = new StringBuilder();
             build.Append("\r\n");
             build.Append("Koromo Copy Expunged Data Extractor\r\n");
-            build.Append("Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.\r\n");
+            build.Append("Copyright (C) 2018-2020. dc-koromo. All Rights Reserved.\r\n");
             build.Append("\r\n");
             build.Append("손실 작품\r\n");
             int ee_count = 0;

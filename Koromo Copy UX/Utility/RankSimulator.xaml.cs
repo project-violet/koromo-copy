@@ -1,6 +1,6 @@
 ﻿/***
 
-   Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.
+   Copyright (C) 2018-2020. dc-koromo. All Rights Reserved.
    
    Author: Koromo Copy Developer
 
@@ -302,7 +302,7 @@ namespace Koromo_Copy_UX.Utility
             var builder = new StringBuilder();
 
             builder.Append("Koromo Copy Rank Simulator\r\n");
-            builder.Append("Copyright (C) 2018-2019. dc-koromo. All Rights Reserved.\r\n");
+            builder.Append("Copyright (C) 2018-2020. dc-koromo. All Rights Reserved.\r\n");
             builder.Append("\r\n");
             builder.Append("\r\n");
             builder.Append("=================================================================================\r\n");
