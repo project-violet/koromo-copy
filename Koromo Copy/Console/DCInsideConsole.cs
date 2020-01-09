@@ -248,6 +248,9 @@ namespace Koromo_Copy.Console
                 else
                     gall = DCParser.ParseGallery(html);
 
+                if (is_minorg && (gall.articles == null || gall.articles.Length == 0))
+                    gall = DCParser.ParseGallery(html);
+
                 foreach (var article in gall.articles)
                 {
                     if (title != null && !article.title.Contains(title[0]))
@@ -308,6 +311,9 @@ namespace Koromo_Copy.Console
                     if (is_minorg)
                         gall = DCParser.ParseMinorGallery(html);
                     else
+                        gall = DCParser.ParseGallery(html);
+
+                    if (is_minorg && (gall.articles == null || gall.articles.Length == 0))
                         gall = DCParser.ParseGallery(html);
 
                     foreach (var article in gall.articles)
@@ -448,6 +454,9 @@ namespace Koromo_Copy.Console
                         if (is_minorg)
                             gall = DCParser.ParseMinorGallery(html);
                         else
+                            gall = DCParser.ParseGallery(html);
+
+                        if (is_minorg && (gall.articles == null || gall.articles.Length == 0))
                             gall = DCParser.ParseGallery(html);
 
                         articles.AddRange(gall.articles);
