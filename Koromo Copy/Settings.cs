@@ -126,7 +126,7 @@ namespace Koromo_Copy
 
                 model = new SettingModel
                 {
-                    Thread = Environment.ProcessorCount * 3,
+                    Thread = Environment.ProcessorCount,
                     SensitiveUpdateCheck = false,
                     AutoZip = false,
 
