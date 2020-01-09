@@ -20,8 +20,8 @@
             </TextBlock>
             <TextBlock>
                 Manual:
-                <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md" RequestNavigate="Hyperlink_RequestNavigate">
-                    https://github.com/dc-koromo/koromo-copy/blob/master/Document/Manual.md
+                <Hyperlink NavigateUri="https://github.com/dc-koromo/koromo-copy-windows/blob/master/Document/Manual.md" RequestNavigate="Hyperlink_RequestNavigate">
+                    https://github.com/dc-koromo/koromo-copy-windows/blob/master/Document/Manual.md
                 </Hyperlink>
             </TextBlock>
 

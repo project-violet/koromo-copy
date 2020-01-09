@@ -464,7 +464,7 @@ namespace Koromo_Copy_UX.Utility
 
         private void Manual_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://github.com/dc-koromo/koromo-copy/blob/master/Document/CustomCrawler.md");
+            Process.Start("https://github.com/dc-koromo/koromo-copy-windows/blob/master/Document/CustomCrawler.md");
         }
     }
 }

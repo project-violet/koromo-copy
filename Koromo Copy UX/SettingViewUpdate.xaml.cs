@@ -315,7 +315,7 @@ namespace Koromo_Copy_UX
                     " - 통합 Hentai 403, 404 다운로더 지원\r\n\r\n" +
                     " - 히요비 H 다운로더 추가\r\n\r\n" +
                     "[기타]\r\n" +
-                    " - 스크립트에 관해선 https://github.com/dc-koromo/koromo-copy/blob/master/Document/SRCAL.md를 참고하세요.\r\n\r\n" +
+                    " - 스크립트에 관해선 https://github.com/dc-koromo/koromo-copy-windows/blob/master/Document/SRCAL.md를 참고하세요.\r\n\r\n" +
                     "\r\nKoromo Copy Project\r\nCopyright (C) 2018-2020. dc-koromo. All Rights Reserved."
                 }
             });
