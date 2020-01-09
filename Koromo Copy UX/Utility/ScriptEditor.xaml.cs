@@ -335,7 +335,7 @@ namespace Koromo_Copy_UX.Utility
             }
             else if (tag == "Help")
             {
-                Process.Start("https://github.com/dc-koromo/koromo-copy/blob/master/Document/SRCAL.md");
+                Process.Start("https://github.com/dc-koromo/koromo-copy-windows/blob/master/Document/SRCAL.md");
             }
         }
     }

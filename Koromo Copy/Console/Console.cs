@@ -440,7 +440,7 @@ namespace Koromo_Copy.Console
             System.Console.Out.WriteLine($"");
             System.Console.Out.Write($"For more information, please check ");
             System.Console.ForegroundColor = ConsoleColor.Yellow;
-            System.Console.Out.WriteLine("https://github.com/dc-koromo/koromo-copy/blob/master/Document/Development.md\r\n");
+            System.Console.Out.WriteLine("https://github.com/dc-koromo/koromo-copy-windows/blob/master/Document/Development.md\r\n");
             System.Console.ResetColor();
 
             foreach (var pair in redirections)
