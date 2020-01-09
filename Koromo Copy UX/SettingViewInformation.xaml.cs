@@ -43,7 +43,7 @@ namespace Koromo_Copy_UX
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
             VersionText.Text += Koromo_Copy.Version.Text + " (x64)";
-#if false
+#if true
             UpdateSyncDate();
 #endif
         }
@@ -54,7 +54,7 @@ namespace Koromo_Copy_UX
             e.Handled = true;
         }
 
-#if false
+#if true
         private void UpdateSyncDate()
         {
             if (HitomiIndex.Instance.CheckMetadataExist())

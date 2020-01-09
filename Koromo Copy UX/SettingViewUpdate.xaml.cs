@@ -36,14 +36,14 @@ namespace Koromo_Copy_UX
             InitializeComponent();
             Koromo_Copy_UX.Language.Lang.ApplyLanguageDictionary(this);
 
-#if false
+#if true
             NowVersion.Text = Koromo_Copy.Version.Text;
             Loaded += SettingViewUpdate_Loaded;
 #endif
             UpdatePatchNotes();
         }
 
-#if false
+#if true
         private void SettingViewUpdate_Loaded(object sender, RoutedEventArgs e)
         {
             Task.Run(() =>
