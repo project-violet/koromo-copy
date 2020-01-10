@@ -1,6 +1,6 @@
 ﻿/***
 
-   Copyright (C) 2019. dc-koromo. All Rights Reserved.
+   Copyright (C) 2019-2020. dc-koromo. All Rights Reserved.
 
    Author: Koromo Copy Developer
 

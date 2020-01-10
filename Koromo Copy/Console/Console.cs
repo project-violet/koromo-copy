@@ -123,7 +123,7 @@ namespace Koromo_Copy.Console
 
             System.Console.Title = "Koromo Copy Console";
             System.Console.Out.WriteLine($"Koromo Copy {Version.Text}");
-            System.Console.Out.WriteLine("Copyright (C) 2018-2019. Koromo Copy Developer");
+            System.Console.Out.WriteLine("Copyright (C) 2018-2020. Koromo Copy Developer");
             System.Console.Out.WriteLine("E-Mail: koromo.software@gmail.com");
             System.Console.Out.WriteLine("Source-code : https://github.com/dc-koromo/koromo-copy");
             System.Console.Out.WriteLine("");
@@ -436,7 +436,7 @@ namespace Koromo_Copy.Console
         public void PrintHelp()
         {
             System.Console.Out.WriteLine($"Koromo Copy Console");
-            System.Console.Out.WriteLine($"Copyright (C) 2018-2019. Koromo Copy Developer");
+            System.Console.Out.WriteLine($"Copyright (C) 2018-2020. Koromo Copy Developer");
             System.Console.Out.WriteLine($"");
             System.Console.Out.Write($"For more information, please check ");
             System.Console.ForegroundColor = ConsoleColor.Yellow;
