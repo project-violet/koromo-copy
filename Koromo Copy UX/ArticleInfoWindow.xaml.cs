@@ -345,7 +345,7 @@ namespace Koromo_Copy_UX
                             if (!ha.IsUnstable)
                             {
                                 DownloadSpace.Instance.RequestDownload(ha.Title,
-                                    ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y, ha.HasWebp[y], ha.HasWebp[y] ? ha.Hashs[y] : "")).ToArray(),
+                                    ha.ImagesLink.Select(y => HitomiCommon.GetDownloadImageAddress(ha.Magic, y, ha.HasWebp[y], ha.HasWebp[y] || ha.Hashs[y].Length > 3 ? ha.Hashs[y] : "")).ToArray(),
                                     ha.ImagesLink.Select(y => Path.Combine(prefix, ha.HasWebp[y] ? y + ".webp" : y)).ToArray(),
                                     Koromo_Copy.Interface.SemaphoreExtends.Default, prefix, ha);
                             }
