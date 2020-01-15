@@ -66,8 +66,13 @@ namespace Koromo_Copy.Component.Hitomi
             char subdomain = Convert.ToChar(97 + (Convert.ToInt32(gallery.Last()) % number_of_frontends));
             if (gallery.Last() == '0')
                 subdomain = 'a';
-            if (!haswebp || hash == null)
+            if (!haswebp && (hash == null || (hash != null && hash.Length < 3)))
                 return $"https://{subdomain}a.hitomi.la/galleries/{gallery}/{page_with_extension}";
+            else if (!haswebp)
+            {
+                var postfix = hash.Substring(hash.Length - 3);
+                return $"https://{subdomain}a.hitomi.la/images/{postfix[2]}/{postfix[0]}{postfix[1]}/{hash}.{page_with_extension.Split('.').Last()}";
+            }
             else
             {
                 if (hash == "")
