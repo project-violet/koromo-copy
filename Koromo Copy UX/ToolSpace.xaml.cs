@@ -49,11 +49,11 @@ namespace Koromo_Copy_UX
             //    Header = "Artists Map",
             //    DataContext = new ArtistsMap()
             //});
-            ToolsTree.Items.Add(new TreeViewItem
-            {
-                Header = FindResource("index"),
-                DataContext = new Index()
-            });
+            //ToolsTree.Items.Add(new TreeViewItem
+            //{
+            //    Header = FindResource("index"),
+            //    DataContext = new Index()
+            //});
 
             ContentControl.Content = (ToolsTree.Items[0] as TreeViewItem).DataContext;
         }
