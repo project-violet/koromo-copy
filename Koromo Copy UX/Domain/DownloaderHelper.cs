@@ -348,16 +348,16 @@ namespace Koromo_Copy_UX.Domain
                     if (unstable) MainWindow.Instance.Fade_MiddlePopup(true, $"불안정한 작업 진행중...[{unstable_request}개]");
                     else MainWindow.Instance.Fade_MiddlePopup(true, "접속중...");
                     var wc = NetCommon.GetDefaultClient();
-                    wc.Headers.Add(System.Net.HttpRequestHeader.Referer, "https://xn--9w3b15m8vo.asia/reader/" + url.Split('/').Last());
+                    wc.Headers.Add(System.Net.HttpRequestHeader.Referer, "https://hiyobi.me/reader/" + url.Split('/').Last());
                     var imagelink = HitomiParser.GetImageLink(wc.DownloadString(HiyobiCommon.GetDownloadImageAddress(url.Split('/').Last())));
                     var article = HitomiLegalize.MetadataToArticle(HitomiLegalize.GetMetadataFromMagic(url.Split('/').Last()).Value); //HiyobiParser.ParseGalleryConents(NetCommon.DownloadString(url));
                     string dir = HitomiCommon.MakeDownloadDirectory(article);
                     var se = Koromo_Copy.Interface.SemaphoreExtends.Default;
-                    se.Referer = "https://xn--9w3b15m8vo.asia/reader/" + url.Split('/').Last();
+                    se.Referer = "https://hiyobi.me/reader/" + url.Split('/').Last();
                     article.ImagesLink = imagelink;
                     Directory.CreateDirectory(dir);
                     DownloadSpace.Instance.RequestDownload(article.Title,
-                        imagelink.Select(y => $"https://xn--9w3b15m8vo.asia/data/{article.Magic}/{y}").ToArray(),
+                        imagelink.Select(y => $"https://hiyobi.me/data/{article.Magic}/{y}").ToArray(),
                         imagelink.Select(y => Path.Combine(dir, y)).ToArray(),
                         se, dir, article);
                     Directory.CreateDirectory(dir);
