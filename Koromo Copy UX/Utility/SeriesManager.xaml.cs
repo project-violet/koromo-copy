@@ -157,15 +157,6 @@ namespace Koromo_Copy_UX.Utility
                     System.Threading.Thread.Sleep(50);
                 }
             });
-
-            string path = "https://vignette.wikia.nocookie.net/inoubattlewanichijoukeinonakade/images/f/ff/Hatokochan.png/revision/latest?cb=20150121165834";
-
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(path, UriKind.Absolute);
-            bitmap.EndInit();
-
-            WaterMark.Source = bitmap;
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)

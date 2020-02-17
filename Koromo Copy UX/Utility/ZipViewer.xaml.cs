@@ -33,8 +33,6 @@ namespace Koromo_Copy_UX.Utility
         {
             InitializeComponent();
 
-            Loaded += ZipViewer_Loaded;
-
             if (url != "")
                 LoadFolder(url);
         }
@@ -45,19 +43,6 @@ namespace Koromo_Copy_UX.Utility
             if (e.Key == Key.Escape)
                 Close();
         }
-
-        private void ZipViewer_Loaded(object sender, RoutedEventArgs e)
-        {
-            string path = "https://cdn.clien.net/web/api/file/F01/5117849/e7482ad23fa6428693a.PNG?thumb=true";
-
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(path, UriKind.Absolute);
-            bitmap.EndInit();
-
-            WaterMark.Source = bitmap;
-        }
-
         private void LoadFolder(string path)
         {
             var list = Directory.GetFiles(path).ToList();
