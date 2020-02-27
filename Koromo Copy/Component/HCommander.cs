@@ -218,11 +218,16 @@ namespace Koromo_Copy.Component
             article.Magic = magic;
             article.ArticleType = HArticleType.Hitomi;
             article.URL = url;
-            article.artist = metadata.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
-            article.group = metadata.Groups.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
-            article.parody = metadata.Parodies.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
-            article.misc = metadata.Tags.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
-            article.character = metadata.Characters.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            if (metadata.Artists != null)
+                article.artist = metadata.Artists.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            if (metadata.Groups != null)
+                article.group = metadata.Groups.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            if (metadata.Parodies != null)
+                article.parody = metadata.Parodies.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            if (metadata.Tags != null)
+                article.misc = metadata.Tags.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
+            if (metadata.Characters != null)
+                article.character = metadata.Characters.Select(x => HitomiIndex.Instance.index.Artists[x]).ToArray();
             article.Language = HitomiIndex.Instance.index.Languages[metadata.Language];
             article.Title = metadata.Name;
             article.Type = HitomiIndex.Instance.index.Types[metadata.Type];

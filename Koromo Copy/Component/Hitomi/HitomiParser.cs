@@ -109,7 +109,8 @@ namespace Koromo_Copy.Component.Hitomi
         /// <returns></returns>
         static public List<string> GetImageLink(string json)
         {
-            JArray arr = JArray.Parse(json.Substring(json.IndexOf('[')));
+            var vv = JToken.Parse(json.Substring(json.IndexOf('=') + 1))["files"];
+            JArray arr = (JArray)vv;
             List<string> result = new List<string>();
             foreach (var obj in arr)
                 result.Add(obj.Value<string>("name"));
@@ -118,7 +119,8 @@ namespace Koromo_Copy.Component.Hitomi
 
         static public Dictionary<string, bool> CheckHasWebp(string json)
         {
-            var arr = JArray.Parse(json.Substring(json.IndexOf('[')));
+            var vv = JToken.Parse(json.Substring(json.IndexOf('=') + 1))["files"];
+            JArray arr = (JArray)vv;
             var result = new Dictionary<string, bool>();
             foreach (var obj in arr)
                 result.Add(obj.Value<string>("name"), obj.Value<int>("haswebp") == 1);
@@ -127,7 +129,8 @@ namespace Koromo_Copy.Component.Hitomi
 
         static public Dictionary<string, string> GetHash(string json)
         {
-            var arr = JArray.Parse(json.Substring(json.IndexOf('[')));
+            var vv = JToken.Parse(json.Substring(json.IndexOf('=') + 1))["files"];
+            JArray arr = (JArray)vv;
             var result = new Dictionary<string, string>();
             foreach (var obj in arr)
                 result.Add(obj.Value<string>("name"), obj.Value<string>("hash"));
