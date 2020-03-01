@@ -39,11 +39,11 @@ namespace Koromo_Copy_UX
                 Header = FindResource("tools_and_utility"),
                 DataContext = new Link()
             });
-            ToolsTree.Items.Add(new TreeViewItem
-            {
-                Header = FindResource("statistics"),
-                DataContext = new Statistics()
-            });
+            //ToolsTree.Items.Add(new TreeViewItem
+            //{
+            //    Header = FindResource("statistics"),
+            //    DataContext = new Statistics()
+            //});
             //ToolsTree.Items.Add(new TreeViewItem
             //{
             //    Header = "Artists Map",

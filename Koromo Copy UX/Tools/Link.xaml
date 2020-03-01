@@ -212,7 +212,7 @@
                 </Grid>
             </Border>
 
-            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+            <!--<Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -238,7 +238,7 @@
                         </StackPanel>
                     </Button>
                 </Grid>
-            </Border>
+            </Border>-->
 
             <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
                 <Grid Margin="4">
@@ -279,7 +279,7 @@
 
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="시리즈 매니져 (Series Manager, Ctrl + S)" FontWeight="SemiBold" FontSize="14"/>
-                        <TextBlock Text="Hiyobi Non-H, Mangashow.me의 다운로드와 최신 상태 동기화 기능을 제공하는 독립된 다운로더입니다." TextWrapping="Wrap" FontSize="13"/>
+                        <TextBlock Text="다운로드와 최신 상태 동기화 기능을 제공하는 독립된 다운로더입니다." TextWrapping="Wrap" FontSize="13"/>
                     </StackPanel>
                     <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="SeriesManager" Click="Button_Click">
                         <Button.Resources>
@@ -307,7 +307,7 @@
 
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="만화 크롤러 (Manga Crawler)" FontWeight="SemiBold" FontSize="14"/>
-                        <TextBlock Text="Mangashow.me의 모든 만화를 분석하여 나열합니다." TextWrapping="Wrap" FontSize="13"/>
+                        <TextBlock Text="모든 만화를 분석하여 나열합니다." TextWrapping="Wrap" FontSize="13"/>
                     </StackPanel>
                     <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="MangaCrawler" Click="Button_Click">
                         <Button.Resources>
@@ -326,7 +326,7 @@
                 </Grid>
             </Border>
 
-            <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
+            <!--<Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -352,7 +352,7 @@
                         </StackPanel>
                     </Button>
                 </Grid>
-            </Border>
+            </Border>-->
 
             <Border BorderBrush="LightGray" BorderThickness="1" Margin="0 16 0 0">
                 <Grid Margin="4">
@@ -391,7 +391,7 @@
 
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="연관태그 분석기 (Related Tags Test)" FontWeight="SemiBold" FontSize="14"/>
-                        <TextBlock Text="Hitomi Copy의 고급도구로 포함되어있던 도구입니다. 이 도구는 작품들의 태그를 이용해 태그 연관성을 검사합니다." TextWrapping="Wrap" FontSize="13"/>
+                        <TextBlock Text="이 도구는 작품들의 태그를 이용해 태그 연관성을 검사합니다." TextWrapping="Wrap" FontSize="13"/>
                     </StackPanel>
                     <Button HorizontalAlignment="Right" Grid.Column="1" Margin="8 0 4 0" Tag="RelatedTagsTest" Click="Button_Click">
                         <Button.Resources>
