@@ -498,16 +498,16 @@ namespace Koromo_Copy.Console
 
         static void ProcessParseComments(string[] args)
         {
-            LoadGalleryList();
+            //LoadGalleryList();
 
             bool is_minorg = minor_galleries.ContainsValue(args[0]);
 
             if (ESNO == "")
             {
                 var url = "";
-                if (is_minorg)
-                    url = $"https://gall.dcinside.com/mgallery/board/view/?id={args[0]}&no={args[1]}";
-                else
+                //if (is_minorg)
+                //    url = $"https://gall.dcinside.com/mgallery/board/view/?id={args[0]}&no={args[1]}";
+                //else
                     url = $"https://gall.dcinside.com/board/view/?id={args[0]}&no={args[1]}";
 
                 var client = NetCommon.GetDefaultClient();

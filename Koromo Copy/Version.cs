@@ -42,35 +42,37 @@ namespace Koromo_Copy
 
         public static bool UpdateRequired()
         {
-            if (already_check) return update_required;
-            already_check = true;
+            return false;
 
-            var download = NetCommon.DownloadString(UpdateCheckUrl);
-            var net_data = JsonConvert.DeserializeObject<VersionModel>(download);
-
-            LatestVersionModel = net_data;
-
-            int major = Assembly.GetExecutingAssembly().GetName().Version.Major;
-            int minor = Assembly.GetExecutingAssembly().GetName().Version.Minor;
-            int build = Assembly.GetExecutingAssembly().GetName().Version.Build;
-            int revis = Assembly.GetExecutingAssembly().GetName().Version.Revision;
-
-            bool require = false;
-
-            if (net_data.MajorVersion > major)
-                require = true;
-            else if (net_data.MajorVersion == major && net_data.MinorVersion > minor)
-                require = true;
-
-            if (Settings.Instance.Model.SensitiveUpdateCheck)
-            {
-                if (net_data.MajorVersion == major && net_data.MinorVersion == minor && net_data.BuildVersion > build)
-                    require = true;
-                else if (net_data.MajorVersion == major && net_data.MinorVersion == minor && net_data.BuildVersion == build && net_data.RevisionVersion > revis)
-                    require = true;
-            }
-
-            return update_required = require;
+            //if (already_check) return update_required;
+            //already_check = true;
+            //
+            //var download = NetCommon.DownloadString(UpdateCheckUrl);
+            //var net_data = JsonConvert.DeserializeObject<VersionModel>(download);
+            //
+            //LatestVersionModel = net_data;
+            //
+            //int major = Assembly.GetExecutingAssembly().GetName().Version.Major;
+            //int minor = Assembly.GetExecutingAssembly().GetName().Version.Minor;
+            //int build = Assembly.GetExecutingAssembly().GetName().Version.Build;
+            //int revis = Assembly.GetExecutingAssembly().GetName().Version.Revision;
+            //
+            //bool require = false;
+            //
+            //if (net_data.MajorVersion > major)
+            //    require = true;
+            //else if (net_data.MajorVersion == major && net_data.MinorVersion > minor)
+            //    require = true;
+            //
+            //if (Settings.Instance.Model.SensitiveUpdateCheck)
+            //{
+            //    if (net_data.MajorVersion == major && net_data.MinorVersion == minor && net_data.BuildVersion > build)
+            //        require = true;
+            //    else if (net_data.MajorVersion == major && net_data.MinorVersion == minor && net_data.BuildVersion == build && net_data.RevisionVersion > revis)
+            //        require = true;
+            //}
+            //
+            //return update_required = require;
         }
 
         public static bool RequireTidy(string program_path)
